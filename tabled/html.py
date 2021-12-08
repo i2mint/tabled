@@ -69,8 +69,14 @@ def get_tables_from_url(url, url_to_html: Union[Callable, str] = "requests"):
     """
     if not callable(url_to_html):
         url_to_html = url_to_html_func(url_to_html)
-    return pd.read_html(url_to_html(url))
-
+    try:
+        return pd.read_html(url_to_html(url))
+    except ValueError as e:
+        if len(e.args) > 0:
+            msg, *_ = e.args
+            if 'No tables found' in msg:
+                return []
+        raise
 
 HTML_TEMPLATE1 = """
 <html>
