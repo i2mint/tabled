@@ -20,7 +20,7 @@ def url_to_html_func(kind="requests") -> Callable:
                 return r
             return r.content
 
-    elif kind == "chrome":
+    elif kind == "chrome" or kind == 'selenium':
 
         from selenium import webdriver
         from time import sleep
