@@ -146,7 +146,7 @@ class DfLocalFileReader(Files):
 
     def __getitem__(self, k):
         ext = self.key_to_ext(k)
-        kwargs = self.ext_specs.get(ext, {})
+        kwargs = self._ext_specs.get(ext, {})
         data = BytesIO(super().__getitem__(k))
         return df_from_data_given_ext(data, ext, **kwargs)
 
