@@ -25,9 +25,9 @@ from tabled.html import (
 )
 
 
-Obj = TypeVar('Obj')
+Obj = TypeVar("Obj")
 KeyFunc = Callable[[Obj], KT]
-dflt_not_found_sentinel = mk_sentinel('dflt_not_found_sentinel')
+dflt_not_found_sentinel = mk_sentinel("dflt_not_found_sentinel")
 
 
 def identity(x):
@@ -58,22 +58,25 @@ def split_keys(d):
 
 dflt_ext_mapping = split_keys(
     {
-        'xls xlsx': partial(pd.read_excel, index=False),
-        'csv': partial(pd.read_csv, index_col=False),
-        'tsv': partial(pd.read_csv, sep='\t', index_col=False),
-        'json': partial(pd.read_json, orient='records'),
-        'html': partial(pd.read_html, index_col=False),
-        'p pickle': pickle.load,
+        "xls xlsx": partial(pd.read_excel, index=False),
+        "csv": partial(pd.read_csv, index_col=False),
+        "tsv": partial(pd.read_csv, sep="\t", index_col=False),
+        "json": partial(pd.read_json, orient="records"),
+        "html": partial(pd.read_html, index_col=False),
+        "p pickle": pickle.load,
     }
 )
 
 
 def df_from_data_given_ext(data, ext, ext_specs=None, **kwargs):
     """Get a dataframe from a (data, ext) pair"""
-    if ext.startswith('.'):
+    if ext.startswith("."):
         ext = ext[1:]
     trans_func = key_func_mapping(
-        data, ext_specs or dflt_ext_mapping, key=identity, not_found_sentinel=None,
+        data,
+        ext_specs or dflt_ext_mapping,
+        key=identity,
+        not_found_sentinel=None,
     )
     if trans_func is not None:
         return trans_func(data, **kwargs)
@@ -99,7 +102,9 @@ def get_ext(x):
 
 
 df_from_data_according_to_ext = partial(
-    df_from_data_according_to_key, mapping=dflt_ext_mapping, key=get_ext,
+    df_from_data_according_to_key,
+    mapping=dflt_ext_mapping,
+    key=get_ext,
 )
 
 # df_from_data_given_ext meant to be equivalent (but more general, using ext_specs) to
@@ -138,6 +143,8 @@ class DfLocalFileReader(Files):
 
     def __init__(self, path_format, ext_specs=None):
         super().__init__(path_format)
+        if ext_specs is None:
+            ext_specs = {}
         self._ext_specs = ext_specs
         self.data_and_ext_to_df = partial(df_from_data_given_ext, ext_specs=ext_specs)
         self.data_and_ext_to_df = (
@@ -152,15 +159,15 @@ class DfLocalFileReader(Files):
 
     def key_to_ext(self, k):
         _, ext = os.path.splitext(k)
-        if ext.startswith('.'):
+        if ext.startswith("."):
             ext = ext[1:]
         return ext
 
     def __setitem__(self, k, v):
-        raise NotImplementedError('This is a reader: No write operation allowed')
+        raise NotImplementedError("This is a reader: No write operation allowed")
 
     def __delitem__(self, k):
-        raise NotImplementedError('This is a reader: No delete operation allowed')
+        raise NotImplementedError("This is a reader: No delete operation allowed")
 
 
 # DfReader = DfLocalFileReader  # alias for back-compatibility: TODO: Issue warning on use
