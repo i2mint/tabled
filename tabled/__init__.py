@@ -17,13 +17,6 @@ from i2 import mk_sentinel
 
 from dol import Files  # previously: py2store.stores.local_store import LocalBinaryStore
 
-from tabled.html import (
-    url_to_html_func,
-    get_tables_from_url,
-    dfs_to_html_pretty,
-    dfs_to_pdf_bytes,
-)
-
 
 Obj = TypeVar("Obj")
 KeyFunc = Callable[[Obj], KT]
@@ -68,15 +61,15 @@ dflt_ext_mapping = split_keys(
 )
 
 
-def df_from_data_given_ext(data, ext, ext_specs=None, **kwargs):
+def df_from_data_given_ext(data, ext, mapping=dflt_ext_mapping, **kwargs):
     """Get a dataframe from a (data, ext) pair"""
     if ext.startswith("."):
         ext = ext[1:]
     trans_func = key_func_mapping(
-        data,
-        ext_specs or dflt_ext_mapping,
+        ext,
+        mapping,
         key=identity,
-        not_found_sentinel=None,
+        not_found_sentinel=None,  # TODO
     )
     if trans_func is not None:
         return trans_func(data, **kwargs)
@@ -141,27 +134,16 @@ df_from_data_according_to_ext = partial(
 class DfLocalFileReader(Files):
     """A key-value store providing values as pandas.DataFrames"""
 
-    def __init__(self, path_format, ext_specs=None):
+    def __init__(self, path_format, mapping=dflt_ext_mapping):
         super().__init__(path_format)
-        if ext_specs is None:
-            ext_specs = {}
-        self._ext_specs = ext_specs
-        self.data_and_ext_to_df = partial(df_from_data_given_ext, ext_specs=ext_specs)
-        self.data_and_ext_to_df = (
-            df_from_data_given_ext  # TODO: Hard coded for now, to keep functioning
-        )
+
+        self.key_to_ext = get_ext
+        self.data_and_ext_to_df = partial(df_from_data_given_ext, mapping=mapping)
 
     def __getitem__(self, k):
         ext = self.key_to_ext(k)
-        kwargs = self._ext_specs.get(ext, {})
         data = BytesIO(super().__getitem__(k))
-        return df_from_data_given_ext(data, ext, **kwargs)
-
-    def key_to_ext(self, k):
-        _, ext = os.path.splitext(k)
-        if ext.startswith("."):
-            ext = ext[1:]
-        return ext
+        return self.data_and_ext_to_df(data, ext)
 
     def __setitem__(self, k, v):
         raise NotImplementedError("This is a reader: No write operation allowed")
@@ -170,4 +152,4 @@ class DfLocalFileReader(Files):
         raise NotImplementedError("This is a reader: No delete operation allowed")
 
 
-# DfReader = DfLocalFileReader  # alias for back-compatibility: TODO: Issue warning on use
+DfReader = DfLocalFileReader  # alias for back-compatibility: TODO: Issue warning on use
