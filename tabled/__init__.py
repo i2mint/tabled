@@ -10,6 +10,7 @@ from functools import partial
 from io import BytesIO
 from typing import Mapping, Callable, TypeVar, KT, VT
 import os
+import re
 import pickle
 
 import pandas as pd
@@ -35,6 +36,31 @@ def key_func_mapping(
 ) -> VT:
     """Map an object to a value based on a key function"""
     return mapping.get(key(obj), not_found_sentinel)
+
+
+from dol import KvReader
+
+class KeyFuncReader(KvReader):
+    def __init__(self, mapping: Mapping[KT, VT], key: KeyFunc = identity):
+        self.mapping = mapping
+        self.key = key
+
+    def __getitem__(self, k):
+        return self.mapping[self.key(k)]
+
+    def __contains__(self, k):
+        return self.key(k) in self.mapping
+
+    def __iter__(self):
+        return iter(self.mapping)
+
+    def __len__(self):
+        return len(self.mapping)
+
+    def __repr__(self):
+        return f'{type(self).__name__}({self.mapping}, key={self.key})'
+
+
 
 
 def split_keys(d):
@@ -92,6 +118,29 @@ def get_ext(x):
         return ext[1:].lower()
     else:
         return ext
+
+
+
+
+protocol_re = re.compile(r"([a-zA-Z0-9]+)://")
+
+
+def get_protocol(url: str):
+    """Get the protocol of a url
+
+    >>> get_protocol('https://www.google.com')
+    'https'
+    >>> get_protocol('file:///home/user/file.txt')
+    'file'
+
+    The function returns None if no protocol is found:
+
+    >>> assert get_protocol('no_protocol_here') is None
+
+    """
+    m = protocol_re.match(url)
+    if m:
+        return m.group(1)
 
 
 df_from_data_according_to_ext = partial(
