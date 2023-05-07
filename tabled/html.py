@@ -55,7 +55,7 @@ def get_tables_from_url(
     you'll have to get your needed html otherwise (like with selenium).
 
     >>> url = 'https://en.wikipedia.org/wiki/List_of_musical_instruments'
-    >>> tables = get_tables_from_url(url)
+    >>> tables = get_tables_from_url(url)  # doctest: +SKIP
 
     If you install selenium and download a chromedriver,
     you can even use your browser to render dynamic html.
@@ -65,7 +65,7 @@ def get_tables_from_url(
 
     ```python
     url = 'https://www.worldometers.info/coronavirus/?utm_campaign=homeAdvegas1?'
-    tables = get_tables_from_url(url, url_to_html='chrome')
+    tables = get_tables_from_url(url, url_to_html='chrome')  # doctest: +SKIP
     ```
 
     To make selenium work:
