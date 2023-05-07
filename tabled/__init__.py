@@ -11,5 +11,5 @@ from tabled.base import (
     get_ext,
     identity,
     key_func_mapping,
-    split_keys
+    split_keys,
 )
