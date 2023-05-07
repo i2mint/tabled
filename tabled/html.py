@@ -41,6 +41,9 @@ def url_to_html_func(kind="requests") -> Callable:
     return url_to_html
 
 
+get_tables_from_html = pd.read_html
+
+
 def get_tables_from_url(url, url_to_html: Union[Callable, str] = "requests"):
     """Get's a list of pandas dataframes from tables scraped from a url.
     Note that this will only work with static pages. If the html needs to be rendered dynamically,
@@ -70,13 +73,15 @@ def get_tables_from_url(url, url_to_html: Union[Callable, str] = "requests"):
     if not callable(url_to_html):
         url_to_html = url_to_html_func(url_to_html)
     try:
-        return pd.read_html(url_to_html(url))
+        return get_tables_from_html(url_to_html(url))
     except ValueError as e:
         if len(e.args) > 0:
             msg, *_ = e.args
             if 'No tables found' in msg:
                 return []
         raise
+
+
 
 HTML_TEMPLATE1 = """
 <html>
