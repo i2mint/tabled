@@ -9,7 +9,7 @@ def url_to_html_func(kind='requests') -> Callable:
     """Get a url_to_html function of a given kind."""
     url_to_html = None
     if kind == 'requests':
-        import requests
+        import requests  # pip install requests
 
         def url_to_html(url):
             r = requests.get(url)
@@ -22,7 +22,7 @@ def url_to_html_func(kind='requests') -> Callable:
 
     elif kind == 'chrome' or kind == 'selenium':
 
-        from selenium import webdriver
+        from selenium import webdriver  # pip install selenium
         from time import sleep
 
         def url_to_html(url, wait=2):
