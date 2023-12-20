@@ -53,17 +53,17 @@ def intersection_graph(
     ...     'D': {'d', 'e', 'h', 'i'},
     ...     'E': {'i', 'j'}
     ... }
-    >>> assert collection_adjacencies(sets) == {
+    >>> assert intersection_graph(sets) == {
     ...     'A': {'B'}, 'B': {'A', 'C', 'D'}, 'C': {'B'}, 'D': {'B', 'E'}, 'E': {'D'}
     ... }
-    >>> assert collection_adjacencies(sets, edge_labels='elements') == {
+    >>> assert intersection_graph(sets, edge_labels='elements') == {
     ...     'A': {'B': {'b'}},
     ...     'B': {'A': {'b'}, 'C': {'f'}, 'D': {'d', 'e'}},
     ...     'C': {'B': {'f'}},
     ...     'D': {'B': {'d', 'e'}, 'E': {'i'}},
     ...     'E': {'D': {'i'}}
     ... }
-    >>> assert collection_adjacencies(sets, edge_labels='size') == {
+    >>> assert intersection_graph(sets, edge_labels='size') == {
     ...     'A': {'B': 1},
     ...     'B': {'A': 1, 'C': 1, 'D': 2},
     ...     'C': {'B': 1},
