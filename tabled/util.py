@@ -19,104 +19,74 @@ def split_keys(d):
     return {split_k: v for k, v in d.items() for split_k in k.split()}
 
 
-# --------------------------------------------------------------------------------------
-# Column-oriented mapping of multiple tables
-
-from functools import cached_property
-import pandas as pd
-from typing import TypeVar, Callable, KT, Union, Iterable, Mapping
-
-Column = TypeVar('Column', KT)
-TableKey = TypeVar('TableKey', KT)
-MappingOfDataFrames = Mapping[KT, pd.DataFrame]
-DataFrames = Union[MappingOfDataFrames, Iterable[pd.DataFrame]]
+from typing import Dict, KT, Literal
 
 
-def mapping_of_dataframes(tables: DataFrames) -> MappingOfDataFrames:
-    """Cast to a mapping of dataframes"""
-    if not isinstance(tables, Mapping):
-        if isinstance(tables, Iterable):
-            tables = dict(enumerate(tables))
-        else:
-            raise TypeError(f"Expected Mapping or Iterable, got {type(tables)}")
-    return tables
-
-
-def dataframes(tables: DataFrames) -> Iterable[pd.DataFrame]:
-    """Cast to an iterable of dataframes."""
-    if isinstance(tables, Mapping):
-        tables = tables.values()
-    return tables
-
-
-def columns_of_first_table(tables: MappingOfDataFrames) -> Iterable[Column]:
-    tables = mapping_of_dataframes(tables)
-    first_table = next(iter(dataframes(tables)))
-    return first_table.columns.values.tolist()
-
-
-def columns_of_all_tables(tables: MappingOfDataFrames) -> Iterable[Column]:
-    """Return all columns from all tables, in order of first appearance.
-    This is useful for making a ColumnOrientedMapping without reverting to
-    the default columns argument, which is to use the columns of the first table.
+def intersection_graph(
+    sets: Dict[KT, set], edge_labels: Literal['elements', 'size', False] = False
+):
     """
-    tables = mapping_of_dataframes(tables)
-    all_columns = chain.from_iterable(table.columns for table in tables.values())
-    # return unique columns in order of first appearance
-    return list(dict.fromkeys(all_columns))
+    A graph of all intersections between sets.
+    (See https://en.wikipedia.org/wiki/Intersection_graph.)
 
+    In graph theory, an adjacency list is a collection of sets used to represent a
+    finite graph.
+    Here, the vertices are the values of sets,
+    and there is an edge between two vertices if the sets intersect.
+    The weight of the edge is the size of the intersection.
 
-class ColumnOrientedMapping(Mapping):
-    def __init__(
-        self,
-        tables: MappingOfDataFrames,
-        columns: Union[Callable, Iterable[Column]] = columns_of_first_table,
-    ):
-        self.tables = mapping_of_dataframes(tables)
-        self._init_columns = columns
+    :param sets: A mapping of keys to sets of elements. These sets of elements will
+        be the vertices of the graph.
+    :param edge_labels: If 'elements', the edge labels are the elements of the intersection.
+        If 'size', the edge labels are the size of the intersection.
+        If False, there are no edge labels.
+    :return: A graph, represented by an "adjacency list"
+        (see https://en.wikipedia.org/wiki/Adjacency_list)
+        (a dict whose keys are the keys of the input `sets` dict, and whose values
+        tell us what sets of `sets` intersect with it),
+        optionally with some information about this intersection.
 
-    @cached_property
-    def columns(self):
-        """The columns that will be used in this mapping (the keys of the mapping)"""
-        if isinstance(self._init_columns, str):
-            return [self._init_columns]
-        elif callable(self._init_columns):
-            return self._init_columns(self.tables)
-        assert isinstance(
-            self._init_columns, Iterable
-        ), f"Expected Callable or Iterable, got {self._init_columns}"
-        return self._init_columns
+    >>> sets = {
+    ...     'A': {'b', 'c'},
+    ...     'B': {'a', 'b', 'd', 'e', 'f'},
+    ...     'C': {'f', 'g'},
+    ...     'D': {'d', 'e', 'h', 'i'},
+    ...     'E': {'i', 'j'}
+    ... }
+    >>> assert collection_adjacencies(sets) == {
+    ...     'A': {'B'}, 'B': {'A', 'C', 'D'}, 'C': {'B'}, 'D': {'B', 'E'}, 'E': {'D'}
+    ... }
+    >>> assert collection_adjacencies(sets, edge_labels='elements') == {
+    ...     'A': {'B': {'b'}},
+    ...     'B': {'A': {'b'}, 'C': {'f'}, 'D': {'d', 'e'}},
+    ...     'C': {'B': {'f'}},
+    ...     'D': {'B': {'d', 'e'}, 'E': {'i'}},
+    ...     'E': {'D': {'i'}}
+    ... }
+    >>> assert collection_adjacencies(sets, edge_labels='size') == {
+    ...     'A': {'B': 1},
+    ...     'B': {'A': 1, 'C': 1, 'D': 2},
+    ...     'C': {'B': 1},
+    ...     'D': {'B': 2, 'E': 1},
+    ...     'E': {'D': 1}
+    ... }
 
-    @cached_property
-    def _table_keys(self) -> Iterable[TableKey]:
-        return list(self.tables.keys())
+    """
+    from collections import defaultdict
+    from itertools import combinations
 
-    def __iter__(self) -> Iterable[Column]:
-        return self.columns
+    graph = defaultdict(dict)
+    for key1, key2 in combinations(sets.keys(), 2):
+        intersection = sets[key1] & sets[key2]
+        if intersection:
+            graph[key1][key2] = intersection
+            graph[key2][key1] = intersection
+    if isinstance(edge_labels, str):
+        if edge_labels == 'elements':
+            return dict(graph)
+        elif edge_labels == 'size':
+            return {k: {kk: len(vv) for kk, vv in v.items()} for k, v in graph.items()}
+    elif edge_labels is False:
+        return {k: set(v) for k, v in graph.items()}
 
-    def __getitem__(self, k):
-        """Return a table with the given columns from all tables."""
-        return self.df(k)
-
-    def __len__(self):
-        return len(self.columns)
-
-    def __contains__(self, k):
-        return k in self.columns
-
-    def df(self, columns=None):
-        """Concatinate all dataframes of given columns from all tables,
-        returning a single dataframe."""
-        if columns is None:
-            columns = self.columns
-        return pd.concat([table[columns] for table in dataframes(self.tables)])
-
-    def array(self, columns=None):
-        """Concatinate all the arrays of given columns from all tables,
-        returning a single array."""
-        return self.df(columns).array
-
-
-# Convenience functions, placed in ColumnOrientedMapping for easy access
-ColumnOrientedMapping.columns_of_first_table = columns_of_first_table
-ColumnOrientedMapping.columns_of_all_tables = columns_of_all_tables
+    raise ValueError(f"Invalid value for edge_labels: {edge_labels}")
