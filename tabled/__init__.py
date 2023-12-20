@@ -13,4 +13,4 @@ from tabled.base import (
     key_func_mapping,
     split_keys,
 )
-from tabled.util import ColumnOrientedMapping
+from tabled.multi import ColumnOrientedMapping
