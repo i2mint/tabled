@@ -12,6 +12,7 @@ DataFrames = Union[MappingOfDataFrames, Iterable[pd.DataFrame]]
 # --------------------------------------------------------------------------------------
 # Utils
 
+
 def mapping_of_dataframes(tables: DataFrames) -> MappingOfDataFrames:
     """Cast to a mapping of dataframes"""
     if not isinstance(tables, Mapping):
@@ -28,10 +29,57 @@ def dataframes(tables: DataFrames) -> Iterable[pd.DataFrame]:
         tables = tables.values()
     return tables
 
+
 # --------------------------------------------------------------------------------------
 # Combined datasets
 # See https://github.com/i2mint/tabled/discussions/3
+from dataclasses import dataclass
 
+
+# Define the JoinWith dataclass
+# @dataclass
+# class JoinWith:
+#     table_key: str
+#     remove: list = None
+
+
+@dataclass
+class Join:
+    table_key: str
+
+
+@dataclass
+class Remove:
+    fields: Union[str, Iterable[str]]
+
+
+def execute_commands(
+    commands: Iterable, tables: Mapping[str, pd.DataFrame]
+) -> pd.DataFrame:
+    """
+    Carries `commands` operations out with tables taken from `tables`.
+
+    :param commands: An iterable of join operations to carry out.
+        Each join operation is either a table name (str) or a JoinWith object.
+        If it's a JoinWith object, it's assumed that the table has already been joined
+        and the fields to remove are in the `remove` attribute of the object.
+    :param tables: A mapping of table names to tables (pd.DataFrame)
+    """
+    # join_ops = map(ensure_join_op, resolution_sequence)
+    commands = iter(commands)
+    first_command = next(commands)
+    assert isinstance(first_command, Join)
+    table_key = first_command.table_key
+    cumul = tables[table_key]  # initialize my accumulator
+    for command in commands:
+        if isinstance(command, Join):
+            table = tables[command.table_key]
+            cumul = cumul.merge(table, how='inner')
+        elif isinstance(command, Remove):
+            cumul = cumul.drop(columns=command.fields)
+        else:
+            raise TypeError(f'Unknown command type: {type(command)}')
+    return cumul
 
 
 # --------------------------------------------------------------------------------------
@@ -54,6 +102,7 @@ def columns_of_all_tables(tables: MappingOfDataFrames) -> Iterable[Column]:
     the default columns argument, which is to use the columns of the first table.
     """
     from itertools import chain
+
     tables = mapping_of_dataframes(tables)
     all_columns = chain.from_iterable(table.columns for table in tables.values())
     # return unique columns in order of first appearance
