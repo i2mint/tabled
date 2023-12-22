@@ -93,7 +93,7 @@ def intersection_graph(
     elif edge_labels is False:
         return map_values.set(graph)
 
-    raise ValueError(f"Invalid value for edge_labels: {edge_labels}")
+    raise ValueError(f'Invalid value for edge_labels: {edge_labels}')
 
 
 def map_values(func: Callable, d: dict):
