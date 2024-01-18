@@ -2,7 +2,10 @@ from typing import KT, VT, Literal, Iterable, Callable, List, Tuple, Set, Mappin
 import pandas as pd
 from collections import deque
 from tabled.util import (
-    intersection_graph, invert_labeled_collection, map_values, breadth_first_traversal
+    intersection_graph,
+    invert_labeled_collection,
+    map_values,
+    breadth_first_traversal,
 )
 
 
@@ -12,19 +15,18 @@ class Join:
         self.remove = remove or []
 
     def __repr__(self):
-        remove_str = f", remove={self.remove}" if self.remove else ""
+        remove_str = f', remove={self.remove}' if self.remove else ''
         return f"Join('{self.table_id}'{remove_str})"
-    
+
     def __eq__(self, other):
         if not isinstance(other, Join):
             return False
         return self.table_id == other.table_id and set(self.remove) == set(other.remove)
-    
+
+
 def minimum_covering_tree(
-        tables: Mapping[str, pd.DataFrame], 
-        target_subset: Iterable[VT],
-        start_node=None, 
-    ):
+    tables: Mapping[str, pd.DataFrame], target_subset: Iterable[VT], start_node=None,
+):
 
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
     intersections = intersection_graph(labeled_sets, edge_labels='elements')
@@ -43,19 +45,18 @@ def minimum_covering_tree(
         covered |= labeled_sets[set_label_1] | labeled_sets[set_label_2]
         edges.append((set_label_1, set_label_2))
 
-    return edges   
+    return edges
+
 
 def get_leaf_edges(
-        tables: Mapping[str, pd.DataFrame],  
-        target_subset: Set[VT],
-        start_node: KT = None
-    ) -> List[Tuple[KT, KT]]:
+    tables: Mapping[str, pd.DataFrame], target_subset: Set[VT], start_node: KT = None
+) -> List[Tuple[KT, KT]]:
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
     intersections = intersection_graph(labeled_sets, edge_labels='elements')
     graph = {k: list(v) for k, v in intersections.items()}
     if start_node is None:  # if no start_node is given
         start_node = next(iter(graph))  # take the first node
-    
+
     traversal = breadth_first_traversal(graph, start_node, yield_edges=True)
 
     edges = []  # List to store edges of the covering tree
@@ -77,10 +78,11 @@ def get_leaf_edges(
 
     return leaf_edges
 
+
 def update_leaf_edges_after_removal(
-    tables: Mapping[str, pd.DataFrame], 
+    tables: Mapping[str, pd.DataFrame],
     target_sub_set: Set[str],
-    current_leaf_edges: List[Tuple[str, str]]
+    current_leaf_edges: List[Tuple[str, str]],
 ) -> List[Tuple[str, str]]:
     """
     Update the list of leaf edges after removing an edge, ensuring that the resulting
@@ -98,9 +100,11 @@ def update_leaf_edges_after_removal(
     graph = {k: list(v) for k, v in intersections.items()}
     for node1, node2 in current_leaf_edges:
         # Use symmetric difference to consider the edge as undirected
-        unique_elements = ((labeled_sets[node1] - labeled_sets[node2]) | 
-                           (labeled_sets[node2] - labeled_sets[node1])) & target_sub_set
-        
+        unique_elements = (
+            (labeled_sets[node1] - labeled_sets[node2])
+            | (labeled_sets[node2] - labeled_sets[node1])
+        ) & target_sub_set
+
         # Check if the unique elements do not include any from the target subset
         if not unique_elements:
             # Remove the edge from the graph
@@ -115,16 +119,20 @@ def update_leaf_edges_after_removal(
     for node, neighbors in graph.items():
         if len(neighbors) == 1:  # If the node is now a leaf node
             neighbor = neighbors[0]
-            if (node, neighbor) not in new_leaf_edges and (neighbor, node) not in new_leaf_edges:
+            if (node, neighbor) not in new_leaf_edges and (
+                neighbor,
+                node,
+            ) not in new_leaf_edges:
                 new_leaf_edges.append((node, neighbor))
 
     return new_leaf_edges
+
 
 def determine_remove_fields(
     labeled_sets: Dict[str, Set[str]],
     target_sub_set: Set[str],
     joined_tables: Set[str],
-    current_table: str
+    current_table: str,
 ) -> List[str]:
     """
     Determine which fields should be removed for a given table
@@ -137,16 +145,22 @@ def determine_remove_fields(
     """
     fields = labeled_sets[current_table]
     removable_fields = [
-        field for field in fields
+        field
+        for field in fields
         if field not in target_sub_set
-        and all(field not in labeled_sets[table] for table in joined_tables if table != current_table)
+        and all(
+            field not in labeled_sets[table]
+            for table in joined_tables
+            if table != current_table
+        )
     ]
     return removable_fields
 
+
 def generate_join_sequence(
-    tables: Mapping[str, pd.DataFrame], 
+    tables: Mapping[str, pd.DataFrame],
     leaf_edges: List[Tuple[str, str]],
-    target_sub_set: Set[str]
+    target_sub_set: Set[str],
 ) -> List[Join]:
     """
     Generate a sequence of joins with remove commands based on leaf edges
@@ -159,7 +173,9 @@ def generate_join_sequence(
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
     joins = []  # Stores the sequence of joins
     joined_tables = set()  # Tracks tables that have been joined
-    future_joins = {node for edge in leaf_edges for node in edge}  # Tracks all future joins
+    future_joins = {
+        node for edge in leaf_edges for node in edge
+    }  # Tracks all future joins
 
     # Start with the first node of the first edge without removals
     first_node = leaf_edges[0][0]
@@ -176,8 +192,12 @@ def generate_join_sequence(
                 )
                 if node == first_node:
                     remove_fields = first_node_remove_fields
-                elif node in leaf_edges[0]:  # If the node is to join with the first node
-                    remove_fields.extend(first_node_remove_fields)  # Append remove_fields from the first node
+                elif (
+                    node in leaf_edges[0]
+                ):  # If the node is to join with the first node
+                    remove_fields.extend(
+                        first_node_remove_fields
+                    )  # Append remove_fields from the first node
 
                 if node != first_node:
                     joins.append(Join(node, remove_fields))
@@ -187,14 +207,16 @@ def generate_join_sequence(
 
     return joins
 
+
 def ensure_join_op(obj):
     if not isinstance(obj, Join):
         return Join(obj)
     return obj
-        
+
+
 def compute_join_resolution(
-        resolution_sequence: Iterable, tables: Mapping[str, pd.DataFrame]
-    ) -> pd.DataFrame:
+    resolution_sequence: Iterable, tables: Mapping[str, pd.DataFrame]
+) -> pd.DataFrame:
     """
     Carries `resolution_sequence` join operations out with tables taken from `tables`.
     
@@ -216,30 +238,33 @@ def compute_join_resolution(
     return joined
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
     tables = {
-        "A": pd.DataFrame({'b': [1, 2, 3, 33], 'c': [4, 5, 6, 66]}),
-        "B": pd.DataFrame(
-            {'b': [1, 2, 3], 'a': [4, 5, 6], 'd': [7, 8, 9], 
-            'e': [10, 11, 12], 'f': [13, 14, 15]}
+        'A': pd.DataFrame({'b': [1, 2, 3, 33], 'c': [4, 5, 6, 66]}),
+        'B': pd.DataFrame(
+            {
+                'b': [1, 2, 3],
+                'a': [4, 5, 6],
+                'd': [7, 8, 9],
+                'e': [10, 11, 12],
+                'f': [13, 14, 15],
+            }
         ),
-        "C": pd.DataFrame({'f': [13, 14, 15], 'g': [4, 5, 6]}),
-        "D": pd.DataFrame(
+        'C': pd.DataFrame({'f': [13, 14, 15], 'g': [4, 5, 6]}),
+        'D': pd.DataFrame(
             {'d': [7, 8, 77], 'e': [10, 11, 77], 'h': [7, 8, 9], 'i': [1, 2, 3]}
         ),
-        "E": pd.DataFrame({'i': [1, 2, 3], 'j': [4, 5, 6]})
+        'E': pd.DataFrame({'i': [1, 2, 3], 'j': [4, 5, 6]}),
     }
     target_sub_set = {'b', 'g', 'j'}
-
 
     leaf_edges = get_leaf_edges(tables, target_sub_set)
     print(leaf_edges)
     join_sequence = generate_join_sequence(tables, leaf_edges, target_sub_set)
     print(join_sequence)
-    join_result = compute_join_resolution(join_sequence,tables)
+    join_result = compute_join_resolution(join_sequence, tables)
     print(join_result)
-
 
     # expected_join_resolution = [
     #     'B',
@@ -252,4 +277,3 @@ if __name__ == "__main__":
     #     'g': [4, 5],
     #     'j': [4, 5]
     # })
-    
