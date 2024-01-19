@@ -125,3 +125,68 @@ def test_compute_join_resolution(tables):
     expected_result = pd.DataFrame({'b': [1, 2], 'g': [4, 5], 'j': [4, 5]})
     result = compute_join_resolution(join_sequence, tables)
     pd.testing.assert_frame_equal(result, expected_result)
+
+
+from tabled.multi import execute_commands
+
+
+def test_execute_commands_simply():
+    from tabled.multi import Join, Remove, Load
+
+    # ---------------------------------------------
+    # First silly test
+        
+    silly_interpreter_map = {
+        Join: lambda scope, command: f'Joining {command.table_key}',
+        Remove: lambda scope, command: f'Removing {command.fields}'
+    }
+
+    g = execute_commands(
+        [Join('asdf'), Remove('apple')], 
+        scope={},
+        interpreter_map=silly_interpreter_map
+    )
+    assert list(g) == ['Joining asdf', 'Removing apple']
+
+    # ---------------------------------------------
+    # The real case
+
+    table1 = pd.DataFrame({'ID': [1, 2, 3], 'Name': ['Alice', 'Bob', 'Charlie']})
+    table2 = pd.DataFrame({'ID': [2, 3, 4], 'Age': [25, 30, 22]})
+    table3 = pd.DataFrame({'ID': [1, 2, 3, 4], 'Salary': [50000, 60000, 70000, 55000]})
+
+    tables = {
+        'table1': table1,
+        'table2': table2,
+        'table3': table3
+    }
+
+    commands = [
+        Load('table1'),             
+        Remove(['Name']),            
+        Join('table3')       
+    ]
+
+    scope = tables
+    extra_scope = dict()
+
+    from tabled.multi import execute_table_commands
+
+    it = execute_table_commands(
+        commands,
+        tables,
+        extra_scope=extra_scope
+    )
+
+    def are_equal(a, b):
+        if isinstance(a, pd.DataFrame) and isinstance(b, pd.DataFrame):
+            return (a == b).all().all()
+        else:
+            return a == b
+
+    next(it)
+    assert are_equal(extra_scope['cumul'], scope['table1'])
+    next(it)
+    assert are_equal(extra_scope['cumul'], pd.DataFrame({'ID': [1, 2, 3]}))
+    next(it)
+    assert list(extra_scope['cumul']) == ['ID', 'Salary']

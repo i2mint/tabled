@@ -34,6 +34,31 @@ def dataframes(tables: DataFrames) -> Iterable[pd.DataFrame]:
 # Combined datasets
 # See https://github.com/i2mint/tabled/discussions/3
 from dataclasses import dataclass
+from collections import ChainMap
+
+
+def execute_commands(
+    commands: Iterable,
+    scope: Mapping,
+    interpreter_map: Mapping,
+    *,
+    extra_scope=None,
+):
+    """
+    Carries `commands` operations out with tables taken from `scope`.
+
+    :param commands: An iterable of join operations to carry out.
+    """
+    if extra_scope is None:
+        extra_scope = dict()
+    _scope = ChainMap(extra_scope, scope)
+
+    for command in commands:
+        command_type = type(command)
+        command_executor = interpreter_map.get(command_type, None)
+        if command_executor is None:
+            raise TypeError(f'Unknown command type: {type(command)}')
+        yield command_executor(_scope, command)
 
 
 # Define the JoinWith dataclass
@@ -44,6 +69,10 @@ from dataclasses import dataclass
 
 
 @dataclass
+class Load:
+    key: str
+    
+@dataclass
 class Join:
     table_key: str
 
@@ -53,33 +82,66 @@ class Remove:
     fields: Union[str, Iterable[str]]
 
 
-def execute_commands(
-    commands: Iterable, tables: Mapping[str, pd.DataFrame]
-) -> pd.DataFrame:
-    """
-    Carries `commands` operations out with tables taken from `tables`.
 
-    :param commands: An iterable of join operations to carry out.
-        Each join operation is either a table name (str) or a JoinWith object.
-        If it's a JoinWith object, it's assumed that the table has already been joined
-        and the fields to remove are in the `remove` attribute of the object.
-    :param tables: A mapping of table names to tables (pd.DataFrame)
-    """
-    # join_ops = map(ensure_join_op, resolution_sequence)
-    commands = iter(commands)
-    first_command = next(commands)
-    assert isinstance(first_command, Join)
-    table_key = first_command.table_key
-    cumul = tables[table_key]  # initialize my accumulator
-    for command in commands:
-        if isinstance(command, Join):
-            table = tables[command.table_key]
-            cumul = cumul.merge(table, how='inner')
-        elif isinstance(command, Remove):
-            cumul = cumul.drop(columns=command.fields)
-        else:
-            raise TypeError(f'Unknown command type: {type(command)}')
-    return cumul
+
+def set_scope_value(scope, key, value):
+    scope[key] = value
+
+def load_func(scope, command):
+    return set_scope_value(scope, 'cumul', scope[command.key])
+
+def join_func(scope, command):
+    table = scope[command.table_key]
+    cumul = scope['cumul']
+    scope['cumul'] = cumul.merge(table, how='inner')
+
+def remove_func(scope, command):
+    scope['cumul'] = scope['cumul'].drop(columns=command.fields)
+
+
+dflt_tables_interpreter_map = {
+    Load: load_func,
+    Join: join_func,
+    Remove: remove_func,
+}
+
+def execute_table_commands(
+    commands: Iterable,
+    tables: Mapping[str, pd.DataFrame],
+    interpreter_map: Mapping = dflt_tables_interpreter_map,
+    *,
+    extra_scope=None,
+):
+    return execute_commands(commands, tables, interpreter_map, extra_scope=extra_scope)
+
+
+# def execute_commands(
+#     commands: Iterable, tables: Mapping[str, pd.DataFrame]
+# ) -> pd.DataFrame:
+#     """
+#     Carries `commands` operations out with tables taken from `tables`.
+
+#     :param commands: An iterable of join operations to carry out.
+#         Each join operation is either a table name (str) or a JoinWith object.
+#         If it's a JoinWith object, it's assumed that the table has already been joined
+#         and the fields to remove are in the `remove` attribute of the object.
+#     :param tables: A mapping of table names to tables (pd.DataFrame)
+#     """
+#     # join_ops = map(ensure_join_op, resolution_sequence)
+#     commands = iter(commands)
+#     first_command = next(commands)
+#     assert isinstance(first_command, Join)
+#     table_key = first_command.table_key
+#     cumul = tables[table_key]  # initialize my accumulator
+#     for command in commands:
+#         if isinstance(command, Join):
+#             table = tables[command.table_key]
+#             cumul = cumul.merge(table, how='inner')
+#         elif isinstance(command, Remove):
+#             cumul = cumul.drop(columns=command.fields)
+#         else:
+#             raise TypeError(f'Unknown command type: {type(command)}')
+#     return cumul
 
 
 # --------------------------------------------------------------------------------------
