@@ -135,16 +135,14 @@ def test_execute_commands_simply():
 
     # ---------------------------------------------
     # First silly test
-        
+
     silly_interpreter_map = {
         Join: lambda scope, command: f'Joining {command.table_key}',
-        Remove: lambda scope, command: f'Removing {command.fields}'
+        Remove: lambda scope, command: f'Removing {command.fields}',
     }
 
     g = execute_commands(
-        [Join('asdf'), Remove('apple')], 
-        scope={},
-        interpreter_map=silly_interpreter_map
+        [Join('asdf'), Remove('apple')], scope={}, interpreter_map=silly_interpreter_map
     )
     assert list(g) == ['Joining asdf', 'Removing apple']
 
@@ -155,28 +153,16 @@ def test_execute_commands_simply():
     table2 = pd.DataFrame({'ID': [2, 3, 4], 'Age': [25, 30, 22]})
     table3 = pd.DataFrame({'ID': [1, 2, 3, 4], 'Salary': [50000, 60000, 70000, 55000]})
 
-    tables = {
-        'table1': table1,
-        'table2': table2,
-        'table3': table3
-    }
+    tables = {'table1': table1, 'table2': table2, 'table3': table3}
 
-    commands = [
-        Load('table1'),             
-        Remove(['Name']),            
-        Join('table3')       
-    ]
+    commands = [Load('table1'), Remove(['Name']), Join('table3')]
 
     scope = tables
     extra_scope = dict()
 
     from tabled.multi import execute_table_commands
 
-    it = execute_table_commands(
-        commands,
-        tables,
-        extra_scope=extra_scope
-    )
+    it = execute_table_commands(commands, tables, extra_scope=extra_scope)
 
     def are_equal(a, b):
         if isinstance(a, pd.DataFrame) and isinstance(b, pd.DataFrame):

@@ -38,11 +38,7 @@ from collections import ChainMap
 
 
 def execute_commands(
-    commands: Iterable,
-    scope: Mapping,
-    interpreter_map: Mapping,
-    *,
-    extra_scope=None,
+    commands: Iterable, scope: Mapping, interpreter_map: Mapping, *, extra_scope=None,
 ):
     """
     Carries `commands` operations out with tables taken from `scope`.
@@ -71,7 +67,8 @@ def execute_commands(
 @dataclass
 class Load:
     key: str
-    
+
+
 @dataclass
 class Join:
     table_key: str
@@ -82,18 +79,19 @@ class Remove:
     fields: Union[str, Iterable[str]]
 
 
-
-
 def set_scope_value(scope, key, value):
     scope[key] = value
 
+
 def load_func(scope, command):
     return set_scope_value(scope, 'cumul', scope[command.key])
+
 
 def join_func(scope, command):
     table = scope[command.table_key]
     cumul = scope['cumul']
     scope['cumul'] = cumul.merge(table, how='inner')
+
 
 def remove_func(scope, command):
     scope['cumul'] = scope['cumul'].drop(columns=command.fields)
@@ -104,6 +102,7 @@ dflt_tables_interpreter_map = {
     Join: join_func,
     Remove: remove_func,
 }
+
 
 def execute_table_commands(
     commands: Iterable,
