@@ -128,6 +128,7 @@ def test_compute_join_resolution(tables):
 
 
 from tabled.multi import execute_commands
+from tabled.multi import execute_table_commands
 
 
 def test_execute_commands_simply():
@@ -160,8 +161,6 @@ def test_execute_commands_simply():
     scope = tables
     extra_scope = dict()
 
-    from tabled.multi import execute_table_commands
-
     it = execute_table_commands(commands, tables, extra_scope=extra_scope)
 
     def are_equal(a, b):
@@ -176,3 +175,41 @@ def test_execute_commands_simply():
     assert are_equal(extra_scope['cumul'], pd.DataFrame({'ID': [1, 2, 3]}))
     next(it)
     assert list(extra_scope['cumul']) == ['ID', 'Salary']
+
+from wiki_table import extract_wikipedia_tables
+
+# Test wiki table
+def test_extract_wikipedia_tables():
+    wikiurl = "https://fr.wikipedia.org/wiki/Liste_des_communes_de_France_les_plus_peupl%C3%A9es"
+    resulting_dfs = extract_wikipedia_tables(wikiurl)
+    assert resulting_dfs is not None
+    assert len(resulting_dfs) > 0
+    for idx, df in enumerate(resulting_dfs):
+        assert isinstance(df, pd.DataFrame)
+        assert not df.empty
+
+@pytest.fixture
+def extracted_dataframes():
+    url_aeroports_frequentes = "https://fr.wikipedia.org/wiki/Liste_des_a%C3%A9roports_les_plus_fr%C3%A9quent%C3%A9s_en_France"
+    url_aeroports_vastes = "https://fr.wikipedia.org/wiki/Liste_des_a%C3%A9roports_les_plus_vastes_au_monde"
+
+    dfs_aeroports_frequentes = extract_wikipedia_tables(url_aeroports_frequentes)
+    dfs_aeroports_vastes = extract_wikipedia_tables(url_aeroports_vastes)
+
+    return dfs_aeroports_frequentes, dfs_aeroports_vastes
+
+
+def test_execute_commands_wiki(extracted_dataframes):
+    from tabled.multi import Join, Remove, Load
+    table1_wiki = extracted_dataframes[0]
+    table2_wiki =  extracted_dataframes[1]
+
+    tables = {'table1_wiki': table1_wiki, 'table2_wiki': table2_wiki}
+    commands = [Load('table1_wiki'), Join('table2_wiki')]
+
+    scope = tables
+    extra_scope = dict()
+    it = execute_table_commands(commands, scope, extra_scope=extra_scope)
+    next(it)
+    next(it)
+    assert extra_scope['cumul'].shape[0] == 1
