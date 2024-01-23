@@ -2,7 +2,7 @@
 
 from functools import cached_property
 import pandas as pd
-from typing import TypeVar, Callable, KT, Union, Iterable, Mapping
+from typing import TypeVar, Callable, KT, Union, Iterable, Mapping, Dict
 
 Column = TypeVar('Column')
 TableKey = TypeVar('TableKey')
@@ -78,6 +78,10 @@ class Join:
 class Remove:
     fields: Union[str, Iterable[str]]
 
+@dataclass
+class Rename:
+    rename_mapping: Dict[str, str]
+
 
 def set_scope_value(scope, key, value):
     scope[key] = value
@@ -97,10 +101,15 @@ def remove_func(scope, command):
     scope['cumul'] = scope['cumul'].drop(columns=command.fields)
 
 
+def rename_func(scope, command):
+    for old_col, new_col in command.rename_mapping.items():
+        scope['cumul'] = scope['cumul'].rename(columns={old_col: new_col})
+
 dflt_tables_interpreter_map = {
     Load: load_func,
     Join: join_func,
     Remove: remove_func,
+    Rename: rename_func,
 }
 
 
