@@ -156,7 +156,7 @@ df_from_data_according_to_ext = partial(
 # TODO: Better separate Reader, and add DfStore to make a writer.
 
 
-class DfLocalFileReader(Files):
+class DfFiles(Files):
     """A key-value store providing values as pandas.DataFrames"""
 
     def __init__(self, path_format, mapping=dflt_ext_mapping):
@@ -177,4 +177,5 @@ class DfLocalFileReader(Files):
         raise NotImplementedError('This is a reader: No delete operation allowed')
 
 
-DfReader = DfLocalFileReader  # alias for back-compatibility: TODO: Issue warning on use
+DfReader = DfFiles  # alias for back-compatibility: TODO: Issue warning on use
+DfLocalFileReader = DfFiles  # back-compatibility: TODO: Issue warning on use
