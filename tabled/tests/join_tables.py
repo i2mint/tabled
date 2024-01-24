@@ -156,7 +156,12 @@ def test_execute_commands_simply():
 
     tables = {'table1': table1, 'table2': table2, 'table3': table3}
 
-    commands = [Load('table1'), Rename({'Name': 'First Name'}), Remove(['First Name']), Join('table3')]
+    commands = [
+        Load('table1'),
+        Rename({'Name': 'First Name'}),
+        Remove(['First Name']),
+        Join('table3'),
+    ]
 
     scope = tables
     extra_scope = dict()
@@ -181,9 +186,11 @@ def test_execute_commands_simply():
 
 # Test wiki table
 from tabled.html import *
+
+
 def test_extract_wikipedia_tables():
-    wikiurl = "https://fr.wikipedia.org/wiki/Liste_des_communes_de_France_les_plus_peupl%C3%A9es"
-    converter = url_to_html_func('requests') 
+    wikiurl = 'https://fr.wikipedia.org/wiki/Liste_des_communes_de_France_les_plus_peupl%C3%A9es'
+    converter = url_to_html_func('requests')
     tables = get_tables_from_url(wikiurl, url_to_html=converter)
     assert tables is not None
     assert len(tables) > 0
@@ -191,25 +198,36 @@ def test_extract_wikipedia_tables():
         assert isinstance(df, pd.DataFrame)
         assert not df.empty
 
+
 @pytest.fixture
 def extracted_dataframes():
-    converter = url_to_html_func('requests') 
-    url_aeroports_frequentes = "https://fr.wikipedia.org/wiki/Liste_des_a%C3%A9roports_les_plus_fr%C3%A9quent%C3%A9s_en_France"
-    url_aeroports_vastes = "https://fr.wikipedia.org/wiki/Liste_des_a%C3%A9roports_les_plus_vastes_au_monde"
+    converter = url_to_html_func('requests')
+    url_aeroports_frequentes = 'https://fr.wikipedia.org/wiki/Liste_des_a%C3%A9roports_les_plus_fr%C3%A9quent%C3%A9s_en_France'
+    url_aeroports_vastes = 'https://fr.wikipedia.org/wiki/Liste_des_a%C3%A9roports_les_plus_vastes_au_monde'
 
-    dfs_aeroports_frequentes = get_tables_from_url(url_aeroports_frequentes, url_to_html=converter)
-    dfs_aeroports_vastes = get_tables_from_url(url_aeroports_vastes, url_to_html=converter)
+    dfs_aeroports_frequentes = get_tables_from_url(
+        url_aeroports_frequentes, url_to_html=converter
+    )
+    dfs_aeroports_vastes = get_tables_from_url(
+        url_aeroports_vastes, url_to_html=converter
+    )
 
     return dfs_aeroports_frequentes, dfs_aeroports_vastes
 
 
 def test_execute_commands_wiki(extracted_dataframes):
     from tabled.multi import Join, Remove, Load, Rename
+
     table1_wiki = extracted_dataframes[0][0]
-    table2_wiki =  extracted_dataframes[1][0]
+    table2_wiki = extracted_dataframes[1][0]
 
     tables = {'table1_wiki': table1_wiki, 'table2_wiki': table2_wiki}
-    commands = [Load('table2_wiki'), Remove('Aéroport'), Rename({'Code':'Code IATA'}), Join('table1_wiki')]
+    commands = [
+        Load('table2_wiki'),
+        Remove('Aéroport'),
+        Rename({'Code': 'Code IATA'}),
+        Join('table1_wiki'),
+    ]
 
     scope = tables
     extra_scope = dict()
@@ -218,4 +236,4 @@ def test_execute_commands_wiki(extracted_dataframes):
     next(it)
     next(it)
     next(it)
-    assert(extra_scope['cumul'].shape[0] == 1)
+    assert extra_scope['cumul'].shape[0] == 1

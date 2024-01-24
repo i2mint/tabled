@@ -78,6 +78,7 @@ class Join:
 class Remove:
     fields: Union[str, Iterable[str]]
 
+
 @dataclass
 class Rename:
     rename_mapping: Dict[str, str]
@@ -109,6 +110,7 @@ def rename_func(scope, command):
     scope['renamed_columns'] = command.rename_mapping
     for old_col, new_col in command.rename_mapping.items():
         scope['cumul'] = scope['cumul'].rename(columns={old_col: new_col})
+
 
 dflt_tables_interpreter_map = {
     Load: load_func,
