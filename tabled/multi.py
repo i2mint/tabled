@@ -92,7 +92,11 @@ def load_func(scope, command):
 
 
 def join_func(scope, command):
-    table = scope[command.table_key]
+    table = scope[command.table_key].copy()
+    if 'renamed_columns' in scope:
+        for old_col, new_col in scope['renamed_columns'].items():
+            if old_col in table:
+                table.rename(columns={old_col: new_col}, inplace=True)
     cumul = scope['cumul']
     scope['cumul'] = cumul.merge(table, how='inner')
 
@@ -102,6 +106,7 @@ def remove_func(scope, command):
 
 
 def rename_func(scope, command):
+    scope['renamed_columns'] = command.rename_mapping
     for old_col, new_col in command.rename_mapping.items():
         scope['cumul'] = scope['cumul'].rename(columns={old_col: new_col})
 
