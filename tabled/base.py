@@ -1,6 +1,5 @@
 """Based functionality for tabled"""
 
-
 # TODO: Completely change so that
 #   * routing is more general (not only conditioned on ext, but function of key,
 #   and possibly data
@@ -75,7 +74,10 @@ def df_from_data_given_ext(data, ext, mapping=dflt_ext_mapping, **kwargs):
     if ext.startswith('.'):
         ext = ext[1:]
     trans_func = key_func_mapping(
-        ext, mapping, key=identity, not_found_sentinel=None,  # TODO
+        ext,
+        mapping,
+        key=identity,
+        not_found_sentinel=None,  # TODO
     )
     if trans_func is not None:
         return trans_func(data, **kwargs)
@@ -122,7 +124,9 @@ def get_protocol(url: str):
 
 
 df_from_data_according_to_ext = partial(
-    df_from_data_according_to_key, mapping=dflt_ext_mapping, key=get_ext,
+    df_from_data_according_to_key,
+    mapping=dflt_ext_mapping,
+    key=get_ext,
 )
 
 # df_from_data_given_ext meant to be equivalent (but more general, using ext_specs) to
