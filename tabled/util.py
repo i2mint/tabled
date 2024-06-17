@@ -197,10 +197,7 @@ import pandas as pd
 
 
 def collapse_rows(
-    df: pd.DataFrame,
-    by: List[KT],
-    *,
-    container: Callable[[Iterable], Iterable] = list,
+    df: pd.DataFrame, by: List[KT], *, container: Callable[[Iterable], Iterable] = list,
 ) -> pd.DataFrame:
     """
     Do a groupby to collapse (the rows of) a dataframe, gathering the other
@@ -268,7 +265,7 @@ def expand_rows(
         # Check if all list lengths are the same for safety
         if len(set(list_lengths)) != 1:
             raise ValueError(
-                "All lists in a single row must have the same length to expand correctly."
+                'All lists in a single row must have the same length to expand correctly.'
             )
 
         # Create individual rows for each index of the lists in grouped_columns
@@ -286,8 +283,7 @@ def expand_rows(
 
 
 def collapse_columns(
-    df: pd.DataFrame,
-    groupings: Union[Dict[str, List[str]], Union[str, List[KT]]],
+    df: pd.DataFrame, groupings: Union[Dict[str, List[str]], Union[str, List[KT]]],
 ) -> pd.DataFrame:
     """
     Transforms specified columns of a dataframe into single columns where each row
@@ -339,7 +335,7 @@ def collapse_columns(
 
         if not valid_columns:
             raise ValueError(
-                f"No valid columns found in {columns_to_collapse} to collapse into {new_column}."
+                f'No valid columns found in {columns_to_collapse} to collapse into {new_column}.'
             )
 
         # Create a new column with dictionaries mapping old column names to their values
@@ -354,7 +350,7 @@ def collapse_columns(
 
 
 def _column_dot_key_mapper(key, column_name):
-    return f"{column_name}.{key}"
+    return f'{column_name}.{key}'
 
 
 def _apply_key_mapper_to_keys(d: Union[dict, list], column_name, key_mapper):
@@ -420,7 +416,7 @@ def expand_columns(
     # Validate that all expand_columns are in df.columns
     for col in expand_columns:
         if col not in df.columns:
-            raise ValueError(f"Column {col} does not exist in the DataFrame.")
+            raise ValueError(f'Column {col} does not exist in the DataFrame.')
     if key_mapper is None:
         key_mapper = lambda key, column_name: key
 
