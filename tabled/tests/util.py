@@ -1,4 +1,4 @@
-from importlib_resources import files
+from importlib.resources import files
 
 project_name = 'tabled'
 root_posix_path = files(project_name)
