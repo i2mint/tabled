@@ -8,6 +8,7 @@ from tabled.base import (
     DfFiles,
     DfLocalFileReader,  # will be deprecated
     KeyFuncReader,
+    DataframeKvReader,
     dflt_ext_mapping,
     df_from_data_according_to_key,
     get_ext,

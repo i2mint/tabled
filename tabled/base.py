@@ -74,7 +74,10 @@ def df_from_data_given_ext(data, ext, mapping=dflt_ext_mapping, **kwargs):
     if ext.startswith('.'):
         ext = ext[1:]
     trans_func = key_func_mapping(
-        ext, mapping, key=identity, not_found_sentinel=None,  # TODO
+        ext,
+        mapping,
+        key=identity,
+        not_found_sentinel=None,  # TODO
     )
     if trans_func is not None:
         return trans_func(data, **kwargs)
@@ -121,7 +124,9 @@ def get_protocol(url: str):
 
 
 df_from_data_according_to_ext = partial(
-    df_from_data_according_to_key, mapping=dflt_ext_mapping, key=get_ext,
+    df_from_data_according_to_key,
+    mapping=dflt_ext_mapping,
+    key=get_ext,
 )
 
 # df_from_data_given_ext meant to be equivalent (but more general, using ext_specs) to
@@ -178,3 +183,155 @@ class DfFiles(Files):
 
 DfReader = DfFiles  # alias for back-compatibility: TODO: Issue warning on use
 DfLocalFileReader = DfFiles  # back-compatibility: TODO: Issue warning on use
+
+
+# ------------------------------------------------------------------------------
+# Wrapping a DataFrame to provide a key-value interface
+
+import pandas as pd
+from collections.abc import Mapping
+
+
+def validate_fields(df, key_fields, value_columns):
+    all_columns = df.columns.tolist()
+    all_index_levels = list(df.index.names)
+
+    for field in key_fields:
+        if field not in all_columns and field not in all_index_levels:
+            raise ValueError(
+                f"Field {field} not found in the DataFrame columns or index levels."
+            )
+
+    for col in value_columns:
+        if col not in all_columns:
+            raise ValueError(f"Column {col} not found in the DataFrame.")
+
+
+# TODO: Does it accommodate the case where I want to define my key_fields to be the
+# UNNAMED index of the dataframe, plus a column.
+# For example, consider (and add to the test) the case where I have df.set_index('A'),
+# but remove the name "A" from the index. Now I can't say key_fields=['A', 'B'] anymore.
+class DataframeKvReader(Mapping):
+    """
+    A class to wrap a DataFrame and provide a Mapping interface where keys are
+    combinations of specified columns or index levels, and values are sub-dataframes of specified columns.
+
+    Example usage:
+    >>> df = pd.DataFrame({
+    ...     'A': [1, 2, 1],
+    ...     'B': [4, 5, 4],
+    ...     'C': [7, 8, 9],
+    ...     'D': [10, 11, 12]
+    ... })
+    >>> df
+       A  B  C   D
+    0  1  4  7  10
+    1  2  5  8  11
+    2  1  4  9  12
+    >>> kv_reader = DataframeKvReader(df, ['A', 'B'], ['C', 'D'])
+    >>> key = (1, 4)
+    >>> kv_reader[key].reset_index(drop=True)  # doctest: +NORMALIZE_WHITESPACE
+       C   D
+    0  7  10
+    1  9  12
+    >>> list(kv_reader) == [(1, 4), (2, 5)]
+    True
+
+    But what if one (or more) of the key fields is an index level?
+    The DataframeKvReader can handle that too:
+
+    >>> df = df.set_index(['A'])
+    >>> df  # doctest: +NORMALIZE_WHITESPACE
+       B  C   D
+    A
+    1  4  7  10
+    2  5  8  11
+    1  4  9  12
+    >>> kv_reader = DataframeKvReader(df, ['A', 'B'], ['C', 'D'])
+    >>> key = (1, 4)
+    >>> kv_reader[key].reset_index(drop=True)  # doctest: +NORMALIZE_WHITESPACE
+       C   D
+    0  7  10
+    1  9  12
+    >>> list(kv_reader) == [(1, 4), (2, 5)]
+    True
+
+    """
+
+    def __init__(self, df, key_fields, value_columns=None):
+        """
+        Initialize the DataframeKvReader.
+
+        Parameters:
+        df (pd.DataFrame): The DataFrame to wrap.
+        key_fields (str or list of str): Fields (columns or index levels) to use as keys.
+        value_columns (str or list of str): Column(s) to use as values. Default is all columns.
+
+        """
+        if value_columns is None:
+            value_columns = df.columns.tolist()
+        validate_fields(df, key_fields, value_columns)
+        self.key_fields = key_fields if isinstance(key_fields, list) else [key_fields]
+        self.value_columns = (
+            value_columns if isinstance(value_columns, list) else [value_columns]
+        )
+
+        # Check if key fields are all index levels
+        self.is_index_key = all(field in df.index.names for field in self.key_fields)
+
+        if not self.is_index_key:
+            # If key fields are not all index levels, reset index and set new index
+            self.df = (
+                df.reset_index().set_index(self.key_fields, drop=False).sort_index()
+            )
+        else:
+            # If key fields are all index levels, ensure the DataFrame is sorted by those key fields
+            self.df = df.sort_index()
+
+    def __getitem__(self, key):
+        if not isinstance(key, tuple):
+            key = (key,)
+        try:
+            sub_df = self.df.loc[key, self.value_columns]
+            if isinstance(sub_df, pd.Series):
+                sub_df = sub_df.to_frame().T
+            return sub_df
+        except KeyError:
+            raise KeyError(f"Key {key} not found")
+
+    def __iter__(self):
+        keys = self.df.index.drop_duplicates().tolist()
+        return iter(keys)
+
+    def __len__(self):
+        return self.df.index.nunique()
+
+    def __contains__(self, key):
+        return key in self.df.index
+
+    def __repr__(self):
+        return f"{type(self).__name__}(df=<{len(self.df)} rows>, key_fields={self.key_fields}, value_columns={self.value_columns})"
+
+
+# Test cases
+def test_DataframeKvReader():
+    df = pd.DataFrame(
+        {'A': [1, 2, 1], 'B': [4, 5, 4], 'C': [7, 8, 9], 'D': [10, 11, 12]}
+    )
+
+    kv_readers = [
+        DataframeKvReader(df, ['A', 'B'], ['C', 'D']),
+        DataframeKvReader(df.set_index(['A', 'B']), ['A', 'B'], ['C', 'D']),
+        DataframeKvReader(df.set_index('A'), ['A', 'B'], ['C', 'D']),
+    ]
+
+    for kv_reader in kv_readers:
+        # Accessing values
+        key = (1, 4)
+        expected_df = pd.DataFrame([{'C': 7, 'D': 10}, {'C': 9, 'D': 12}], index=[0, 2])
+        assert (
+            kv_reader[key]
+            .reset_index(drop=True)
+            .equals(expected_df.reset_index(drop=True))
+        )
+        assert list(kv_reader) == [(1, 4), (2, 5)]
