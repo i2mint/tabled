@@ -86,12 +86,9 @@ def df_from_data_given_ext(data, ext, mapping=dflt_ext_mapping, **kwargs):
 
 
 def df_from_data_according_to_key(data, mapping, key, **kwargs):
-    """Get a dataframe from a (data, ext) pair"""
+    """Get a dataframe from a (data, mapping, key) triple"""
     trans_func = key_func_mapping(data, mapping, key=key, not_found_sentinel=None)
-    if trans_func is not None:
-        return trans_func(data, **kwargs)
-    else:
-        raise ValueError(f"Don't know how to handle extension: {ext}")
+    return trans_func(data, **kwargs)
 
 
 def get_ext(x):
