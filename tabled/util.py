@@ -197,7 +197,10 @@ import pandas as pd
 
 
 def collapse_rows(
-    df: pd.DataFrame, by: List[KT], *, container: Callable[[Iterable], Iterable] = list,
+    df: pd.DataFrame,
+    by: List[KT],
+    *,
+    container: Callable[[Iterable], Iterable] = list,
 ) -> pd.DataFrame:
     """
     Do a groupby to collapse (the rows of) a dataframe, gathering the other
@@ -283,7 +286,8 @@ def expand_rows(
 
 
 def collapse_columns(
-    df: pd.DataFrame, groupings: Union[Dict[str, List[str]], Union[str, List[KT]]],
+    df: pd.DataFrame,
+    groupings: Union[Dict[str, List[str]], Union[str, List[KT]]],
 ) -> pd.DataFrame:
     """
     Transforms specified columns of a dataframe into single columns where each row
@@ -349,8 +353,11 @@ def collapse_columns(
     return result_df
 
 
-def _column_dot_key_mapper(key, column_name):
-    return f'{column_name}.{key}'
+def column_sep_key_mapper(key, column_name, sep: str):
+    return f'{column_name}{sep}{key}'
+
+
+_column_dot_key_mapper = partial(column_sep_key_mapper, sep='.')
 
 
 def _apply_key_mapper_to_keys(d: Union[dict, list], column_name, key_mapper):
@@ -423,6 +430,7 @@ def expand_columns(
     # Copy the dataframe to avoid changing the original one
     result_df = df.copy()
 
+    # Apply the expansion transformation
     for col in expand_columns:
         _map_keys_of_dict = partial(
             _apply_key_mapper_to_keys, column_name=col, key_mapper=key_mapper
