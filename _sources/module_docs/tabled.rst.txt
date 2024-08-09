@@ -1,0 +1,4 @@
+tabled
+======
+.. automodule:: tabled
+   :members:

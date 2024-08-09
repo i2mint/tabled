@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.html &mdash; tabled 0.1.10 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=bafade30"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tabled.html</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tabled.html</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;To work with html&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="url_to_html_func">
+<a class="viewcode-back" href="../../module_docs/tabled/html.html#tabled.html.url_to_html_func">[docs]</a>
+<span class="k">def</span> <span class="nf">url_to_html_func</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;requests&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a url_to_html function of a given kind.&quot;&quot;&quot;</span>
+    <span class="n">url_to_html</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;requests&#39;</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">requests</span>  <span class="c1"># pip install requests</span>
+
+        <span class="k">def</span> <span class="nf">url_to_html</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;An error occured. Returning the response object for you to analyze: </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">r</span>
+            <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span>
+
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span> <span class="ow">or</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;selenium&#39;</span><span class="p">:</span>
+
+        <span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>  <span class="c1"># pip install selenium</span>
+        <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+        <span class="k">def</span> <span class="nf">url_to_html</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">()</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wait</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="n">wait</span><span class="p">)</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">page_source</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">html</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown url_to_html value: </span><span class="si">{</span><span class="n">url_to_html</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">url_to_html</span><span class="p">),</span> <span class="s2">&quot;Couldn&#39;t make a url_to_html function&quot;</span>
+
+    <span class="k">return</span> <span class="n">url_to_html</span></div>
+
+
+
+<span class="n">get_tables_from_html</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span>
+
+
+<div class="viewcode-block" id="get_tables_from_url">
+<a class="viewcode-back" href="../../module_docs/tabled/html.html#tabled.html.get_tables_from_url">[docs]</a>
+<span class="k">def</span> <span class="nf">get_tables_from_url</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">url_to_html</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;requests&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">tables_from_html_kwargs</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get&#39;s a list of pandas dataframes from tables scraped from a url.</span>
+<span class="sd">    Note that this will only work with static pages. If the html needs to be rendered dynamically,</span>
+<span class="sd">    you&#39;ll have to get your needed html otherwise (like with selenium).</span>
+
+<span class="sd">    &gt;&gt;&gt; url = &#39;https://en.wikipedia.org/wiki/List_of_musical_instruments&#39;</span>
+<span class="sd">    &gt;&gt;&gt; tables = get_tables_from_url(url)  # doctest: +SKIP</span>
+
+<span class="sd">    If you install selenium and download a chromedriver,</span>
+<span class="sd">    you can even use your browser to render dynamic html.</span>
+<span class="sd">    Say, to get updated coronavirus stats without a need to figure out the API</span>
+<span class="sd">    (I mean, why have to figure out the language of an API, when someone already did that</span>
+<span class="sd">    for you in their webpage!!):</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    url = &#39;https://www.worldometers.info/coronavirus/?utm_campaign=homeAdvegas1?&#39;</span>
+<span class="sd">    tables = get_tables_from_url(url, url_to_html=&#39;chrome&#39;)  # doctest: +SKIP</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    To make selenium work:</span>
+<span class="sd">    ```</span>
+<span class="sd">        pip install selenium</span>
+<span class="sd">        Download seleniumdriver here: https://chromedriver.chromium.org/</span>
+<span class="sd">        Uzip and put in a place that&#39;s on you PATH (run command `echo $PATH` for a list of those places)</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">url_to_html</span><span class="p">):</span>
+        <span class="n">url_to_html</span> <span class="o">=</span> <span class="n">url_to_html_func</span><span class="p">(</span><span class="n">url_to_html</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_tables_from_html</span><span class="p">(</span><span class="n">url_to_html</span><span class="p">(</span><span class="n">url</span><span class="p">),</span> <span class="o">**</span><span class="n">tables_from_html_kwargs</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span>
+            <span class="k">if</span> <span class="s1">&#39;No tables found&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">raise</span></div>
+
+
+
+<span class="n">HTML_TEMPLATE1</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">&lt;html&gt;</span>
+<span class="s1">&lt;head&gt;</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">  h2 {</span>
+<span class="s1">    text-align: center;</span>
+<span class="s1">    font-family: Helvetica, Arial, sans-serif;</span>
+<span class="s1">  }</span>
+<span class="s1">  table { </span>
+<span class="s1">    margin-left: auto;</span>
+<span class="s1">    margin-right: auto;</span>
+<span class="s1">  }</span>
+<span class="s1">  table, th, td {</span>
+<span class="s1">    border: 1px solid black;</span>
+<span class="s1">    border-collapse: collapse;</span>
+<span class="s1">  }</span>
+<span class="s1">  th, td {</span>
+<span class="s1">    padding: 5px;</span>
+<span class="s1">    text-align: center;</span>
+<span class="s1">    font-family: Helvetica, Arial, sans-serif;</span>
+<span class="s1">    font-size: 90%;</span>
+<span class="s1">  }</span>
+<span class="s1">  table tbody tr:hover {</span>
+<span class="s1">    background-color: #dddddd;</span>
+<span class="s1">  }</span>
+<span class="s1">  .wide {</span>
+<span class="s1">    width: 90%; </span>
+<span class="s1">  }</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">&lt;/head&gt;</span>
+<span class="s1">&lt;body&gt;</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="n">HTML_TEMPLATE2</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">&lt;/body&gt;</span>
+<span class="s1">&lt;/html&gt;</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">df_to_html</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ht</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ht</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;h2&gt; </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1"> &lt;/h2&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">ht</span> <span class="o">+=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="s1">&#39;wide&#39;</span><span class="p">,</span> <span class="n">escape</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ht</span>
+
+
+<span class="k">def</span> <span class="nf">df_store_to_html</span><span class="p">(</span><span class="n">df_store</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;br&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="n">ht</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">df_store</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^\d]+&#39;</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ht</span> <span class="o">+=</span> <span class="n">df_to_html</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+        <span class="n">ht</span> <span class="o">+=</span> <span class="n">sep</span>
+    <span class="k">return</span> <span class="n">ht</span>
+
+
+<div class="viewcode-block" id="dfs_to_html_pretty">
+<a class="viewcode-back" href="../../module_docs/tabled/html.html#tabled.html.dfs_to_html_pretty">[docs]</a>
+<span class="k">def</span> <span class="nf">dfs_to_html_pretty</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write an entire dataframe to an HTML file</span>
+<span class="sd">    with nice formatting.</span>
+<span class="sd">    Thanks to @stackoverflowuser2010 for the</span>
+<span class="sd">    pretty printer see https://stackoverflow.com/a/47723330/362951</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_to_html</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_store_to_html</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_store_to_html</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">dfs</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">HTML_TEMPLATE1</span> <span class="o">+</span> <span class="n">ht</span> <span class="o">+</span> <span class="n">HTML_TEMPLATE2</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">dfs_to_pdf_bytes</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">weasyprint</span>
+
+    <span class="n">html</span> <span class="o">=</span> <span class="n">dfs_to_html_pretty</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">weasyprint</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">html</span><span class="p">)</span><span class="o">.</span><span class="n">write_pdf</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

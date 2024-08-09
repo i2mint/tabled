@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.util &mdash; tabled 0.1.10 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=bafade30"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tabled.util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tabled.util</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Utils</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+
+<span class="k">def</span> <span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<div class="viewcode-block" id="split_keys">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.split_keys">[docs]</a>
+<span class="k">def</span> <span class="nf">split_keys</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a dictionary where keys that had spaces were split into multiple keys</span>
+
+<span class="sd">    Meant to be a convenience function for the user to use when they want to define a</span>
+<span class="sd">    mapping where several keys map to the same value.</span>
+
+<span class="sd">    &gt;&gt;&gt; split_keys({&#39;apple&#39;: 1, &#39;banana carrot&#39;: 2})</span>
+<span class="sd">    {&#39;apple&#39;: 1, &#39;banana&#39;: 2, &#39;carrot&#39;: 2}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">split_k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">split_k</span> <span class="ow">in</span> <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">()}</span></div>
+
+
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">Literal</span>
+
+
+<div class="viewcode-block" id="intersection_graph">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.intersection_graph">[docs]</a>
+<span class="k">def</span> <span class="nf">intersection_graph</span><span class="p">(</span>
+    <span class="n">sets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="nb">set</span><span class="p">],</span> <span class="n">edge_labels</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;elements&#39;</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A graph of all intersections between sets.</span>
+<span class="sd">    (See https://en.wikipedia.org/wiki/Intersection_graph.)</span>
+
+<span class="sd">    In graph theory, an adjacency list is a collection of sets used to represent a</span>
+<span class="sd">    finite graph.</span>
+<span class="sd">    Here, the vertices are the values of sets,</span>
+<span class="sd">    and there is an edge between two vertices if the sets intersect.</span>
+<span class="sd">    The weight of the edge is the size of the intersection.</span>
+
+<span class="sd">    :param sets: A mapping of keys to sets of elements. These sets of elements will</span>
+<span class="sd">        be the vertices of the graph.</span>
+<span class="sd">    :param edge_labels: If &#39;elements&#39;, the edge labels are the elements of the intersection.</span>
+<span class="sd">        If &#39;size&#39;, the edge labels are the size of the intersection.</span>
+<span class="sd">        If False, there are no edge labels.</span>
+<span class="sd">    :return: A graph, represented by an &quot;adjacency list&quot;</span>
+<span class="sd">        (see https://en.wikipedia.org/wiki/Adjacency_list)</span>
+<span class="sd">        (a dict whose keys are the keys of the input `sets` dict, and whose values</span>
+<span class="sd">        tell us what sets of `sets` intersect with it),</span>
+<span class="sd">        optionally with some information about this intersection.</span>
+
+<span class="sd">    &gt;&gt;&gt; sets = {</span>
+<span class="sd">    ...     &#39;A&#39;: {&#39;b&#39;, &#39;c&#39;},</span>
+<span class="sd">    ...     &#39;B&#39;: {&#39;a&#39;, &#39;b&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;},</span>
+<span class="sd">    ...     &#39;C&#39;: {&#39;f&#39;, &#39;g&#39;},</span>
+<span class="sd">    ...     &#39;D&#39;: {&#39;d&#39;, &#39;e&#39;, &#39;h&#39;, &#39;i&#39;},</span>
+<span class="sd">    ...     &#39;E&#39;: {&#39;i&#39;, &#39;j&#39;}</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; assert intersection_graph(sets) == {</span>
+<span class="sd">    ...     &#39;A&#39;: {&#39;B&#39;}, &#39;B&#39;: {&#39;A&#39;, &#39;C&#39;, &#39;D&#39;}, &#39;C&#39;: {&#39;B&#39;}, &#39;D&#39;: {&#39;B&#39;, &#39;E&#39;}, &#39;E&#39;: {&#39;D&#39;}</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; assert intersection_graph(sets, edge_labels=&#39;elements&#39;) == {</span>
+<span class="sd">    ...     &#39;A&#39;: {&#39;B&#39;: {&#39;b&#39;}},</span>
+<span class="sd">    ...     &#39;B&#39;: {&#39;A&#39;: {&#39;b&#39;}, &#39;C&#39;: {&#39;f&#39;}, &#39;D&#39;: {&#39;d&#39;, &#39;e&#39;}},</span>
+<span class="sd">    ...     &#39;C&#39;: {&#39;B&#39;: {&#39;f&#39;}},</span>
+<span class="sd">    ...     &#39;D&#39;: {&#39;B&#39;: {&#39;d&#39;, &#39;e&#39;}, &#39;E&#39;: {&#39;i&#39;}},</span>
+<span class="sd">    ...     &#39;E&#39;: {&#39;D&#39;: {&#39;i&#39;}}</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; assert intersection_graph(sets, edge_labels=&#39;size&#39;) == {</span>
+<span class="sd">    ...     &#39;A&#39;: {&#39;B&#39;: 1},</span>
+<span class="sd">    ...     &#39;B&#39;: {&#39;A&#39;: 1, &#39;C&#39;: 1, &#39;D&#39;: 2},</span>
+<span class="sd">    ...     &#39;C&#39;: {&#39;B&#39;: 1},</span>
+<span class="sd">    ...     &#39;D&#39;: {&#39;B&#39;: 2, &#39;E&#39;: 1},</span>
+<span class="sd">    ...     &#39;E&#39;: {&#39;D&#39;: 1}</span>
+<span class="sd">    ... }</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key1</span><span class="p">,</span> <span class="n">key2</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">sets</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">intersection</span> <span class="o">=</span> <span class="n">sets</span><span class="p">[</span><span class="n">key1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">sets</span><span class="p">[</span><span class="n">key2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">intersection</span><span class="p">:</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">key1</span><span class="p">][</span><span class="n">key2</span><span class="p">]</span> <span class="o">=</span> <span class="n">intersection</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">key2</span><span class="p">][</span><span class="n">key1</span><span class="p">]</span> <span class="o">=</span> <span class="n">intersection</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge_labels</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">edge_labels</span> <span class="o">==</span> <span class="s1">&#39;elements&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">edge_labels</span> <span class="o">==</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">map_values</span><span class="p">(</span><span class="n">map_values</span><span class="o">.</span><span class="n">len</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">edge_labels</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">map_values</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid value for edge_labels: </span><span class="si">{</span><span class="n">edge_labels</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="map_values">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.map_values">[docs]</a>
+<span class="k">def</span> <span class="nf">map_values</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply a function to all values of a dictionary.</span>
+
+<span class="sd">    &gt;&gt;&gt; map_values(lambda x: x ** 2, {1: 2, 3: 4})</span>
+<span class="sd">    {1: 4, 3: 16}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">func</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+
+
+
+<span class="n">map_values</span><span class="o">.</span><span class="n">len</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">map_values</span><span class="p">,</span> <span class="nb">len</span><span class="p">)</span>
+<span class="n">map_values</span><span class="o">.</span><span class="n">set</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">map_values</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span>
+<span class="n">map_values</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">map_values</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="invert_labeled_collection">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.invert_labeled_collection">[docs]</a>
+<span class="k">def</span> <span class="nf">invert_labeled_collection</span><span class="p">(</span>
+    <span class="n">d</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">VT</span><span class="p">]],</span> <span class="n">values_container</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="nb">list</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">KT</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Invert a mapping whose values are iterables of objects,</span>
+<span class="sd">    getting a mapping from objects to iterables of keys.</span>
+
+<span class="sd">    &gt;&gt;&gt; original_dict = {</span>
+<span class="sd">    ...     &quot;X&quot;: [&#39;a&#39;, &#39;b&#39;],</span>
+<span class="sd">    ...     &quot;Y&quot;: [&#39;a&#39;],</span>
+<span class="sd">    ...     &quot;Z&quot;: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; inverted_dict = invert_labeled_collection(original_dict)</span>
+<span class="sd">    &gt;&gt;&gt; inverted_dict</span>
+<span class="sd">    {&#39;a&#39;: [&#39;X&#39;, &#39;Y&#39;, &#39;Z&#39;], &#39;b&#39;: [&#39;X&#39;, &#39;Z&#39;], &#39;c&#39;: [&#39;Z&#39;]}</span>
+<span class="sd">    &gt;&gt;&gt; invert_labeled_collection(inverted_dict)</span>
+<span class="sd">    {&#39;X&#39;: [&#39;a&#39;, &#39;b&#39;], &#39;Y&#39;: [&#39;a&#39;], &#39;Z&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]}</span>
+
+<span class="sd">    The `values_container` argument can be used to cast the values of the inverted dict.</span>
+
+<span class="sd">    &gt;&gt;&gt; assert (</span>
+<span class="sd">    ...     invert_labeled_collection(original_dict, values_container=set)</span>
+<span class="sd">    ...     == {&#39;a&#39;: {&#39;X&#39;, &#39;Y&#39;, &#39;Z&#39;}, &#39;b&#39;: {&#39;X&#39;, &#39;Z&#39;}, &#39;c&#39;: {&#39;Z&#39;}}</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; d = {&#39;a&#39;: &#39;apple&#39;, &#39;b&#39;: &#39;banana&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; t = invert_labeled_collection(d, values_container=&#39;&#39;.join)</span>
+<span class="sd">    &gt;&gt;&gt; t</span>
+<span class="sd">    {&#39;a&#39;: &#39;abbb&#39;, &#39;p&#39;: &#39;aa&#39;, &#39;l&#39;: &#39;a&#39;, &#39;e&#39;: &#39;a&#39;, &#39;b&#39;: &#39;b&#39;, &#39;n&#39;: &#39;bb&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; invert_labeled_collection(t, &#39;&#39;.join)</span>
+<span class="sd">    {&#39;a&#39;: &#39;apple&#39;, &#39;b&#39;: &#39;aaabnn&#39;}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inverted_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">inverted_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">values_container</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">inverted_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">values_container</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inverted_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">inverted_dict</span></div>
+
+
+
+<div class="viewcode-block" id="breadth_first_traversal">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.breadth_first_traversal">[docs]</a>
+<span class="k">def</span> <span class="nf">breadth_first_traversal</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">start_node</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">yield_edges</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yields nodes starting from the root node, expanding to neighbors recursively,</span>
+<span class="sd">    using breadth-first search, without repeating nodes.</span>
+
+<span class="sd">    :param graph: Adjacencies of the graph: A mapping from nodes to their neighbors.</span>
+<span class="sd">    :param start_node: The node to start from (key of the graph adjacency mapping)</span>
+<span class="sd">    :param yield_edges: If True, yield edges instead of nodes.</span>
+<span class="sd">        The edges are yielded as tuples of (node, neighbor).</span>
+
+<span class="sd">    &gt;&gt;&gt; graph = {</span>
+<span class="sd">    ...     &#39;A&#39;: [&#39;B&#39;], &#39;B&#39;: [&#39;A&#39;, &#39;C&#39;, &#39;D&#39;], &#39;C&#39;: [&#39;B&#39;], &#39;D&#39;: [&#39;B&#39;, &#39;E&#39;], &#39;E&#39;: [&#39;D&#39;]</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; list(breadth_first_traversal(graph, &#39;B&#39;))</span>
+<span class="sd">    [&#39;B&#39;, &#39;A&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; list(breadth_first_traversal(graph, &#39;B&#39;, yield_edges=True))</span>
+<span class="sd">    [(&#39;B&#39;, &#39;A&#39;), (&#39;B&#39;, &#39;C&#39;), (&#39;B&#39;, &#39;D&#39;), (&#39;D&#39;, &#39;E&#39;)]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">start_node</span><span class="p">])</span>
+
+    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">yield_edges</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">neighbor</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">neighbor</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">node</span>
+            <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">neighbor</span> <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="k">if</span> <span class="n">neighbor</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span>
+            <span class="p">)</span></div>
+
+
+
+<span class="c1"># -------------------------------------------------------------------------------------</span>
+<span class="c1"># Expand and collapse rows and columns</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="collapse_rows">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.collapse_rows">[docs]</a>
+<span class="k">def</span> <span class="nf">collapse_rows</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">by</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">container</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Iterable</span><span class="p">],</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Do a groupby to collapse (the rows of) a dataframe, gathering the other</span>
+<span class="sd">    column&#39;s values (the ones that are not keys of the groupby) into lists.</span>
+
+<span class="sd">    :param df: the dataframe to collapse</span>
+<span class="sd">    :param by: the columns to group by (the keys of the groupby)</span>
+<span class="sd">    :param container: the container to use to gather the other columns values</span>
+
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;a&#39;: [1, 1, 2, 2],</span>
+<span class="sd">    ...     &#39;b&#39;: [3, 4, 5, 6],</span>
+<span class="sd">    ...     &#39;c&#39;: [7, 8, 9, 10]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; df  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">       a  b   c</span>
+<span class="sd">    0  1  3   7</span>
+<span class="sd">    1  1  4   8</span>
+<span class="sd">    2  2  5   9</span>
+<span class="sd">    3  2  6  10</span>
+<span class="sd">    &gt;&gt;&gt; collapse_rows(df, [&#39;a&#39;])  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">       a       b        c</span>
+<span class="sd">    0  1  [3, 4]   [7, 8]</span>
+<span class="sd">    1  2  [5, 6]  [9, 10]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">container</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="expand_rows">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.expand_rows">[docs]</a>
+<span class="k">def</span> <span class="nf">expand_rows</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grouped_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Expands a DataFrame where specific columns were collapsed into containers back to its original form.</span>
+<span class="sd">    Each column in `grouped_columns` should contain lists of the same length within each row.</span>
+
+<span class="sd">    :param df: The DataFrame to expand.</span>
+<span class="sd">    :param grouped_columns: The list of columns to expand</span>
+<span class="sd">    :return: The expanded DataFrame.</span>
+
+<span class="sd">    &gt;&gt;&gt; df_collapsed = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;a&#39;: [1, 2],</span>
+<span class="sd">    ...     &#39;b&#39;: [[3, 4], [5, 6, 66]],</span>
+<span class="sd">    ...     &#39;c&#39;: [[7, 8], [9, 10, 11]]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; expand_rows(df_collapsed, [&#39;b&#39;, &#39;c&#39;])  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">        a  b   c</span>
+<span class="sd">    0  1  3   7</span>
+<span class="sd">    1  1  4   8</span>
+<span class="sd">    2  2  5   9</span>
+<span class="sd">    3  2  6  10</span>
+<span class="sd">    4  2  66  11</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">grouped_columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">grouped_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">grouped_columns</span><span class="p">]</span>
+
+    <span class="c1"># Create a new list to hold the expanded rows</span>
+    <span class="n">expanded_rows</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Iterate over each row in the DataFrame</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="c1"># Extract the lengths of lists in the grouped columns, assume all are the same length</span>
+        <span class="n">list_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">])</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">grouped_columns</span><span class="p">]</span>
+
+        <span class="c1"># Check if all list lengths are the same for safety</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">list_lengths</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;All lists in a single row must have the same length to expand correctly.&#39;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Create individual rows for each index of the lists in grouped_columns</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">list_lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="c1"># Start with a dict of non-grouped data</span>
+            <span class="n">new_row</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">col</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">grouped_columns</span>
+            <span class="p">}</span>
+            <span class="c1"># Add the i-th element of each grouped column&#39;s list to the new row</span>
+            <span class="n">new_row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">grouped_columns</span><span class="p">})</span>
+            <span class="n">expanded_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_row</span><span class="p">)</span>
+
+    <span class="c1"># Create a new DataFrame from the expanded rows</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">expanded_rows</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="collapse_columns">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.collapse_columns">[docs]</a>
+<span class="k">def</span> <span class="nf">collapse_columns</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">groupings</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">]]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms specified columns of a dataframe into single columns where each row</span>
+<span class="sd">    contains a dictionary of column names and values from the original dataframe.</span>
+
+<span class="sd">    :param df: The dataframe to transform.</span>
+<span class="sd">    :param groupings: A mapping that indicates which columns to collapse into dictionaries</span>
+<span class="sd">        and what to call the new resulting column.</span>
+<span class="sd">        If only a list of column names to be collapsed is given, it will be interpreted as</span>
+<span class="sd">        the group_column_names in a single `{&quot;collapsed&quot;: group_column_names}` dictionary,</span>
+<span class="sd">        that is, all `group_column_names` are to be collapsed in to a single collapsed column.</span>
+
+<span class="sd">    :return: A dataframe with the original columns not specified in `columns` untouched,</span>
+<span class="sd">        and a new column `new_column_name` containing dictionaries of the collapsed columns.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;a&#39;: [1, 1, 2, 2],</span>
+<span class="sd">    ...     &#39;b&#39;: [3, 4, 5, 6],</span>
+<span class="sd">    ...     &#39;c&#39;: [7, 8, 9, 10]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; df  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">       a  b   c</span>
+<span class="sd">    0  1  3   7</span>
+<span class="sd">    1  1  4   8</span>
+<span class="sd">    2  2  5   9</span>
+<span class="sd">    3  2  6  10</span>
+<span class="sd">    &gt;&gt;&gt; collapse_columns(df, {&#39;ab&#39;: [&#39;a&#39;, &#39;b&#39;]})  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">       c   ab</span>
+<span class="sd">    0  7  {&#39;a&#39;: 1, &#39;b&#39;: 3}</span>
+<span class="sd">    1  8  {&#39;a&#39;: 1, &#39;b&#39;: 4}</span>
+<span class="sd">    2  9  {&#39;a&#39;: 2, &#39;b&#39;: 5}</span>
+<span class="sd">    3 10  {&#39;a&#39;: 2, &#39;b&#39;: 6}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupings</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">groupings</span> <span class="o">=</span> <span class="p">[</span><span class="n">groupings</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupings</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="c1"># Convert list to a dictionary with default key if groupings is a list</span>
+        <span class="n">groupings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;collapsed&#39;</span><span class="p">:</span> <span class="n">groupings</span><span class="p">}</span>
+
+    <span class="c1"># Copy the dataframe to avoid changing the original one</span>
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Apply the grouping transformation</span>
+    <span class="k">for</span> <span class="n">new_column</span><span class="p">,</span> <span class="n">columns_to_collapse</span> <span class="ow">in</span> <span class="n">groupings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Ensure only valid columns are processed</span>
+        <span class="n">valid_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns_to_collapse</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;No valid columns found in </span><span class="si">{</span><span class="n">columns_to_collapse</span><span class="si">}</span><span class="s1"> to collapse into </span><span class="si">{</span><span class="n">new_column</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Create a new column with dictionaries mapping old column names to their values</span>
+        <span class="n">result_df</span><span class="p">[</span><span class="n">new_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">valid_columns</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Remove the original columns that have been collapsed</span>
+        <span class="n">result_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">valid_columns</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result_df</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">column_sep_key_mapper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column_name</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span>
+
+
+<span class="n">_column_dot_key_mapper</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">column_sep_key_mapper</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_apply_key_mapper_to_keys</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">key_mapper</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key_mapper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key_mapper</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">)}</span>
+
+
+<div class="viewcode-block" id="expand_columns">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.expand_columns">[docs]</a>
+<span class="k">def</span> <span class="nf">expand_columns</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">expand_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">key_mapper</span><span class="o">=</span><span class="n">_column_dot_key_mapper</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Expands the iterable values of specified columns in to new columns.</span>
+<span class="sd">    The new columns will be named using the column_name and the key of the values of</span>
+<span class="sd">    the iterable that is expanded (key if dict, integer index if sequence).</span>
+
+<span class="sd">    :param df: The dataframe to transform.</span>
+<span class="sd">    :param expand_columns: A list of column names whose values are dictionaries</span>
+<span class="sd">        that need to be expanded into new columns.</span>
+<span class="sd">    :param drop: Whether to drop the original columns that were expanded.</span>
+<span class="sd">    :param key_mapper: A function that takes a key and a column name and returns a</span>
+<span class="sd">        new key. By default, the new key is the concatenation of the column name and</span>
+<span class="sd">        the original key. If None, will just take the original key. The reason for</span>
+<span class="sd">        also taking the column_name by default is to avoid collisions if the keys are</span>
+<span class="sd">        used in more than one column.</span>
+
+<span class="sd">    :return: A dataframe with the expanded columns added.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;c&#39;: [7, 8, 9, 10],</span>
+<span class="sd">    ...     &#39;X&#39;: [{&#39;a&#39;: 1, &#39;b&#39;: 3}, {&#39;a&#39;: 1, &#39;b&#39;: 4}, {&#39;a&#39;: 2, &#39;b&#39;: 5}, {&#39;a&#39;: 2, &#39;b&#39;: 6}]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; expand_columns(df, [&#39;X&#39;])  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">       c  X.a  X.b</span>
+<span class="sd">    0  7  1  3</span>
+<span class="sd">    1  8  1  4</span>
+<span class="sd">    2  9  2  5</span>
+<span class="sd">    3 10  2  6</span>
+
+<span class="sd">    Let&#39;s see what happens when the elements of an expanded column are lists instead of</span>
+<span class="sd">    dicts, we ask to not drop, and we use `key_mapper=None`:</span>
+
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;c&#39;: [7, 8, 9, 10],</span>
+<span class="sd">    ...     &#39;X&#39;: [[1, 3], [1, 4], [2, 5], [2, 6]]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; expand_columns(df, [&#39;X&#39;], drop=False, key_mapper=None)  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">        c       X  0  1</span>
+<span class="sd">    0   7  [1, 3]  1  3</span>
+<span class="sd">    1   8  [1, 4]  1  4</span>
+<span class="sd">    2   9  [2, 5]  2  5</span>
+<span class="sd">    3  10  [2, 6]  2  6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expand_columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">expand_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">expand_columns</span><span class="p">]</span>
+    <span class="c1"># Validate that all expand_columns are in df.columns</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">expand_columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1"> does not exist in the DataFrame.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">key_mapper</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">key_mapper</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="n">key</span>
+
+    <span class="c1"># Copy the dataframe to avoid changing the original one</span>
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Apply the expansion transformation</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">expand_columns</span><span class="p">:</span>
+        <span class="n">_map_keys_of_dict</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">_apply_key_mapper_to_keys</span><span class="p">,</span> <span class="n">column_name</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">key_mapper</span><span class="o">=</span><span class="n">key_mapper</span>
+        <span class="p">)</span>
+        <span class="n">apply_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">_map_keys_of_dict</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="c1"># Extract dictionary to separate columns</span>
+        <span class="n">new_cols</span> <span class="o">=</span> <span class="n">result_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">apply_func</span><span class="p">)</span>
+        <span class="c1"># Merge new columns into the result DataFrame</span>
+        <span class="n">result_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">result_df</span><span class="p">,</span> <span class="n">new_cols</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Optionally drop the original column that was expanded</span>
+        <span class="k">if</span> <span class="n">drop</span><span class="p">:</span>
+            <span class="n">result_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result_df</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

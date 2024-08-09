@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.html &mdash; tabled 0.1.10 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=bafade30"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tabled.multi" href="multi.html" />
+    <link rel="prev" title="tabled.base" href="base.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">tabled.base</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tabled.html</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.html.dfs_to_html_pretty"><code class="docutils literal notranslate"><span class="pre">dfs_to_html_pretty()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.html.get_tables_from_url"><code class="docutils literal notranslate"><span class="pre">get_tables_from_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.html.url_to_html_func"><code class="docutils literal notranslate"><span class="pre">url_to_html_func()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">tabled.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">tabled.html</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/tabled/html.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-tabled.html">
+<span id="tabled-html"></span><h1>tabled.html<a class="headerlink" href="#module-tabled.html" title="Link to this heading"></a></h1>
+<p>To work with html</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.html.dfs_to_html_pretty">
+<span class="sig-prename descclassname"><span class="pre">tabled.html.</span></span><span class="sig-name descname"><span class="pre">dfs_to_html_pretty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dfs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/html.html#dfs_to_html_pretty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.html.dfs_to_html_pretty" title="Link to this definition"></a></dt>
+<dd><p>Write an entire dataframe to an HTML file
+with nice formatting.
+Thanks to &#64;stackoverflowuser2010 for the
+pretty printer see <a class="reference external" href="https://stackoverflow.com/a/47723330/362951">https://stackoverflow.com/a/47723330/362951</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.html.get_tables_from_url">
+<span class="sig-prename descclassname"><span class="pre">tabled.html.</span></span><span class="sig-name descname"><span class="pre">get_tables_from_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_to_html</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'requests'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">tables_from_html_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/html.html#get_tables_from_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.html.get_tables_from_url" title="Link to this definition"></a></dt>
+<dd><p>Get’s a list of pandas dataframes from tables scraped from a url.
+Note that this will only work with static pages. If the html needs to be rendered dynamically,
+you’ll have to get your needed html otherwise (like with selenium).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://en.wikipedia.org/wiki/List_of_musical_instruments&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tables</span> <span class="o">=</span> <span class="n">get_tables_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>If you install selenium and download a chromedriver,
+you can even use your browser to render dynamic html.
+Say, to get updated coronavirus stats without a need to figure out the API
+(I mean, why have to figure out the language of an API, when someone already did that
+for you in their webpage!!):</p>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">url</span> <span class="pre">=</span> <span class="pre">'https://www.worldometers.info/coronavirus/?utm_campaign=homeAdvegas1?'</span>
+<span class="pre">tables</span> <span class="pre">=</span> <span class="pre">get_tables_from_url(url,</span> <span class="pre">url_to_html='chrome')</span>&#160; <span class="pre">#</span> <span class="pre">doctest:</span> <span class="pre">+SKIP</span>
+<span class="pre">`</span></code></p>
+<p>To make selenium work:
+<a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a></p>
+<blockquote>
+<div><p>pip install selenium
+Download seleniumdriver here: <a class="reference external" href="https://chromedriver.chromium.org/">https://chromedriver.chromium.org/</a>
+Uzip and put in a place that’s on you PATH (run command <cite>echo $PATH</cite> for a list of those places)</p>
+</div></blockquote>
+<p><a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.html.url_to_html_func">
+<span class="sig-prename descclassname"><span class="pre">tabled.html.</span></span><span class="sig-name descname"><span class="pre">url_to_html_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'requests'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="reference internal" href="../../_modules/tabled/html.html#url_to_html_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.html.url_to_html_func" title="Link to this definition"></a></dt>
+<dd><p>Get a url_to_html function of a given kind.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="base.html" class="btn btn-neutral float-left" title="tabled.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="multi.html" class="btn btn-neutral float-right" title="tabled.multi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

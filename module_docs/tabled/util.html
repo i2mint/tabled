@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.util &mdash; tabled 0.1.10 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=bafade30"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="tabled.tests.util" href="tests/util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tabled.util</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.breadth_first_traversal"><code class="docutils literal notranslate"><span class="pre">breadth_first_traversal()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.collapse_columns"><code class="docutils literal notranslate"><span class="pre">collapse_columns()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.collapse_rows"><code class="docutils literal notranslate"><span class="pre">collapse_rows()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.expand_columns"><code class="docutils literal notranslate"><span class="pre">expand_columns()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.expand_rows"><code class="docutils literal notranslate"><span class="pre">expand_rows()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.intersection_graph"><code class="docutils literal notranslate"><span class="pre">intersection_graph()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.invert_labeled_collection"><code class="docutils literal notranslate"><span class="pre">invert_labeled_collection()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.map_values"><code class="docutils literal notranslate"><span class="pre">map_values()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.split_keys"><code class="docutils literal notranslate"><span class="pre">split_keys()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">tabled.util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/tabled/util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-tabled.util">
+<span id="tabled-util"></span><h1>tabled.util<a class="headerlink" href="#module-tabled.util" title="Link to this heading"></a></h1>
+<p>Utils</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.breadth_first_traversal">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">breadth_first_traversal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_node</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yield_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#breadth_first_traversal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.breadth_first_traversal" title="Link to this definition"></a></dt>
+<dd><p>Yields nodes starting from the root node, expanding to neighbors recursively,
+using breadth-first search, without repeating nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> – Adjacencies of the graph: A mapping from nodes to their neighbors.</p></li>
+<li><p><strong>start_node</strong> – The node to start from (key of the graph adjacency mapping)</p></li>
+<li><p><strong>yield_edges</strong> – If True, yield edges instead of nodes.
+The edges are yielded as tuples of (node, neighbor).</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">],</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">breadth_first_traversal</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
+<span class="go">[&#39;B&#39;, &#39;A&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">breadth_first_traversal</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">yield_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">[(&#39;B&#39;, &#39;A&#39;), (&#39;B&#39;, &#39;C&#39;), (&#39;B&#39;, &#39;D&#39;), (&#39;D&#39;, &#39;E&#39;)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.collapse_columns">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">collapse_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#collapse_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.collapse_columns" title="Link to this definition"></a></dt>
+<dd><p>Transforms specified columns of a dataframe into single columns where each row
+contains a dictionary of column names and values from the original dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – The dataframe to transform.</p></li>
+<li><p><strong>groupings</strong> – A mapping that indicates which columns to collapse into dictionaries
+and what to call the new resulting column.
+If only a list of column names to be collapsed is given, it will be interpreted as
+the group_column_names in a single <cite>{“collapsed”: group_column_names}</cite> dictionary,
+that is, all <cite>group_column_names</cite> are to be collapsed in to a single collapsed column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dataframe with the original columns not specified in <cite>columns</cite> untouched,
+and a new column <cite>new_column_name</cite> containing dictionaries of the collapsed columns.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>  
+<span class="go">   a  b   c</span>
+<span class="go">0  1  3   7</span>
+<span class="go">1  1  4   8</span>
+<span class="go">2  2  5   9</span>
+<span class="go">3  2  6  10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collapse_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ab&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]})</span>  
+<span class="go">   c   ab</span>
+<span class="go">0  7  {&#39;a&#39;: 1, &#39;b&#39;: 3}</span>
+<span class="go">1  8  {&#39;a&#39;: 1, &#39;b&#39;: 4}</span>
+<span class="go">2  9  {&#39;a&#39;: 2, &#39;b&#39;: 5}</span>
+<span class="go">3 10  {&#39;a&#39;: 2, &#39;b&#39;: 6}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.collapse_rows">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">collapse_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">df:</span> <span class="pre">~pandas.core.frame.DataFrame,</span> <span class="pre">by:</span> <span class="pre">~typing.List,</span> <span class="pre">*,</span> <span class="pre">container:</span> <span class="pre">~typing.Callable[[~typing.Iterable],</span> <span class="pre">~typing.Iterable]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'list'&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#collapse_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.collapse_rows" title="Link to this definition"></a></dt>
+<dd><p>Do a groupby to collapse (the rows of) a dataframe, gathering the other
+column’s values (the ones that are not keys of the groupby) into lists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – the dataframe to collapse</p></li>
+<li><p><strong>by</strong> – the columns to group by (the keys of the groupby)</p></li>
+<li><p><strong>container</strong> – the container to use to gather the other columns values</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>  
+<span class="go">   a  b   c</span>
+<span class="go">0  1  3   7</span>
+<span class="go">1  1  4   8</span>
+<span class="go">2  2  5   9</span>
+<span class="go">3  2  6  10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collapse_rows</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span>  
+<span class="go">   a       b        c</span>
+<span class="go">0  1  [3, 4]   [7, 8]</span>
+<span class="go">1  2  [5, 6]  [9, 10]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.expand_columns">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">expand_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">df:</span> <span class="pre">~pandas.core.frame.DataFrame,</span> <span class="pre">expand_columns:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">*,</span> <span class="pre">drop=True,</span> <span class="pre">key_mapper=functools.partial(&lt;function</span> <span class="pre">column_sep_key_mapper&gt;,</span> <span class="pre">sep='.')</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#expand_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.expand_columns" title="Link to this definition"></a></dt>
+<dd><p>Expands the iterable values of specified columns in to new columns.
+The new columns will be named using the column_name and the key of the values of
+the iterable that is expanded (key if dict, integer index if sequence).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – The dataframe to transform.</p></li>
+<li><p><strong>expand_columns</strong> – A list of column names whose values are dictionaries
+that need to be expanded into new columns.</p></li>
+<li><p><strong>drop</strong> – Whether to drop the original columns that were expanded.</p></li>
+<li><p><strong>key_mapper</strong> – A function that takes a key and a column name and returns a
+new key. By default, the new key is the concatenation of the column name and
+the original key. If None, will just take the original key. The reason for
+also taking the column_name by default is to avoid collisions if the keys are
+used in more than one column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dataframe with the expanded columns added.</p>
+</dd>
+</dl>
+<p>Examples:
+&gt;&gt;&gt; df = pd.DataFrame({
+…     ‘c’: [7, 8, 9, 10],
+…     ‘X’: [{‘a’: 1, ‘b’: 3}, {‘a’: 1, ‘b’: 4}, {‘a’: 2, ‘b’: 5}, {‘a’: 2, ‘b’: 6}]
+… })
+&gt;&gt;&gt; expand_columns(df, [‘X’])  # doctest: +NORMALIZE_WHITESPACE</p>
+<blockquote>
+<div><p>c  X.a  X.b</p>
+</div></blockquote>
+<p>0  7  1  3
+1  8  1  4
+2  9  2  5
+3 10  2  6</p>
+<p>Let’s see what happens when the elements of an expanded column are lists instead of
+dicts, we ask to not drop, and we use <cite>key_mapper=None</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expand_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">key_mapper</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  
+<span class="go">    c       X  0  1</span>
+<span class="go">0   7  [1, 3]  1  3</span>
+<span class="go">1   8  [1, 4]  1  4</span>
+<span class="go">2   9  [2, 5]  2  5</span>
+<span class="go">3  10  [2, 6]  2  6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.expand_rows">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">expand_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouped_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#expand_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.expand_rows" title="Link to this definition"></a></dt>
+<dd><p>Expands a DataFrame where specific columns were collapsed into containers back to its original form.
+Each column in <cite>grouped_columns</cite> should contain lists of the same length within each row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – The DataFrame to expand.</p></li>
+<li><p><strong>grouped_columns</strong> – The list of columns to expand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The expanded DataFrame.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df_collapsed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">66</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]]</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expand_rows</span><span class="p">(</span><span class="n">df_collapsed</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>  
+<span class="go">    a  b   c</span>
+<span class="go">0  1  3   7</span>
+<span class="go">1  1  4   8</span>
+<span class="go">2  2  5   9</span>
+<span class="go">3  2  6  10</span>
+<span class="go">4  2  66  11</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.intersection_graph">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">intersection_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">set</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'elements'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'size'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">False</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#intersection_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.intersection_graph" title="Link to this definition"></a></dt>
+<dd><p>A graph of all intersections between sets.
+(See <a class="reference external" href="https://en.wikipedia.org/wiki/Intersection_graph">https://en.wikipedia.org/wiki/Intersection_graph</a>.)</p>
+<p>In graph theory, an adjacency list is a collection of sets used to represent a
+finite graph.
+Here, the vertices are the values of sets,
+and there is an edge between two vertices if the sets intersect.
+The weight of the edge is the size of the intersection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sets</strong> – A mapping of keys to sets of elements. These sets of elements will
+be the vertices of the graph.</p></li>
+<li><p><strong>edge_labels</strong> – If ‘elements’, the edge labels are the elements of the intersection.
+If ‘size’, the edge labels are the size of the intersection.
+If False, there are no edge labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A graph, represented by an “adjacency list”
+(see <a class="reference external" href="https://en.wikipedia.org/wiki/Adjacency_list">https://en.wikipedia.org/wiki/Adjacency_list</a>)
+(a dict whose keys are the keys of the input <cite>sets</cite> dict, and whose values
+tell us what sets of <cite>sets</cite> intersect with it),
+optionally with some information about this intersection.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sets</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">intersection_graph</span><span class="p">(</span><span class="n">sets</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">},</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">},</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">},</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">},</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">intersection_graph</span><span class="p">(</span><span class="n">sets</span><span class="p">,</span> <span class="n">edge_labels</span><span class="o">=</span><span class="s1">&#39;elements&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">}},</span>
+<span class="gp">... </span>    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">},</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;f&#39;</span><span class="p">},</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">}},</span>
+<span class="gp">... </span>    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;f&#39;</span><span class="p">}},</span>
+<span class="gp">... </span>    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">},</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">}},</span>
+<span class="gp">... </span>    <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;i&#39;</span><span class="p">}}</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">intersection_graph</span><span class="p">(</span><span class="n">sets</span><span class="p">,</span> <span class="n">edge_labels</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.invert_labeled_collection">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">invert_labeled_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">d:</span> <span class="pre">~typing.Mapping[KT,</span> <span class="pre">~typing.Iterable],</span> <span class="pre">values_container:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'list'&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">VT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#invert_labeled_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.invert_labeled_collection" title="Link to this definition"></a></dt>
+<dd><p>Invert a mapping whose values are iterables of objects,
+getting a mapping from objects to iterables of keys.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">original_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;Z&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inverted_dict</span> <span class="o">=</span> <span class="n">invert_labeled_collection</span><span class="p">(</span><span class="n">original_dict</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inverted_dict</span>
+<span class="go">{&#39;a&#39;: [&#39;X&#39;, &#39;Y&#39;, &#39;Z&#39;], &#39;b&#39;: [&#39;X&#39;, &#39;Z&#39;], &#39;c&#39;: [&#39;Z&#39;]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invert_labeled_collection</span><span class="p">(</span><span class="n">inverted_dict</span><span class="p">)</span>
+<span class="go">{&#39;X&#39;: [&#39;a&#39;, &#39;b&#39;], &#39;Y&#39;: [&#39;a&#39;], &#39;Z&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]}</span>
+</pre></div>
+</div>
+<p>The <cite>values_container</cite> argument can be used to cast the values of the inverted dict.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">invert_labeled_collection</span><span class="p">(</span><span class="n">original_dict</span><span class="p">,</span> <span class="n">values_container</span><span class="o">=</span><span class="nb">set</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">},</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;Z&#39;</span><span class="p">}}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;banana&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">invert_labeled_collection</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">values_container</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span>
+<span class="go">{&#39;a&#39;: &#39;abbb&#39;, &#39;p&#39;: &#39;aa&#39;, &#39;l&#39;: &#39;a&#39;, &#39;e&#39;: &#39;a&#39;, &#39;b&#39;: &#39;b&#39;, &#39;n&#39;: &#39;bb&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">invert_labeled_collection</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
+<span class="go">{&#39;a&#39;: &#39;apple&#39;, &#39;b&#39;: &#39;aaabnn&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.map_values">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">map_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#map_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.map_values" title="Link to this definition"></a></dt>
+<dd><p>Apply a function to all values of a dictionary.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">map_values</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">4</span><span class="p">})</span>
+<span class="go">{1: 4, 3: 16}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.split_keys">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">split_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#split_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.split_keys" title="Link to this definition"></a></dt>
+<dd><p>Returns a dictionary where keys that had spaces were split into multiple keys</p>
+<p>Meant to be a convenience function for the user to use when they want to define a
+mapping where several keys map to the same value.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">split_keys</span><span class="p">({</span><span class="s1">&#39;apple&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;banana carrot&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="go">{&#39;apple&#39;: 1, &#39;banana&#39;: 2, &#39;carrot&#39;: 2}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests/util.html" class="btn btn-neutral float-left" title="tabled.tests.util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
