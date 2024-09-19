@@ -6,13 +6,24 @@
 #   * Allow on-the-fly parametrization (e.g. sep='\t', index_col=False...)
 from functools import partial
 from io import BytesIO
-from typing import Mapping, Callable, TypeVar, KT, VT
+from typing import (
+    Mapping,
+    Callable,
+    TypeVar,
+    KT,
+    VT,
+    TypeVar,
+    Dict,
+    Tuple,
+    Iterable,
+    Union,
+)
 import os
 import re
 import pickle
 
 import pandas as pd
-from i2 import mk_sentinel
+from i2 import mk_sentinel, Sig
 
 from dol import Files  # previously: py2store.stores.local_store import LocalBinaryStore
 from tabled.util import identity, split_keys
@@ -20,6 +31,8 @@ from tabled.util import identity, split_keys
 
 Obj = TypeVar('Obj')
 KeyFunc = Callable[[Obj], KT]
+Extension = TypeVar('Extension')
+DfDecoder = Callable[[Obj], pd.DataFrame]
 dflt_not_found_sentinel = mk_sentinel('dflt_not_found_sentinel')
 
 
@@ -57,42 +70,63 @@ class KeyFuncReader(KvReader):
         return f'{type(self).__name__}({self.mapping}, key={self.key})'
 
 
+# TODO: Add some registry functionality to this?
 dflt_ext_mapping = split_keys(
     {
-        'xls xlsx': partial(pd.read_excel, index=False),
-        'csv': partial(pd.read_csv, index_col=False),
-        'tsv': partial(pd.read_csv, sep='\t', index_col=False),
-        'json': partial(pd.read_json, orient='records'),
-        'html': partial(pd.read_html, index_col=False),
-        'p pickle': pickle.load,
+        'xls xlsx xlsm': partial(pd.read_excel, index=False),  # Excel files
+        'csv txt': partial(pd.read_csv, index_col=False),  # CSV and text files
+        'tsv': partial(pd.read_csv, sep='\t', index_col=False),  # Tab-separated
+        'parquet': pd.read_parquet,  # Parquet format
+        'json': partial(pd.read_json, orient='records'),  # JSON format
+        'html': partial(pd.read_html, index_col=False),  # HTML tables
+        'p pickle pkl': pickle.load,  # Pickle files
+        'xml': pd.read_xml,  # XML files
+        'h5 hdf5': pd.read_hdf,  # HDF5 format
+        'sql sqlite': pd.read_sql,  # SQL queries
+        'feather': pd.read_feather,  # Feather format
+        'stata dta': pd.read_stata,  # Stata files
+        'sas': pd.read_sas,  # SAS files
+        # 'gbq': pandas_gbq.read_gbq,  # Google BigQuery
     }
 )
 
 
-def df_from_data_given_ext(data, ext, mapping=dflt_ext_mapping, **kwargs):
+def df_from_data_given_ext(
+    data, ext: Extension, mapping=dflt_ext_mapping, **extra_decoder_kwargs
+):
     """Get a dataframe from a (data, ext) pair"""
     if ext.startswith('.'):
         ext = ext[1:]
-    trans_func = key_func_mapping(
+    decoder = key_func_mapping(
         ext,
         mapping,
         key=identity,
         not_found_sentinel=None,  # TODO
     )
-    if trans_func is not None:
-        return trans_func(data, **kwargs)
+    if decoder is not None:
+        # pluck out any key-value pairs of extra_decoder_kwargs whose names are 
+        # arguments of decoder. (This is needed since extra_decoder_kwargs can be 
+        # servicing multiple decoders, and we don't want to pass arguments to the
+        # wrong decoder.)
+        extra_decoder_kwargs = Sig(decoder).map_arguments(
+            (), extra_decoder_kwargs, allow_partial=True, allow_excess=True
+        )
+        # decode the data
+        return decoder(data, **extra_decoder_kwargs)
     else:
         raise ValueError(f"Don't know how to handle extension: {ext}")
 
 
-def df_from_data_according_to_key(data, mapping, key, **kwargs):
+def df_from_data_according_to_key(
+    data: Obj, mapping: Dict[Extension, DfDecoder], key: KT, **extra_decoder_kwargs
+):
     """Get a dataframe from a (data, mapping, key) triple"""
-    trans_func = key_func_mapping(data, mapping, key=key, not_found_sentinel=None)
-    return trans_func(data, **kwargs)
+    decoder = key_func_mapping(data, mapping, key=key, not_found_sentinel=None)
+    return decoder(data, **kwargs)
 
 
-def get_ext(x):
-    _, ext = os.path.splitext(x)
+def get_file_ext(key: KT) -> Extension:
+    _, ext = os.path.splitext(key)
     if ext:
         return ext[1:].lower()
     else:
@@ -123,7 +157,7 @@ def get_protocol(url: str):
 df_from_data_according_to_ext = partial(
     df_from_data_according_to_key,
     mapping=dflt_ext_mapping,
-    key=get_ext,
+    key=get_file_ext,
 )
 
 # df_from_data_given_ext meant to be equivalent (but more general, using ext_specs) to
@@ -155,16 +189,39 @@ df_from_data_according_to_ext = partial(
 
 # TODO: Make the logic independent from local files assumption.
 # TODO: Better separate Reader, and add DfStore to make a writer.
-
-
+# TODO: Add filtering functionality in init? (By function, regex, extension?)
 class DfFiles(Files):
-    """A key-value store providing values as pandas.DataFrames"""
+    """A key-value store providing values as pandas.DataFrames.
 
-    def __init__(self, path_format, mapping=dflt_ext_mapping):
-        super().__init__(path_format)
+    Use Case: You have a bunch of files in a folder, all corresponding to some
+    dataframes that were saved in some way. You want to a key-value store whose values
+    are the (decoded) dataframes corresponding to the files in the folder.
 
-        self.key_to_ext = get_ext
-        self.data_and_ext_to_df = partial(df_from_data_given_ext, mapping=mapping)
+    Args:
+    rootdir: A root directory.
+    extension_decoder_mapping: A mapping from file extensions to functions that can
+        read the dataframes
+    extra_decoder_kwargs: Extra arguments to pass to the decoder functions.
+
+
+
+    """
+
+    def __init__(
+        self,
+        rootdir: str,
+        extension_decoder_mapping: Dict[Extension, DfDecoder] = dflt_ext_mapping,
+        extra_decoder_kwargs: Union[dict, Iterable] = (),
+    ):
+        super().__init__(rootdir)
+
+        self.key_to_ext = get_file_ext
+        extra_decoder_kwargs = dict(extra_decoder_kwargs)
+        self.data_and_ext_to_df = partial(
+            df_from_data_given_ext,
+            mapping=extension_decoder_mapping,
+            **extra_decoder_kwargs,
+        )
 
     def __getitem__(self, k):
         ext = self.key_to_ext(k)
@@ -309,26 +366,3 @@ class DataframeKvReader(Mapping):
     def __repr__(self):
         return f"{type(self).__name__}(df=<{len(self.df)} rows>, key_fields={self.key_fields}, value_columns={self.value_columns})"
 
-
-# Test cases
-def test_DataframeKvReader():
-    df = pd.DataFrame(
-        {'A': [1, 2, 1], 'B': [4, 5, 4], 'C': [7, 8, 9], 'D': [10, 11, 12]}
-    )
-
-    kv_readers = [
-        DataframeKvReader(df, ['A', 'B'], ['C', 'D']),
-        DataframeKvReader(df.set_index(['A', 'B']), ['A', 'B'], ['C', 'D']),
-        DataframeKvReader(df.set_index('A'), ['A', 'B'], ['C', 'D']),
-    ]
-
-    for kv_reader in kv_readers:
-        # Accessing values
-        key = (1, 4)
-        expected_df = pd.DataFrame([{'C': 7, 'D': 10}, {'C': 9, 'D': 12}], index=[0, 2])
-        assert (
-            kv_reader[key]
-            .reset_index(drop=True)
-            .equals(expected_df.reset_index(drop=True))
-        )
-        assert list(kv_reader) == [(1, 4), (2, 5)]

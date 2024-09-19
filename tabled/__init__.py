@@ -11,7 +11,7 @@ from tabled.base import (
     DataframeKvReader,
     dflt_ext_mapping,
     df_from_data_according_to_key,
-    get_ext,
+    get_file_ext,
     identity,
     key_func_mapping,
     split_keys,
