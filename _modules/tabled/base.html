@@ -55,6 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
 </ul>
@@ -92,13 +93,24 @@
 <span class="c1">#   * Allow on-the-fly parametrization (e.g. sep=&#39;\t&#39;, index_col=False...)</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">KT</span><span class="p">,</span>
+    <span class="n">VT</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">i2</span> <span class="kn">import</span> <span class="n">mk_sentinel</span>
+<span class="kn">from</span> <span class="nn">i2</span> <span class="kn">import</span> <span class="n">mk_sentinel</span><span class="p">,</span> <span class="n">Sig</span>
 
 <span class="kn">from</span> <span class="nn">dol</span> <span class="kn">import</span> <span class="n">Files</span>  <span class="c1"># previously: py2store.stores.local_store import LocalBinaryStore</span>
 <span class="kn">from</span> <span class="nn">tabled.util</span> <span class="kn">import</span> <span class="n">identity</span><span class="p">,</span> <span class="n">split_keys</span>
@@ -106,6 +118,8 @@
 
 <span class="n">Obj</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Obj&#39;</span><span class="p">)</span>
 <span class="n">KeyFunc</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Obj</span><span class="p">],</span> <span class="n">KT</span><span class="p">]</span>
+<span class="n">Extension</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Extension&#39;</span><span class="p">)</span>
+<span class="n">DfDecoder</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Obj</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
 <span class="n">dflt_not_found_sentinel</span> <span class="o">=</span> <span class="n">mk_sentinel</span><span class="p">(</span><span class="s1">&#39;dflt_not_found_sentinel&#39;</span><span class="p">)</span>
 
 
@@ -149,32 +163,51 @@
 
 
 
+<span class="c1"># TODO: Add some registry functionality to this?</span>
 <span class="n">dflt_ext_mapping</span> <span class="o">=</span> <span class="n">split_keys</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s1">&#39;xls xlsx&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="s1">&#39;csv&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="s1">&#39;tsv&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;html&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="s1">&#39;p pickle&#39;</span><span class="p">:</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
+        <span class="s1">&#39;xls xlsx xlsm&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># Excel files</span>
+        <span class="s1">&#39;csv txt&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># CSV and text files</span>
+        <span class="s1">&#39;tsv&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># Tab-separated</span>
+        <span class="s1">&#39;parquet&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">,</span>  <span class="c1"># Parquet format</span>
+        <span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">),</span>  <span class="c1"># JSON format</span>
+        <span class="s1">&#39;html&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># HTML tables</span>
+        <span class="s1">&#39;p pickle pkl&#39;</span><span class="p">:</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>  <span class="c1"># Pickle files</span>
+        <span class="s1">&#39;xml&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_xml</span><span class="p">,</span>  <span class="c1"># XML files</span>
+        <span class="s1">&#39;h5 hdf5&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">,</span>  <span class="c1"># HDF5 format</span>
+        <span class="s1">&#39;sql sqlite&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">,</span>  <span class="c1"># SQL queries</span>
+        <span class="s1">&#39;feather&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">,</span>  <span class="c1"># Feather format</span>
+        <span class="s1">&#39;stata dta&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">,</span>  <span class="c1"># Stata files</span>
+        <span class="s1">&#39;sas&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sas</span><span class="p">,</span>  <span class="c1"># SAS files</span>
+        <span class="c1"># &#39;gbq&#39;: pandas_gbq.read_gbq,  # Google BigQuery</span>
     <span class="p">}</span>
 <span class="p">)</span>
 
 
 <div class="viewcode-block" id="df_from_data_given_ext">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.df_from_data_given_ext">[docs]</a>
-<span class="k">def</span> <span class="nf">df_from_data_given_ext</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">df_from_data_given_ext</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="p">:</span> <span class="n">Extension</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a dataframe from a (data, ext) pair&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="n">trans_func</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span>
+    <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span>
         <span class="n">ext</span><span class="p">,</span>
         <span class="n">mapping</span><span class="p">,</span>
         <span class="n">key</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>
         <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># TODO</span>
     <span class="p">)</span>
-    <span class="k">if</span> <span class="n">trans_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">trans_func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># pluck out any key-value pairs of extra_decoder_kwargs whose names are </span>
+        <span class="c1"># arguments of decoder. (This is needed since extra_decoder_kwargs can be </span>
+        <span class="c1"># servicing multiple decoders, and we don&#39;t want to pass arguments to the</span>
+        <span class="c1"># wrong decoder.)</span>
+        <span class="n">extra_decoder_kwargs</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">decoder</span><span class="p">)</span><span class="o">.</span><span class="n">map_arguments</span><span class="p">(</span>
+            <span class="p">(),</span> <span class="n">extra_decoder_kwargs</span><span class="p">,</span> <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_excess</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="c1"># decode the data</span>
+        <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Don&#39;t know how to handle extension: </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
@@ -182,15 +215,17 @@
 
 <div class="viewcode-block" id="df_from_data_according_to_key">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.df_from_data_according_to_key">[docs]</a>
-<span class="k">def</span> <span class="nf">df_from_data_according_to_key</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">df_from_data_according_to_key</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Obj</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KT</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a dataframe from a (data, mapping, key) triple&quot;&quot;&quot;</span>
-    <span class="n">trans_func</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">trans_func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">get_ext</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_file_ext</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="n">KT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Extension</span><span class="p">:</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ext</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
@@ -224,7 +259,7 @@
 <span class="n">df_from_data_according_to_ext</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
     <span class="n">df_from_data_according_to_key</span><span class="p">,</span>
     <span class="n">mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">,</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">get_ext</span><span class="p">,</span>
+    <span class="n">key</span><span class="o">=</span><span class="n">get_file_ext</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># df_from_data_given_ext meant to be equivalent (but more general, using ext_specs) to</span>
@@ -256,18 +291,41 @@
 
 <span class="c1"># TODO: Make the logic independent from local files assumption.</span>
 <span class="c1"># TODO: Better separate Reader, and add DfStore to make a writer.</span>
-
-
+<span class="c1"># TODO: Add filtering functionality in init? (By function, regex, extension?)</span>
 <div class="viewcode-block" id="DfFiles">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.DfFiles">[docs]</a>
 <span class="k">class</span> <span class="nc">DfFiles</span><span class="p">(</span><span class="n">Files</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A key-value store providing values as pandas.DataFrames&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A key-value store providing values as pandas.DataFrames.</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_format</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path_format</span><span class="p">)</span>
+<span class="sd">    Use Case: You have a bunch of files in a folder, all corresponding to some</span>
+<span class="sd">    dataframes that were saved in some way. You want to a key-value store whose values</span>
+<span class="sd">    are the (decoded) dataframes corresponding to the files in the folder.</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span> <span class="o">=</span> <span class="n">get_ext</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_and_ext_to_df</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">df_from_data_given_ext</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">mapping</span><span class="p">)</span>
+<span class="sd">    Args:</span>
+<span class="sd">    rootdir: A root directory.</span>
+<span class="sd">    extension_decoder_mapping: A mapping from file extensions to functions that can</span>
+<span class="sd">        read the dataframes</span>
+<span class="sd">    extra_decoder_kwargs: Extra arguments to pass to the decoder functions.</span>
+
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">extension_decoder_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">dflt_ext_mapping</span><span class="p">,</span>
+        <span class="n">extra_decoder_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span> <span class="o">=</span> <span class="n">get_file_ext</span>
+        <span class="n">extra_decoder_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_and_ext_to_df</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">df_from_data_given_ext</span><span class="p">,</span>
+            <span class="n">mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
@@ -416,29 +474,6 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(df=&lt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows&gt;, key_fields=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="si">}</span><span class="s2">, value_columns=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
 
-
-<span class="c1"># Test cases</span>
-<span class="k">def</span> <span class="nf">test_DataframeKvReader</span><span class="p">():</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-        <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]}</span>
-    <span class="p">)</span>
-
-    <span class="n">kv_readers</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">DataframeKvReader</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">]),</span>
-        <span class="n">DataframeKvReader</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]),</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">]),</span>
-        <span class="n">DataframeKvReader</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">]),</span>
-    <span class="p">]</span>
-
-    <span class="k">for</span> <span class="n">kv_reader</span> <span class="ow">in</span> <span class="n">kv_readers</span><span class="p">:</span>
-        <span class="c1"># Accessing values</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="n">expected_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">kv_reader</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">kv_reader</span><span class="p">)</span> <span class="o">==</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
 </pre></div>
 
            </div>
