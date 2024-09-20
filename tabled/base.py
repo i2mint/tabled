@@ -122,7 +122,7 @@ def df_from_data_according_to_key(
 ):
     """Get a dataframe from a (data, mapping, key) triple"""
     decoder = key_func_mapping(data, mapping, key=key, not_found_sentinel=None)
-    return decoder(data, **kwargs)
+    return decoder(data, **extra_decoder_kwargs)
 
 
 def get_file_ext(key: KT) -> Extension:
