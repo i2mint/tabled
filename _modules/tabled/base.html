@@ -220,7 +220,7 @@
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a dataframe from a (data, mapping, key) triple&quot;&quot;&quot;</span>
     <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span></div>
 
 
 
