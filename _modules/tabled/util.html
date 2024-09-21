@@ -290,6 +290,120 @@
 
 
 
+<span class="c1"># TODO: Integrate in tabled.base.dflt_ext_mapping</span>
+<div class="viewcode-block" id="auto_decode_bytes">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.auto_decode_bytes">[docs]</a>
+<span class="k">def</span> <span class="nf">auto_decode_bytes</span><span class="p">(</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">try_first_bytes</span><span class="o">=</span><span class="p">(</span><span class="mf">1e6</span><span class="p">,</span> <span class="mf">1e7</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">),</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decode a byte sequence into a string, trying charset_normalizer gueses if fails.</span>
+
+<span class="sd">    This function attempts to decode the given bytes using the default encoding (usually &#39;utf-8&#39;).</span>
+<span class="sd">    If that fails due to a `UnicodeDecodeError`, it uses `charset_normalizer` to detect the encoding</span>
+<span class="sd">    by analyzing increasingly larger samples of the byte sequence, as specified in `try_first_bytes`.</span>
+<span class="sd">    If all attempts fail, it analyzes the entire byte sequence to detect the encoding.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        b (bytes): The byte sequence to decode.</span>
+<span class="sd">        try_first_bytes (tuple of floats): Byte lengths to use for encoding detection samples.</span>
+<span class="sd">            Defaults to (1e6, 1e7, 1e8).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The decoded string.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        UnicodeDecodeError: If the byte sequence cannot be decoded after all attempts.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; # Example with UTF-8 encoded bytes</span>
+<span class="sd">        &gt;&gt;&gt; s = &#39;Hello, world! Привет мир! こんにちは世界！&#39;</span>
+<span class="sd">        &gt;&gt;&gt; b_utf8 = s.encode(&#39;utf-8&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; auto_decode_bytes(b_utf8) == s</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &gt;&gt;&gt; # Example with UTF-16 encoded bytes</span>
+<span class="sd">        &gt;&gt;&gt; s_utf16 = &#39;Hello, world! 你好，世界！&#39;</span>
+<span class="sd">        &gt;&gt;&gt; b_utf16 = s_utf16.encode(&#39;utf-16&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; auto_decode_bytes(b_utf16) == s_utf16</span>
+<span class="sd">        True</span>
+
+<span class="sd">        Now, this is auto_decoding, but it doesn&#39;t mean it&#39;s robust.</span>
+<span class="sd">        We use `charset_normalizer` to detect the encoding of the bytes, and then</span>
+<span class="sd">        try to decode it with that encoding.</span>
+<span class="sd">        But sometimes you can decode something that is not the original string,</span>
+<span class="sd">        so be careful!!</span>
+<span class="sd">        It&#39;s annoying to have to specify the encoding all the time, but this</span>
+<span class="sd">        explicitness, and the errors that come with it, can be vital.</span>
+
+<span class="sd">        Here are a few examples. We&#39;ll</span>
+
+<span class="sd">        &gt;&gt;&gt; s_latin1 = &#39;Héllo, wörld! Ça va?&#39;</span>
+<span class="sd">        &gt;&gt;&gt; b_latin1 = s_latin1.encode(&#39;latin-1&#39;)  # latin-1 is ISO-8859-1</span>
+<span class="sd">        &gt;&gt;&gt; decoded_s = auto_decode_bytes(b_latin1, verbose=True)</span>
+<span class="sd">        Trying encoding: &#39;utf-8&#39;</span>
+<span class="sd">        Trying encoding: &#39;big5&#39;</span>
+<span class="sd">        &gt;&gt;&gt; decoded_s</span>
+<span class="sd">        &#39;H幨lo, w顤ld! ド va?&#39;</span>
+<span class="sd">        &gt;&gt;&gt; decoded_s == s_latin1</span>
+<span class="sd">        False</span>
+
+<span class="sd">        &gt;&gt;&gt; s_cp1252 = &#39;Special characters: € £ ¥ © ®&#39;</span>
+<span class="sd">        &gt;&gt;&gt; b_cp1252 = s_cp1252.encode(&#39;cp1252&#39;)  # i.e. &#39;Windows-1252&#39;</span>
+<span class="sd">        &gt;&gt;&gt; decoded_s = auto_decode_bytes(b_cp1252, verbose=True)</span>
+<span class="sd">        Trying encoding: &#39;utf-8&#39;</span>
+<span class="sd">        Trying encoding: &#39;cp1125&#39;</span>
+<span class="sd">        &gt;&gt;&gt; # See that charset_normalizer</span>
+<span class="sd">        &gt;&gt;&gt; decoded_s</span>
+<span class="sd">        &#39;Special characters: А г е й о&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">charset_normalizer</span>  <span class="c1"># pip install charset-normalizer</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">clog</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trying encoding: &#39;</span><span class="si">{</span><span class="n">encoding</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">clog</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">encoding</span><span class="p">:</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>  <span class="c1"># Try to decode using Python&#39;s default encoding (usually &#39;utf-8&#39;)</span>
+        <span class="n">clog</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>  <span class="c1"># Use bytes.decode default encoding</span>
+    <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+        <span class="k">pass</span>  <span class="c1"># Proceed to detection steps</span>
+
+    <span class="kn">import</span> <span class="nn">charset_normalizer</span>  <span class="c1"># pip install charset-normalizer</span>
+
+    <span class="n">try_first_bytes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">try_first_bytes</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">n_bytes</span> <span class="ow">in</span> <span class="n">try_first_bytes</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">b</span><span class="p">[:</span><span class="n">n_bytes</span><span class="p">]</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">charset_normalizer</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">best_match</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">best</span><span class="p">()</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="n">best_match</span><span class="o">.</span><span class="n">encoding</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">clog</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># Try next sample size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>  <span class="c1"># Detection failed, try next sample size</span>
+
+    <span class="c1"># As a last resort, detect encoding using the entire byte sequence</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">charset_normalizer</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">encoding</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">best</span><span class="p">()</span><span class="o">.</span><span class="n">encoding</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">clog</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+            <span class="k">pass</span>  <span class="c1"># Will raise error below</span>
+
+    <span class="k">raise</span> <span class="ne">UnicodeDecodeError</span><span class="p">(</span><span class="s2">&quot;Unable to decode bytes with detected encodings.&quot;</span><span class="p">)</span></div>
+
+
+
 <span class="c1"># -------------------------------------------------------------------------------------</span>
 <span class="c1"># Expand and collapse rows and columns</span>
 

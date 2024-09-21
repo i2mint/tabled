@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">tabled.tests.test_base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/util.html">tabled.tests.util</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">tabled.util</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.auto_decode_bytes"><code class="docutils literal notranslate"><span class="pre">auto_decode_bytes()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.breadth_first_traversal"><code class="docutils literal notranslate"><span class="pre">breadth_first_traversal()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.collapse_columns"><code class="docutils literal notranslate"><span class="pre">collapse_columns()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.collapse_rows"><code class="docutils literal notranslate"><span class="pre">collapse_rows()</span></code></a></li>
@@ -100,6 +101,78 @@
   <section id="module-tabled.util">
 <span id="tabled-util"></span><h1>tabled.util<a class="headerlink" href="#module-tabled.util" title="Link to this heading"></a></h1>
 <p>Utils</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.auto_decode_bytes">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">auto_decode_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">try_first_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1000000.0,</span> <span class="pre">10000000.0,</span> <span class="pre">100000000.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#auto_decode_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.auto_decode_bytes" title="Link to this definition"></a></dt>
+<dd><p>Decode a byte sequence into a string, trying charset_normalizer gueses if fails.</p>
+<p>This function attempts to decode the given bytes using the default encoding (usually ‘utf-8’).
+If that fails due to a <cite>UnicodeDecodeError</cite>, it uses <cite>charset_normalizer</cite> to detect the encoding
+by analyzing increasingly larger samples of the byte sequence, as specified in <cite>try_first_bytes</cite>.
+If all attempts fail, it analyzes the entire byte sequence to detect the encoding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>b</strong> (<em>bytes</em>) – The byte sequence to decode.</p></li>
+<li><p><strong>try_first_bytes</strong> (<em>tuple</em><em> of </em><em>floats</em>) – Byte lengths to use for encoding detection samples.
+Defaults to (1e6, 1e7, 1e8).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The decoded string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>UnicodeDecodeError</strong> – If the byte sequence cannot be decoded after all attempts.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example with UTF-8 encoded bytes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Hello, world! Привет мир! こんにちは世界！&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_utf8</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">auto_decode_bytes</span><span class="p">(</span><span class="n">b_utf8</span><span class="p">)</span> <span class="o">==</span> <span class="n">s</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example with UTF-16 encoded bytes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s_utf16</span> <span class="o">=</span> <span class="s1">&#39;Hello, world! 你好，世界！&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_utf16</span> <span class="o">=</span> <span class="n">s_utf16</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-16&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">auto_decode_bytes</span><span class="p">(</span><span class="n">b_utf16</span><span class="p">)</span> <span class="o">==</span> <span class="n">s_utf16</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Now, this is auto_decoding, but it doesn’t mean it’s robust.
+We use <cite>charset_normalizer</cite> to detect the encoding of the bytes, and then
+try to decode it with that encoding.
+But sometimes you can decode something that is not the original string,
+so be careful!!
+It’s annoying to have to specify the encoding all the time, but this
+explicitness, and the errors that come with it, can be vital.</p>
+<p>Here are a few examples. We’ll</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s_latin1</span> <span class="o">=</span> <span class="s1">&#39;Héllo, wörld! Ça va?&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_latin1</span> <span class="o">=</span> <span class="n">s_latin1</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin-1&#39;</span><span class="p">)</span>  <span class="c1"># latin-1 is ISO-8859-1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span> <span class="o">=</span> <span class="n">auto_decode_bytes</span><span class="p">(</span><span class="n">b_latin1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">Trying encoding: &#39;utf-8&#39;</span>
+<span class="go">Trying encoding: &#39;big5&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span>
+<span class="go">&#39;H幨lo, w顤ld! ド va?&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span> <span class="o">==</span> <span class="n">s_latin1</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s_cp1252</span> <span class="o">=</span> <span class="s1">&#39;Special characters: € £ ¥ © ®&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_cp1252</span> <span class="o">=</span> <span class="n">s_cp1252</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;cp1252&#39;</span><span class="p">)</span>  <span class="c1"># i.e. &#39;Windows-1252&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span> <span class="o">=</span> <span class="n">auto_decode_bytes</span><span class="p">(</span><span class="n">b_cp1252</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">Trying encoding: &#39;utf-8&#39;</span>
+<span class="go">Trying encoding: &#39;cp1125&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># See that charset_normalizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span>
+<span class="go">&#39;Special characters: А г е й о&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.breadth_first_traversal">
 <span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">breadth_first_traversal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_node</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yield_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#breadth_first_traversal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.breadth_first_traversal" title="Link to this definition"></a></dt>

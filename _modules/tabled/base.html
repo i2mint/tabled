@@ -164,6 +164,7 @@
 
 
 <span class="c1"># TODO: Add some registry functionality to this?</span>
+<span class="c1"># TODO: Merge with dol&#39;s extension-based codec mapping (routing)</span>
 <span class="n">dflt_ext_mapping</span> <span class="o">=</span> <span class="n">split_keys</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s1">&#39;xls xlsx xlsm&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># Excel files</span>
