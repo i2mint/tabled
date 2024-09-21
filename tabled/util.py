@@ -188,6 +188,117 @@ def breadth_first_traversal(graph: Mapping, start_node, *, yield_edges=False):
             )
 
 
+# TODO: Integrate in tabled.base.dflt_ext_mapping
+def auto_decode_bytes(
+    b: bytes, *, try_first_bytes=(1e6, 1e7, 1e8), encoding: str = 'utf-8', verbose=False
+) -> str:
+    """
+    Decode a byte sequence into a string, trying charset_normalizer gueses if fails.
+
+    This function attempts to decode the given bytes using the default encoding (usually 'utf-8').
+    If that fails due to a `UnicodeDecodeError`, it uses `charset_normalizer` to detect the encoding
+    by analyzing increasingly larger samples of the byte sequence, as specified in `try_first_bytes`.
+    If all attempts fail, it analyzes the entire byte sequence to detect the encoding.
+
+    Parameters:
+        b (bytes): The byte sequence to decode.
+        try_first_bytes (tuple of floats): Byte lengths to use for encoding detection samples.
+            Defaults to (1e6, 1e7, 1e8).
+
+    Returns:
+        str: The decoded string.
+
+    Raises:
+        UnicodeDecodeError: If the byte sequence cannot be decoded after all attempts.
+
+    Examples:
+        >>> # Example with UTF-8 encoded bytes
+        >>> s = 'Hello, world! Привет мир! こんにちは世界！'
+        >>> b_utf8 = s.encode('utf-8')
+        >>> auto_decode_bytes(b_utf8) == s
+        True
+
+        >>> # Example with UTF-16 encoded bytes
+        >>> s_utf16 = 'Hello, world! 你好，世界！'
+        >>> b_utf16 = s_utf16.encode('utf-16')
+        >>> auto_decode_bytes(b_utf16) == s_utf16
+        True
+
+        Now, this is auto_decoding, but it doesn't mean it's robust.
+        We use `charset_normalizer` to detect the encoding of the bytes, and then
+        try to decode it with that encoding.
+        But sometimes you can decode something that is not the original string,
+        so be careful!!
+        It's annoying to have to specify the encoding all the time, but this
+        explicitness, and the errors that come with it, can be vital.
+
+        Here are a few examples. We'll
+
+        >>> s_latin1 = 'Héllo, wörld! Ça va?'
+        >>> b_latin1 = s_latin1.encode('latin-1')  # latin-1 is ISO-8859-1
+        >>> decoded_s = auto_decode_bytes(b_latin1, verbose=True)
+        Trying encoding: 'utf-8'
+        Trying encoding: 'big5'
+        >>> decoded_s
+        'H幨lo, w顤ld! ド va?'
+        >>> decoded_s == s_latin1
+        False
+
+        >>> s_cp1252 = 'Special characters: € £ ¥ © ®'
+        >>> b_cp1252 = s_cp1252.encode('cp1252')  # i.e. 'Windows-1252'
+        >>> decoded_s = auto_decode_bytes(b_cp1252, verbose=True)
+        Trying encoding: 'utf-8'
+        Trying encoding: 'cp1125'
+        >>> # See that charset_normalizer
+        >>> decoded_s
+        'Special characters: А г е й о'
+
+    """
+
+    import charset_normalizer  # pip install charset-normalizer
+
+    if verbose:
+        clog = lambda encoding: print(f"Trying encoding: '{encoding}'")
+    else:
+        clog = lambda encoding: None
+
+    try:  # Try to decode using Python's default encoding (usually 'utf-8')
+        clog(encoding)
+        return b.decode(encoding)  # Use bytes.decode default encoding
+    except UnicodeDecodeError:
+        pass  # Proceed to detection steps
+
+    import charset_normalizer  # pip install charset-normalizer
+
+    try_first_bytes = list(map(int, try_first_bytes))
+
+    for n_bytes in try_first_bytes:
+        sample = b[:n_bytes]
+        results = charset_normalizer.from_bytes(sample)
+        if results:
+            best_match = results.best()
+            encoding = best_match.encoding
+            try:
+                clog(encoding)
+                return b.decode(encoding=encoding)
+            except UnicodeDecodeError:
+                continue  # Try next sample size
+        else:
+            continue  # Detection failed, try next sample size
+
+    # As a last resort, detect encoding using the entire byte sequence
+    results = charset_normalizer.from_bytes(b)
+    if results:
+        encoding = results.best().encoding
+        try:
+            clog(encoding)
+            return b.decode(encoding=encoding)
+        except UnicodeDecodeError:
+            pass  # Will raise error below
+
+    raise UnicodeDecodeError("Unable to decode bytes with detected encodings.")
+
+
 # -------------------------------------------------------------------------------------
 # Expand and collapse rows and columns
 

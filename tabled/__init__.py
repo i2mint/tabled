@@ -17,4 +17,10 @@ from tabled.base import (
     split_keys,
 )
 from tabled.multi import ColumnOrientedMapping
-from tabled.util import collapse_rows, expand_rows, collapse_columns, expand_columns
+from tabled.util import (
+    collapse_rows,
+    expand_rows,
+    collapse_columns,
+    expand_columns,
+    auto_decode_bytes,
+)

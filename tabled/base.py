@@ -71,6 +71,7 @@ class KeyFuncReader(KvReader):
 
 
 # TODO: Add some registry functionality to this?
+# TODO: Merge with dol's extension-based codec mapping (routing)
 dflt_ext_mapping = split_keys(
     {
         'xls xlsx xlsm': partial(pd.read_excel, index=False),  # Excel files
