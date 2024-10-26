@@ -1,6 +1,6 @@
 """To work with html"""
 
-from typing import Callable, Union, Mapping
+from typing import Callable, Union, Mapping, Optional, Sequence
 import re
 import pandas as pd
 
@@ -44,8 +44,61 @@ def url_to_html_func(kind='requests') -> Callable:
 get_tables_from_html = pd.read_html
 
 
+TableFilter = Union[str, Sequence[str], Callable]
+
+
+def _ensure_table_filter(filt: TableFilter) -> Callable:
+    """
+    Ensure that the filter is a callable that takes a dataframe and returns a boolean.
+
+    If filt is a string, the column names must contain at least one column that matches filt regex.
+    If filt is a list of strings, the column names must contain at least one column that matches
+    the regexes in the filt list, for each regex in the list.
+    If filt is a callable, it is used as is.
+
+    Raises a ValueError if the filter type is unknown.
+
+    Examples:
+
+    >>> filt_func = _ensure_table_filter('foo')
+    >>> filt_func(pd.DataFrame({'foo': [1, 2]}))
+    True
+    >>> filt_func(pd.DataFrame({'bar': [1, 2]}))
+    False
+    >>> filt_func = _ensure_table_filter(['foo', 'bar'])
+    >>> filt_func(pd.DataFrame({'football': [1, 2], 'baring': [3, 4]}))
+    True
+    >>> filt_func(pd.DataFrame({'football': [1, 2], 'neither': [3, 4]}))
+    False
+
+    But if a same column name matches both regexes, it should return True:
+
+    >>> filt_func(pd.DataFrame({'foobar': [1, 2], 'huh': [3, 4]}))
+    True
+
+    """
+    if filt is None:
+        return lambda x: True
+    if isinstance(filt, str):
+        # The column names must contain at least one column that matches filt regex
+        filt_regex = re.compile(filt)
+        return lambda x: x.columns.str.contains(filt_regex).any()
+    if isinstance(filt, Sequence):
+        # The column names must contain at least one column that matches the
+        # regexes in the filt list, for each regex in the list
+        filt_regexes = [re.compile(f) for f in filt]
+        return lambda x: all(x.columns.str.contains(f).any() for f in filt_regexes)
+    if callable(filt):
+        return filt
+    raise ValueError(f'Unknown filter type: {filt}')
+
+
 def get_tables_from_url(
-    url, *, url_to_html: Union[Callable, str] = 'requests', **tables_from_html_kwargs
+    url,
+    *,
+    url_to_html: Union[Callable, str] = 'requests',
+    filt: Optional[TableFilter] = None,
+    **tables_from_html_kwargs,
 ):
     """Get's a list of pandas dataframes from tables scraped from a url.
     Note that this will only work with static pages. If the html needs to be rendered dynamically,
@@ -66,16 +119,20 @@ def get_tables_from_url(
     ```
 
     To make selenium work:
-    ```
-        pip install selenium
-        Download seleniumdriver here: https://chromedriver.chromium.org/
-        Uzip and put in a place that's on you PATH (run command `echo $PATH` for a list of those places)
-    ```
+
+    - `pip install selenium`
+    - Download seleniumdriver here: https://chromedriver.chromium.org/
+    - Uzip and put in a place that's on you PATH (run command `echo $PATH` for a list of those places)
+
     """
     if not callable(url_to_html):
         url_to_html = url_to_html_func(url_to_html)
+
+    filt_func = _ensure_table_filter(filt)
+
     try:
-        return get_tables_from_html(url_to_html(url), **tables_from_html_kwargs)
+        tables = get_tables_from_html(url_to_html(url), **tables_from_html_kwargs)
+        return list(filter(filt_func, tables))
     except ValueError as e:
         if len(e.args) > 0:
             msg, *_ = e.args
