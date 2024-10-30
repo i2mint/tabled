@@ -70,6 +70,7 @@ class KeyFuncReader(KvReader):
         return f'{type(self).__name__}({self.mapping}, key={self.key})'
 
 
+# TODO: Merge with imbed.base extension-based codec mapping, and move here
 # TODO: Add some registry functionality to this?
 # TODO: Merge with dol's extension-based codec mapping (routing)
 dflt_ext_mapping = split_keys(
@@ -105,8 +106,8 @@ def df_from_data_given_ext(
         not_found_sentinel=None,  # TODO
     )
     if decoder is not None:
-        # pluck out any key-value pairs of extra_decoder_kwargs whose names are 
-        # arguments of decoder. (This is needed since extra_decoder_kwargs can be 
+        # pluck out any key-value pairs of extra_decoder_kwargs whose names are
+        # arguments of decoder. (This is needed since extra_decoder_kwargs can be
         # servicing multiple decoders, and we don't want to pass arguments to the
         # wrong decoder.)
         extra_decoder_kwargs = Sig(decoder).map_arguments(
@@ -366,4 +367,3 @@ class DataframeKvReader(Mapping):
 
     def __repr__(self):
         return f"{type(self).__name__}(df=<{len(self.df)} rows>, key_fields={self.key_fields}, value_columns={self.value_columns})"
-
