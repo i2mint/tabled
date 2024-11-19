@@ -24,3 +24,6 @@ from tabled.util import (
     expand_columns,
     auto_decode_bytes,
 )
+from tabled.misc import (
+    scalar_columns,  # get list of columns that are scalar (therefore serializable to CSV)
+)
