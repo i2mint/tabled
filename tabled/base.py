@@ -93,15 +93,15 @@ dflt_ext_mapping = split_keys(
 )
 
 
-def df_from_data_given_ext(
-    data, ext: Extension, mapping=dflt_ext_mapping, **extra_decoder_kwargs
-):
+def resolve_to_dataframe(
+    data, ext: Extension, ext_mapping: Mapping = dflt_ext_mapping, **extra_decoder_kwargs
+) -> pd.DataFrame:
     """Get a dataframe from a (data, ext) pair"""
     if ext.startswith('.'):
         ext = ext[1:]
     decoder = key_func_mapping(
         ext,
-        mapping,
+        ext_mapping,
         key=identity,
         not_found_sentinel=None,  # TODO
     )
@@ -117,6 +117,9 @@ def df_from_data_given_ext(
         return decoder(data, **extra_decoder_kwargs)
     else:
         raise ValueError(f"Don't know how to handle extension: {ext}")
+
+
+df_from_data_given_ext = resolve_to_dataframe  # back-compatibility alias
 
 
 def df_from_data_according_to_key(
@@ -157,15 +160,17 @@ def get_protocol(url: str):
     if m:
         return m.group(1)
 
+
 # TODO: Implemented a plugin system (routing) for io resolution concern in disucssion #8
 #   See https://github.com/i2mint/tabled/discussions/8#discussion-7519188
 #   Just don't know if it's worth the complexity yet.
 #   If you find yourself editing default_io_resolver or specifying a lot of custom ones,
-#   it might be time to use the plugin system instead. 
+#   it might be time to use the plugin system instead.
 from typing import BinaryIO
 
 TableSrc = Union[str, bytes, BinaryIO]
 BinaryIOCaster = Callable[[TableSrc], BinaryIO]
+
 
 # TODO: Routing pattern!
 def default_io_resolver(src: TableSrc) -> BinaryIO:
@@ -193,7 +198,7 @@ def get_table(
     mapping=dflt_ext_mapping,
     resolve_to_io=default_io_resolver,
     **extra_decoder_kwargs,
-):
+) -> pd.DataFrame:
     """
     Get a table from a variety of sources.
     """
@@ -202,47 +207,13 @@ def get_table(
         return partial(
             ext=ext, mapping=mapping, get_io_obj=get_io_obj, **extra_decoder_kwargs
         )
-    
+
     # Get a BinaryIO object from the source
     io_reader = resolve_to_io(table_src)
-    
-    return df_from_data_given_ext(
-        io_reader, ext=ext, mapping=mapping, **extra_decoder_kwargs
+
+    return resolve_to_dataframe(
+        io_reader, ext=ext, ext_mapping=mapping, **extra_decoder_kwargs
     )
-
-
-# df_from_data_according_to_ext = partial(
-#     df_from_data_according_to_key,
-#     mapping=dflt_ext_mapping,
-#     key=get_file_ext,
-# )
-
-
-# df_from_data_given_ext meant to be equivalent (but more general, using ext_specs) to
-# def df_from_data_given_ext(data, ext, ext_specs=None, **kwargs):
-#     """Get a dataframe from a (data, ext) pair"""
-#     ext_specs = ext_specs or DFLT_EXT_SPECS  # NOTE: Note used yet
-#     if ext.startswith("."):
-#         ext = ext[1:]
-#     if ext in {"xls", "xlsx"}:
-#         kwargs = dict({"index": False}, **kwargs)
-#         return pd.read_excel(data, **kwargs)
-#     elif ext in {"csv"}:
-#         kwargs = dict({"index_col": False}, **kwargs)
-#         return pd.read_csv(data, **kwargs)
-#     elif ext in {"tsv"}:
-#         kwargs = dict({"sep": "\t", "index_col": False}, **kwargs)
-#         return pd.read_csv(data, **kwargs)
-#     elif ext in {"json"}:
-#         kwargs = dict({"orient": "records"}, **kwargs)
-#         return pd.read_json(data, **kwargs)
-#     elif ext in {"html"}:
-#         kwargs = dict({"index_col": False}, **kwargs)
-#         return pd.read_html(data, **kwargs)[0]
-#     elif ext in {"p", "pickle"}:
-#         return pickle.load(data, **kwargs)
-#     else:
-#         raise ValueError(f"Don't know how to handle extension: {ext}")
 
 
 # TODO: Make the logic independent from local files assumption.
@@ -260,8 +231,6 @@ class DfFiles(Files):
     extension_decoder_mapping: A mapping from file extensions to functions that can
         read the dataframes
     extra_decoder_kwargs: Extra arguments to pass to the decoder functions.
-
-
 
     """
 
