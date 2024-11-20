@@ -94,7 +94,10 @@ dflt_ext_mapping = split_keys(
 
 
 def resolve_to_dataframe(
-    data, ext: Extension, ext_mapping: Mapping = dflt_ext_mapping, **extra_decoder_kwargs
+    data,
+    ext: Extension,
+    ext_mapping: Mapping = dflt_ext_mapping,
+    **extra_decoder_kwargs,
 ) -> pd.DataFrame:
     """Get a dataframe from a (data, ext) pair"""
     if ext.startswith('.'):
@@ -195,7 +198,7 @@ def get_table(
     table_src: TableSrc = None,
     *,
     ext=None,
-    mapping=dflt_ext_mapping,
+    ext_mapping=dflt_ext_mapping,
     resolve_to_io=default_io_resolver,
     **extra_decoder_kwargs,
 ) -> pd.DataFrame:
@@ -205,14 +208,17 @@ def get_table(
     # If table_src is None, the user is trying to fix the parameters of the function
     if table_src is None:
         return partial(
-            ext=ext, mapping=mapping, get_io_obj=get_io_obj, **extra_decoder_kwargs
+            ext=ext,
+            ext_mapping=ext_mapping,
+            get_io_obj=get_io_obj,
+            **extra_decoder_kwargs,
         )
 
     # Get a BinaryIO object from the source
     io_reader = resolve_to_io(table_src)
 
     return resolve_to_dataframe(
-        io_reader, ext=ext, ext_mapping=mapping, **extra_decoder_kwargs
+        io_reader, ext=ext, ext_mapping=ext_mapping, **extra_decoder_kwargs
     )
 
 
