@@ -5,7 +5,8 @@ A  (key-value) data-object-layer to get (pandas) tables from a variety of source
 
 from tabled.html import get_tables_from_url
 from tabled.base import (
-    DfFiles,
+    get_table,  # get a table from a variety of sources
+    DfFiles,  # a store (mapping from keys to dataframes)
     DfLocalFileReader,  # will be deprecated
     KeyFuncReader,
     DataframeKvReader,

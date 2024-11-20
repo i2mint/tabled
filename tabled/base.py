@@ -5,7 +5,7 @@
 #   and possibly data
 #   * Allow on-the-fly parametrization (e.g. sep='\t', index_col=False...)
 from functools import partial
-from io import BytesIO
+from io import BytesIO, StringIO
 from typing import (
     Mapping,
     Callable,
@@ -124,6 +124,8 @@ def df_from_data_according_to_key(
 ):
     """Get a dataframe from a (data, mapping, key) triple"""
     decoder = key_func_mapping(data, mapping, key=key, not_found_sentinel=None)
+    if decoder is None:
+        raise ValueError(f"Don't know how to handle key: {key}")
     return decoder(data, **extra_decoder_kwargs)
 
 
@@ -155,12 +157,66 @@ def get_protocol(url: str):
     if m:
         return m.group(1)
 
+# TODO: Implemented a plugin system (routing) for io resolution concern in disucssion #8
+#   See https://github.com/i2mint/tabled/discussions/8#discussion-7519188
+#   Just don't know if it's worth the complexity yet.
+#   If you find yourself editing default_io_resolver or specifying a lot of custom ones,
+#   it might be time to use the plugin system instead. 
+from typing import BinaryIO
 
-df_from_data_according_to_ext = partial(
-    df_from_data_according_to_key,
+TableSrc = Union[str, bytes, BinaryIO]
+BinaryIOCaster = Callable[[TableSrc], BinaryIO]
+
+# TODO: Routing pattern!
+def default_io_resolver(src: TableSrc) -> BinaryIO:
+    if isinstance(src, str):
+        if os.path.isfile(src):
+            return open(src, 'rb')
+        elif get_protocol(src) in {'http', 'https'}:
+            import requests
+
+            return BytesIO(requests.get(src).content)
+        else:
+            raise ValueError(f"Can't handle source: {src}")
+    elif isinstance(src, bytes):
+        return BytesIO(src)
+    elif hasattr(src, 'read'):
+        return src
+    else:
+        raise ValueError(f"Can't handle source: {src}")
+
+
+def get_table(
+    table_src: TableSrc = None,
+    *,
+    ext=None,
     mapping=dflt_ext_mapping,
-    key=get_file_ext,
-)
+    resolve_to_io=default_io_resolver,
+    **extra_decoder_kwargs,
+):
+    """
+    Get a table from a variety of sources.
+    """
+    # If table_src is None, the user is trying to fix the parameters of the function
+    if table_src is None:
+        return partial(
+            ext=ext, mapping=mapping, get_io_obj=get_io_obj, **extra_decoder_kwargs
+        )
+    
+    # Get a BinaryIO object from the source
+    io_reader = resolve_to_io(table_src)
+    
+    return df_from_data_given_ext(
+        io_reader, ext=ext, mapping=mapping, **extra_decoder_kwargs
+    )
+
+
+# df_from_data_according_to_ext = partial(
+#     df_from_data_according_to_key,
+#     mapping=dflt_ext_mapping,
+#     key=get_file_ext,
+# )
+
 
 # df_from_data_given_ext meant to be equivalent (but more general, using ext_specs) to
 # def df_from_data_given_ext(data, ext, ext_specs=None, **kwargs):
