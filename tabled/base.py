@@ -246,7 +246,7 @@ class DfFiles(Files):
         extra_decoder_kwargs = dict(extra_decoder_kwargs)
         self.data_and_ext_to_df = partial(
             df_from_data_given_ext,
-            mapping=extension_decoder_mapping,
+            ext_mapping=extension_decoder_mapping,
             **extra_decoder_kwargs,
         )
 
