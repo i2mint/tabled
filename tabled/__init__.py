@@ -28,3 +28,10 @@ from tabled.util import (
 from tabled.misc import (
     scalar_columns,  # get list of columns that are scalar (therefore serializable to CSV)
 )
+from tabled.wrappers import (
+    extension_to_encoder,  # get an encoder for a given extension
+    extension_to_decoder,  # get a decoder for a given extension
+    extension_based_decoding,  # decode a value based on the extension of the key
+    extension_based_encoding,  # encode a value based on the extension of the key
+    extension_based_wrap,  # Add extension-based encoding and decoding to a store
+)

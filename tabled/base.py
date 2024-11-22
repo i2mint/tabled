@@ -5,48 +5,54 @@
 #   and possibly data
 #   * Allow on-the-fly parametrization (e.g. sep='\t', index_col=False...)
 from functools import partial
-from io import BytesIO, StringIO
+from io import BytesIO
 from typing import (
     Mapping,
-    Callable,
-    TypeVar,
     KT,
     VT,
-    TypeVar,
     Dict,
-    Tuple,
     Iterable,
     Union,
 )
-import os
-import re
-import pickle
 
 import pandas as pd
-from i2 import mk_sentinel, Sig
 
-from dol import Files  # previously: py2store.stores.local_store import LocalBinaryStore
+from dol import Files, KvReader
+
 from tabled.util import identity, split_keys
 
 
-Obj = TypeVar('Obj')
-KeyFunc = Callable[[Obj], KT]
-Extension = TypeVar('Extension')
-DfDecoder = Callable[[Obj], pd.DataFrame]
-dflt_not_found_sentinel = mk_sentinel('dflt_not_found_sentinel')
+from tabled.wrappers import (
+    TableSrc,
+    KeyFunc,
+    Extension,
+    DfDecoder,
+    key_func_mapping,  # Map an object to a value based on a key function
+    dflt_ext_mapping,  # Default extension mapping for various file types (DEPRECATED)
+    resolve_to_dataframe,  # Get a dataframe from a (data, ext) pair
+    df_from_data_given_ext,  # Alias for resolve_to_dataframe for backward compatibility
+    df_from_data_according_to_key,  # Get a dataframe from a (data, mapping, key) triple
+    get_file_ext,  # Get the file extension from a key
+    get_protocol,  # Get the protocol of a URL
+    default_io_resolver,  # Default IO resolver for various sources
+)
 
 
-def key_func_mapping(
-    obj: Obj,
-    mapping: Mapping[KT, VT],
-    key: KeyFunc = identity,
-    not_found_sentinel=dflt_not_found_sentinel,
-) -> VT:
-    """Map an object to a value based on a key function"""
-    return mapping.get(key(obj), not_found_sentinel)
+# Obj = TypeVar('Obj')
+# KeyFunc = Callable[[Obj], KT]
+# Extension = TypeVar('Extension')
+# DfDecoder = Callable[[Obj], pd.DataFrame]
+# dflt_not_found_sentinel = mk_sentinel('dflt_not_found_sentinel')
 
 
-from dol import KvReader
+# def key_func_mapping(
+#     obj: Obj,
+#     mapping: Mapping[KT, VT],
+#     key: KeyFunc = identity,
+#     not_found_sentinel=dflt_not_found_sentinel,
+# ) -> VT:
+#     """Map an object to a value based on a key function"""
+#     return mapping.get(key(obj), not_found_sentinel)
 
 
 class KeyFuncReader(KvReader):
@@ -70,130 +76,6 @@ class KeyFuncReader(KvReader):
         return f'{type(self).__name__}({self.mapping}, key={self.key})'
 
 
-# TODO: Merge with imbed.base extension-based codec mapping, and move here
-# TODO: Add some registry functionality to this?
-# TODO: Merge with dol's extension-based codec mapping (routing)
-dflt_ext_mapping = split_keys(
-    {
-        'xls xlsx xlsm': partial(pd.read_excel, index=False),  # Excel files
-        'csv txt': partial(pd.read_csv, index_col=False),  # CSV and text files
-        'tsv': partial(pd.read_csv, sep='\t', index_col=False),  # Tab-separated
-        'parquet': pd.read_parquet,  # Parquet format
-        'json': partial(pd.read_json, orient='records'),  # JSON format
-        'html': partial(pd.read_html, index_col=False),  # HTML tables
-        'p pickle pkl': pickle.load,  # Pickle files
-        'xml': pd.read_xml,  # XML files
-        'h5 hdf5': pd.read_hdf,  # HDF5 format
-        'sql sqlite': pd.read_sql,  # SQL queries
-        'feather': pd.read_feather,  # Feather format
-        'stata dta': pd.read_stata,  # Stata files
-        'sas': pd.read_sas,  # SAS files
-        # 'gbq': pandas_gbq.read_gbq,  # Google BigQuery
-    }
-)
-
-
-def resolve_to_dataframe(
-    data,
-    ext: Extension,
-    ext_mapping: Mapping = dflt_ext_mapping,
-    **extra_decoder_kwargs,
-) -> pd.DataFrame:
-    """Get a dataframe from a (data, ext) pair"""
-    if ext.startswith('.'):
-        ext = ext[1:]
-    decoder = key_func_mapping(
-        ext,
-        ext_mapping,
-        key=identity,
-        not_found_sentinel=None,  # TODO
-    )
-    if decoder is not None:
-        # pluck out any key-value pairs of extra_decoder_kwargs whose names are
-        # arguments of decoder. (This is needed since extra_decoder_kwargs can be
-        # servicing multiple decoders, and we don't want to pass arguments to the
-        # wrong decoder.)
-        extra_decoder_kwargs = Sig(decoder).map_arguments(
-            (), extra_decoder_kwargs, allow_partial=True, allow_excess=True
-        )
-        # decode the data
-        return decoder(data, **extra_decoder_kwargs)
-    else:
-        raise ValueError(f"Don't know how to handle extension: {ext}")
-
-
-df_from_data_given_ext = resolve_to_dataframe  # back-compatibility alias
-
-
-def df_from_data_according_to_key(
-    data: Obj, mapping: Dict[Extension, DfDecoder], key: KT, **extra_decoder_kwargs
-):
-    """Get a dataframe from a (data, mapping, key) triple"""
-    decoder = key_func_mapping(data, mapping, key=key, not_found_sentinel=None)
-    if decoder is None:
-        raise ValueError(f"Don't know how to handle key: {key}")
-    return decoder(data, **extra_decoder_kwargs)
-
-
-def get_file_ext(key: KT) -> Extension:
-    _, ext = os.path.splitext(key)
-    if ext:
-        return ext[1:].lower()
-    else:
-        return ext
-
-
-protocol_re = re.compile(r'([a-zA-Z0-9]+)://')
-
-
-def get_protocol(url: str):
-    """Get the protocol of a url
-
-    >>> get_protocol('https://www.google.com')
-    'https'
-    >>> get_protocol('file:///home/user/file.txt')
-    'file'
-
-    The function returns None if no protocol is found:
-
-    >>> assert get_protocol('no_protocol_here') is None
-
-    """
-    m = protocol_re.match(url)
-    if m:
-        return m.group(1)
-
-
-# TODO: Implemented a plugin system (routing) for io resolution concern in disucssion #8
-#   See https://github.com/i2mint/tabled/discussions/8#discussion-7519188
-#   Just don't know if it's worth the complexity yet.
-#   If you find yourself editing default_io_resolver or specifying a lot of custom ones,
-#   it might be time to use the plugin system instead.
-from typing import BinaryIO
-
-TableSrc = Union[str, bytes, BinaryIO]
-BinaryIOCaster = Callable[[TableSrc], BinaryIO]
-
-
-# TODO: Routing pattern!
-def default_io_resolver(src: TableSrc) -> BinaryIO:
-    if isinstance(src, str):
-        if os.path.isfile(src):
-            return open(src, 'rb')
-        elif get_protocol(src) in {'http', 'https'}:
-            import requests
-
-            return BytesIO(requests.get(src).content)
-        else:
-            raise ValueError(f"Can't handle source: {src}")
-    elif isinstance(src, bytes):
-        return BytesIO(src)
-    elif hasattr(src, 'read'):
-        return src
-    else:
-        raise ValueError(f"Can't handle source: {src}")
-
-
 def get_table(
     table_src: TableSrc = None,
     *,
@@ -208,12 +90,16 @@ def get_table(
     # If table_src is None, the user is trying to fix the parameters of the function
     if table_src is None:
         return partial(
+            get_table,
             ext=ext,
             ext_mapping=ext_mapping,
-            get_io_obj=get_io_obj,
+            resolve_to_io=resolve_to_io,
             **extra_decoder_kwargs,
         )
 
+    if ext is None and isinstance(table_src, str):
+        ext = get_file_ext(table_src)
+        
     # Get a BinaryIO object from the source
     io_reader = resolve_to_io(table_src)
 
@@ -222,8 +108,10 @@ def get_table(
     )
 
 
+from tabled.wrappers import extension_based_encoding, extension_to_encoder
+
+
 # TODO: Make the logic independent from local files assumption.
-# TODO: Better separate Reader, and add DfStore to make a writer.
 # TODO: Add filtering functionality in init? (By function, regex, extension?)
 class DfFiles(Files):
     """A key-value store providing values as pandas.DataFrames.
@@ -243,33 +131,60 @@ class DfFiles(Files):
     def __init__(
         self,
         rootdir: str,
+        *,
+        extension_encoder_mapping: Dict[Extension, DfDecoder] = extension_to_encoder,
         extension_decoder_mapping: Dict[Extension, DfDecoder] = dflt_ext_mapping,
+        extra_encoder_kwargs: Union[dict, Iterable] = (),
         extra_decoder_kwargs: Union[dict, Iterable] = (),
     ):
         super().__init__(rootdir)
 
         self.key_to_ext = get_file_ext
+
+        self.extension_encoder_mapping = extension_encoder_mapping
+        self.extension_decoder_mapping = extension_decoder_mapping
+
+        extra_encoder_kwargs = dict(extra_encoder_kwargs)
         extra_decoder_kwargs = dict(extra_decoder_kwargs)
-        self.data_and_ext_to_df = partial(
+        
+        self.bytes_and_ext_to_df = partial(
             df_from_data_given_ext,
             ext_mapping=extension_decoder_mapping,
             **extra_decoder_kwargs,
         )
 
+        # self.extension_based_encoder = partial(
+        #     extension_based_encoding, extension_encoder_mapping
+        # )
+
     def __getitem__(self, k):
         ext = self.key_to_ext(k)
-        data = BytesIO(super().__getitem__(k))
-        return self.data_and_ext_to_df(data, ext)
+        # data = BytesIO(super().__getitem__(k))
+        data = super().__getitem__(k)
+        return self.bytes_and_ext_to_df(data, ext)
 
+    # TODO: Implement this. This works:
+    # from tabled import extension_base_wrap
+    # extension_base_wrap(Files)
+    # But not this:
     def __setitem__(self, k, v):
-        raise NotImplementedError('This is a reader: No write operation allowed')
+        bytes_ = extension_based_encoding(k, v, extension_to_encoder=self.extension_encoder_mapping)
+        # bytes_ = self.extension_based_encoding(v, get_file_ext(k))
+        return super().__setitem__(k, bytes_)
 
     def __delitem__(self, k):
-        raise NotImplementedError('This is a reader: No delete operation allowed')
+        return super().__delitem__(k)
 
 
-DfReader = DfFiles  # alias for back-compatibility: TODO: Issue warning on use
-DfLocalFileReader = DfFiles  # back-compatibility: TODO: Issue warning on use
+class DfReader(DfFiles):
+    def __setitem__(self, k, v):
+        raise NotImplementedError("DfReader is a read-only store.")
+
+    def __delitem__(self, k):
+        raise NotImplementedError("DfReader is a read-only store.")
+
+
+DfLocalFileReader = DfReader  # back-compatibility: TODO: Issue warning on use
 
 
 # ------------------------------------------------------------------------------

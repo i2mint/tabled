@@ -149,49 +149,158 @@ def save_df_to_zipped_tsv(df: pd.DataFrame, name: str, sep='\t', index=False, **
     file_or_folder_to_zip_file(tsv_filepath, zip_filepath)
 
 
+from i2 import LiteralVal
+from tabled.util import is_instance_of
+from operator import methodcaller
+
+
+def map_values(
+    func: Callable,
+    d: dict,
+    *,
+    except_condition=is_instance_of(LiteralVal),
+    except_handler=methodcaller('__call__'),
+):
+    """Map values of a dictionary, except for those that satisfy a condition.
+
+    The `except_condition` is a function that takes a value and returns a boolean.
+    If the condition is True, the value is not mapped.
+    Instead, the `except_handler` is called with the value, and the result is used as
+    the new value (often, the value is left unchanged).
+
+    The default `except_condition` is `is_instance_of(LiteralVal)`, which is a function
+    that returns True if the value is to be taken litterally.
+    The default `except_handler` is `methodcaller('__call__')`, which will extract
+    the litteral value from the `LiteralVal` object.
+
+    >>> map_values(lambda x: x * 10, {'a': 1, 'b': LiteralVal(2), 'c': 3})
+    {'a': 10, 'b': 2, 'c': 30}
+
+    """
+    return {
+        k: except_handler(v) if except_condition(v) else func(v) for k, v in d.items()
+    }
+
+
 # --------------------------------------------------------------------------------------
 # The codec mappings
 
-extension_to_encoder = {
-    'html': written_bytes(pd.DataFrame.to_html),
-    'json': written_bytes(pd.DataFrame.to_json),
-    'pkl': written_bytes(pd.DataFrame.to_pickle),
-    'parquet': written_bytes(pd.DataFrame.to_parquet, obj_arg_position_in_writer=0),
-    'npy': written_bytes(np.save, obj_arg_position_in_writer=1),
-    'csv': written_bytes(pd.DataFrame.to_csv),
-    'xlsx': written_bytes(pd.DataFrame.to_excel),
-    'tsv': written_bytes(
-        partial(pd.DataFrame.to_csv, sep='\t', escapechar='\\', quotechar='"')
-    ),
-    # complete with all the other pd.DataFrame.to_... methods
-    'zip': save_df_to_zipped_tsv,
-    'feather': written_bytes(pd.DataFrame.to_feather),
-    'h5': written_bytes(pd.DataFrame.to_hdf),
-    'dta': written_bytes(pd.DataFrame.to_stata),
-    'sql': written_bytes(pd.DataFrame.to_sql),
-    'gbq': written_bytes(pd.DataFrame.to_gbq),
-}
+# TODO: Idea: set up the extension_codec plugin system, and use it to set up the default
+#   codec mappings, keeping encoder and decoder close.
+#   Then, we can have a INCLUDE_INDEX_BY_DEFAULT flat that can help us manage the
+#   fact that:
+#       if index=True in encoder,  decoder needs to include index_col=0
+#       if index=False in encoder, decoder needs to include index_col=None
+
+USE_INDEX = True  # set here for the encoders
+INDEX_COL = 0 if USE_INDEX else None  # ... and this will be used for the decoders
+
+extension_to_encoder = split_keys(
+    {
+        # csv files
+        # note: if index=True, decoder needs to include index_col=0
+        #       if index=False, decoder needs to include index_col=None
+        'csv txt': partial(pd.DataFrame.to_csv, index=USE_INDEX),
+        # tab-separated files
+        'tsv': partial(
+            pd.DataFrame.to_csv,
+            index=USE_INDEX,
+            sep='\t',
+            escapechar='\\',
+            quotechar='"',
+        ),
+        # json files
+        'json': pd.DataFrame.to_json,
+        # html tables
+        'html': partial(pd.DataFrame.to_html, index=USE_INDEX),
+        # pickle files
+        'p pickle pkl': pd.DataFrame.to_pickle,
+        # numpy arrays
+        'npy': LiteralVal(written_bytes(np.save, obj_arg_position_in_writer=1)),
+        # parquet format
+        'parquet': LiteralVal(
+            written_bytes(pd.DataFrame.to_parquet, obj_arg_position_in_writer=0)
+        ),
+        # zip-compressed tsv (custom implementation)
+        'zip': LiteralVal(save_df_to_zipped_tsv),
+        # feather format
+        'feather': pd.DataFrame.to_feather,
+        # hdf5 format (Hierarchical Data Format)
+        'h5 hdf5': pd.DataFrame.to_hdf,
+        # stata files
+        'stata dta': partial(pd.DataFrame.to_stata, write_index=USE_INDEX),
+        # sql queries
+        'sql sqlite': pd.DataFrame.to_sql,
+        # Google BigQuery
+        'gbq': pd.DataFrame.to_gbq,
+        # ------------ extensions requiring extra dependencies ------------
+        # excel files
+        'xls xlsx': partial(
+            pd.DataFrame.to_excel, index=USE_INDEX
+        ),  # Need: pip install openpyxl, xlrd
+        # xml files
+        'xml': pd.DataFrame.to_xml,  # Need: pip install lxml
+        # parquet format
+        'parquet': pd.DataFrame.to_parquet,  # Need: pip install pyarrow, fastparquet
+        # feather format
+        'feather': pd.DataFrame.to_feather,  # Need: pip install pyarrow
+        # orc format
+        'orc': pd.DataFrame.to_orc,  # Need: pip install pyarrow
+        # # sas files
+        # 'sas': written_bytes(pd.DataFrame.to_sas),  # Need: pip install sas7bdat
+        # # SPSS files
+        # 'sav': written_bytes(pd.DataFrame.to_spss),  # Need: pip install pyreadstat
+    }
+)
+
+extension_to_encoder = map_values(written_bytes, extension_to_encoder)
+
 
 from dol.util import read_from_bytes
 
 extension_to_decoder = split_keys(
     {
-        'xls xlsx xlsm': partial(pd.read_excel, index=False),  # Excel files
-        'csv txt': partial(pd.read_csv, index_col=False),  # CSV and text files
-        'tsv': partial(pd.read_csv, sep='\t', index_col=False),  # Tab-separated
-        'parquet': read_from_bytes(pd.read_parquet),  # Parquet format
-        'json': partial(pd.read_json, orient='records'),  # JSON format
-        'html': partial(pd.read_html, index_col=False),  # HTML tables
-        'p pickle pkl': pickle.load,  # Pickle files
-        'xml': pd.read_xml,  # XML files
-        'h5 hdf5': pd.read_hdf,  # HDF5 format
-        'sql sqlite': pd.read_sql,  # SQL queries
-        'feather': pd.read_feather,  # Feather format
-        'stata dta': pd.read_stata,  # Stata files
-        'sas': pd.read_sas,  # SAS files
-        # 'gbq': pandas_gbq.read_gbq,  # Google BigQuery
+        # csv and text
+        'csv txt': partial(pd.read_csv, index_col=INDEX_COL),
+        # tab-separated files
+        'tsv': partial(pd.read_csv, sep='\t', index_col=INDEX_COL),
+        # parquet format
+        'parquet': pd.read_parquet,
+        # json format
+        'json': partial(pd.read_json, orient='records'),
+        # html tables
+        'html': partial(pd.read_html, index_col=INDEX_COL),
+        # pickle files
+        'p pickle pkl': pickle.load,
+        # xml files
+        'xml': pd.read_xml,
+        # sql queries
+        'sql sqlite': pd.read_sql,
+        # feather format
+        'feather': pd.read_feather,
+        # stata files
+        'stata dta': partial(pd.read_stata, index_col=INDEX_COL),
+        # sas files
+        'sas': pd.read_sas,
+        # extensions requiring extra dependencies
+        # hdf5 format (Hierarchical Data Format)
+        'h5 hdf5': pd.read_hdf,  # Need: pip install tables
+        # excel files
+        'xls xlsx': partial(
+            pd.read_excel, index_col=INDEX_COL
+        ),  # Need: pip install openpyxl, xlrd
+        # parquet format
+        'parquet': pd.read_parquet,  # Need: pip install pyarrow, fastparquet
+        # feather format
+        'feather': pd.read_feather,  # Need: pip install pyarrow
+        # orc format
+        'orc': pd.read_orc,  # Need: pip install pyarrow
+        # SPSS files
+        'sav': pd.read_spss,  # Need: pip install pyreadstat
     }
 )
+
+extension_to_decoder = map_values(read_from_bytes, extension_to_decoder)
 
 dflt_ext_mapping = extension_to_decoder  # back-compatibility alias
 
@@ -250,7 +359,18 @@ def extension_based_decoding(k, v, *, extension_to_decoder=extension_to_decoder)
     ext = file_extension(k)
     decoder = extension_to_decoder.get(ext, None)
     if decoder is None:
-        raise ValueError(f"Unknown extension: {ext}")
+        suffix_msg = (
+            f"This happened with key: {k}\n"
+            "Note that you can add your own extension-based decoder to resolve this."
+        )
+        if ext != '':
+            raise ValueError(
+                f"Your DECODER doesn't support this extension: {ext}\n{suffix_msg}"
+            )
+        else:
+            raise ValueError(
+                f"Your DECODER doesn't support empty extensions.\n{suffix_msg}"
+            )
     return decoder(v)
 
 
@@ -259,12 +379,23 @@ def extension_based_encoding(k, v, *, extension_to_encoder=extension_to_encoder)
     ext = file_extension(k)
     encoder = extension_to_encoder.get(ext, None)
     if encoder is None:
-        raise ValueError(f"Unknown extension: {ext}")
+        suffix_msg = (
+            f"This happened with key: {k}\n"
+            "Note that you can add your own extension-based encoder to resolve this."
+        )
+        if ext != '':
+            raise ValueError(
+                f"Your ENCODER doesn't support this extension: {ext}\n{suffix_msg}"
+            )
+        else:
+            raise ValueError(
+                f"Your ENCODER doesn't support empty extensions.\n{suffix_msg}"
+            )
     return encoder(v)
 
 
 @store_decorator
-def extension_base_wrap(store=None):
+def extension_based_wrap(store=None):
     """Add extension-based encoding and decoding to a store."""
     return wrap_kvs(
         store,

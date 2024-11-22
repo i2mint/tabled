@@ -11,6 +11,14 @@ def identity(x):
     return x
 
 
+def _isinstance(obj, class_or_tuple):
+    """isinstance but not positional only arguments (so we can partial it)"""
+    return isinstance(obj, class_or_tuple)
+
+def is_instance_of(class_or_tuple):
+    return partial(_isinstance, class_or_tuple=class_or_tuple)
+
+
 def split_keys(d):
     """Returns a dictionary where keys that had spaces were split into multiple keys
 
