@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from join_tables import *
+from tabled.join_tables import *
 
 
 @pytest.fixture
