@@ -1,5 +1,62 @@
 """A module containing datas that will be used for tests"""
 
+
+import pandas as pd
+
+# Define the data as dictionaries
+misc_small_dicts = {
+    "pet_olympics": {
+        "pet_name": ["Fluffy", "Barkley", "Chirpy", "Hoppy"],
+        "species": ["Cat", "Dog", "Bird", "Rabbit"],
+        "event": ["High Jump", "Fetch", "Singing", "Long Jump"],
+        "score": [8.5, 9.2, 7.8, 8.8],
+        "qualified": [True, True, False, True],
+    },
+    "alien_coffee_preferences": {
+        "alien_name": ["Zork", "Blip", "Klorg", "Mleeb"],
+        "planet": ["Zeta-2", "Plorkon", "Glibnar", "Earth"],
+        "prefers_caffeine": [True, False, True, True],
+        "favorite_temp": [42.0, 273.15, 37.5, 60.0],
+        "comment": ["'Extra strong!'", "'I prefer slush.'", "'Room temp is fine.'", "'Hot, please!'"],
+    },
+    "superhero_laundry_day": {
+        "name": ["Superman", "Batman", "Spider-Man"],
+        "power_level": [1000, 700, 500],
+        "has_clean_cape": [True, False, True],
+        "favorite_detergent": ["Kryptonite-Free", "Bat-OxyBoost", "StickyClean"],
+    },
+    "fantasy_tavern_menu": {
+        "item": ["Dragon Ale", "Elf Bread", "Goblin Stew"],
+        "price": [7.5, 3.0, 5.5],
+        "is_alcoholic": [True, False, False],
+        "servings_left": [12, 25, 8],
+    },
+    "alien_abduction_log": {
+        "abductee_name": ["Bob", "Alice", "Zork"],
+        "location": ["Kansas City", "Roswell", "Jupiter"],
+        "duration_minutes": [15, 120, 30],
+        "was_returned": [True, False, True],
+    },
+    "cat_fashion_show": {
+        "cat_name": ["Mr. Whiskers", "Mittens", "Fluffy"],
+        "outfit_color": ["Pink", "Blue", "Green"],
+        "has_hat": [True, False, True],
+        "sassiness_level": [9.5, 7.0, 8.2],
+    },
+    "robot_fight_club": {
+        "robot_name": ["RoboX", "MechaZilla", "AIronMan"],
+        "weapon": ["Laser Sword", "Rocket Fist", "Nano Dagger"],
+        "power_level": [150, 180, 140],
+    },
+}
+
+# Create DataFrames from the dictionaries
+misc_small_dfs = {k: pd.DataFrame(v) for k, v in misc_small_dicts.items()}
+
+superhero_laundry_day = misc_small_dfs['superhero_laundry_day']
+alien_abduction_log = misc_small_dfs['alien_abduction_log']
+
+
 ID = 'idx'
 
 # Simple with one field having a repeated value
