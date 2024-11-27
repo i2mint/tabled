@@ -35,3 +35,6 @@ from tabled.wrappers import (
     extension_based_encoding,  # encode a value based on the extension of the key
     extension_based_wrap,  # Add extension-based encoding and decoding to a store
 )
+from tabled.compare_tables import (
+    dataframe_diffs,  # compare two dataframes using specified comparison functions
+)
