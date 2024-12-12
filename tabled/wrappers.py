@@ -195,7 +195,7 @@ def map_values(
 USE_INDEX = True  # set here for the encoders
 INDEX_COL = 0 if USE_INDEX else None  # ... and this will be used for the decoders
 
-extension_to_encoder = split_keys(
+_extension_to_encoder = split_keys(
     {
         # csv files
         # note: if index=True, decoder needs to include index_col=0
@@ -253,12 +253,12 @@ extension_to_encoder = split_keys(
     }
 )
 
-extension_to_encoder = map_values(written_bytes, extension_to_encoder)
+extension_to_encoder = map_values(written_bytes, _extension_to_encoder)
 
 
 from dol.util import read_from_bytes
 
-extension_to_decoder = split_keys(
+_extension_to_decoder = split_keys(
     {
         # csv and text
         'csv txt': partial(pd.read_csv, index_col=INDEX_COL),
@@ -300,7 +300,7 @@ extension_to_decoder = split_keys(
     }
 )
 
-extension_to_decoder = map_values(read_from_bytes, extension_to_decoder)
+extension_to_decoder = map_values(read_from_bytes, _extension_to_decoder)
 
 dflt_ext_mapping = extension_to_decoder  # back-compatibility alias
 

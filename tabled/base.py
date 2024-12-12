@@ -99,12 +99,18 @@ def get_table(
 
     if ext is None and isinstance(table_src, str):
         ext = get_file_ext(table_src)
-        
-    # Get a BinaryIO object from the source
-    io_reader = resolve_to_io(table_src)
+
+    # TODO: Here's a great waste, since many of our table reading functions can
+    #       take file-like (paths, io objects) as input. Should make wrappers.py so that
+    #       one decoder can be given, and a input-type aware function can transform
+    #       the input to the right type for that particular decoder
+    # convert to bytes if not so already
+    if not isinstance(table_src, bytes):
+        io_reader = resolve_to_io(table_src)
+        table_src = io_reader.read()
 
     return resolve_to_dataframe(
-        io_reader, ext=ext, ext_mapping=ext_mapping, **extra_decoder_kwargs
+        table_src, ext=ext, ext_mapping=ext_mapping, **extra_decoder_kwargs
     )
 
 
@@ -146,7 +152,7 @@ class DfFiles(Files):
 
         extra_encoder_kwargs = dict(extra_encoder_kwargs)
         extra_decoder_kwargs = dict(extra_decoder_kwargs)
-        
+
         self.bytes_and_ext_to_df = partial(
             df_from_data_given_ext,
             ext_mapping=extension_decoder_mapping,
@@ -168,7 +174,9 @@ class DfFiles(Files):
     # extension_base_wrap(Files)
     # But not this:
     def __setitem__(self, k, v):
-        bytes_ = extension_based_encoding(k, v, extension_to_encoder=self.extension_encoder_mapping)
+        bytes_ = extension_based_encoding(
+            k, v, extension_to_encoder=self.extension_encoder_mapping
+        )
         # bytes_ = self.extension_based_encoding(v, get_file_ext(k))
         return super().__setitem__(k, bytes_)
 

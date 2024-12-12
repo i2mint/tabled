@@ -15,6 +15,7 @@ def _isinstance(obj, class_or_tuple):
     """isinstance but not positional only arguments (so we can partial it)"""
     return isinstance(obj, class_or_tuple)
 
+
 def is_instance_of(class_or_tuple):
     return partial(_isinstance, class_or_tuple=class_or_tuple)
 
@@ -492,6 +493,7 @@ def expand_columns(
     *,
     drop=True,
     key_mapper=_column_dot_key_mapper,
+    drop_non_iterable_rows=False,
 ) -> pd.DataFrame:
     """
     Expands the iterable values of specified columns in to new columns.
@@ -502,6 +504,7 @@ def expand_columns(
     :param expand_columns: A list of column names whose values are dictionaries
         that need to be expanded into new columns.
     :param drop: Whether to drop the original columns that were expanded.
+    :param drop_non_iterable_rows: Whether to drop rows that have non-iterable values
     :param key_mapper: A function that takes a key and a column name and returns a
         new key. By default, the new key is the concatenation of the column name and
         the original key. If None, will just take the original key. The reason for
@@ -548,6 +551,13 @@ def expand_columns(
 
     # Copy the dataframe to avoid changing the original one
     result_df = df.copy()
+
+    # drop rows whose values (for exapnd_columns) are not iterable
+    if drop_non_iterable_rows:
+        for col in expand_columns:
+            result_df = result_df[
+                result_df[col].apply(lambda x: isinstance(x, Iterable))
+            ]
 
     # Apply the expansion transformation
     for col in expand_columns:
