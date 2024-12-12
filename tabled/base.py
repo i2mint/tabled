@@ -32,7 +32,7 @@ from tabled.wrappers import (
     resolve_to_dataframe,  # Get a dataframe from a (data, ext) pair
     df_from_data_given_ext,  # Alias for resolve_to_dataframe for backward compatibility
     df_from_data_according_to_key,  # Get a dataframe from a (data, mapping, key) triple
-    get_file_ext,  # Get the file extension from a key
+    file_extension,  # Get the file extension from a key
     get_protocol,  # Get the protocol of a URL
     default_io_resolver,  # Default IO resolver for various sources
 )
@@ -76,6 +76,20 @@ class KeyFuncReader(KvReader):
         return f'{type(self).__name__}({self.mapping}, key={self.key})'
 
 
+def convert_collection_to_dataframe_if_possible(x):
+    if isinstance(x, pd.DataFrame):
+        return x
+    elif isinstance(x, (dict, list, tuple)):
+        return pd.DataFrame(x)
+    elif isinstance(x, (pd.Series, pd.Index, pd.MultiIndex)):
+        return x.to_frame()
+    elif isinstance(x, pd.Index):
+        return x.to_frame()
+    else:
+        return x
+
+
+# TODO: Handle the zip case more cleanly, and generalize to other double-extensions
 def get_table(
     table_src: TableSrc = None,
     *,
@@ -97,8 +111,18 @@ def get_table(
             **extra_decoder_kwargs,
         )
 
+    table_src = convert_collection_to_dataframe_if_possible(table_src)
+    if isinstance(table_src, pd.DataFrame):
+        return table_src
+
     if ext is None and isinstance(table_src, str):
-        ext = get_file_ext(table_src)
+        key = table_src
+        ext = file_extension(key)
+        if ext == 'zip':
+            # compute the next extension
+            next_ext = file_extension(key[: -len('.zip')])
+            if next_ext:
+                ext = f"{next_ext}.{ext}"  # e.g. 'csv.zip'
 
     # TODO: Here's a great waste, since many of our table reading functions can
     #       take file-like (paths, io objects) as input. Should make wrappers.py so that
@@ -109,8 +133,17 @@ def get_table(
         io_reader = resolve_to_io(table_src)
         table_src = io_reader.read()
 
+    if ext.endswith('.zip'):
+        from dol import zip_decompress
+
+        table_src = zip_decompress(table_src)  # get decompressed bytes
+        ext = ext[: -len('.zip')]  # remove the '.zip' from the extension
+
     return resolve_to_dataframe(
-        table_src, ext=ext, ext_mapping=ext_mapping, **extra_decoder_kwargs
+        table_src,
+        ext=ext,
+        ext_mapping=ext_mapping,
+        **extra_decoder_kwargs,
     )
 
 
@@ -145,7 +178,7 @@ class DfFiles(Files):
     ):
         super().__init__(rootdir)
 
-        self.key_to_ext = get_file_ext
+        self.key_to_ext = file_extension
 
         self.extension_encoder_mapping = extension_encoder_mapping
         self.extension_decoder_mapping = extension_decoder_mapping
@@ -177,7 +210,7 @@ class DfFiles(Files):
         bytes_ = extension_based_encoding(
             k, v, extension_to_encoder=self.extension_encoder_mapping
         )
-        # bytes_ = self.extension_based_encoding(v, get_file_ext(k))
+        # bytes_ = self.extension_based_encoding(v, file_extension(k))
         return super().__setitem__(k, bytes_)
 
     def __delitem__(self, k):
