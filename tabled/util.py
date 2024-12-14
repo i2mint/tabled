@@ -3,12 +3,27 @@ Utils
 """
 
 from functools import partial
-from typing import Mapping, KT, VT, Iterable, Callable, List
+from typing import Mapping, KT, VT, Iterable, Callable, List, Sized
 from collections import deque
 
 
 def identity(x):
     return x
+
+
+def is_non_null_or_empty(value):
+    """
+    Check if a value is not None, not empty, and not an empty list.
+
+    Often used with pandas dataframes to check if a cell is null or non-empty.
+    df.applymap(is_non_null_or_empty).sum(axis=1)  # (or .sum(axis=0)
+
+
+    """
+    if isinstance(value, Sized):
+        return len(value) > 0
+    else:
+        return pd.notnull(value)
 
 
 def _isinstance(obj, class_or_tuple):
