@@ -63,17 +63,17 @@ def _ensure_table_filter(filt: TableFilter) -> Callable:
     >>> filt_func = _ensure_table_filter('foo')
     >>> bool(filt_func(pd.DataFrame({'foo': [1, 2]})))
     True
-    >>> filt_func(pd.DataFrame({'bar': [1, 2]}))
+    >>> bool(filt_func(pd.DataFrame({'bar': [1, 2]})))
     False
     >>> filt_func = _ensure_table_filter(['foo', 'bar'])
-    >>> filt_func(pd.DataFrame({'football': [1, 2], 'baring': [3, 4]}))
+    >>> bool(filt_func(pd.DataFrame({'football': [1, 2], 'baring': [3, 4]})))
     True
-    >>> filt_func(pd.DataFrame({'football': [1, 2], 'neither': [3, 4]}))
+    >>> bool(filt_func(pd.DataFrame({'football': [1, 2], 'neither': [3, 4]})))
     False
 
     But if a same column name matches both regexes, it should return True:
 
-    >>> filt_func(pd.DataFrame({'foobar': [1, 2], 'huh': [3, 4]}))
+    >>> bool(filt_func(pd.DataFrame({'foobar': [1, 2], 'huh': [3, 4]})))
     True
 
     """
