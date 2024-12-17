@@ -113,9 +113,7 @@ def dataframe_diffs(
     df2: pd.DataFrame,
     comparisons: Comparisons = DFLT_COMPARISONS,
     *,
-    diff_condition=bool,
-    left_name='left',
-    right_name='right',
+    diff_condition=bool
 ) -> dict:
     """
     Compare the diff of dataframes using specified diff comparison functions.
@@ -151,5 +149,4 @@ def dataframe_diffs(
         diff_value = comparison(df1, df2)
         if diff_condition(diff_value):
             diffs[name] = diff_value
-    diffs = diffs.rename(columns={'left': left_name, 'right': right_name})
     return diffs
