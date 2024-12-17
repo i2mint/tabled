@@ -61,7 +61,7 @@ def _ensure_table_filter(filt: TableFilter) -> Callable:
     Examples:
 
     >>> filt_func = _ensure_table_filter('foo')
-    >>> filt_func(pd.DataFrame({'foo': [1, 2]}))
+    >>> bool(filt_func(pd.DataFrame({'foo': [1, 2]})))
     True
     >>> filt_func(pd.DataFrame({'bar': [1, 2]}))
     False

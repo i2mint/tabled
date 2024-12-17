@@ -98,10 +98,10 @@ def test_df_files_functionality():
 
     test_extensions = [
         'csv',
-        'feather',
+        'feather',  # requires `pip install pyarrow``
         'json',
-        'orc',
-        'parquet',
+        'orc',  # requires `pip install pyarrow`` or `pip install fastparquet`
+        'parquet',  # requires `pip install pyarrow`` or `pip install fastparquet`
         'pkl',
         'tsv',  
         # 'dta',  # TODO: fix
