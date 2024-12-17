@@ -1,3 +1,57 @@
+"""
+This module provides functionality for joining multiple tables (pandas DataFrames) based on a target subset of columns.
+It includes classes and functions to determine the optimal sequence of joins and the fields to remove during the join process.
+Classes:
+    Join: Represents a join operation with optional fields to remove.
+Functions:
+    minimum_covering_tree(tables, target_subset, start_node=None):
+        Computes the minimum covering tree for the given tables and target subset of columns.
+    get_leaf_edges(tables, target_subset, start_node=None):
+        Retrieves the leaf edges of the minimum covering tree for the given tables and target subset of columns.
+    update_leaf_edges_after_removal(tables, target_sub_set, current_leaf_edges):
+        Updates the list of leaf edges after removing an edge, ensuring that the resulting leaf edges do not lead to the loss of any elements in the target subset.
+    determine_remove_fields(labeled_sets, target_sub_set, joined_tables, current_table):
+        Determines which fields should be removed for a given table to ensure the target subset remains covered.
+    generate_join_sequence(tables, leaf_edges, target_sub_set):
+        Generates a sequence of joins with remove commands based on leaf edges and the target subset of columns.
+    ensure_join_op(obj):
+        Ensures that the given object is a Join instance.
+    compute_join_resolution(resolution_sequence, tables):
+        Carries out the join operations specified in the resolution sequence with the given tables.
+
+Example:
+    >>> tables = {
+    ...     'A': pd.DataFrame({'b': [1, 2, 3, 33], 'c': [4, 5, 6, 66]}),
+    ...     'B': pd.DataFrame(
+    ...         {
+    ...             'b': [1, 2, 3],
+    ...             'a': [4, 5, 6],
+    ...             'd': [7, 8, 9],
+    ...             'e': [10, 11, 12],
+    ...             'f': [13, 14, 15],
+    ...         }
+    ...     ),
+    ...     'C': pd.DataFrame({'f': [13, 14, 15], 'g': [4, 5, 6]}),
+    ...     'D': pd.DataFrame(
+    ...         {'d': [7, 8, 77], 'e': [10, 11, 77], 'h': [7, 8, 9], 'i': [1, 2, 3]}
+    ...     ),
+    ...     'E': pd.DataFrame({'i': [1, 2, 3], 'j': [4, 5, 6]}),
+    ... }
+    >>> target_sub_set = {'b', 'g', 'j'}
+    >>> leaf_edges = get_leaf_edges(tables, target_sub_set)
+    >>> leaf_edges
+    [('B', 'C'), ('D', 'E')]
+    >>> join_sequence = generate_join_sequence(tables, leaf_edges, target_sub_set)
+    >>> join_sequence
+    ['B', Join('C', remove=['a', 'f']), Join('D', remove=['d', 'e', 'h']), Join('E', remove=['i'])]
+    >>> join_result = compute_join_resolution(join_sequence, tables)
+    >>> join_result
+       b  g  j
+    0  1  4  4
+    1  2  5  5
+    
+"""
+
 from typing import KT, VT, Literal, Iterable, Callable, List, Tuple, Set, Mapping, Dict
 import pandas as pd
 from collections import deque
@@ -15,7 +69,8 @@ class Join:
         self.remove = remove or []
 
     def __repr__(self):
-        remove_str = f', remove={self.remove}' if self.remove else ''
+        # note: sorting self.remove so doctests are consistent
+        remove_str = f', remove={sorted(self.remove)}' if self.remove else ''
         return f"Join('{self.table_id}'{remove_str})"
 
     def __eq__(self, other):
@@ -25,7 +80,9 @@ class Join:
 
 
 def minimum_covering_tree(
-    tables: Mapping[str, pd.DataFrame], target_subset: Iterable[VT], start_node=None,
+    tables: Mapping[str, pd.DataFrame],
+    target_subset: Iterable[VT],
+    start_node=None,
 ):
 
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
@@ -219,8 +276,8 @@ def compute_join_resolution(
 ) -> pd.DataFrame:
     """
     Carries `resolution_sequence` join operations out with tables taken from `tables`.
-    
-    :param resolution_sequence: An iterable of join operations to carry out. 
+
+    :param resolution_sequence: An iterable of join operations to carry out.
         Each join operation is either a table name (str) or a Join object.
         If it's a Join object, it's assumed that the table has already been joined
         and the fields to remove are in the `remove` attribute of the object.
