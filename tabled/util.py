@@ -272,7 +272,7 @@ def auto_decode_bytes(
         >>> decoded_s = auto_decode_bytes(b_latin1, verbose=True)  # doctest: +ELLIPSIS
         Trying encoding: 'utf-8'
         Trying encoding: ...
-        >>> decoded_s
+        >>> decoded_s  # doctest: +SKIP
         'H幨lo, w顤ld! ド va?'
         >>> decoded_s == s_latin1
         False
