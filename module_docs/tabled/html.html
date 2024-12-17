@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -6,28 +8,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tabled.html &mdash; tabled 0.1.10 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=bafade30"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tabled.multi" href="multi.html" />
-    <link rel="prev" title="tabled.base" href="base.html" /> 
+    <link rel="next" title="tabled.join_tables" href="join_tables.html" />
+    <link rel="prev" title="tabled.compare_tables" href="compare_tables.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,19 +51,24 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tabled.html">tabled</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">tabled.html</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.html.dfs_to_html_pretty"><code class="docutils literal notranslate"><span class="pre">dfs_to_html_pretty()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.html.get_tables_from_url"><code class="docutils literal notranslate"><span class="pre">get_tables_from_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.html.url_to_html_func"><code class="docutils literal notranslate"><span class="pre">url_to_html_func()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">tabled.tests.test_base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/util.html">tabled.tests.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">tabled.wrappers</a></li>
 </ul>
 
         </div>
@@ -106,7 +109,7 @@ pretty printer see <a class="reference external" href="https://stackoverflow.com
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.html.get_tables_from_url">
-<span class="sig-prename descclassname"><span class="pre">tabled.html.</span></span><span class="sig-name descname"><span class="pre">get_tables_from_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_to_html</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'requests'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">tables_from_html_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/html.html#get_tables_from_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.html.get_tables_from_url" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.html.</span></span><span class="sig-name descname"><span class="pre">get_tables_from_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_to_html</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'requests'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">tables_from_html_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/html.html#get_tables_from_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.html.get_tables_from_url" title="Link to this definition"></a></dt>
 <dd><p>Get’s a list of pandas dataframes from tables scraped from a url.
 Note that this will only work with static pages. If the html needs to be rendered dynamically,
 you’ll have to get your needed html otherwise (like with selenium).</p>
@@ -123,14 +126,12 @@ for you in their webpage!!):</p>
 <span class="pre">url</span> <span class="pre">=</span> <span class="pre">'https://www.worldometers.info/coronavirus/?utm_campaign=homeAdvegas1?'</span>
 <span class="pre">tables</span> <span class="pre">=</span> <span class="pre">get_tables_from_url(url,</span> <span class="pre">url_to_html='chrome')</span>&#160; <span class="pre">#</span> <span class="pre">doctest:</span> <span class="pre">+SKIP</span>
 <span class="pre">`</span></code></p>
-<p>To make selenium work:
-<a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a></p>
-<blockquote>
-<div><p>pip install selenium
-Download seleniumdriver here: <a class="reference external" href="https://chromedriver.chromium.org/">https://chromedriver.chromium.org/</a>
-Uzip and put in a place that’s on you PATH (run command <cite>echo $PATH</cite> for a list of those places)</p>
-</div></blockquote>
-<p><a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+<p>To make selenium work:</p>
+<ul class="simple">
+<li><p><cite>pip install selenium</cite></p></li>
+<li><p>Download seleniumdriver here: <a class="reference external" href="https://chromedriver.chromium.org/">https://chromedriver.chromium.org/</a></p></li>
+<li><p>Uzip and put in a place that’s on you PATH (run command <cite>echo $PATH</cite> for a list of those places)</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
@@ -145,8 +146,8 @@ Uzip and put in a place that’s on you PATH (run command <cite>echo $PATH</cite
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="base.html" class="btn btn-neutral float-left" title="tabled.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="multi.html" class="btn btn-neutral float-right" title="tabled.multi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="compare_tables.html" class="btn btn-neutral float-left" title="tabled.compare_tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="join_tables.html" class="btn btn-neutral float-right" title="tabled.join_tables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

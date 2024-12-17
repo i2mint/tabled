@@ -1,0 +1,4 @@
+tabled.compare_tables
+=====================
+.. automodule:: tabled.compare_tables
+   :members:

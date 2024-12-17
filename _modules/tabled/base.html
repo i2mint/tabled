@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -5,23 +7,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tabled.base &mdash; tabled 0.1.10 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=bafade30"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -50,14 +48,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
 </ul>
 
         </div>
@@ -95,48 +98,51 @@
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Mapping</span><span class="p">,</span>
-    <span class="n">Callable</span><span class="p">,</span>
-    <span class="n">TypeVar</span><span class="p">,</span>
     <span class="n">KT</span><span class="p">,</span>
     <span class="n">VT</span><span class="p">,</span>
-    <span class="n">TypeVar</span><span class="p">,</span>
     <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">Tuple</span><span class="p">,</span>
     <span class="n">Iterable</span><span class="p">,</span>
     <span class="n">Union</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">i2</span> <span class="kn">import</span> <span class="n">mk_sentinel</span><span class="p">,</span> <span class="n">Sig</span>
 
-<span class="kn">from</span> <span class="nn">dol</span> <span class="kn">import</span> <span class="n">Files</span>  <span class="c1"># previously: py2store.stores.local_store import LocalBinaryStore</span>
+<span class="kn">from</span> <span class="nn">dol</span> <span class="kn">import</span> <span class="n">Files</span><span class="p">,</span> <span class="n">KvReader</span>
+
 <span class="kn">from</span> <span class="nn">tabled.util</span> <span class="kn">import</span> <span class="n">identity</span><span class="p">,</span> <span class="n">split_keys</span>
 
 
-<span class="n">Obj</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Obj&#39;</span><span class="p">)</span>
-<span class="n">KeyFunc</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Obj</span><span class="p">],</span> <span class="n">KT</span><span class="p">]</span>
-<span class="n">Extension</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Extension&#39;</span><span class="p">)</span>
-<span class="n">DfDecoder</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Obj</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
-<span class="n">dflt_not_found_sentinel</span> <span class="o">=</span> <span class="n">mk_sentinel</span><span class="p">(</span><span class="s1">&#39;dflt_not_found_sentinel&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tabled.wrappers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TableSrc</span><span class="p">,</span>
+    <span class="n">KeyFunc</span><span class="p">,</span>
+    <span class="n">Extension</span><span class="p">,</span>
+    <span class="n">DfDecoder</span><span class="p">,</span>
+    <span class="n">key_func_mapping</span><span class="p">,</span>  <span class="c1"># Map an object to a value based on a key function</span>
+    <span class="n">dflt_ext_mapping</span><span class="p">,</span>  <span class="c1"># Default extension mapping for various file types (DEPRECATED)</span>
+    <span class="n">resolve_to_dataframe</span><span class="p">,</span>  <span class="c1"># Get a dataframe from a (data, ext) pair</span>
+    <span class="n">df_from_data_given_ext</span><span class="p">,</span>  <span class="c1"># Alias for resolve_to_dataframe for backward compatibility</span>
+    <span class="n">df_from_data_according_to_key</span><span class="p">,</span>  <span class="c1"># Get a dataframe from a (data, mapping, key) triple</span>
+    <span class="n">file_extension</span><span class="p">,</span>  <span class="c1"># Get the file extension from a key</span>
+    <span class="n">get_protocol</span><span class="p">,</span>  <span class="c1"># Get the protocol of a URL</span>
+    <span class="n">default_io_resolver</span><span class="p">,</span>  <span class="c1"># Default IO resolver for various sources</span>
+<span class="p">)</span>
 
 
-<div class="viewcode-block" id="key_func_mapping">
-<a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.key_func_mapping">[docs]</a>
-<span class="k">def</span> <span class="nf">key_func_mapping</span><span class="p">(</span>
-    <span class="n">obj</span><span class="p">:</span> <span class="n">Obj</span><span class="p">,</span>
-    <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span>
-    <span class="n">key</span><span class="p">:</span> <span class="n">KeyFunc</span> <span class="o">=</span> <span class="n">identity</span><span class="p">,</span>
-    <span class="n">not_found_sentinel</span><span class="o">=</span><span class="n">dflt_not_found_sentinel</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VT</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map an object to a value based on a key function&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">not_found_sentinel</span><span class="p">)</span></div>
+<span class="c1"># Obj = TypeVar(&#39;Obj&#39;)</span>
+<span class="c1"># KeyFunc = Callable[[Obj], KT]</span>
+<span class="c1"># Extension = TypeVar(&#39;Extension&#39;)</span>
+<span class="c1"># DfDecoder = Callable[[Obj], pd.DataFrame]</span>
+<span class="c1"># dflt_not_found_sentinel = mk_sentinel(&#39;dflt_not_found_sentinel&#39;)</span>
 
 
-
-<span class="kn">from</span> <span class="nn">dol</span> <span class="kn">import</span> <span class="n">KvReader</span>
+<span class="c1"># def key_func_mapping(</span>
+<span class="c1">#     obj: Obj,</span>
+<span class="c1">#     mapping: Mapping[KT, VT],</span>
+<span class="c1">#     key: KeyFunc = identity,</span>
+<span class="c1">#     not_found_sentinel=dflt_not_found_sentinel,</span>
+<span class="c1"># ) -&gt; VT:</span>
+<span class="c1">#     &quot;&quot;&quot;Map an object to a value based on a key function&quot;&quot;&quot;</span>
+<span class="c1">#     return mapping.get(key(obj), not_found_sentinel)</span>
 
 
 <div class="viewcode-block" id="KeyFuncReader">
@@ -163,135 +169,84 @@
 
 
 
-<span class="c1"># TODO: Add some registry functionality to this?</span>
-<span class="c1"># TODO: Merge with dol&#39;s extension-based codec mapping (routing)</span>
-<span class="n">dflt_ext_mapping</span> <span class="o">=</span> <span class="n">split_keys</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s1">&#39;xls xlsx xlsm&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># Excel files</span>
-        <span class="s1">&#39;csv txt&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># CSV and text files</span>
-        <span class="s1">&#39;tsv&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># Tab-separated</span>
-        <span class="s1">&#39;parquet&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">,</span>  <span class="c1"># Parquet format</span>
-        <span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">),</span>  <span class="c1"># JSON format</span>
-        <span class="s1">&#39;html&#39;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1"># HTML tables</span>
-        <span class="s1">&#39;p pickle pkl&#39;</span><span class="p">:</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>  <span class="c1"># Pickle files</span>
-        <span class="s1">&#39;xml&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_xml</span><span class="p">,</span>  <span class="c1"># XML files</span>
-        <span class="s1">&#39;h5 hdf5&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">,</span>  <span class="c1"># HDF5 format</span>
-        <span class="s1">&#39;sql sqlite&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">,</span>  <span class="c1"># SQL queries</span>
-        <span class="s1">&#39;feather&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">,</span>  <span class="c1"># Feather format</span>
-        <span class="s1">&#39;stata dta&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">,</span>  <span class="c1"># Stata files</span>
-        <span class="s1">&#39;sas&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sas</span><span class="p">,</span>  <span class="c1"># SAS files</span>
-        <span class="c1"># &#39;gbq&#39;: pandas_gbq.read_gbq,  # Google BigQuery</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-
-
-<div class="viewcode-block" id="df_from_data_given_ext">
-<a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.df_from_data_given_ext">[docs]</a>
-<span class="k">def</span> <span class="nf">df_from_data_given_ext</span><span class="p">(</span>
-    <span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="p">:</span> <span class="n">Extension</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a dataframe from a (data, ext) pair&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
-        <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span>
-        <span class="n">ext</span><span class="p">,</span>
-        <span class="n">mapping</span><span class="p">,</span>
-        <span class="n">key</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>
-        <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># TODO</span>
-    <span class="p">)</span>
-    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># pluck out any key-value pairs of extra_decoder_kwargs whose names are </span>
-        <span class="c1"># arguments of decoder. (This is needed since extra_decoder_kwargs can be </span>
-        <span class="c1"># servicing multiple decoders, and we don&#39;t want to pass arguments to the</span>
-        <span class="c1"># wrong decoder.)</span>
-        <span class="n">extra_decoder_kwargs</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">decoder</span><span class="p">)</span><span class="o">.</span><span class="n">map_arguments</span><span class="p">(</span>
-            <span class="p">(),</span> <span class="n">extra_decoder_kwargs</span><span class="p">,</span> <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_excess</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
-        <span class="c1"># decode the data</span>
-        <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">convert_collection_to_dataframe_if_possible</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Don&#39;t know how to handle extension: </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">x</span>
 
 
-
-<div class="viewcode-block" id="df_from_data_according_to_key">
-<a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.df_from_data_according_to_key">[docs]</a>
-<span class="k">def</span> <span class="nf">df_from_data_according_to_key</span><span class="p">(</span>
-    <span class="n">data</span><span class="p">:</span> <span class="n">Obj</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KT</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a dataframe from a (data, mapping, key) triple&quot;&quot;&quot;</span>
-    <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span></div>
-
-
-
-<span class="k">def</span> <span class="nf">get_file_ext</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="n">KT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Extension</span><span class="p">:</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ext</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ext</span>
-
-
-<span class="n">protocol_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-zA-Z0-9]+)://&#39;</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="get_protocol">
-<a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.get_protocol">[docs]</a>
-<span class="k">def</span> <span class="nf">get_protocol</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the protocol of a url</span>
-
-<span class="sd">    &gt;&gt;&gt; get_protocol(&#39;https://www.google.com&#39;)</span>
-<span class="sd">    &#39;https&#39;</span>
-<span class="sd">    &gt;&gt;&gt; get_protocol(&#39;file:///home/user/file.txt&#39;)</span>
-<span class="sd">    &#39;file&#39;</span>
-
-<span class="sd">    The function returns None if no protocol is found:</span>
-
-<span class="sd">    &gt;&gt;&gt; assert get_protocol(&#39;no_protocol_here&#39;) is None</span>
-
+<span class="c1"># TODO: Handle the zip case more cleanly, and generalize to other double-extensions</span>
+<div class="viewcode-block" id="get_table">
+<a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.get_table">[docs]</a>
+<span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span>
+    <span class="n">table_src</span><span class="p">:</span> <span class="n">TableSrc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ext_mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">,</span>
+    <span class="n">resolve_to_io</span><span class="o">=</span><span class="n">default_io_resolver</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a table from a variety of sources.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">protocol_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+    <span class="c1"># If table_src is None, the user is trying to fix the parameters of the function</span>
+    <span class="k">if</span> <span class="n">table_src</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">get_table</span><span class="p">,</span>
+            <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span>
+            <span class="n">ext_mapping</span><span class="o">=</span><span class="n">ext_mapping</span><span class="p">,</span>
+            <span class="n">resolve_to_io</span><span class="o">=</span><span class="n">resolve_to_io</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">table_src</span> <span class="o">=</span> <span class="n">convert_collection_to_dataframe_if_possible</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">table_src</span>
+
+    <span class="k">if</span> <span class="n">ext</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">table_src</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s1">&#39;zip&#39;</span><span class="p">:</span>
+            <span class="c1"># compute the next extension</span>
+            <span class="n">next_ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">key</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;.zip&#39;</span><span class="p">)])</span>
+            <span class="k">if</span> <span class="n">next_ext</span><span class="p">:</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">next_ext</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># e.g. &#39;csv.zip&#39;</span>
+
+    <span class="c1"># TODO: Here&#39;s a great waste, since many of our table reading functions can</span>
+    <span class="c1">#       take file-like (paths, io objects) as input. Should make wrappers.py so that</span>
+    <span class="c1">#       one decoder can be given, and a input-type aware function can transform</span>
+    <span class="c1">#       the input to the right type for that particular decoder</span>
+    <span class="c1"># convert to bytes if not so already</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="n">io_reader</span> <span class="o">=</span> <span class="n">resolve_to_io</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>
+        <span class="n">table_src</span> <span class="o">=</span> <span class="n">io_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.zip&#39;</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">dol</span> <span class="kn">import</span> <span class="n">zip_decompress</span>
+
+        <span class="n">table_src</span> <span class="o">=</span> <span class="n">zip_decompress</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>  <span class="c1"># get decompressed bytes</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;.zip&#39;</span><span class="p">)]</span>  <span class="c1"># remove the &#39;.zip&#39; from the extension</span>
+
+    <span class="k">return</span> <span class="n">resolve_to_dataframe</span><span class="p">(</span>
+        <span class="n">table_src</span><span class="p">,</span>
+        <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span>
+        <span class="n">ext_mapping</span><span class="o">=</span><span class="n">ext_mapping</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+    <span class="p">)</span></div>
 
 
 
-<span class="n">df_from_data_according_to_ext</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-    <span class="n">df_from_data_according_to_key</span><span class="p">,</span>
-    <span class="n">mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">,</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">get_file_ext</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># df_from_data_given_ext meant to be equivalent (but more general, using ext_specs) to</span>
-<span class="c1"># def df_from_data_given_ext(data, ext, ext_specs=None, **kwargs):</span>
-<span class="c1">#     &quot;&quot;&quot;Get a dataframe from a (data, ext) pair&quot;&quot;&quot;</span>
-<span class="c1">#     ext_specs = ext_specs or DFLT_EXT_SPECS  # NOTE: Note used yet</span>
-<span class="c1">#     if ext.startswith(&quot;.&quot;):</span>
-<span class="c1">#         ext = ext[1:]</span>
-<span class="c1">#     if ext in {&quot;xls&quot;, &quot;xlsx&quot;}:</span>
-<span class="c1">#         kwargs = dict({&quot;index&quot;: False}, **kwargs)</span>
-<span class="c1">#         return pd.read_excel(data, **kwargs)</span>
-<span class="c1">#     elif ext in {&quot;csv&quot;}:</span>
-<span class="c1">#         kwargs = dict({&quot;index_col&quot;: False}, **kwargs)</span>
-<span class="c1">#         return pd.read_csv(data, **kwargs)</span>
-<span class="c1">#     elif ext in {&quot;tsv&quot;}:</span>
-<span class="c1">#         kwargs = dict({&quot;sep&quot;: &quot;\t&quot;, &quot;index_col&quot;: False}, **kwargs)</span>
-<span class="c1">#         return pd.read_csv(data, **kwargs)</span>
-<span class="c1">#     elif ext in {&quot;json&quot;}:</span>
-<span class="c1">#         kwargs = dict({&quot;orient&quot;: &quot;records&quot;}, **kwargs)</span>
-<span class="c1">#         return pd.read_json(data, **kwargs)</span>
-<span class="c1">#     elif ext in {&quot;html&quot;}:</span>
-<span class="c1">#         kwargs = dict({&quot;index_col&quot;: False}, **kwargs)</span>
-<span class="c1">#         return pd.read_html(data, **kwargs)[0]</span>
-<span class="c1">#     elif ext in {&quot;p&quot;, &quot;pickle&quot;}:</span>
-<span class="c1">#         return pickle.load(data, **kwargs)</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         raise ValueError(f&quot;Don&#39;t know how to handle extension: {ext}&quot;)</span>
+<span class="kn">from</span> <span class="nn">tabled.wrappers</span> <span class="kn">import</span> <span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span>
 
 
 <span class="c1"># TODO: Make the logic independent from local files assumption.</span>
-<span class="c1"># TODO: Better separate Reader, and add DfStore to make a writer.</span>
 <span class="c1"># TODO: Add filtering functionality in init? (By function, regex, extension?)</span>
 <div class="viewcode-block" id="DfFiles">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.DfFiles">[docs]</a>
@@ -308,41 +263,71 @@
 <span class="sd">        read the dataframes</span>
 <span class="sd">    extra_decoder_kwargs: Extra arguments to pass to the decoder functions.</span>
 
-
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">extension_encoder_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_encoder</span><span class="p">,</span>
         <span class="n">extension_decoder_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">dflt_ext_mapping</span><span class="p">,</span>
+        <span class="n">extra_encoder_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">extra_decoder_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span> <span class="o">=</span> <span class="n">get_file_ext</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span> <span class="o">=</span> <span class="n">file_extension</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span> <span class="o">=</span> <span class="n">extension_encoder_mapping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extension_decoder_mapping</span> <span class="o">=</span> <span class="n">extension_decoder_mapping</span>
+
+        <span class="n">extra_encoder_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extra_encoder_kwargs</span><span class="p">)</span>
         <span class="n">extra_decoder_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_and_ext_to_df</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bytes_and_ext_to_df</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
             <span class="n">df_from_data_given_ext</span><span class="p">,</span>
-            <span class="n">mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
+            <span class="n">ext_mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
             <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
+        <span class="c1"># self.extension_based_encoder = partial(</span>
+        <span class="c1">#     extension_based_encoding, extension_encoder_mapping</span>
+        <span class="c1"># )</span>
+
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_and_ext_to_df</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+        <span class="c1"># data = BytesIO(super().__getitem__(k))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes_and_ext_to_df</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
 
+    <span class="c1"># TODO: Implement this. This works:</span>
+    <span class="c1"># from tabled import extension_base_wrap</span>
+    <span class="c1"># extension_base_wrap(Files)</span>
+    <span class="c1"># But not this:</span>
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;This is a reader: No write operation allowed&#39;</span><span class="p">)</span>
+        <span class="n">bytes_</span> <span class="o">=</span> <span class="n">extension_based_encoding</span><span class="p">(</span>
+            <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span>
+        <span class="p">)</span>
+        <span class="c1"># bytes_ = self.extension_based_encoding(v, file_extension(k))</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;This is a reader: No delete operation allowed&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
 
 
 
-<span class="n">DfReader</span> <span class="o">=</span> <span class="n">DfFiles</span>  <span class="c1"># alias for back-compatibility: TODO: Issue warning on use</span>
-<span class="n">DfLocalFileReader</span> <span class="o">=</span> <span class="n">DfFiles</span>  <span class="c1"># back-compatibility: TODO: Issue warning on use</span>
+<div class="viewcode-block" id="DfReader">
+<a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.DfReader">[docs]</a>
+<span class="k">class</span> <span class="nc">DfReader</span><span class="p">(</span><span class="n">DfFiles</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;DfReader is a read-only store.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;DfReader is a read-only store.&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="n">DfLocalFileReader</span> <span class="o">=</span> <span class="n">DfReader</span>  <span class="c1"># back-compatibility: TODO: Issue warning on use</span>
 
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
@@ -473,7 +458,6 @@
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(df=&lt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows&gt;, key_fields=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="si">}</span><span class="s2">, value_columns=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span><span class="si">}</span><span class="s2">)&quot;</span></div>
-
 
 </pre></div>
 

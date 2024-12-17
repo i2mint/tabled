@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.join_tables &mdash; tabled 0.1.10 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tabled.misc" href="misc.html" />
+    <link rel="prev" title="tabled.html" href="html.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="html.html">tabled.html</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tabled.join_tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.join_tables.compute_join_resolution"><code class="docutils literal notranslate"><span class="pre">compute_join_resolution()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.join_tables.determine_remove_fields"><code class="docutils literal notranslate"><span class="pre">determine_remove_fields()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.join_tables.generate_join_sequence"><code class="docutils literal notranslate"><span class="pre">generate_join_sequence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.join_tables.update_leaf_edges_after_removal"><code class="docutils literal notranslate"><span class="pre">update_leaf_edges_after_removal()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">tabled.misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">tabled.wrappers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">tabled.join_tables</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/tabled/join_tables.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-tabled.join_tables">
+<span id="tabled-join-tables"></span><h1>tabled.join_tables<a class="headerlink" href="#module-tabled.join_tables" title="Link to this heading"></a></h1>
+<p>This module provides functionality for joining multiple tables (pandas DataFrames) based on a target subset of columns.
+It includes classes and functions to determine the optimal sequence of joins and the fields to remove during the join process.
+Classes:</p>
+<blockquote>
+<div><p>Join: Represents a join operation with optional fields to remove.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Functions:</dt><dd><dl class="simple">
+<dt>minimum_covering_tree(tables, target_subset, start_node=None):</dt><dd><p>Computes the minimum covering tree for the given tables and target subset of columns.</p>
+</dd>
+<dt>get_leaf_edges(tables, target_subset, start_node=None):</dt><dd><p>Retrieves the leaf edges of the minimum covering tree for the given tables and target subset of columns.</p>
+</dd>
+<dt>update_leaf_edges_after_removal(tables, target_sub_set, current_leaf_edges):</dt><dd><p>Updates the list of leaf edges after removing an edge, ensuring that the resulting leaf edges do not lead to the loss of any elements in the target subset.</p>
+</dd>
+<dt>determine_remove_fields(labeled_sets, target_sub_set, joined_tables, current_table):</dt><dd><p>Determines which fields should be removed for a given table to ensure the target subset remains covered.</p>
+</dd>
+<dt>generate_join_sequence(tables, leaf_edges, target_sub_set):</dt><dd><p>Generates a sequence of joins with remove commands based on leaf edges and the target subset of columns.</p>
+</dd>
+<dt>ensure_join_op(obj):</dt><dd><p>Ensures that the given object is a Join instance.</p>
+</dd>
+<dt>compute_join_resolution(resolution_sequence, tables):</dt><dd><p>Carries out the join operations specified in the resolution sequence with the given tables.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tables</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">33</span><span class="p">],</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">66</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span> <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]}),</span>
+<span class="gp">... </span>    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">77</span><span class="p">],</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">77</span><span class="p">],</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]}),</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">target_sub_set</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_edges</span> <span class="o">=</span> <span class="n">get_leaf_edges</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">target_sub_set</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_edges</span>
+<span class="go">[(&#39;B&#39;, &#39;C&#39;), (&#39;D&#39;, &#39;E&#39;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">join_sequence</span> <span class="o">=</span> <span class="n">generate_join_sequence</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">leaf_edges</span><span class="p">,</span> <span class="n">target_sub_set</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">join_sequence</span>
+<span class="go">[&#39;B&#39;, Join(&#39;C&#39;, remove=[&#39;a&#39;, &#39;f&#39;]), Join(&#39;D&#39;, remove=[&#39;d&#39;, &#39;e&#39;, &#39;h&#39;]), Join(&#39;E&#39;, remove=[&#39;i&#39;])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">join_result</span> <span class="o">=</span> <span class="n">compute_join_resolution</span><span class="p">(</span><span class="n">join_sequence</span><span class="p">,</span> <span class="n">tables</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">join_result</span>
+<span class="go">   b  g  j</span>
+<span class="go">0  1  4  4</span>
+<span class="go">1  2  5  5</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.join_tables.compute_join_resolution">
+<span class="sig-prename descclassname"><span class="pre">tabled.join_tables.</span></span><span class="sig-name descname"><span class="pre">compute_join_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resolution_sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/join_tables.html#compute_join_resolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.join_tables.compute_join_resolution" title="Link to this definition"></a></dt>
+<dd><p>Carries <cite>resolution_sequence</cite> join operations out with tables taken from <cite>tables</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resolution_sequence</strong> – An iterable of join operations to carry out.
+Each join operation is either a table name (str) or a Join object.
+If it’s a Join object, it’s assumed that the table has already been joined
+and the fields to remove are in the <cite>remove</cite> attribute of the object.</p></li>
+<li><p><strong>tables</strong> – A mapping of table names to tables (pd.DataFrame)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.join_tables.determine_remove_fields">
+<span class="sig-prename descclassname"><span class="pre">tabled.join_tables.</span></span><span class="sig-name descname"><span class="pre">determine_remove_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labeled_sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sub_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joined_tables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tabled/join_tables.html#determine_remove_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.join_tables.determine_remove_fields" title="Link to this definition"></a></dt>
+<dd><p>Determine which fields should be removed for a given table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labeled_sets</strong> – The sets of elements labeled by nodes</p></li>
+<li><p><strong>target_sub_set</strong> – The target subset of elements that must remain covered</p></li>
+<li><p><strong>joined_tables</strong> – The set of tables that have been or will be joined</p></li>
+<li><p><strong>current_table</strong> – The current table being processed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of fields to remove</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.join_tables.generate_join_sequence">
+<span class="sig-prename descclassname"><span class="pre">tabled.join_tables.</span></span><span class="sig-name descname"><span class="pre">generate_join_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaf_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sub_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Join</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tabled/join_tables.html#generate_join_sequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.join_tables.generate_join_sequence" title="Link to this definition"></a></dt>
+<dd><p>Generate a sequence of joins with remove commands based on leaf edges</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>leaf_edges</strong> – The list of leaf edges to process</p></li>
+<li><p><strong>labeled_sets</strong> – The sets of elements labeled by nodes</p></li>
+<li><p><strong>target_sub_set</strong> – The target subset of elements that must remain covered</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of Join operations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.join_tables.update_leaf_edges_after_removal">
+<span class="sig-prename descclassname"><span class="pre">tabled.join_tables.</span></span><span class="sig-name descname"><span class="pre">update_leaf_edges_after_removal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sub_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_leaf_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tabled/join_tables.html#update_leaf_edges_after_removal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.join_tables.update_leaf_edges_after_removal" title="Link to this definition"></a></dt>
+<dd><p>Update the list of leaf edges after removing an edge, ensuring that the resulting
+leaf edges do not lead to the loss of any elements in the target subset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> – The graph represented as an adjacency list.</p></li>
+<li><p><strong>labeled_sets</strong> – The sets of elements labeled by nodes.</p></li>
+<li><p><strong>target_subset</strong> – The target subset of elements that must remain covered.</p></li>
+<li><p><strong>current_leaf_edges</strong> – The current list of leaf edges.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An updated list of leaf edges.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="html.html" class="btn btn-neutral float-left" title="tabled.html" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="misc.html" class="btn btn-neutral float-right" title="tabled.misc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

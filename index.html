@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -6,23 +8,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to tabled’s documentation! &mdash; tabled 0.1.10 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=bafade30"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
-        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=bafade30"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -52,14 +50,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled.html">tabled</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
 </ul>
 
         </div>
@@ -98,17 +101,36 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.DfLocalFileReader"><code class="docutils literal notranslate"><span class="pre">DfLocalFileReader</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.DfReader"><code class="docutils literal notranslate"><span class="pre">DfReader</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.KeyFuncReader"><code class="docutils literal notranslate"><span class="pre">KeyFuncReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.df_from_data_according_to_ext"><code class="docutils literal notranslate"><span class="pre">df_from_data_according_to_ext()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.df_from_data_according_to_key"><code class="docutils literal notranslate"><span class="pre">df_from_data_according_to_key()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.df_from_data_given_ext"><code class="docutils literal notranslate"><span class="pre">df_from_data_given_ext()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.get_protocol"><code class="docutils literal notranslate"><span class="pre">get_protocol()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.key_func_mapping"><code class="docutils literal notranslate"><span class="pre">key_func_mapping()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/compare_tables.html">tabled.compare_tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.BinaryFuncResult"><code class="docutils literal notranslate"><span class="pre">BinaryFuncResult</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.InvalidComparison"><code class="docutils literal notranslate"><span class="pre">InvalidComparison</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.columns_diff"><code class="docutils literal notranslate"><span class="pre">columns_diff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.columns_value_diff"><code class="docutils literal notranslate"><span class="pre">columns_value_diff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.dataframe_diffs"><code class="docutils literal notranslate"><span class="pre">dataframe_diffs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.dtypes_diff"><code class="docutils literal notranslate"><span class="pre">dtypes_diff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.ensure_comparisons_dict"><code class="docutils literal notranslate"><span class="pre">ensure_comparisons_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.index_diff"><code class="docutils literal notranslate"><span class="pre">index_diff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.shape_diff"><code class="docutils literal notranslate"><span class="pre">shape_diff()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/html.html">tabled.html</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/html.html#tabled.html.dfs_to_html_pretty"><code class="docutils literal notranslate"><span class="pre">dfs_to_html_pretty()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/html.html#tabled.html.get_tables_from_url"><code class="docutils literal notranslate"><span class="pre">get_tables_from_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/html.html#tabled.html.url_to_html_func"><code class="docutils literal notranslate"><span class="pre">url_to_html_func()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/join_tables.html">tabled.join_tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/join_tables.html#tabled.join_tables.compute_join_resolution"><code class="docutils literal notranslate"><span class="pre">compute_join_resolution()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/join_tables.html#tabled.join_tables.determine_remove_fields"><code class="docutils literal notranslate"><span class="pre">determine_remove_fields()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/join_tables.html#tabled.join_tables.generate_join_sequence"><code class="docutils literal notranslate"><span class="pre">generate_join_sequence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/join_tables.html#tabled.join_tables.update_leaf_edges_after_removal"><code class="docutils literal notranslate"><span class="pre">update_leaf_edges_after_removal()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/misc.html">tabled.misc</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/misc.html#tabled.misc.scalar_columns"><code class="docutils literal notranslate"><span class="pre">scalar_columns()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/multi.html">tabled.multi</a><ul>
@@ -123,6 +145,7 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.mapping_of_dataframes"><code class="docutils literal notranslate"><span class="pre">mapping_of_dataframes()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
@@ -137,8 +160,26 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.expand_rows"><code class="docutils literal notranslate"><span class="pre">expand_rows()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.intersection_graph"><code class="docutils literal notranslate"><span class="pre">intersection_graph()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.invert_labeled_collection"><code class="docutils literal notranslate"><span class="pre">invert_labeled_collection()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.is_non_null_or_empty"><code class="docutils literal notranslate"><span class="pre">is_non_null_or_empty()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.map_values"><code class="docutils literal notranslate"><span class="pre">map_values()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.split_keys"><code class="docutils literal notranslate"><span class="pre">split_keys()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/wrappers.html">tabled.wrappers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.add_extension_codec"><code class="docutils literal notranslate"><span class="pre">add_extension_codec()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.df_from_data_according_to_key"><code class="docutils literal notranslate"><span class="pre">df_from_data_according_to_key()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.df_from_data_given_ext"><code class="docutils literal notranslate"><span class="pre">df_from_data_given_ext()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_decoding"><code class="docutils literal notranslate"><span class="pre">extension_based_decoding()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_encoding"><code class="docutils literal notranslate"><span class="pre">extension_based_encoding()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_wrap"><code class="docutils literal notranslate"><span class="pre">extension_based_wrap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.file_extension"><code class="docutils literal notranslate"><span class="pre">file_extension()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.get_extension"><code class="docutils literal notranslate"><span class="pre">get_extension()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.get_file_ext"><code class="docutils literal notranslate"><span class="pre">get_file_ext()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.get_protocol"><code class="docutils literal notranslate"><span class="pre">get_protocol()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.key_func_mapping"><code class="docutils literal notranslate"><span class="pre">key_func_mapping()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.map_values"><code class="docutils literal notranslate"><span class="pre">map_values()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.resolve_to_dataframe"><code class="docutils literal notranslate"><span class="pre">resolve_to_dataframe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.save_df_to_zipped_tsv"><code class="docutils literal notranslate"><span class="pre">save_df_to_zipped_tsv()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -152,7 +193,7 @@
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 <p>Release: 0.1.10</p>
-<p>Last change: Sep 21, 2024</p>
+<p>Last change: Dec 17, 2024</p>
 </section>
 
 

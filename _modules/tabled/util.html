@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -5,23 +7,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tabled.util &mdash; tabled 0.1.10 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=bafade30"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
-        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -50,14 +48,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
 </ul>
 
         </div>
@@ -90,12 +93,48 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sized</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
 
 
 <span class="k">def</span> <span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span>
+
+
+<div class="viewcode-block" id="is_non_null_or_empty">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.is_non_null_or_empty">[docs]</a>
+<span class="k">def</span> <span class="nf">is_non_null_or_empty</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a value is not None, not empty, and not an empty list.</span>
+
+<span class="sd">    Often used with pandas dataframes to check if a cell is null or non-empty.</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    num_of_non_empties_in_row = df.map(is_non_null_or_empty).sum(axis=1)</span>
+<span class="sd">    num_of_non_empties_in_col = df.map(is_non_null_or_empty).sum(axis=0)</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    And then you can do:</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    num_of_non_empties_in_row.sort_values(ascending=False) to see which rows have the least empties (most actual data)</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Sized</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">class_or_tuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;isinstance but not positional only arguments (so we can partial it)&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">class_or_tuple</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">is_instance_of</span><span class="p">(</span><span class="n">class_or_tuple</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">_isinstance</span><span class="p">,</span> <span class="n">class_or_tuple</span><span class="o">=</span><span class="n">class_or_tuple</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="split_keys">
@@ -338,15 +377,20 @@
 
 <span class="sd">        Here are a few examples. We&#39;ll</span>
 
+
 <span class="sd">        &gt;&gt;&gt; s_latin1 = &#39;Héllo, wörld! Ça va?&#39;</span>
 <span class="sd">        &gt;&gt;&gt; b_latin1 = s_latin1.encode(&#39;latin-1&#39;)  # latin-1 is ISO-8859-1</span>
-<span class="sd">        &gt;&gt;&gt; decoded_s = auto_decode_bytes(b_latin1, verbose=True)</span>
+<span class="sd">        &gt;&gt;&gt; decoded_s = auto_decode_bytes(b_latin1, verbose=True)  # doctest: +ELLIPSIS</span>
 <span class="sd">        Trying encoding: &#39;utf-8&#39;</span>
-<span class="sd">        Trying encoding: &#39;big5&#39;</span>
-<span class="sd">        &gt;&gt;&gt; decoded_s</span>
+<span class="sd">        Trying encoding: ...</span>
+<span class="sd">        &gt;&gt;&gt; decoded_s  # doctest: +SKIP</span>
 <span class="sd">        &#39;H幨lo, w顤ld! ド va?&#39;</span>
-<span class="sd">        &gt;&gt;&gt; decoded_s == s_latin1</span>
+<span class="sd">        &gt;&gt;&gt; decoded_s == s_latin1  # doctest: +SKIP</span>
 <span class="sd">        False</span>
+
+<span class="sd">        (Note in the above that some tests were skipped. This is because the output</span>
+<span class="sd">        is not deterministic and can vary depending on the system and the version of</span>
+<span class="sd">        `charset_normalizer`.)</span>
 
 <span class="sd">        &gt;&gt;&gt; s_cp1252 = &#39;Special characters: € £ ¥ © ®&#39;</span>
 <span class="sd">        &gt;&gt;&gt; b_cp1252 = s_cp1252.encode(&#39;cp1252&#39;)  # i.e. &#39;Windows-1252&#39;</span>
@@ -600,6 +644,7 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">key_mapper</span><span class="o">=</span><span class="n">_column_dot_key_mapper</span><span class="p">,</span>
+    <span class="n">drop_non_iterable_rows</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Expands the iterable values of specified columns in to new columns.</span>
@@ -610,6 +655,7 @@
 <span class="sd">    :param expand_columns: A list of column names whose values are dictionaries</span>
 <span class="sd">        that need to be expanded into new columns.</span>
 <span class="sd">    :param drop: Whether to drop the original columns that were expanded.</span>
+<span class="sd">    :param drop_non_iterable_rows: Whether to drop rows that have non-iterable values</span>
 <span class="sd">    :param key_mapper: A function that takes a key and a column name and returns a</span>
 <span class="sd">        new key. By default, the new key is the concatenation of the column name and</span>
 <span class="sd">        the original key. If None, will just take the original key. The reason for</span>
@@ -656,6 +702,13 @@
 
     <span class="c1"># Copy the dataframe to avoid changing the original one</span>
     <span class="n">result_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># drop rows whose values (for exapnd_columns) are not iterable</span>
+    <span class="k">if</span> <span class="n">drop_non_iterable_rows</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">expand_columns</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="n">result_df</span><span class="p">[</span>
+                <span class="n">result_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">))</span>
+            <span class="p">]</span>
 
     <span class="c1"># Apply the expansion transformation</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">expand_columns</span><span class="p">:</span>
