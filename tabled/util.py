@@ -267,6 +267,7 @@ def auto_decode_bytes(
 
         Here are a few examples. We'll
 
+
         >>> s_latin1 = 'Héllo, wörld! Ça va?'
         >>> b_latin1 = s_latin1.encode('latin-1')  # latin-1 is ISO-8859-1
         >>> decoded_s = auto_decode_bytes(b_latin1, verbose=True)  # doctest: +ELLIPSIS
@@ -274,8 +275,12 @@ def auto_decode_bytes(
         Trying encoding: ...
         >>> decoded_s  # doctest: +SKIP
         'H幨lo, w顤ld! ド va?'
-        >>> decoded_s == s_latin1
+        >>> decoded_s == s_latin1  # doctest: +SKIP
         False
+
+        (Note in the above that some tests were skipped. This is because the output
+        is not deterministic and can vary depending on the system and the version of
+        `charset_normalizer`.)
 
         >>> s_cp1252 = 'Special characters: € £ ¥ © ®'
         >>> b_cp1252 = s_cp1252.encode('cp1252')  # i.e. 'Windows-1252'
