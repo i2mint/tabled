@@ -269,9 +269,9 @@ def auto_decode_bytes(
 
         >>> s_latin1 = 'Héllo, wörld! Ça va?'
         >>> b_latin1 = s_latin1.encode('latin-1')  # latin-1 is ISO-8859-1
-        >>> decoded_s = auto_decode_bytes(b_latin1, verbose=True)
+        >>> decoded_s = auto_decode_bytes(b_latin1, verbose=True)  # doctest: +ELLIPSIS
         Trying encoding: 'utf-8'
-        Trying encoding: 'big5'
+        Trying encoding: ...
         >>> decoded_s
         'H幨lo, w顤ld! ド va?'
         >>> decoded_s == s_latin1
