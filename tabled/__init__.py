@@ -25,6 +25,9 @@ from tabled.util import (
     collapse_columns,
     expand_columns,
     auto_decode_bytes,
+    ensure_columns,  # ensure that the columns are in the dataframe
+    ensure_first_columns,  # ensure that the columns are the first columns in the dataframe
+    ensure_last_columns,  # ensure that the columns are the last columns in the dataframe
 )
 from tabled.misc import (
     scalar_columns,  # get list of columns that are scalar (therefore serializable to CSV)

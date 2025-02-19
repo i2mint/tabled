@@ -11,6 +11,37 @@ def identity(x):
     return x
 
 
+def ensure_columns(df, columns=(), fill=None):
+    """
+    Ensure that a dataframe has certain columns, filling them with a certain value
+    if they don't exist.
+    """
+    for c in columns:
+        if c not in df.columns:
+            df[c] = fill
+    return df
+
+
+def ensure_first_columns(df, columns=()):
+    """
+    Ensure that the given columns come first (if they exist), with the rest of the columns
+    following in the order they were in the original dataframe.
+    """
+    first_columns = [c for c in columns if c in df.columns]
+    new_column_order = first_columns + [c for c in df.columns if c not in first_columns]
+    return df[new_column_order]
+
+
+def ensure_last_columns(df, columns=()):
+    """
+    Ensure that the given columns come last (if they exist), with the rest of the columns
+    preceding in the order they were in the original dataframe.
+    """
+    last_columns = [c for c in columns if c in df.columns]
+    new_column_order = [c for c in df.columns if c not in last_columns] + last_columns
+    return df[new_column_order]
+
+
 def is_non_null_or_empty(value):
     """
     Check if a value is not None, not empty, and not an empty list.
