@@ -60,7 +60,7 @@ def columns_value_diff(df1: pd.DataFrame, df2: pd.DataFrame):
         s2 = df2.loc[common_index, col]
         diff_s = s1.compare(s2, keep_shape=False, keep_equal=False)
         if not diff_s.empty:
-            diff_s = diff_s.rename(columns={'self': 'left', 'other': 'right'})
+            diff_s = diff_s.rename(columns={"self": "left", "other": "right"})
             diffs[col] = diff_s
     return diffs
 
@@ -82,11 +82,11 @@ class InvalidComparison(ValueError):
 
 
 DFLT_COMPARISONS: ComparisonsDict = {
-    'columns_diff': columns_diff,
-    'index_diff': index_diff,
-    'shape_diff': shape_diff,
-    'columns_value_diff': columns_value_diff,
-    'dtypes_diff': dtypes_diff,
+    "columns_diff": columns_diff,
+    "index_diff": index_diff,
+    "shape_diff": shape_diff,
+    "columns_value_diff": columns_value_diff,
+    "dtypes_diff": dtypes_diff,
     # ... insert more here
 }
 
@@ -117,7 +117,7 @@ def dataframe_diffs(
 ) -> dict:
     """
     Compare the diff of dataframes using specified diff comparison functions.
-    
+
     Returns a dictionary with comparison names as keys and comparison results as values.
 
     Parameters:

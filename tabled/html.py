@@ -5,22 +5,22 @@ import re
 import pandas as pd
 
 
-def url_to_html_func(kind='requests') -> Callable:
+def url_to_html_func(kind="requests") -> Callable:
     """Get a url_to_html function of a given kind."""
     url_to_html = None
-    if kind == 'requests':
+    if kind == "requests":
         import requests  # pip install requests
 
         def url_to_html(url):
             r = requests.get(url)
             if r.status_code != 200:
                 print(
-                    f'An error occured. Returning the response object for you to analyze: {r}'
+                    f"An error occured. Returning the response object for you to analyze: {r}"
                 )
                 return r
             return r.content
 
-    elif kind == 'chrome' or kind == 'selenium':
+    elif kind == "chrome" or kind == "selenium":
 
         from selenium import webdriver  # pip install selenium
         from time import sleep
@@ -35,7 +35,7 @@ def url_to_html_func(kind='requests') -> Callable:
             return html
 
     else:
-        raise ValueError(f'Unknown url_to_html value: {url_to_html}')
+        raise ValueError(f"Unknown url_to_html value: {url_to_html}")
     assert callable(url_to_html), "Couldn't make a url_to_html function"
 
     return url_to_html
@@ -90,13 +90,13 @@ def _ensure_table_filter(filt: TableFilter) -> Callable:
         return lambda x: all(x.columns.str.contains(f).any() for f in filt_regexes)
     if callable(filt):
         return filt
-    raise ValueError(f'Unknown filter type: {filt}')
+    raise ValueError(f"Unknown filter type: {filt}")
 
 
 def get_tables_from_url(
     url,
     *,
-    url_to_html: Union[Callable, str] = 'requests',
+    url_to_html: Union[Callable, str] = "requests",
     filt: Optional[TableFilter] = None,
     **tables_from_html_kwargs,
 ):
@@ -136,12 +136,12 @@ def get_tables_from_url(
     except ValueError as e:
         if len(e.args) > 0:
             msg, *_ = e.args
-            if 'No tables found' in msg:
+            if "No tables found" in msg:
                 return []
         raise
 
 
-HTML_TEMPLATE1 = '''
+HTML_TEMPLATE1 = """
 <html>
 <head>
 <style>
@@ -172,26 +172,26 @@ HTML_TEMPLATE1 = '''
 </style>
 </head>
 <body>
-'''
+"""
 
-HTML_TEMPLATE2 = '''
+HTML_TEMPLATE2 = """
 </body>
 </html>
-'''
+"""
 
 
 def df_to_html(df, title=None):
-    ht = ''
+    ht = ""
     if title is not None:
-        ht += f'<h2> {title} </h2>\n'
-    ht += df.to_html(classes='wide', escape=False)
+        ht += f"<h2> {title} </h2>\n"
+    ht += df.to_html(classes="wide", escape=False)
     return ht
 
 
-def df_store_to_html(df_store, sep='\n<br>\n'):
-    ht = ''
+def df_store_to_html(df_store, sep="\n<br>\n"):
+    ht = ""
     for k, df in df_store.items():
-        title = re.match(r'[^\d]+', k).group(0)
+        title = re.match(r"[^\d]+", k).group(0)
         ht += df_to_html(df, title)
         ht += sep
     return ht

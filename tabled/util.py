@@ -91,7 +91,7 @@ from typing import Dict, KT, Literal
 
 
 def intersection_graph(
-    sets: Dict[KT, set], edge_labels: Literal['elements', 'size', False] = False
+    sets: Dict[KT, set], edge_labels: Literal["elements", "size", False] = False
 ):
     """
     A graph of all intersections between sets.
@@ -150,14 +150,14 @@ def intersection_graph(
             graph[key1][key2] = intersection
             graph[key2][key1] = intersection
     if isinstance(edge_labels, str):
-        if edge_labels == 'elements':
+        if edge_labels == "elements":
             return dict(graph)
-        elif edge_labels == 'size':
+        elif edge_labels == "size":
             return map_values(map_values.len, graph)
     elif edge_labels is False:
         return map_values.set(graph)
 
-    raise ValueError(f'Invalid value for edge_labels: {edge_labels}')
+    raise ValueError(f"Invalid value for edge_labels: {edge_labels}")
 
 
 def map_values(func: Callable, d: dict):
@@ -254,7 +254,7 @@ def breadth_first_traversal(graph: Mapping, start_node, *, yield_edges=False):
 
 # TODO: Integrate in tabled.base.dflt_ext_mapping
 def auto_decode_bytes(
-    b: bytes, *, try_first_bytes=(1e6, 1e7, 1e8), encoding: str = 'utf-8', verbose=False
+    b: bytes, *, try_first_bytes=(1e6, 1e7, 1e8), encoding: str = "utf-8", verbose=False
 ) -> str:
     """
     Decode a byte sequence into a string, trying charset_normalizer gueses if fails.
@@ -448,7 +448,7 @@ def expand_rows(
         # Check if all list lengths are the same for safety
         if len(set(list_lengths)) != 1:
             raise ValueError(
-                'All lists in a single row must have the same length to expand correctly.'
+                "All lists in a single row must have the same length to expand correctly."
             )
 
         # Create individual rows for each index of the lists in grouped_columns
@@ -507,7 +507,7 @@ def collapse_columns(
         groupings = [groupings]
     if isinstance(groupings, list):
         # Convert list to a dictionary with default key if groupings is a list
-        groupings = {'collapsed': groupings}
+        groupings = {"collapsed": groupings}
 
     # Copy the dataframe to avoid changing the original one
     result_df = df.copy()
@@ -519,7 +519,7 @@ def collapse_columns(
 
         if not valid_columns:
             raise ValueError(
-                f'No valid columns found in {columns_to_collapse} to collapse into {new_column}.'
+                f"No valid columns found in {columns_to_collapse} to collapse into {new_column}."
             )
 
         # Create a new column with dictionaries mapping old column names to their values
@@ -534,10 +534,10 @@ def collapse_columns(
 
 
 def column_sep_key_mapper(key, column_name, sep: str):
-    return f'{column_name}{sep}{key}'
+    return f"{column_name}{sep}{key}"
 
 
-_column_dot_key_mapper = partial(column_sep_key_mapper, sep='.')
+_column_dot_key_mapper = partial(column_sep_key_mapper, sep=".")
 
 
 def _apply_key_mapper_to_keys(d: Union[dict, list], column_name, key_mapper):
@@ -605,7 +605,7 @@ def expand_columns(
     # Validate that all expand_columns are in df.columns
     for col in expand_columns:
         if col not in df.columns:
-            raise ValueError(f'Column {col} does not exist in the DataFrame.')
+            raise ValueError(f"Column {col} does not exist in the DataFrame.")
     if key_mapper is None:
         key_mapper = lambda key, column_name: key
 

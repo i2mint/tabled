@@ -49,7 +49,7 @@ Example:
        b  g  j
     0  1  4  4
     1  2  5  5
-    
+
 """
 
 from typing import KT, VT, Literal, Iterable, Callable, List, Tuple, Set, Mapping, Dict
@@ -70,7 +70,7 @@ class Join:
 
     def __repr__(self):
         # note: sorting self.remove so doctests are consistent
-        remove_str = f', remove={sorted(self.remove)}' if self.remove else ''
+        remove_str = f", remove={sorted(self.remove)}" if self.remove else ""
         return f"Join('{self.table_id}'{remove_str})"
 
     def __eq__(self, other):
@@ -86,7 +86,7 @@ def minimum_covering_tree(
 ):
 
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
-    intersections = intersection_graph(labeled_sets, edge_labels='elements')
+    intersections = intersection_graph(labeled_sets, edge_labels="elements")
     graph = {k: list(v) for k, v in intersections.items()}
     if start_node is None:  # if not start_node is given
         start_node = next(iter(graph))  # take the first node
@@ -109,7 +109,7 @@ def get_leaf_edges(
     tables: Mapping[str, pd.DataFrame], target_subset: Set[VT], start_node: KT = None
 ) -> List[Tuple[KT, KT]]:
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
-    intersections = intersection_graph(labeled_sets, edge_labels='elements')
+    intersections = intersection_graph(labeled_sets, edge_labels="elements")
     graph = {k: list(v) for k, v in intersections.items()}
     if start_node is None:  # if no start_node is given
         start_node = next(iter(graph))  # take the first node
@@ -153,7 +153,7 @@ def update_leaf_edges_after_removal(
     """
     new_leaf_edges = []
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
-    intersections = intersection_graph(labeled_sets, edge_labels='elements')
+    intersections = intersection_graph(labeled_sets, edge_labels="elements")
     graph = {k: list(v) for k, v in intersections.items()}
     for node1, node2 in current_leaf_edges:
         # Use symmetric difference to consider the edge as undirected
@@ -288,33 +288,33 @@ def compute_join_resolution(
     joined = tables[table_key]
     for join_op in join_ops:
         table = tables[join_op.table_id]
-        joined = joined.merge(table, how='inner')
+        joined = joined.merge(table, how="inner")
         if join_op.remove:
             remove_cols = set(join_op.remove) & set(joined.columns)
             joined = joined.drop(columns=remove_cols)
     return joined
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     tables = {
-        'A': pd.DataFrame({'b': [1, 2, 3, 33], 'c': [4, 5, 6, 66]}),
-        'B': pd.DataFrame(
+        "A": pd.DataFrame({"b": [1, 2, 3, 33], "c": [4, 5, 6, 66]}),
+        "B": pd.DataFrame(
             {
-                'b': [1, 2, 3],
-                'a': [4, 5, 6],
-                'd': [7, 8, 9],
-                'e': [10, 11, 12],
-                'f': [13, 14, 15],
+                "b": [1, 2, 3],
+                "a": [4, 5, 6],
+                "d": [7, 8, 9],
+                "e": [10, 11, 12],
+                "f": [13, 14, 15],
             }
         ),
-        'C': pd.DataFrame({'f': [13, 14, 15], 'g': [4, 5, 6]}),
-        'D': pd.DataFrame(
-            {'d': [7, 8, 77], 'e': [10, 11, 77], 'h': [7, 8, 9], 'i': [1, 2, 3]}
+        "C": pd.DataFrame({"f": [13, 14, 15], "g": [4, 5, 6]}),
+        "D": pd.DataFrame(
+            {"d": [7, 8, 77], "e": [10, 11, 77], "h": [7, 8, 9], "i": [1, 2, 3]}
         ),
-        'E': pd.DataFrame({'i': [1, 2, 3], 'j': [4, 5, 6]}),
+        "E": pd.DataFrame({"i": [1, 2, 3], "j": [4, 5, 6]}),
     }
-    target_sub_set = {'b', 'g', 'j'}
+    target_sub_set = {"b", "g", "j"}
 
     leaf_edges = get_leaf_edges(tables, target_sub_set)
     print(leaf_edges)

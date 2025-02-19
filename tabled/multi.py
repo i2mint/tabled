@@ -4,8 +4,8 @@ from functools import cached_property
 import pandas as pd
 from typing import TypeVar, Callable, KT, Union, Iterable, Mapping, Dict
 
-Column = TypeVar('Column')
-TableKey = TypeVar('TableKey')
+Column = TypeVar("Column")
+TableKey = TypeVar("TableKey")
 MappingOfDataFrames = Mapping[KT, pd.DataFrame]
 DataFrames = Union[MappingOfDataFrames, Iterable[pd.DataFrame]]
 
@@ -19,7 +19,7 @@ def mapping_of_dataframes(tables: DataFrames) -> MappingOfDataFrames:
         if isinstance(tables, Iterable):
             tables = dict(enumerate(tables))
         else:
-            raise TypeError(f'Expected Mapping or Iterable, got {type(tables)}')
+            raise TypeError(f"Expected Mapping or Iterable, got {type(tables)}")
     return tables
 
 
@@ -38,7 +38,11 @@ from collections import ChainMap
 
 
 def execute_commands(
-    commands: Iterable, scope: Mapping, interpreter_map: Mapping, *, extra_scope=None,
+    commands: Iterable,
+    scope: Mapping,
+    interpreter_map: Mapping,
+    *,
+    extra_scope=None,
 ):
     """
     Carries `commands` operations out with tables taken from `scope`.
@@ -53,7 +57,7 @@ def execute_commands(
         command_type = type(command)
         command_executor = interpreter_map.get(command_type, None)
         if command_executor is None:
-            raise TypeError(f'Unknown command type: {type(command)}')
+            raise TypeError(f"Unknown command type: {type(command)}")
         yield command_executor(_scope, command)
 
 
@@ -89,27 +93,27 @@ def set_scope_value(scope, key, value):
 
 
 def load_func(scope, command):
-    return set_scope_value(scope, 'cumul', scope[command.key])
+    return set_scope_value(scope, "cumul", scope[command.key])
 
 
 def join_func(scope, command):
     table = scope[command.table_key].copy()
-    if 'renamed_columns' in scope:
-        for old_col, new_col in scope['renamed_columns'].items():
+    if "renamed_columns" in scope:
+        for old_col, new_col in scope["renamed_columns"].items():
             if old_col in table:
                 table.rename(columns={old_col: new_col}, inplace=True)
-    cumul = scope['cumul']
-    scope['cumul'] = cumul.merge(table, how='inner')
+    cumul = scope["cumul"]
+    scope["cumul"] = cumul.merge(table, how="inner")
 
 
 def remove_func(scope, command):
-    scope['cumul'] = scope['cumul'].drop(columns=command.fields)
+    scope["cumul"] = scope["cumul"].drop(columns=command.fields)
 
 
 def rename_func(scope, command):
-    scope['renamed_columns'] = command.rename_mapping
+    scope["renamed_columns"] = command.rename_mapping
     for old_col, new_col in command.rename_mapping.items():
-        scope['cumul'] = scope['cumul'].rename(columns={old_col: new_col})
+        scope["cumul"] = scope["cumul"].rename(columns={old_col: new_col})
 
 
 dflt_tables_interpreter_map = {
@@ -204,7 +208,7 @@ class ColumnOrientedMapping(Mapping):
             return self._init_columns(self.tables)
         assert isinstance(
             self._init_columns, Iterable
-        ), f'Expected Callable or Iterable, got {self._init_columns}'
+        ), f"Expected Callable or Iterable, got {self._init_columns}"
         return self._init_columns
 
     @cached_property

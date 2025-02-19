@@ -73,7 +73,7 @@ class KeyFuncReader(KvReader):
         return len(self.mapping)
 
     def __repr__(self):
-        return f'{type(self).__name__}({self.mapping}, key={self.key})'
+        return f"{type(self).__name__}({self.mapping}, key={self.key})"
 
 
 def convert_collection_to_dataframe_if_possible(x):
@@ -118,9 +118,9 @@ def get_table(
     if ext is None and isinstance(table_src, str):
         key = table_src
         ext = file_extension(key)
-        if ext == 'zip':
+        if ext == "zip":
             # compute the next extension
-            next_ext = file_extension(key[: -len('.zip')])
+            next_ext = file_extension(key[: -len(".zip")])
             if next_ext:
                 ext = f"{next_ext}.{ext}"  # e.g. 'csv.zip'
 
@@ -133,11 +133,11 @@ def get_table(
         io_reader = resolve_to_io(table_src)
         table_src = io_reader.read()
 
-    if ext.endswith('.zip'):
+    if ext.endswith(".zip"):
         from dol import zip_decompress
 
         table_src = zip_decompress(table_src)  # get decompressed bytes
-        ext = ext[: -len('.zip')]  # remove the '.zip' from the extension
+        ext = ext[: -len(".zip")]  # remove the '.zip' from the extension
 
     return resolve_to_dataframe(
         table_src,

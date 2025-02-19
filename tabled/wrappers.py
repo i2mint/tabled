@@ -30,11 +30,11 @@ from tabled.util import identity, split_keys, auto_decode_bytes
 # TODO: Merge with codec-matching ("routing"?) functionalities of dol
 # TODO: Move the extension-based codec stuff to tabled, replacing current DfFiles etc.
 
-Obj = TypeVar('Obj')
+Obj = TypeVar("Obj")
 KeyFunc = Callable[[Obj], KT]
-Extension = TypeVar('Extension')
+Extension = TypeVar("Extension")
 DfDecoder = Callable[[Obj], pd.DataFrame]
-dflt_not_found_sentinel = mk_sentinel('dflt_not_found_sentinel')
+dflt_not_found_sentinel = mk_sentinel("dflt_not_found_sentinel")
 
 
 # --------------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ def get_extension(key: str) -> str:
     return _key_property(key, extract_prop=_get_extension, prop_egress=identity)
 
 
-protocol_re = re.compile(r'([a-zA-Z0-9]+)://')
+protocol_re = re.compile(r"([a-zA-Z0-9]+)://")
 
 
 def get_protocol(url: str):
@@ -138,12 +138,12 @@ def if_extension_present_remove_it(filepath, extension):
     return filepath
 
 
-def save_df_to_zipped_tsv(df: pd.DataFrame, name: str, sep='\t', index=False, **kwargs):
+def save_df_to_zipped_tsv(df: pd.DataFrame, name: str, sep="\t", index=False, **kwargs):
     """Save a dataframe to a zipped tsv file."""
-    name = if_extension_present_remove_it(name, '.zip')
-    name = if_extension_present_remove_it(name, '.tsv')
-    tsv_filepath = f'{name}.tsv'
-    zip_filepath = f'{tsv_filepath}.zip'
+    name = if_extension_present_remove_it(name, ".zip")
+    name = if_extension_present_remove_it(name, ".tsv")
+    tsv_filepath = f"{name}.tsv"
+    zip_filepath = f"{tsv_filepath}.zip"
     df.to_csv(tsv_filepath, sep=sep, index=index, **kwargs)
 
     file_or_folder_to_zip_file(tsv_filepath, zip_filepath)
@@ -159,7 +159,7 @@ def map_values(
     d: dict,
     *,
     except_condition=is_instance_of(LiteralVal),
-    except_handler=methodcaller('__call__'),
+    except_handler=methodcaller("__call__"),
 ):
     """Map values of a dictionary, except for those that satisfy a condition.
 
@@ -200,52 +200,52 @@ _extension_to_encoder = split_keys(
         # csv files
         # note: if index=True, decoder needs to include index_col=0
         #       if index=False, decoder needs to include index_col=None
-        'csv txt': partial(pd.DataFrame.to_csv, index=USE_INDEX),
+        "csv txt": partial(pd.DataFrame.to_csv, index=USE_INDEX),
         # tab-separated files
-        'tsv': partial(
+        "tsv": partial(
             pd.DataFrame.to_csv,
             index=USE_INDEX,
-            sep='\t',
-            escapechar='\\',
+            sep="\t",
+            escapechar="\\",
             quotechar='"',
         ),
         # json files
-        'json': pd.DataFrame.to_json,
+        "json": pd.DataFrame.to_json,
         # html tables
-        'html': partial(pd.DataFrame.to_html, index=USE_INDEX),
+        "html": partial(pd.DataFrame.to_html, index=USE_INDEX),
         # pickle files
-        'p pickle pkl': pd.DataFrame.to_pickle,
+        "p pickle pkl": pd.DataFrame.to_pickle,
         # numpy arrays
-        'npy': LiteralVal(written_bytes(np.save, obj_arg_position_in_writer=1)),
+        "npy": LiteralVal(written_bytes(np.save, obj_arg_position_in_writer=1)),
         # parquet format
-        'parquet': LiteralVal(
+        "parquet": LiteralVal(
             written_bytes(pd.DataFrame.to_parquet, obj_arg_position_in_writer=0)
         ),
         # zip-compressed tsv (custom implementation)
-        'zip': LiteralVal(save_df_to_zipped_tsv),
+        "zip": LiteralVal(save_df_to_zipped_tsv),
         # feather format
-        'feather': pd.DataFrame.to_feather,
+        "feather": pd.DataFrame.to_feather,
         # hdf5 format (Hierarchical Data Format)
-        'h5 hdf5': pd.DataFrame.to_hdf,
+        "h5 hdf5": pd.DataFrame.to_hdf,
         # stata files
-        'stata dta': partial(pd.DataFrame.to_stata, write_index=USE_INDEX),
+        "stata dta": partial(pd.DataFrame.to_stata, write_index=USE_INDEX),
         # sql queries
-        'sql sqlite': pd.DataFrame.to_sql,
+        "sql sqlite": pd.DataFrame.to_sql,
         # Google BigQuery
-        'gbq': pd.DataFrame.to_gbq,
+        "gbq": pd.DataFrame.to_gbq,
         # ------------ extensions requiring extra dependencies ------------
         # excel files
-        'xls xlsx': partial(
+        "xls xlsx": partial(
             pd.DataFrame.to_excel, index=USE_INDEX
         ),  # Need: pip install openpyxl, xlrd
         # xml files
-        'xml': pd.DataFrame.to_xml,  # Need: pip install lxml
+        "xml": pd.DataFrame.to_xml,  # Need: pip install lxml
         # parquet format
-        'parquet': pd.DataFrame.to_parquet,  # Need: pip install pyarrow, fastparquet
+        "parquet": pd.DataFrame.to_parquet,  # Need: pip install pyarrow, fastparquet
         # feather format
-        'feather': pd.DataFrame.to_feather,  # Need: pip install pyarrow
+        "feather": pd.DataFrame.to_feather,  # Need: pip install pyarrow
         # orc format
-        'orc': pd.DataFrame.to_orc,  # Need: pip install pyarrow
+        "orc": pd.DataFrame.to_orc,  # Need: pip install pyarrow
         # # sas files
         # 'sas': written_bytes(pd.DataFrame.to_sas),  # Need: pip install sas7bdat
         # # SPSS files
@@ -261,42 +261,42 @@ from dol.util import read_from_bytes
 _extension_to_decoder = split_keys(
     {
         # csv and text
-        'csv txt': partial(pd.read_csv, index_col=INDEX_COL),
+        "csv txt": partial(pd.read_csv, index_col=INDEX_COL),
         # tab-separated files
-        'tsv': partial(pd.read_csv, sep='\t', index_col=INDEX_COL),
+        "tsv": partial(pd.read_csv, sep="\t", index_col=INDEX_COL),
         # parquet format
-        'parquet': pd.read_parquet,
+        "parquet": pd.read_parquet,
         # json format
-        'json': partial(pd.read_json, orient='records'),
+        "json": partial(pd.read_json, orient="records"),
         # html tables
-        'html': partial(pd.read_html, index_col=INDEX_COL),
+        "html": partial(pd.read_html, index_col=INDEX_COL),
         # pickle files
-        'p pickle pkl': pickle.load,
+        "p pickle pkl": pickle.load,
         # xml files
-        'xml': pd.read_xml,
+        "xml": pd.read_xml,
         # sql queries
-        'sql sqlite': pd.read_sql,
+        "sql sqlite": pd.read_sql,
         # feather format
-        'feather': pd.read_feather,
+        "feather": pd.read_feather,
         # stata files
-        'stata dta': partial(pd.read_stata, index_col=INDEX_COL),
+        "stata dta": partial(pd.read_stata, index_col=INDEX_COL),
         # sas files
-        'sas': pd.read_sas,
+        "sas": pd.read_sas,
         # extensions requiring extra dependencies
         # hdf5 format (Hierarchical Data Format)
-        'h5 hdf5': pd.read_hdf,  # Need: pip install tables
+        "h5 hdf5": pd.read_hdf,  # Need: pip install tables
         # excel files
-        'xls xlsx': partial(
+        "xls xlsx": partial(
             pd.read_excel, index_col=INDEX_COL
         ),  # Need: pip install openpyxl, xlrd
         # parquet format
-        'parquet': pd.read_parquet,  # Need: pip install pyarrow, fastparquet
+        "parquet": pd.read_parquet,  # Need: pip install pyarrow, fastparquet
         # feather format
-        'feather': pd.read_feather,  # Need: pip install pyarrow
+        "feather": pd.read_feather,  # Need: pip install pyarrow
         # orc format
-        'orc': pd.read_orc,  # Need: pip install pyarrow
+        "orc": pd.read_orc,  # Need: pip install pyarrow
         # SPSS files
-        'sav': pd.read_spss,  # Need: pip install pyreadstat
+        "sav": pd.read_spss,  # Need: pip install pyreadstat
     }
 )
 
@@ -363,7 +363,7 @@ def extension_based_decoding(k, v, *, extension_to_decoder=extension_to_decoder)
             f"This happened with key: {k}\n"
             "Note that you can add your own extension-based decoder to resolve this."
         )
-        if ext != '':
+        if ext != "":
             raise ValueError(
                 f"Your DECODER doesn't support this extension: {ext}\n{suffix_msg}"
             )
@@ -383,7 +383,7 @@ def extension_based_encoding(k, v, *, extension_to_encoder=extension_to_encoder)
             f"This happened with key: {k}\n"
             "Note that you can add your own extension-based encoder to resolve this."
         )
-        if ext != '':
+        if ext != "":
             raise ValueError(
                 f"Your ENCODER doesn't support this extension: {ext}\n{suffix_msg}"
             )
@@ -415,7 +415,7 @@ def resolve_to_dataframe(
     **extra_decoder_kwargs,
 ) -> pd.DataFrame:
     """Get a dataframe from a (data, ext) pair"""
-    if ext.startswith('.'):
+    if ext.startswith("."):
         ext = ext[1:]
     decoder = key_func_mapping(
         ext,
@@ -464,12 +464,12 @@ BinaryIOCaster = Callable[[TableSrc], BinaryIO]
 def default_io_resolver(src: TableSrc) -> BinaryIO:
     if isinstance(src, str):
         if os.path.isfile(src):
-            return open(src, 'rb')
-        elif get_protocol(src) in {'http', 'https'}:
+            return open(src, "rb")
+        elif get_protocol(src) in {"http", "https"}:
             import requests
 
             return BytesIO(requests.get(src).content)
-        elif get_protocol(src) == 'graze':
+        elif get_protocol(src) == "graze":
             from graze import graze  # pip install graze
 
             _, url = src.split("://", 1)
@@ -478,7 +478,7 @@ def default_io_resolver(src: TableSrc) -> BinaryIO:
             raise ValueError(f"Can't handle source: {src}")
     elif isinstance(src, bytes):
         return BytesIO(src)
-    elif hasattr(src, 'read'):
+    elif hasattr(src, "read"):
         return src
     else:
         raise ValueError(f"Can't handle source: {src}")
