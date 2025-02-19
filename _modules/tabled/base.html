@@ -6,16 +6,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tabled.base &mdash; tabled 0.1.10 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../_static/documentation_options.js?v=bafade30"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -94,9 +94,9 @@
 <span class="c1">#   * routing is more general (not only conditioned on ext, but function of key,</span>
 <span class="c1">#   and possibly data</span>
 <span class="c1">#   * Allow on-the-fly parametrization (e.g. sep=&#39;\t&#39;, index_col=False...)</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Mapping</span><span class="p">,</span>
     <span class="n">KT</span><span class="p">,</span>
     <span class="n">VT</span><span class="p">,</span>
@@ -105,14 +105,14 @@
     <span class="n">Union</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="kn">from</span> <span class="nn">dol</span> <span class="kn">import</span> <span class="n">Files</span><span class="p">,</span> <span class="n">KvReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Files</span><span class="p">,</span> <span class="n">KvReader</span>
 
-<span class="kn">from</span> <span class="nn">tabled.util</span> <span class="kn">import</span> <span class="n">identity</span><span class="p">,</span> <span class="n">split_keys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabled.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">identity</span><span class="p">,</span> <span class="n">split_keys</span>
 
 
-<span class="kn">from</span> <span class="nn">tabled.wrappers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabled.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">TableSrc</span><span class="p">,</span>
     <span class="n">KeyFunc</span><span class="p">,</span>
     <span class="n">Extension</span><span class="p">,</span>
@@ -147,29 +147,29 @@
 
 <div class="viewcode-block" id="KeyFuncReader">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.KeyFuncReader">[docs]</a>
-<span class="k">class</span> <span class="nc">KeyFuncReader</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KeyFunc</span> <span class="o">=</span> <span class="n">identity</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">KeyFuncReader</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KeyFunc</span> <span class="o">=</span> <span class="n">identity</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="n">mapping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
 
-    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="si">}</span><span class="s1">, key=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1">)&#39;</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">convert_collection_to_dataframe_if_possible</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_collection_to_dataframe_if_possible</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">x</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
@@ -185,7 +185,7 @@
 <span class="c1"># TODO: Handle the zip case more cleanly, and generalize to other double-extensions</span>
 <div class="viewcode-block" id="get_table">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.get_table">[docs]</a>
-<span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_table</span><span class="p">(</span>
     <span class="n">table_src</span><span class="p">:</span> <span class="n">TableSrc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -229,7 +229,7 @@
         <span class="n">table_src</span> <span class="o">=</span> <span class="n">io_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.zip&#39;</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">dol</span> <span class="kn">import</span> <span class="n">zip_decompress</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">zip_decompress</span>
 
         <span class="n">table_src</span> <span class="o">=</span> <span class="n">zip_decompress</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>  <span class="c1"># get decompressed bytes</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;.zip&#39;</span><span class="p">)]</span>  <span class="c1"># remove the &#39;.zip&#39; from the extension</span>
@@ -243,14 +243,14 @@
 
 
 
-<span class="kn">from</span> <span class="nn">tabled.wrappers</span> <span class="kn">import</span> <span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabled.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span>
 
 
 <span class="c1"># TODO: Make the logic independent from local files assumption.</span>
 <span class="c1"># TODO: Add filtering functionality in init? (By function, regex, extension?)</span>
 <div class="viewcode-block" id="DfFiles">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.DfFiles">[docs]</a>
-<span class="k">class</span> <span class="nc">DfFiles</span><span class="p">(</span><span class="n">Files</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DfFiles</span><span class="p">(</span><span class="n">Files</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A key-value store providing values as pandas.DataFrames.</span>
 
 <span class="sd">    Use Case: You have a bunch of files in a folder, all corresponding to some</span>
@@ -265,7 +265,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -294,7 +294,7 @@
         <span class="c1">#     extension_based_encoding, extension_encoder_mapping</span>
         <span class="c1"># )</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
         <span class="c1"># data = BytesIO(super().__getitem__(k))</span>
         <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
@@ -304,25 +304,25 @@
     <span class="c1"># from tabled import extension_base_wrap</span>
     <span class="c1"># extension_base_wrap(Files)</span>
     <span class="c1"># But not this:</span>
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">bytes_</span> <span class="o">=</span> <span class="n">extension_based_encoding</span><span class="p">(</span>
             <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span>
         <span class="p">)</span>
         <span class="c1"># bytes_ = self.extension_based_encoding(v, file_extension(k))</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="DfReader">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.DfReader">[docs]</a>
-<span class="k">class</span> <span class="nc">DfReader</span><span class="p">(</span><span class="n">DfFiles</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DfReader</span><span class="p">(</span><span class="n">DfFiles</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;DfReader is a read-only store.&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;DfReader is a read-only store.&quot;</span><span class="p">)</span></div>
 
 
@@ -333,11 +333,11 @@
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="c1"># Wrapping a DataFrame to provide a key-value interface</span>
 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 
 
-<span class="k">def</span> <span class="nf">validate_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="p">):</span>
     <span class="n">all_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="n">all_index_levels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
 
@@ -358,7 +358,7 @@
 <span class="c1"># but remove the name &quot;A&quot; from the index. Now I can&#39;t say key_fields=[&#39;A&#39;, &#39;B&#39;] anymore.</span>
 <div class="viewcode-block" id="DataframeKvReader">
 <a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.DataframeKvReader">[docs]</a>
-<span class="k">class</span> <span class="nc">DataframeKvReader</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DataframeKvReader</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to wrap a DataFrame and provide a Mapping interface where keys are</span>
 <span class="sd">    combinations of specified columns or index levels, and values are sub-dataframes of specified columns.</span>
@@ -405,7 +405,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the DataframeKvReader.</span>
 
@@ -435,7 +435,7 @@
             <span class="c1"># If key fields are all index levels, ensure the DataFrame is sorted by those key fields</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -446,17 +446,17 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(df=&lt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows&gt;, key_fields=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="si">}</span><span class="s2">, value_columns=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
 </pre></div>

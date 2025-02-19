@@ -6,16 +6,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tabled.compare_tables &mdash; tabled 0.1.10 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../_static/documentation_options.js?v=bafade30"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -90,8 +90,8 @@
   <h1>Source code for tabled.compare_tables</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Tools to compare tables&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">ComparisonName</span> <span class="o">=</span> <span class="nb">str</span>
 <span class="n">ComparisonFunc</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span>
@@ -102,12 +102,12 @@
 
 <div class="viewcode-block" id="BinaryFuncResult">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.BinaryFuncResult">[docs]</a>
-<span class="k">class</span> <span class="nc">BinaryFuncResult</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BinaryFuncResult</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_func</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_func</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">left_right</span><span class="o">=</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
             <span class="n">right_left</span><span class="o">=</span><span class="n">func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
@@ -117,7 +117,7 @@
 
 <div class="viewcode-block" id="columns_diff">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.columns_diff">[docs]</a>
-<span class="k">def</span> <span class="nf">columns_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">columns_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return columns that are not common between df1 and df2.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">BinaryFuncResult</span><span class="o">.</span><span class="n">from_func</span><span class="p">(</span>
         <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -127,7 +127,7 @@
 
 <div class="viewcode-block" id="index_diff">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.index_diff">[docs]</a>
-<span class="k">def</span> <span class="nf">index_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">index_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return indices that are not common between df1 and df2.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">BinaryFuncResult</span><span class="o">.</span><span class="n">from_func</span><span class="p">(</span>
         <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -137,7 +137,7 @@
 
 <div class="viewcode-block" id="shape_diff">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.shape_diff">[docs]</a>
-<span class="k">def</span> <span class="nf">shape_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">shape_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the shapes of df1 and df2 if they differ.&quot;&quot;&quot;</span>
     <span class="n">df1_shape</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">df2_shape</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">shape</span>
@@ -148,7 +148,7 @@
 
 <div class="viewcode-block" id="columns_value_diff">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.columns_value_diff">[docs]</a>
-<span class="k">def</span> <span class="nf">columns_value_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">columns_value_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For each column present in both dataframes, compare the values row-wise.</span>
 <span class="sd">    Returns a dict with column names as keys and DataFrames of differences as values.</span>
@@ -172,7 +172,7 @@
 
 <div class="viewcode-block" id="dtypes_diff">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.dtypes_diff">[docs]</a>
-<span class="k">def</span> <span class="nf">dtypes_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dtypes_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return columns where the data types differ between df1 and df2.&quot;&quot;&quot;</span>
     <span class="n">common_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="n">diffs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -187,7 +187,7 @@
 
 <div class="viewcode-block" id="InvalidComparison">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.InvalidComparison">[docs]</a>
-<span class="k">class</span> <span class="nc">InvalidComparison</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidComparison</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised or returned when a comparison that was asked for is not applicable to the dataframes in question&quot;&quot;&quot;</span></div>
 
 
@@ -204,14 +204,14 @@
 
 <div class="viewcode-block" id="ensure_comparisons_dict">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.ensure_comparisons_dict">[docs]</a>
-<span class="k">def</span> <span class="nf">ensure_comparisons_dict</span><span class="p">(</span><span class="n">comparisons</span><span class="p">:</span> <span class="n">Comparisons</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparisonsDict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_comparisons_dict</span><span class="p">(</span><span class="n">comparisons</span><span class="p">:</span> <span class="n">Comparisons</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparisonsDict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure that the comparisons are in the form of a dictionary.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparisons</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">comparisons</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparisons</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">)):</span>
         <span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="n">comparisons</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">comparison_name_and_func</span><span class="p">(</span><span class="n">comparisons</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">comparison_name_and_func</span><span class="p">(</span><span class="n">comparisons</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">comparison</span> <span class="ow">in</span> <span class="n">comparisons</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">yield</span> <span class="n">comparison</span><span class="p">,</span> <span class="n">DFLT_COMPARISONS</span><span class="p">[</span><span class="n">comparison</span><span class="p">]</span>
@@ -224,7 +224,7 @@
 
 <div class="viewcode-block" id="dataframe_diffs">
 <a class="viewcode-back" href="../../module_docs/tabled/compare_tables.html#tabled.compare_tables.dataframe_diffs">[docs]</a>
-<span class="k">def</span> <span class="nf">dataframe_diffs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dataframe_diffs</span><span class="p">(</span>
     <span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">comparisons</span><span class="p">:</span> <span class="n">Comparisons</span> <span class="o">=</span> <span class="n">DFLT_COMPARISONS</span><span class="p">,</span>

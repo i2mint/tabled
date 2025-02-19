@@ -6,16 +6,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tabled.util &mdash; tabled 0.1.10 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../_static/documentation_options.js?v=bafade30"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -92,18 +92,58 @@
 <span class="sd">Utils</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sized</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sized</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 
 
-<span class="k">def</span> <span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span>
+
+
+<div class="viewcode-block" id="ensure_columns">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.ensure_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(),</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensure that a dataframe has certain columns, filling them with a certain value</span>
+<span class="sd">    if they don&#39;t exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">fill</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="ensure_first_columns">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.ensure_first_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_first_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensure that the given columns come first (if they exist), with the rest of the columns</span>
+<span class="sd">    following in the order they were in the original dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">first_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="n">new_column_order</span> <span class="o">=</span> <span class="n">first_columns</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">first_columns</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">new_column_order</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="ensure_last_columns">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.ensure_last_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_last_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensure that the given columns come last (if they exist), with the rest of the columns</span>
+<span class="sd">    preceding in the order they were in the original dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">last_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="n">new_column_order</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">last_columns</span><span class="p">]</span> <span class="o">+</span> <span class="n">last_columns</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">new_column_order</span><span class="p">]</span></div>
+
 
 
 <div class="viewcode-block" id="is_non_null_or_empty">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.is_non_null_or_empty">[docs]</a>
-<span class="k">def</span> <span class="nf">is_non_null_or_empty</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_non_null_or_empty</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if a value is not None, not empty, and not an empty list.</span>
 
@@ -128,18 +168,18 @@
 
 
 
-<span class="k">def</span> <span class="nf">_isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">class_or_tuple</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">class_or_tuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;isinstance but not positional only arguments (so we can partial it)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">class_or_tuple</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">is_instance_of</span><span class="p">(</span><span class="n">class_or_tuple</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_instance_of</span><span class="p">(</span><span class="n">class_or_tuple</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">_isinstance</span><span class="p">,</span> <span class="n">class_or_tuple</span><span class="o">=</span><span class="n">class_or_tuple</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="split_keys">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.split_keys">[docs]</a>
-<span class="k">def</span> <span class="nf">split_keys</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_keys</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a dictionary where keys that had spaces were split into multiple keys</span>
 
 <span class="sd">    Meant to be a convenience function for the user to use when they want to define a</span>
@@ -152,12 +192,12 @@
 
 
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">Literal</span>
 
 
 <div class="viewcode-block" id="intersection_graph">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.intersection_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">intersection_graph</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">intersection_graph</span><span class="p">(</span>
     <span class="n">sets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="nb">set</span><span class="p">],</span> <span class="n">edge_labels</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;elements&#39;</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -207,8 +247,8 @@
 <span class="sd">    ... }</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-    <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
 
     <span class="n">graph</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">key1</span><span class="p">,</span> <span class="n">key2</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">sets</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="mi">2</span><span class="p">):</span>
@@ -230,7 +270,7 @@
 
 <div class="viewcode-block" id="map_values">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.map_values">[docs]</a>
-<span class="k">def</span> <span class="nf">map_values</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">map_values</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply a function to all values of a dictionary.</span>
 
 <span class="sd">    &gt;&gt;&gt; map_values(lambda x: x ** 2, {1: 2, 3: 4})</span>
@@ -247,7 +287,7 @@
 
 <div class="viewcode-block" id="invert_labeled_collection">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.invert_labeled_collection">[docs]</a>
-<span class="k">def</span> <span class="nf">invert_labeled_collection</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">invert_labeled_collection</span><span class="p">(</span>
     <span class="n">d</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">VT</span><span class="p">]],</span> <span class="n">values_container</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="nb">list</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">KT</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Invert a mapping whose values are iterables of objects,</span>
@@ -291,7 +331,7 @@
 
 <div class="viewcode-block" id="breadth_first_traversal">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.breadth_first_traversal">[docs]</a>
-<span class="k">def</span> <span class="nf">breadth_first_traversal</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">start_node</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">yield_edges</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">breadth_first_traversal</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">start_node</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">yield_edges</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Yields nodes starting from the root node, expanding to neighbors recursively,</span>
 <span class="sd">    using breadth-first search, without repeating nodes.</span>
 
@@ -332,7 +372,7 @@
 <span class="c1"># TODO: Integrate in tabled.base.dflt_ext_mapping</span>
 <div class="viewcode-block" id="auto_decode_bytes">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.auto_decode_bytes">[docs]</a>
-<span class="k">def</span> <span class="nf">auto_decode_bytes</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">auto_decode_bytes</span><span class="p">(</span>
     <span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">try_first_bytes</span><span class="o">=</span><span class="p">(</span><span class="mf">1e6</span><span class="p">,</span> <span class="mf">1e7</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">),</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -403,7 +443,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">charset_normalizer</span>  <span class="c1"># pip install charset-normalizer</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">charset_normalizer</span>  <span class="c1"># pip install charset-normalizer</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">clog</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trying encoding: &#39;</span><span class="si">{</span><span class="n">encoding</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
@@ -416,7 +456,7 @@
     <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
         <span class="k">pass</span>  <span class="c1"># Proceed to detection steps</span>
 
-    <span class="kn">import</span> <span class="nn">charset_normalizer</span>  <span class="c1"># pip install charset-normalizer</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">charset_normalizer</span>  <span class="c1"># pip install charset-normalizer</span>
 
     <span class="n">try_first_bytes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">try_first_bytes</span><span class="p">))</span>
 
@@ -451,14 +491,14 @@
 <span class="c1"># -------------------------------------------------------------------------------------</span>
 <span class="c1"># Expand and collapse rows and columns</span>
 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 
 <div class="viewcode-block" id="collapse_rows">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.collapse_rows">[docs]</a>
-<span class="k">def</span> <span class="nf">collapse_rows</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">collapse_rows</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">by</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
@@ -495,7 +535,7 @@
 
 <div class="viewcode-block" id="expand_rows">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.expand_rows">[docs]</a>
-<span class="k">def</span> <span class="nf">expand_rows</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">expand_rows</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grouped_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -553,7 +593,7 @@
 
 <div class="viewcode-block" id="collapse_columns">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.collapse_columns">[docs]</a>
-<span class="k">def</span> <span class="nf">collapse_columns</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">collapse_columns</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">groupings</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">]]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -622,14 +662,14 @@
 
 
 
-<span class="k">def</span> <span class="nf">column_sep_key_mapper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">column_sep_key_mapper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column_name</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span>
 
 
 <span class="n">_column_dot_key_mapper</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">column_sep_key_mapper</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_apply_key_mapper_to_keys</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">key_mapper</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_key_mapper_to_keys</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">key_mapper</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">key_mapper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     <span class="k">else</span><span class="p">:</span>
@@ -638,7 +678,7 @@
 
 <div class="viewcode-block" id="expand_columns">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.expand_columns">[docs]</a>
-<span class="k">def</span> <span class="nf">expand_columns</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">expand_columns</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">expand_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>
