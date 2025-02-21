@@ -26,6 +26,7 @@ from tabled.util import (
     expand_columns,  # expand columns in a dataframe
     auto_decode_bytes,  # Decode a byte sequence into a string, trying charset_normalizer gueses if fails.
     PandasJSONEncoder,  # a json encoder that can handle pandas and numpy objects
+    pandas_json_dumps,  # dump a pandas object to a json string
     ensure_columns,  # ensure that the columns are in the dataframe
     ensure_first_columns,  # ensure that the columns are the first columns in the dataframe
     ensure_last_columns,  # ensure that the columns are the last columns in the dataframe

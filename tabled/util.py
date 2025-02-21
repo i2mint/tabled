@@ -719,3 +719,6 @@ class PandasJSONEncoder(json.JSONEncoder):
             return None
         # Fallback to the default method.
         return super().default(obj)
+
+
+pandas_json_dumps = partial(json.dumps, cls=PandasJSONEncoder)
