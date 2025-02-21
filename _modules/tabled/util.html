@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.util &mdash; tabled 0.1.10 documentation</title>
+  <title>tabled.util &mdash; tabled 0.1.18 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../../_static/documentation_options.js?v=9969ed3f"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -198,7 +198,7 @@
 <div class="viewcode-block" id="intersection_graph">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.intersection_graph">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">intersection_graph</span><span class="p">(</span>
-    <span class="n">sets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="nb">set</span><span class="p">],</span> <span class="n">edge_labels</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;elements&#39;</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">sets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="nb">set</span><span class="p">],</span> <span class="n">edge_labels</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;elements&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A graph of all intersections between sets.</span>
@@ -257,14 +257,14 @@
             <span class="n">graph</span><span class="p">[</span><span class="n">key1</span><span class="p">][</span><span class="n">key2</span><span class="p">]</span> <span class="o">=</span> <span class="n">intersection</span>
             <span class="n">graph</span><span class="p">[</span><span class="n">key2</span><span class="p">][</span><span class="n">key1</span><span class="p">]</span> <span class="o">=</span> <span class="n">intersection</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge_labels</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">edge_labels</span> <span class="o">==</span> <span class="s1">&#39;elements&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">edge_labels</span> <span class="o">==</span> <span class="s2">&quot;elements&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">edge_labels</span> <span class="o">==</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">edge_labels</span> <span class="o">==</span> <span class="s2">&quot;size&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">map_values</span><span class="p">(</span><span class="n">map_values</span><span class="o">.</span><span class="n">len</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">edge_labels</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">map_values</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid value for edge_labels: </span><span class="si">{</span><span class="n">edge_labels</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for edge_labels: </span><span class="si">{</span><span class="n">edge_labels</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 
@@ -373,7 +373,7 @@
 <div class="viewcode-block" id="auto_decode_bytes">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.auto_decode_bytes">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">auto_decode_bytes</span><span class="p">(</span>
-    <span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">try_first_bytes</span><span class="o">=</span><span class="p">(</span><span class="mf">1e6</span><span class="p">,</span> <span class="mf">1e7</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">),</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">try_first_bytes</span><span class="o">=</span><span class="p">(</span><span class="mf">1e6</span><span class="p">,</span> <span class="mf">1e7</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">),</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decode a byte sequence into a string, trying charset_normalizer gueses if fails.</span>
@@ -573,7 +573,7 @@
         <span class="c1"># Check if all list lengths are the same for safety</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">list_lengths</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;All lists in a single row must have the same length to expand correctly.&#39;</span>
+                <span class="s2">&quot;All lists in a single row must have the same length to expand correctly.&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># Create individual rows for each index of the lists in grouped_columns</span>
@@ -635,7 +635,7 @@
         <span class="n">groupings</span> <span class="o">=</span> <span class="p">[</span><span class="n">groupings</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupings</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="c1"># Convert list to a dictionary with default key if groupings is a list</span>
-        <span class="n">groupings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;collapsed&#39;</span><span class="p">:</span> <span class="n">groupings</span><span class="p">}</span>
+        <span class="n">groupings</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;collapsed&quot;</span><span class="p">:</span> <span class="n">groupings</span><span class="p">}</span>
 
     <span class="c1"># Copy the dataframe to avoid changing the original one</span>
     <span class="n">result_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -647,7 +647,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_columns</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;No valid columns found in </span><span class="si">{</span><span class="n">columns_to_collapse</span><span class="si">}</span><span class="s1"> to collapse into </span><span class="si">{</span><span class="n">new_column</span><span class="si">}</span><span class="s1">.&#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;No valid columns found in </span><span class="si">{</span><span class="n">columns_to_collapse</span><span class="si">}</span><span class="s2"> to collapse into </span><span class="si">{</span><span class="n">new_column</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># Create a new column with dictionaries mapping old column names to their values</span>
@@ -663,10 +663,10 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">column_sep_key_mapper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">column_name</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">column_name</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
-<span class="n">_column_dot_key_mapper</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">column_sep_key_mapper</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">_column_dot_key_mapper</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">column_sep_key_mapper</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_apply_key_mapper_to_keys</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">key_mapper</span><span class="p">):</span>
@@ -736,7 +736,7 @@
     <span class="c1"># Validate that all expand_columns are in df.columns</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">expand_columns</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1"> does not exist in the DataFrame.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> does not exist in the DataFrame.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">key_mapper</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">key_mapper</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="n">key</span>
 
@@ -765,6 +765,97 @@
             <span class="n">result_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">result_df</span></div>
+
+
+
+<span class="c1"># -------------------------------------------------------------------------------------</span>
+<span class="c1"># Serialization</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<div class="viewcode-block" id="PandasJSONEncoder">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.PandasJSONEncoder">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PandasJSONEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A custom JSON encoder that can handle pandas and numpy types more robustly,</span>
+<span class="sd">    even if they appear within nested data structures.</span>
+
+<span class="sd">    &gt;&gt;&gt; import json, datetime, pandas as pd, numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; # Test with a DataFrame containing timestamps and missing values.</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;a&#39;: [1, 2, 3],</span>
+<span class="sd">    ...     &#39;b&#39;: [pd.Timestamp(&#39;2023-04-09 00:02:53+0000&#39;, tz=&#39;UTC&#39;),</span>
+<span class="sd">    ...           pd.NaT,</span>
+<span class="sd">    ...           pd.Timestamp(&#39;2023-04-09 00:02:53+0000&#39;, tz=&#39;UTC&#39;)]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; json_str = json.dumps(df, cls=PandasJSONEncoder)</span>
+<span class="sd">    &gt;&gt;&gt; json_str  # doctest: +NORMALIZE_WHITESPACE, +ELLIPSIS</span>
+<span class="sd">    &#39;[{&quot;a&quot;: 1, &quot;b&quot;: &quot;2023-04-09T00:02:53...&quot;}..., {&quot;a&quot;: 2, &quot;b&quot;: null}, {&quot;a&quot;: 3, &quot;b&quot;: &quot;2023-04-09T00:02:53...&quot;}...]&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; # Test with a Series containing timestamps and missing values.</span>
+<span class="sd">    &gt;&gt;&gt; s = pd.Series([pd.Timestamp(&#39;2023-04-09 00:02:53+0000&#39;, tz=&#39;UTC&#39;), pd.NaT])</span>
+<span class="sd">    &gt;&gt;&gt; json_str = json.dumps(s, cls=PandasJSONEncoder)</span>
+<span class="sd">    &gt;&gt;&gt; json_str  # doctest: +NORMALIZE_WHITESPACE, +ELLIPSIS</span>
+<span class="sd">    &#39;{&quot;0&quot;: &quot;2023-04-09T00:02:53...&quot;, &quot;1&quot;: null}&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; # Test with numpy arrays and numpy scalar types.</span>
+<span class="sd">    &gt;&gt;&gt; data = {</span>
+<span class="sd">    ...     &quot;arr&quot;: np.array([1, 2, 3], dtype=np.int32),</span>
+<span class="sd">    ...     &quot;flt&quot;: np.float32(3.14),</span>
+<span class="sd">    ...     &quot;bool&quot;: np.bool_(False)</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; json_str = json.dumps(data, cls=PandasJSONEncoder)</span>
+<span class="sd">    &gt;&gt;&gt; json_str  # doctest: +NORMALIZE_WHITESPACE, +ELLIPSIS</span>
+<span class="sd">    &#39;{&quot;arr&quot;: [1, 2, 3], &quot;flt&quot;: 3.14..., &quot;bool&quot;: false}&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; # Test with a datetime.date.</span>
+<span class="sd">    &gt;&gt;&gt; date_val = datetime.date(2002, 1, 1)</span>
+<span class="sd">    &gt;&gt;&gt; json.dumps(date_val, cls=PandasJSONEncoder)  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">    &#39;&quot;2002-01-01&quot;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PandasJSONEncoder.default">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.PandasJSONEncoder.default">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="c1"># Handle pandas DataFrame by delegating to its own JSON conversion.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="c1"># Using &#39;records&#39; orientation to produce a list of row dictionaries.</span>
+            <span class="c1"># Pandas will also handle nested types like Timestamps.</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="s1">&#39;iso&#39;</span><span class="p">))</span>
+        <span class="c1"># Handle pandas Series similarly.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+            <span class="c1"># to_json for Series returns a JSON object (dict) keyed by the index.</span>
+            <span class="c1"># This approach ensures that any non-JSON-serializable objects are handled by pandas.</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">date_format</span><span class="o">=</span><span class="s1">&#39;iso&#39;</span><span class="p">))</span>
+        <span class="c1"># Handle pandas Timestamp objects.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="c1"># Convert numpy arrays to lists.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># Convert numpy boolean, floating, and integer scalars to native Python types.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">,)):</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,)):</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="c1"># Convert datetime.date and datetime.datetime to ISO 8601 strings.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="c1"># For other objects, if pd.isna returns a boolean True, return None.</span>
+        <span class="n">is_na</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">is_na</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_na</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="c1"># Fallback to the default method.</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+</div>
 
 </pre></div>
 

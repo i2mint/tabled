@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.multi &mdash; tabled 0.1.10 documentation</title>
+  <title>tabled.multi &mdash; tabled 0.1.18 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../../_static/documentation_options.js?v=9969ed3f"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -94,8 +94,8 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Dict</span>
 
-<span class="n">Column</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Column&#39;</span><span class="p">)</span>
-<span class="n">TableKey</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;TableKey&#39;</span><span class="p">)</span>
+<span class="n">Column</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Column&quot;</span><span class="p">)</span>
+<span class="n">TableKey</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TableKey&quot;</span><span class="p">)</span>
 <span class="n">MappingOfDataFrames</span> <span class="o">=</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
 <span class="n">DataFrames</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">MappingOfDataFrames</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]</span>
 
@@ -111,7 +111,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
             <span class="n">tables</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">tables</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expected Mapping or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected Mapping or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tables</span></div>
 
 
@@ -136,7 +136,11 @@
 <div class="viewcode-block" id="execute_commands">
 <a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.execute_commands">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">execute_commands</span><span class="p">(</span>
-    <span class="n">commands</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">interpreter_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extra_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">commands</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">scope</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">interpreter_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">extra_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Carries `commands` operations out with tables taken from `scope`.</span>
@@ -151,7 +155,7 @@
         <span class="n">command_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
         <span class="n">command_executor</span> <span class="o">=</span> <span class="n">interpreter_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">command_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">command_executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown command type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown command type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">yield</span> <span class="n">command_executor</span><span class="p">(</span><span class="n">_scope</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span></div>
 
 
@@ -200,27 +204,27 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">load_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">set_scope_value</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="s1">&#39;cumul&#39;</span><span class="p">,</span> <span class="n">scope</span><span class="p">[</span><span class="n">command</span><span class="o">.</span><span class="n">key</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">set_scope_value</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="s2">&quot;cumul&quot;</span><span class="p">,</span> <span class="n">scope</span><span class="p">[</span><span class="n">command</span><span class="o">.</span><span class="n">key</span><span class="p">])</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">join_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="n">command</span><span class="o">.</span><span class="n">table_key</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">if</span> <span class="s1">&#39;renamed_columns&#39;</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">old_col</span><span class="p">,</span> <span class="n">new_col</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;renamed_columns&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s2">&quot;renamed_columns&quot;</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">old_col</span><span class="p">,</span> <span class="n">new_col</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;renamed_columns&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">old_col</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
                 <span class="n">table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">old_col</span><span class="p">:</span> <span class="n">new_col</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">cumul</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;cumul&#39;</span><span class="p">]</span>
-    <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;cumul&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumul</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+    <span class="n">cumul</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span>
+    <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumul</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">remove_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-    <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;cumul&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;cumul&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+    <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">rename_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-    <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;renamed_columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span>
+    <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;renamed_columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span>
     <span class="k">for</span> <span class="n">old_col</span><span class="p">,</span> <span class="n">new_col</span> <span class="ow">in</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;cumul&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;cumul&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">old_col</span><span class="p">:</span> <span class="n">new_col</span><span class="p">})</span>
+        <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">old_col</span><span class="p">:</span> <span class="n">new_col</span><span class="p">})</span>
 
 
 <span class="n">dflt_tables_interpreter_map</span> <span class="o">=</span> <span class="p">{</span>
@@ -320,7 +324,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">,</span> <span class="n">Iterable</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;Expected Callable or Iterable, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expected Callable or Iterable, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span>
 
     <span class="nd">@cached_property</span>

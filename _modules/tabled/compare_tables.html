@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.compare_tables &mdash; tabled 0.1.10 documentation</title>
+  <title>tabled.compare_tables &mdash; tabled 0.1.18 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=bafade30"></script>
+      <script src="../../_static/documentation_options.js?v=9969ed3f"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -164,7 +164,7 @@
         <span class="n">s2</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common_index</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
         <span class="n">diff_s</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">keep_shape</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_equal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">diff_s</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-            <span class="n">diff_s</span> <span class="o">=</span> <span class="n">diff_s</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;self&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;other&#39;</span><span class="p">:</span> <span class="s1">&#39;right&#39;</span><span class="p">})</span>
+            <span class="n">diff_s</span> <span class="o">=</span> <span class="n">diff_s</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;self&quot;</span><span class="p">:</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;other&quot;</span><span class="p">:</span> <span class="s2">&quot;right&quot;</span><span class="p">})</span>
             <span class="n">diffs</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff_s</span>
     <span class="k">return</span> <span class="n">diffs</span></div>
 
@@ -193,11 +193,11 @@
 
 
 <span class="n">DFLT_COMPARISONS</span><span class="p">:</span> <span class="n">ComparisonsDict</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;columns_diff&#39;</span><span class="p">:</span> <span class="n">columns_diff</span><span class="p">,</span>
-    <span class="s1">&#39;index_diff&#39;</span><span class="p">:</span> <span class="n">index_diff</span><span class="p">,</span>
-    <span class="s1">&#39;shape_diff&#39;</span><span class="p">:</span> <span class="n">shape_diff</span><span class="p">,</span>
-    <span class="s1">&#39;columns_value_diff&#39;</span><span class="p">:</span> <span class="n">columns_value_diff</span><span class="p">,</span>
-    <span class="s1">&#39;dtypes_diff&#39;</span><span class="p">:</span> <span class="n">dtypes_diff</span><span class="p">,</span>
+    <span class="s2">&quot;columns_diff&quot;</span><span class="p">:</span> <span class="n">columns_diff</span><span class="p">,</span>
+    <span class="s2">&quot;index_diff&quot;</span><span class="p">:</span> <span class="n">index_diff</span><span class="p">,</span>
+    <span class="s2">&quot;shape_diff&quot;</span><span class="p">:</span> <span class="n">shape_diff</span><span class="p">,</span>
+    <span class="s2">&quot;columns_value_diff&quot;</span><span class="p">:</span> <span class="n">columns_value_diff</span><span class="p">,</span>
+    <span class="s2">&quot;dtypes_diff&quot;</span><span class="p">:</span> <span class="n">dtypes_diff</span><span class="p">,</span>
     <span class="c1"># ... insert more here</span>
 <span class="p">}</span>
 
@@ -233,7 +233,7 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compare the diff of dataframes using specified diff comparison functions.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns a dictionary with comparison names as keys and comparison results as values.</span>
 
 <span class="sd">    Parameters:</span>
