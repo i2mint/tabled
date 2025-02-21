@@ -689,12 +689,12 @@ class PandasJSONEncoder(json.JSONEncoder):
         if isinstance(obj, pd.DataFrame):
             # Using 'records' orientation to produce a list of row dictionaries.
             # Pandas will also handle nested types like Timestamps.
-            return json.loads(obj.to_json(orient='records', date_format='iso'))
+            return json.loads(obj.to_json(orient="records", date_format="iso"))
         # Handle pandas Series similarly.
         if isinstance(obj, pd.Series):
             # to_json for Series returns a JSON object (dict) keyed by the index.
             # This approach ensures that any non-JSON-serializable objects are handled by pandas.
-            return json.loads(obj.to_json(date_format='iso'))
+            return json.loads(obj.to_json(date_format="iso"))
         # Handle pandas Timestamp objects.
         if isinstance(obj, pd.Timestamp):
             if pd.isna(obj):
