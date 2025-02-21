@@ -634,3 +634,88 @@ def expand_columns(
             result_df.drop(columns=[col], inplace=True)
 
     return result_df
+
+
+# -------------------------------------------------------------------------------------
+# Serialization
+
+import json
+import datetime
+import pandas as pd
+import numpy as np
+
+
+class PandasJSONEncoder(json.JSONEncoder):
+    """
+    A custom JSON encoder that can handle pandas and numpy types more robustly,
+    even if they appear within nested data structures.
+
+    >>> import json, datetime, pandas as pd, numpy as np
+    >>> # Test with a DataFrame containing timestamps and missing values.
+    >>> df = pd.DataFrame({
+    ...     'a': [1, 2, 3],
+    ...     'b': [pd.Timestamp('2023-04-09 00:02:53+0000', tz='UTC'),
+    ...           pd.NaT,
+    ...           pd.Timestamp('2023-04-09 00:02:53+0000', tz='UTC')]
+    ... })
+    >>> json_str = json.dumps(df, cls=PandasJSONEncoder)
+    >>> json_str  # doctest: +NORMALIZE_WHITESPACE, +ELLIPSIS
+    '[{"a": 1, "b": "2023-04-09T00:02:53..."}..., {"a": 2, "b": null}, {"a": 3, "b": "2023-04-09T00:02:53..."}...]'
+
+    >>> # Test with a Series containing timestamps and missing values.
+    >>> s = pd.Series([pd.Timestamp('2023-04-09 00:02:53+0000', tz='UTC'), pd.NaT])
+    >>> json_str = json.dumps(s, cls=PandasJSONEncoder)
+    >>> json_str  # doctest: +NORMALIZE_WHITESPACE, +ELLIPSIS
+    '{"0": "2023-04-09T00:02:53...", "1": null}'
+
+    >>> # Test with numpy arrays and numpy scalar types.
+    >>> data = {
+    ...     "arr": np.array([1, 2, 3], dtype=np.int32),
+    ...     "flt": np.float32(3.14),
+    ...     "bool": np.bool_(False)
+    ... }
+    >>> json_str = json.dumps(data, cls=PandasJSONEncoder)
+    >>> json_str  # doctest: +NORMALIZE_WHITESPACE, +ELLIPSIS
+    '{"arr": [1, 2, 3], "flt": 3.14..., "bool": false}'
+
+    >>> # Test with a datetime.date.
+    >>> date_val = datetime.date(2002, 1, 1)
+    >>> json.dumps(date_val, cls=PandasJSONEncoder)  # doctest: +NORMALIZE_WHITESPACE
+    '"2002-01-01"'
+    """
+
+    def default(self, obj):
+        # Handle pandas DataFrame by delegating to its own JSON conversion.
+        if isinstance(obj, pd.DataFrame):
+            # Using 'records' orientation to produce a list of row dictionaries.
+            # Pandas will also handle nested types like Timestamps.
+            return json.loads(obj.to_json(orient='records', date_format='iso'))
+        # Handle pandas Series similarly.
+        if isinstance(obj, pd.Series):
+            # to_json for Series returns a JSON object (dict) keyed by the index.
+            # This approach ensures that any non-JSON-serializable objects are handled by pandas.
+            return json.loads(obj.to_json(date_format='iso'))
+        # Handle pandas Timestamp objects.
+        if isinstance(obj, pd.Timestamp):
+            if pd.isna(obj):
+                return None
+            return obj.isoformat()
+        # Convert numpy arrays to lists.
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        # Convert numpy boolean, floating, and integer scalars to native Python types.
+        if isinstance(obj, np.bool_):
+            return bool(obj)
+        if isinstance(obj, (np.floating,)):
+            return float(obj)
+        if isinstance(obj, (np.integer,)):
+            return int(obj)
+        # Convert datetime.date and datetime.datetime to ISO 8601 strings.
+        if isinstance(obj, (datetime.date, datetime.datetime)):
+            return obj.isoformat()
+        # For other objects, if pd.isna returns a boolean True, return None.
+        is_na = pd.isna(obj)
+        if isinstance(is_na, bool) and is_na:
+            return None
+        # Fallback to the default method.
+        return super().default(obj)

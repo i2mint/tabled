@@ -20,11 +20,12 @@ from tabled.base import (
 )
 from tabled.multi import ColumnOrientedMapping
 from tabled.util import (
-    collapse_rows,
-    expand_rows,
-    collapse_columns,
-    expand_columns,
-    auto_decode_bytes,
+    collapse_rows,  # collapse rows in a dataframe
+    expand_rows,  # expand rows in a dataframe
+    collapse_columns,  # collapse columns in a dataframe
+    expand_columns,  # expand columns in a dataframe
+    auto_decode_bytes,  # Decode a byte sequence into a string, trying charset_normalizer gueses if fails.
+    PandasJSONEncoder,  # a json encoder that can handle pandas and numpy objects
     ensure_columns,  # ensure that the columns are in the dataframe
     ensure_first_columns,  # ensure that the columns are the first columns in the dataframe
     ensure_last_columns,  # ensure that the columns are the last columns in the dataframe
