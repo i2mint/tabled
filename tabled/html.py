@@ -2,17 +2,33 @@
 
 from typing import Callable, Union, Mapping, Optional, Sequence
 import re
+import io
+
 import pandas as pd
+
+DFLT_CHROME_WAIT = 3
 
 
 def url_to_html_func(kind="requests") -> Callable:
     """Get a url_to_html function of a given kind."""
+
+    # If kind is a tuple, the first element is the kind and the second element is the kwargs
+    # to be used to parametrize the function
+    # NOTE: For now, I'm just simply passing the kwargs to the place I think is most
+    #  needed, but we can use a more sophisticated way to pass the kwargs to the right
+    #  place using i2.call_forgivingly or i2.Sig.extract_args_and_kwargs or such
+    if not isinstance(kind, str):
+        kind_tuple = kind
+        kind, kind_kwargs = kind_tuple
+    else:
+        kind_kwargs = {}
+
     url_to_html = None
     if kind == "requests":
         import requests  # pip install requests
 
         def url_to_html(url):
-            r = requests.get(url)
+            r = requests.get(url, **kind_kwargs)
             if r.status_code != 200:
                 print(
                     f"An error occured. Returning the response object for you to analyze: {r}"
@@ -25,7 +41,9 @@ def url_to_html_func(kind="requests") -> Callable:
         from selenium import webdriver  # pip install selenium
         from time import sleep
 
-        def url_to_html(url, wait=2):
+        dflt_wait = kind_kwargs.get("wait", DFLT_CHROME_WAIT)
+
+        def url_to_html(url, wait=dflt_wait):
             b = webdriver.Chrome()
             b.get(url)
             if isinstance(wait, (int, float)):
@@ -131,7 +149,8 @@ def get_tables_from_url(
     filt_func = _ensure_table_filter(filt)
 
     try:
-        tables = get_tables_from_html(url_to_html(url), **tables_from_html_kwargs)
+        html = url_to_html(url)
+        tables = get_tables_from_html(io.StringIO(html), **tables_from_html_kwargs)
         return list(filter(filt_func, tables))
     except ValueError as e:
         if len(e.args) > 0:
