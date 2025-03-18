@@ -11,6 +11,49 @@ def identity(x):
     return x
 
 
+def duplicate_groups(df, subset):
+    """
+    Returns a Series of DataFrames where each item contains rows with duplicate values
+    in the specified column(s).
+
+    Args:
+        df: Input DataFrame
+        subset: Column name or list of column names to identify duplicates
+
+    Returns:
+        Series with unique duplicate values as index and corresponding DataFrames as values
+
+    >>> import pandas as pd
+    >>> df = pd.DataFrame({"A": [1, 1, 2, 3, 3], "B": ["a", "b", "c", "d", "e"]})
+    >>> dups = duplicate_groups(df, "A")
+    >>> list(dups.index)
+    [1, 3]
+    >>> dups[1].shape
+    (2, 2)
+    """
+    # Find rows with duplicate values
+    duplicated = df[df.duplicated(subset=subset, keep=False)]
+
+    # Handle single column vs multiple columns
+    if isinstance(subset, str):
+        # For single column subset
+        result = {}
+        for value, group in duplicated.groupby(subset):
+            result[value] = group.copy()
+        return pd.Series(result)
+    else:
+        # For multi-column subset
+        result = {}
+        for group_key, group in duplicated.groupby(subset):
+            # If subset has multiple columns, use tuple as key
+            if len(subset) > 1:
+                key = group_key
+            else:
+                key = group_key
+            result[key] = group.copy()
+        return pd.Series(result)
+
+
 def ensure_columns(df, columns=(), fill=None):
     """
     Ensure that a dataframe has certain columns, filling them with a certain value
