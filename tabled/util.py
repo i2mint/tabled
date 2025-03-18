@@ -72,7 +72,7 @@ def duplicate_groups(
                 if df.index.name:
                     result[df.index.name] = duplicated.index
                 else:
-                    result['index'] = duplicated.index
+                    result["index"] = duplicated.index
 
             return result
 
@@ -84,7 +84,7 @@ def duplicate_groups(
             if df.index.name:
                 result[df.index.name] = duplicated.index
             else:
-                result['index'] = duplicated.index
+                result["index"] = duplicated.index
 
         return result
 
