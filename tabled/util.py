@@ -11,47 +11,105 @@ def identity(x):
     return x
 
 
-def duplicate_groups(df, subset):
+def duplicate_groups(
+    df, subset, *, output: str = "dataframe", keep_indices: bool = True
+):
     """
-    Returns a Series of DataFrames where each item contains rows with duplicate values
-    in the specified column(s).
+    Get a DataFrame containing rows that have duplicate values for subset of columns.
 
     Args:
         df: Input DataFrame
         subset: Column name or list of column names to identify duplicates
+        output: Output format, either "dataframe" or "series"
+        keep_indices: If True (default), preserves the original index as a column named
+                    by the index name or 'index' if unnamed. If False, keeps the
+                    original index as the index of the result.
 
     Returns:
         Series with unique duplicate values as index and corresponding DataFrames as values
+        or DataFrame with duplicated rows with the specified subset as index.
 
     >>> import pandas as pd
     >>> df = pd.DataFrame({"A": [1, 1, 2, 3, 3], "B": ["a", "b", "c", "d", "e"]})
     >>> dups = duplicate_groups(df, "A")
+    >>> dups  # doctest: +NORMALIZE_WHITESPACE
+       B  index
+    A
+    1  a      0
+    1  b      1
+    3  d      3
+    3  e      4
+    >>> list(dups.index)
+    [1, 1, 3, 3]
+    >>> dups.loc[1].shape
+    (2, 2)
+    >>> dups = duplicate_groups(df, "A", output="series")
     >>> list(dups.index)
     [1, 3]
     >>> dups[1].shape
     (2, 2)
+    >>> # Without keep_indices
+    >>> dups_orig_idx = duplicate_groups(df, "A", keep_indices=False)
+    >>> dups_orig_idx  # doctest: +NORMALIZE_WHITESPACE
+       B
+    A
+    1  a
+    1  b
+    3  d
+    3  e
     """
     # Find rows with duplicate values
     duplicated = df[df.duplicated(subset=subset, keep=False)]
 
-    # Handle single column vs multiple columns
-    if isinstance(subset, str):
-        # For single column subset
-        result = {}
-        for value, group in duplicated.groupby(subset):
-            result[value] = group.copy()
-        return pd.Series(result)
-    else:
+    # Preserve the original index
+    if output == "dataframe":
+        # If subset is a string, use the column as index
+        if isinstance(subset, str):
+            result = duplicated.set_index(subset)
+
+            # Preserve the original index as a column if requested
+            if keep_indices:
+                if df.index.name:
+                    result[df.index.name] = duplicated.index
+                else:
+                    result['index'] = duplicated.index
+
+            return result
+
         # For multi-column subset
-        result = {}
-        for group_key, group in duplicated.groupby(subset):
-            # If subset has multiple columns, use tuple as key
-            if len(subset) > 1:
-                key = group_key
+        result = duplicated.set_index(subset)
+
+        # Preserve the original index as a column if requested
+        if keep_indices:
+            if df.index.name:
+                result[df.index.name] = duplicated.index
             else:
+                result['index'] = duplicated.index
+
+        return result
+
+    elif output == "series":
+        # Handle single column vs multiple columns
+        if isinstance(subset, str):
+            # For single column subset
+            result = {}
+            for value, group in duplicated.groupby(subset):
+                # Preserve the original index in the group
+                result[value] = group.copy()
+            return pd.Series(result)
+        else:
+            # For multi-column subset
+            result = {}
+            for group_key, group in duplicated.groupby(subset):
+                # If subset has multiple columns, use tuple as key
                 key = group_key
-            result[key] = group.copy()
-        return pd.Series(result)
+                # Preserve the original index in the group
+                result[key] = group.copy()
+            return pd.Series(result)
+    else:
+        raise ValueError(
+            f"Invalid output type: {output} (should be 'dataframe' or 'series')"
+        )
 
 
 def ensure_columns(df, columns=(), fill=None):
