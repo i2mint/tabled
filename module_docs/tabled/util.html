@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.util &mdash; tabled 0.1.20 documentation</title>
+  <title>tabled.util &mdash; tabled 0.1.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/documentation_options.js?v=b3d22ae5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -71,6 +71,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.breadth_first_traversal"><code class="docutils literal notranslate"><span class="pre">breadth_first_traversal()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.collapse_columns"><code class="docutils literal notranslate"><span class="pre">collapse_columns()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.collapse_rows"><code class="docutils literal notranslate"><span class="pre">collapse_rows()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.duplicate_groups"><code class="docutils literal notranslate"><span class="pre">duplicate_groups()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.ensure_columns"><code class="docutils literal notranslate"><span class="pre">ensure_columns()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.ensure_first_columns"><code class="docutils literal notranslate"><span class="pre">ensure_first_columns()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.ensure_last_columns"><code class="docutils literal notranslate"><span class="pre">ensure_last_columns()</span></code></a></li>
@@ -351,6 +352,33 @@ column’s values (the ones that are not keys of the groupby) into lists.</p>
 <span class="go">   a       b        c</span>
 <span class="go">0  1  [3, 4]   [7, 8]</span>
 <span class="go">1  2  [5, 6]  [9, 10]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.duplicate_groups">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">duplicate_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#duplicate_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.duplicate_groups" title="Link to this definition"></a></dt>
+<dd><p>Returns a Series of DataFrames where each item contains rows with duplicate values
+in the specified column(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – Input DataFrame</p></li>
+<li><p><strong>subset</strong> – Column name or list of column names to identify duplicates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Series with unique duplicate values as index and corresponding DataFrames as values</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dups</span> <span class="o">=</span> <span class="n">duplicate_groups</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">dups</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="go">[1, 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dups</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 2)</span>
 </pre></div>
 </div>
 </dd></dl>
