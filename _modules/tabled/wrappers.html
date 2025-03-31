@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.wrappers &mdash; tabled 0.1.22 documentation</title>
+  <title>tabled.wrappers &mdash; tabled 0.1.23 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=842aa08f"></script>
+      <script src="../../_static/documentation_options.js?v=20522496"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -303,6 +303,44 @@
 <span class="n">USE_INDEX</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># set here for the encoders</span>
 <span class="n">INDEX_COL</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">USE_INDEX</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># ... and this will be used for the decoders</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="single_column_parquet_encode">
+<a class="viewcode-back" href="../../module_docs/tabled/wrappers.html#tabled.wrappers.single_column_parquet_encode">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_encode</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Encode a list of sequences into a single-column parquet file.</span>
+
+<span class="sd">    &gt;&gt;&gt; sequences_1 = [[1, 2], [3, 4, 5]]</span>
+<span class="sd">    &gt;&gt;&gt; encoded_1 = single_column_parquet_encode(sequences_1)</span>
+<span class="sd">    &gt;&gt;&gt; decoded_1 = single_column_parquet_decode(encoded_1)</span>
+<span class="sd">    &gt;&gt;&gt; all((x == y).all() for x, y in zip(decoded_1, sequences_1))</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">sequences</span><span class="p">})</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="single_column_parquet_decode">
+<a class="viewcode-back" href="../../module_docs/tabled/wrappers.html#tabled.wrappers.single_column_parquet_decode">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_decode</span><span class="p">(</span><span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decode a single-column parquet file into a list of sequences.</span>
+
+<span class="sd">    &gt;&gt;&gt; sequences_2 = [[&#39;one&#39;, &#39;two&#39;], [&#39;three&#39;, &#39;four&#39;, &#39;five&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; encoded_2 = single_column_parquet_encode(sequences_2)</span>
+<span class="sd">    &gt;&gt;&gt; decoded_2 = single_column_parquet_decode(encoded_2)</span>
+<span class="sd">    &gt;&gt;&gt; all((x == y).all() for x, y in zip(decoded_2, sequences_2))</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">b</span><span class="p">))[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span></div>
+
+
+
 <span class="n">_extension_to_encoder</span> <span class="o">=</span> <span class="n">split_keys</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="c1"># csv files</span>
@@ -325,15 +363,9 @@
         <span class="s2">&quot;p pickle pkl&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">,</span>
         <span class="c1"># numpy arrays</span>
         <span class="s2">&quot;npy&quot;</span><span class="p">:</span> <span class="n">LiteralVal</span><span class="p">(</span><span class="n">written_bytes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">,</span> <span class="n">obj_arg_position_in_writer</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
-        <span class="c1"># parquet format</span>
-        <span class="s2">&quot;parquet&quot;</span><span class="p">:</span> <span class="n">LiteralVal</span><span class="p">(</span>
-            <span class="n">written_bytes</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">,</span> <span class="n">obj_arg_position_in_writer</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="p">),</span>
         <span class="c1"># zip-compressed tsv (custom implementation)</span>
         <span class="s2">&quot;zip&quot;</span><span class="p">:</span> <span class="n">LiteralVal</span><span class="p">(</span><span class="n">save_df_to_zipped_tsv</span><span class="p">),</span>
         <span class="c1"># feather format</span>
-        <span class="s2">&quot;feather&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_feather</span><span class="p">,</span>
-        <span class="c1"># hdf5 format (Hierarchical Data Format)</span>
         <span class="s2">&quot;h5 hdf5&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_hdf</span><span class="p">,</span>
         <span class="c1"># stata files</span>
         <span class="s2">&quot;stata dta&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_stata</span><span class="p">,</span> <span class="n">write_index</span><span class="o">=</span><span class="n">USE_INDEX</span><span class="p">),</span>
@@ -351,6 +383,7 @@
         <span class="c1"># parquet format</span>
         <span class="s2">&quot;parquet&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow, fastparquet</span>
         <span class="c1"># feather format</span>
+        <span class="s2">&quot;single_column_parquet&quot;</span><span class="p">:</span> <span class="n">single_column_parquet_encode</span><span class="p">,</span>
         <span class="s2">&quot;feather&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_feather</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
         <span class="c1"># orc format</span>
         <span class="s2">&quot;orc&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_orc</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
@@ -374,6 +407,7 @@
         <span class="s2">&quot;tsv&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">INDEX_COL</span><span class="p">),</span>
         <span class="c1"># parquet format</span>
         <span class="s2">&quot;parquet&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">,</span>
+        <span class="s2">&quot;single_column_parquet&quot;</span><span class="p">:</span> <span class="n">single_column_parquet_decode</span><span class="p">,</span>
         <span class="c1"># json format</span>
         <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">),</span>
         <span class="c1"># html tables</span>
