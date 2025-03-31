@@ -102,6 +102,7 @@ def get_table(
     Get a table from a variety of sources.
     """
     # If table_src is None, the user is trying to fix the parameters of the function
+
     if table_src is None:
         return partial(
             get_table,
@@ -115,7 +116,11 @@ def get_table(
     if isinstance(table_src, pd.DataFrame):
         return table_src
 
-    if ext is None and isinstance(table_src, str):
+
+    if ext is None:
+        ext = ''
+
+    if not ext and isinstance(table_src, str):
         key = table_src
         ext = file_extension(key)
         if ext == "zip":
@@ -123,6 +128,7 @@ def get_table(
             next_ext = file_extension(key[: -len(".zip")])
             if next_ext:
                 ext = f"{next_ext}.{ext}"  # e.g. 'csv.zip'
+            
 
     # TODO: Here's a great waste, since many of our table reading functions can
     #       take file-like (paths, io objects) as input. Should make wrappers.py so that

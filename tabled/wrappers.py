@@ -195,6 +195,38 @@ def map_values(
 USE_INDEX = True  # set here for the encoders
 INDEX_COL = 0 if USE_INDEX else None  # ... and this will be used for the decoders
 
+import io
+import pandas as pd
+
+
+def single_column_parquet_encode(sequences, col=0):
+    """
+    Encode a list of sequences into a single-column parquet file.
+
+    >>> sequences_1 = [[1, 2], [3, 4, 5]]
+    >>> encoded_1 = single_column_parquet_encode(sequences_1)
+    >>> decoded_1 = single_column_parquet_decode(encoded_1)
+    >>> all((x == y).all() for x, y in zip(decoded_1, sequences_1))
+    True
+
+    """
+    return pd.DataFrame({col: sequences}).to_parquet()
+
+
+def single_column_parquet_decode(b: bytes, col=0):
+    """
+    Decode a single-column parquet file into a list of sequences.
+
+    >>> sequences_2 = [['one', 'two'], ['three', 'four', 'five']]
+    >>> encoded_2 = single_column_parquet_encode(sequences_2)
+    >>> decoded_2 = single_column_parquet_decode(encoded_2)
+    >>> all((x == y).all() for x, y in zip(decoded_2, sequences_2))
+    True
+
+    """
+    return pd.read_parquet(io.BytesIO(b))[col].values
+
+
 _extension_to_encoder = split_keys(
     {
         # csv files
@@ -217,15 +249,9 @@ _extension_to_encoder = split_keys(
         "p pickle pkl": pd.DataFrame.to_pickle,
         # numpy arrays
         "npy": LiteralVal(written_bytes(np.save, obj_arg_position_in_writer=1)),
-        # parquet format
-        "parquet": LiteralVal(
-            written_bytes(pd.DataFrame.to_parquet, obj_arg_position_in_writer=0)
-        ),
         # zip-compressed tsv (custom implementation)
         "zip": LiteralVal(save_df_to_zipped_tsv),
         # feather format
-        "feather": pd.DataFrame.to_feather,
-        # hdf5 format (Hierarchical Data Format)
         "h5 hdf5": pd.DataFrame.to_hdf,
         # stata files
         "stata dta": partial(pd.DataFrame.to_stata, write_index=USE_INDEX),
@@ -243,6 +269,7 @@ _extension_to_encoder = split_keys(
         # parquet format
         "parquet": pd.DataFrame.to_parquet,  # Need: pip install pyarrow, fastparquet
         # feather format
+        "single_column_parquet": single_column_parquet_encode,
         "feather": pd.DataFrame.to_feather,  # Need: pip install pyarrow
         # orc format
         "orc": pd.DataFrame.to_orc,  # Need: pip install pyarrow
@@ -266,6 +293,7 @@ _extension_to_decoder = split_keys(
         "tsv": partial(pd.read_csv, sep="\t", index_col=INDEX_COL),
         # parquet format
         "parquet": pd.read_parquet,
+        "single_column_parquet": single_column_parquet_decode,
         # json format
         "json": partial(pd.read_json, orient="records"),
         # html tables
