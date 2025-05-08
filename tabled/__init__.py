@@ -45,3 +45,6 @@ from tabled.wrappers import (
 from tabled.compare_tables import (
     dataframe_diffs,  # compare two dataframes using specified comparison functions
 )
+
+# Import the codecs to register them
+import tabled._codecs

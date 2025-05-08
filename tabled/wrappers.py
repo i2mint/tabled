@@ -355,7 +355,7 @@ def print_current_mappings():
     pprint(get_codec_mappings())
 
 
-def add_extension_codec(extension=None, *, encoder=None, decoder=None):
+def add_extension_codec(extension=None, *, encoder=None, decoder=None, overwrite=False):
     """
     Add an extension-based encoder and decoder to the extension-code mapping.
 
@@ -366,6 +366,19 @@ def add_extension_codec(extension=None, *, encoder=None, decoder=None):
 
     Returns: None (it just adds the in-memory mappings)
 
+    Parameters:
+    ----------
+    extension: str
+        The file extension to add the codec for. If None, it will print the current mappings.
+    encoder: callable
+        The encoder function to add. If None, it will print the current mappings.
+    decoder: callable
+        The decoder function to add. If None, it will print the current mappings.
+    overwrite: bool
+        If True, it will overwrite the existing encoder/decoder for the given extension.
+        If False, it will raise a ValueError if the extension already exists.
+        Default is False.
+
     """
     if extension is None and encoder is None and decoder is None:
         # Print the current mappings
@@ -373,8 +386,18 @@ def add_extension_codec(extension=None, *, encoder=None, decoder=None):
         return print_current_mappings()
 
     if encoder is not None:
+        if extension in extension_to_encoder and not overwrite:
+            raise ValueError(
+                f"Encoder for extension '{extension}' already exists. Use 'overwrite=True' to replace it."
+            )
+        assert callable(encoder), f"Encoder must be a callable. Was: {encoder}"
         extension_to_encoder[extension] = encoder
     if decoder is not None:
+        if extension in extension_to_decoder and not overwrite:
+            raise ValueError(
+                f"Decoder for extension '{extension}' already exists. Use 'overwrite=True' to replace it."
+            )
+        assert callable(decoder), f"Decoder must be a callable. Was: {decoder}"
         extension_to_decoder[extension] = decoder
 
 
