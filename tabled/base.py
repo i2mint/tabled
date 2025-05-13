@@ -179,6 +179,7 @@ class DfFiles(Files):
         extension_decoder_mapping: Dict[Extension, DfDecoder] = dflt_ext_mapping,
         extra_encoder_kwargs: Union[dict, Iterable] = (),
         extra_decoder_kwargs: Union[dict, Iterable] = (),
+        allow_writing_bytes: bool = True,  # Note: can extend to validation callable
     ):
         super().__init__(rootdir)
 
@@ -195,6 +196,7 @@ class DfFiles(Files):
             ext_mapping=extension_decoder_mapping,
             **extra_decoder_kwargs,
         )
+        self.allow_writing_bytes = allow_writing_bytes
 
         # self.extension_based_encoder = partial(
         #     extension_based_encoding, extension_encoder_mapping
@@ -211,9 +213,16 @@ class DfFiles(Files):
     # extension_base_wrap(Files)
     # But not this:
     def __setitem__(self, k, v):
-        bytes_ = extension_based_encoding(
-            k, v, extension_to_encoder=self.extension_encoder_mapping
-        )
+        if not isinstance(v, bytes):
+            bytes_ = extension_based_encoding(
+                k, v, extension_to_encoder=self.extension_encoder_mapping
+            )
+        else:  # if v is bytes already
+            if not self.allow_writing_bytes:
+                raise ValueError(
+                    "Cannot write bytes directly. Specify ."
+                )
+            bytes_ = v
         # bytes_ = self.extension_based_encoding(v, file_extension(k))
         return super().__setitem__(k, bytes_)
 
