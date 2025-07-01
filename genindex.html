@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; tabled 0.1.23 documentation</title>
+  <title>Index &mdash; tabled 0.1.24 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=20522496"></script>
+      <script src="_static/documentation_options.js?v=ebdbb45b"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -47,6 +47,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/html.html">tabled.html</a></li>
@@ -114,9 +115,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/wrappers.html#tabled.wrappers.add_extension_codec">add_extension_codec() (in module tabled.wrappers)</a>
 </li>
+      <li><a href="module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping.array">array() (tabled.multi.ColumnOrientedMapping method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping.array">array() (tabled.multi.ColumnOrientedMapping method)</a>
+      <li><a href="module_docs/tabled/_codecs.html#tabled._codecs.arrow_bytes_to_dataframe">arrow_bytes_to_dataframe() (in module tabled._codecs)</a>
 </li>
       <li><a href="module_docs/tabled/util.html#tabled.util.auto_decode_bytes">auto_decode_bytes() (in module tabled.util)</a>
 </li>
@@ -168,6 +171,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/compare_tables.html#tabled.compare_tables.dataframe_diffs">dataframe_diffs() (in module tabled.compare_tables)</a>
 </li>
+      <li><a href="module_docs/tabled/_codecs.html#tabled._codecs.dataframe_to_arrow_bytes">dataframe_to_arrow_bytes() (in module tabled._codecs)</a>
+</li>
       <li><a href="module_docs/tabled/base.html#tabled.base.DataframeKvReader">DataframeKvReader (class in tabled.base)</a>
 </li>
       <li><a href="module_docs/tabled/multi.html#tabled.multi.dataframes">dataframes() (in module tabled.multi)</a>
@@ -178,10 +183,10 @@
 </li>
       <li><a href="module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping.df">df() (tabled.multi.ColumnOrientedMapping method)</a>
 </li>
-      <li><a href="module_docs/tabled/wrappers.html#tabled.wrappers.df_from_data_according_to_key">df_from_data_according_to_key() (in module tabled.wrappers)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/wrappers.html#tabled.wrappers.df_from_data_according_to_key">df_from_data_according_to_key() (in module tabled.wrappers)</a>
+</li>
       <li><a href="module_docs/tabled/wrappers.html#tabled.wrappers.df_from_data_given_ext">df_from_data_given_ext() (in module tabled.wrappers)</a>
 </li>
       <li><a href="module_docs/tabled/base.html#tabled.base.DfFiles">DfFiles (class in tabled.base)</a>
@@ -318,6 +323,8 @@
       <ul>
         <li><a href="module_docs/tabled.html#module-tabled">tabled</a>
 </li>
+        <li><a href="module_docs/tabled/_codecs.html#module-tabled._codecs">tabled._codecs</a>
+</li>
         <li><a href="module_docs/tabled/base.html#module-tabled.base">tabled.base</a>
 </li>
         <li><a href="module_docs/tabled/compare_tables.html#module-tabled.compare_tables">tabled.compare_tables</a>
@@ -394,6 +401,13 @@
 
       <ul>
         <li><a href="module_docs/tabled.html#module-tabled">module</a>
+</li>
+      </ul></li>
+      <li>
+    tabled._codecs
+
+      <ul>
+        <li><a href="module_docs/tabled/_codecs.html#module-tabled._codecs">module</a>
 </li>
       </ul></li>
       <li>

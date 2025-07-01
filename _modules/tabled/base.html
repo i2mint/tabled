@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.base &mdash; tabled 0.1.23 documentation</title>
+  <title>tabled.base &mdash; tabled 0.1.24 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=20522496"></script>
+      <script src="../../_static/documentation_options.js?v=ebdbb45b"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -47,6 +47,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
@@ -211,9 +212,8 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">table_src</span>
 
-
     <span class="k">if</span> <span class="n">ext</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ext</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">table_src</span>
@@ -223,7 +223,6 @@
             <span class="n">next_ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">key</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">)])</span>
             <span class="k">if</span> <span class="n">next_ext</span><span class="p">:</span>
                 <span class="n">ext</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">next_ext</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># e.g. &#39;csv.zip&#39;</span>
-            
 
     <span class="c1"># TODO: Here&#39;s a great waste, since many of our table reading functions can</span>
     <span class="c1">#       take file-like (paths, io objects) as input. Should make wrappers.py so that</span>
@@ -279,6 +278,7 @@
         <span class="n">extension_decoder_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">dflt_ext_mapping</span><span class="p">,</span>
         <span class="n">extra_encoder_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">extra_decoder_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">allow_writing_bytes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Note: can extend to validation callable</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
 
@@ -295,6 +295,7 @@
             <span class="n">ext_mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
             <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_writing_bytes</span> <span class="o">=</span> <span class="n">allow_writing_bytes</span>
 
         <span class="c1"># self.extension_based_encoder = partial(</span>
         <span class="c1">#     extension_based_encoding, extension_encoder_mapping</span>
@@ -311,9 +312,16 @@
     <span class="c1"># extension_base_wrap(Files)</span>
     <span class="c1"># But not this:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="n">bytes_</span> <span class="o">=</span> <span class="n">extension_based_encoding</span><span class="p">(</span>
-            <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">bytes_</span> <span class="o">=</span> <span class="n">extension_based_encoding</span><span class="p">(</span>
+                <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># if v is bytes already</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_writing_bytes</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Cannot write bytes directly. Specify .&quot;</span>
+                <span class="p">)</span>
+            <span class="n">bytes_</span> <span class="o">=</span> <span class="n">v</span>
         <span class="c1"># bytes_ = self.extension_based_encoding(v, file_extension(k))</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">)</span>
 

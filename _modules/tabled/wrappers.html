@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.wrappers &mdash; tabled 0.1.23 documentation</title>
+  <title>tabled.wrappers &mdash; tabled 0.1.24 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=20522496"></script>
+      <script src="../../_static/documentation_options.js?v=ebdbb45b"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -47,6 +47,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
@@ -471,7 +472,7 @@
 
 <div class="viewcode-block" id="add_extension_codec">
 <a class="viewcode-back" href="../../module_docs/tabled/wrappers.html#tabled.wrappers.add_extension_codec">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">add_extension_codec</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">encoder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">decoder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_extension_codec</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">encoder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">decoder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add an extension-based encoder and decoder to the extension-code mapping.</span>
 
@@ -482,6 +483,19 @@
 
 <span class="sd">    Returns: None (it just adds the in-memory mappings)</span>
 
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    extension: str</span>
+<span class="sd">        The file extension to add the codec for. If None, it will print the current mappings.</span>
+<span class="sd">    encoder: callable</span>
+<span class="sd">        The encoder function to add. If None, it will print the current mappings.</span>
+<span class="sd">    decoder: callable</span>
+<span class="sd">        The decoder function to add. If None, it will print the current mappings.</span>
+<span class="sd">    overwrite: bool</span>
+<span class="sd">        If True, it will overwrite the existing encoder/decoder for the given extension.</span>
+<span class="sd">        If False, it will raise a ValueError if the extension already exists.</span>
+<span class="sd">        Default is False.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">extension</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">encoder</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Print the current mappings</span>
@@ -489,8 +503,18 @@
         <span class="k">return</span> <span class="n">print_current_mappings</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">encoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extension_to_encoder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Encoder for extension &#39;</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">&#39; already exists. Use &#39;overwrite=True&#39; to replace it.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">encoder</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Encoder must be a callable. Was: </span><span class="si">{</span><span class="n">encoder</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">extension_to_encoder</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoder</span>
     <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extension_to_decoder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Decoder for extension &#39;</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">&#39; already exists. Use &#39;overwrite=True&#39; to replace it.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">decoder</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Decoder must be a callable. Was: </span><span class="si">{</span><span class="n">decoder</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">extension_to_decoder</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="n">decoder</span></div>
 
 
@@ -548,15 +572,17 @@
 <div class="viewcode-block" id="extension_based_wrap">
 <a class="viewcode-back" href="../../module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_wrap">[docs]</a>
 <span class="nd">@store_decorator</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">extension_based_wrap</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extension_based_wrap</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add extension-based encoding and decoding to a store.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">wrap_kvs</span><span class="p">(</span>
         <span class="n">store</span><span class="p">,</span>
-        <span class="n">postget</span><span class="o">=</span><span class="n">extension_based_decoding</span><span class="p">,</span>
-        <span class="n">preset</span><span class="o">=</span><span class="n">extension_based_encoding</span><span class="p">,</span>
+        <span class="n">postget</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">extension_based_decoding</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">),</span>
+        <span class="n">preset</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">),</span>
     <span class="p">)</span></div>
 
 
+<span class="n">extension_based_wrap</span><span class="o">.</span><span class="n">dflt_extension_to_decoder</span> <span class="o">=</span> <span class="n">extension_to_decoder</span>
+<span class="n">extension_based_wrap</span><span class="o">.</span><span class="n">dflt_extension_to_encoder</span> <span class="o">=</span> <span class="n">extension_to_encoder</span>
 
 <span class="c1"># ----------------------------------------</span>
 <span class="c1"># moved from tabled.base</span>

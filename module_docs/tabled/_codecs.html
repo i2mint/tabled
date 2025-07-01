@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.misc &mdash; tabled 0.1.24 documentation</title>
+  <title>tabled._codecs &mdash; tabled 0.1.24 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -24,8 +24,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tabled.multi" href="multi.html" />
-    <link rel="prev" title="tabled.join_tables" href="join_tables.html" /> 
+    <link rel="next" title="tabled.base" href="base.html" />
+    <link rel="prev" title="tabled" href="../tabled.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,15 +50,16 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tabled.html">tabled</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_codecs.html">tabled._codecs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tabled._codecs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tabled._codecs.arrow_bytes_to_dataframe"><code class="docutils literal notranslate"><span class="pre">arrow_bytes_to_dataframe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled._codecs.dataframe_to_arrow_bytes"><code class="docutils literal notranslate"><span class="pre">dataframe_to_arrow_bytes()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="html.html">tabled.html</a></li>
 <li class="toctree-l1"><a class="reference internal" href="join_tables.html">tabled.join_tables</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">tabled.misc</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#tabled.misc.scalar_columns"><code class="docutils literal notranslate"><span class="pre">scalar_columns()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi.html">tabled.multi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/data.html">tabled.tests.data</a></li>
@@ -84,9 +85,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">tabled.misc</li>
+      <li class="breadcrumb-item active">tabled._codecs</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/module_docs/tabled/misc.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/module_docs/tabled/_codecs.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -94,26 +95,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-tabled.misc">
-<span id="tabled-misc"></span><h1>tabled.misc<a class="headerlink" href="#module-tabled.misc" title="Link to this heading"></a></h1>
-<p>Miscellaneous utility functions for tables.</p>
+  <section id="module-tabled._codecs">
+<span id="tabled-codecs"></span><h1>tabled._codecs<a class="headerlink" href="#module-tabled._codecs" title="Link to this heading"></a></h1>
+<p>Codecs for various file formats to be used with tabled.</p>
+<p>These codecs are only activated if the required dependencies are available.
+Each codec section is wrapped in a try-except block to gracefully handle missing dependencies.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="tabled.misc.scalar_columns">
-<span class="sig-prename descclassname"><span class="pre">tabled.misc.</span></span><span class="sig-name descname"><span class="pre">scalar_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="reference internal" href="../../_modules/tabled/misc.html#scalar_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.misc.scalar_columns" title="Link to this definition"></a></dt>
-<dd><p>Returns the list of columns that are scalar (therefore serializable to CSV)</p>
-<p>More precisely, this function returns the list of columns that contain only
-scalar values (e.g., int, float, str, bool, etc.) and can be saved to a CSV
-file.</p>
-<p>Example:
-&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; df = pd.DataFrame({
-…     ‘A’: [1, 2, 3],
-…     ‘B’: [‘x’, ‘y’, ‘z’],
-…     ‘C’: [{‘a’: 1}, {‘b’: 2}, {‘c’: 3}],  # Non-serializable column
-…     ‘D’: [[1, 2], [3, 4], [5, 6]]         # Non-serializable column
-… })
-&gt;&gt;&gt; scalar_columns(df)
-[‘A’, ‘B’]</p>
+<dt class="sig sig-object py" id="tabled._codecs.arrow_bytes_to_dataframe">
+<span class="sig-prename descclassname"><span class="pre">tabled._codecs.</span></span><span class="sig-name descname"><span class="pre">arrow_bytes_to_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrow_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/_codecs.html#arrow_bytes_to_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled._codecs.arrow_bytes_to_dataframe" title="Link to this definition"></a></dt>
+<dd><p>Convert bytes of an Arrow file to a pandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>arrow_bytes</strong> – Bytes object containing the Arrow file data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled._codecs.dataframe_to_arrow_bytes">
+<span class="sig-prename descclassname"><span class="pre">tabled._codecs.</span></span><span class="sig-name descname"><span class="pre">dataframe_to_arrow_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/tabled/_codecs.html#dataframe_to_arrow_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled._codecs.dataframe_to_arrow_bytes" title="Link to this definition"></a></dt>
+<dd><p>Convert a pandas DataFrame to Arrow file bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> – pandas DataFrame to convert</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Binary content of an Arrow file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -122,8 +137,8 @@ file.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="join_tables.html" class="btn btn-neutral float-left" title="tabled.join_tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="multi.html" class="btn btn-neutral float-right" title="tabled.multi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../tabled.html" class="btn btn-neutral float-left" title="tabled" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="base.html" class="btn btn-neutral float-right" title="tabled.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

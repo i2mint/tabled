@@ -3,6 +3,7 @@
    :caption: Contents:
 
    module_docs/tabled
+   module_docs/tabled/_codecs
    module_docs/tabled/base
    module_docs/tabled/compare_tables
    module_docs/tabled/html
