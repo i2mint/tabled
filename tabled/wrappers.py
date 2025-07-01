@@ -446,13 +446,23 @@ def extension_based_encoding(k, v, *, extension_to_encoder=extension_to_encoder)
 
 
 @store_decorator
-def extension_based_wrap(store=None, *, extension_to_decoder=extension_to_decoder, extension_to_encoder=extension_to_encoder):
+def extension_based_wrap(
+    store=None,
+    *,
+    extension_to_decoder=extension_to_decoder,
+    extension_to_encoder=extension_to_encoder,
+):
     """Add extension-based encoding and decoding to a store."""
     return wrap_kvs(
         store,
-        postget=partial(extension_based_decoding, extension_to_decoder=extension_to_decoder),
-        preset=partial(extension_based_encoding, extension_to_encoder=extension_to_encoder),
+        postget=partial(
+            extension_based_decoding, extension_to_decoder=extension_to_decoder
+        ),
+        preset=partial(
+            extension_based_encoding, extension_to_encoder=extension_to_encoder
+        ),
     )
+
 
 extension_based_wrap.dflt_extension_to_decoder = extension_to_decoder
 extension_based_wrap.dflt_extension_to_encoder = extension_to_encoder

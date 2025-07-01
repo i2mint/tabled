@@ -219,9 +219,7 @@ class DfFiles(Files):
             )
         else:  # if v is bytes already
             if not self.allow_writing_bytes:
-                raise ValueError(
-                    "Cannot write bytes directly. Specify ."
-                )
+                raise ValueError("Cannot write bytes directly. Specify .")
             bytes_ = v
         # bytes_ = self.extension_based_encoding(v, file_extension(k))
         return super().__setitem__(k, bytes_)
