@@ -116,6 +116,7 @@ def get_tables_from_url(
     *,
     url_to_html: Union[Callable, str] = "requests",
     filt: Optional[TableFilter] = None,
+    encoding: str = "utf-8",
     **tables_from_html_kwargs,
 ):
     """Get's a list of pandas dataframes from tables scraped from a url.
@@ -150,6 +151,8 @@ def get_tables_from_url(
 
     try:
         html = url_to_html(url)
+        if isinstance(html, bytes):
+            html = html.decode(encoding)
         tables = get_tables_from_html(io.StringIO(html), **tables_from_html_kwargs)
         return list(filter(filt_func, tables))
     except ValueError as e:
