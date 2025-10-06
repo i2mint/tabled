@@ -151,6 +151,10 @@ def get_tables_from_url(
 
     try:
         html = url_to_html(url)
+        if 'requests.Response' in str(type(html)):
+            raise RuntimeError(
+                f"Failed to fetch HTML from {url}: {html.status_code} {html.reason}"
+            )
         if isinstance(html, bytes):
             html = html.decode(encoding)
         tables = get_tables_from_html(io.StringIO(html), **tables_from_html_kwargs)

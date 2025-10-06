@@ -149,31 +149,6 @@ def save_df_to_zipped_tsv(df: pd.DataFrame, name: str, sep="\t", index=False, **
     file_or_folder_to_zip_file(tsv_filepath, zip_filepath)
 
 
-def cast_to_parquet(data, *args, __name_of_column='__column_values', **kwargs):
-    """
-    Convert data to DataFrame if necessary, then save as parquet.
-
-    Handles:
-    - pandas.DataFrame: use as-is
-    - pandas.Series: convert to DataFrame using to_frame()
-    - list/other iterables: convert to Series then DataFrame
-    """
-    if isinstance(data, pd.DataFrame):
-        df = data
-    elif isinstance(data, pd.Series):
-        df = data.to_frame(name=__name_of_column)
-    else:
-        # Try to convert to Series first, then to DataFrame
-        try:
-            df = pd.Series(data).to_frame(name=__name_of_column)
-        except Exception as e:
-            raise ValueError(
-                f"Cannot convert data of type {type(data)} to DataFrame for parquet export: {e}"
-            )
-
-    return df.to_parquet(*args, **kwargs)
-
-
 from i2 import LiteralVal
 from tabled.util import is_instance_of
 from operator import methodcaller
@@ -223,10 +198,41 @@ INDEX_COL = 0 if USE_INDEX else None  # ... and this will be used for the decode
 import io
 import pandas as pd
 
+_DFLT_SINGLE_COLUMN_NAME = "__single_column_values"
 
-def single_column_parquet_encode(sequences, col=0):
+
+def cast_to_parquet(data, *args, __name_of_column=_DFLT_SINGLE_COLUMN_NAME, **kwargs):
+    """
+    Convert data to DataFrame if necessary, then save as parquet.
+
+    Handles:
+    - pandas.DataFrame: use as-is
+    - pandas.Series: convert to DataFrame using to_frame()
+    - list/other iterables: convert to Series then DataFrame
+    """
+    if isinstance(data, pd.DataFrame):
+        df = data
+    elif isinstance(data, pd.Series):
+        df = data.to_frame(name=__name_of_column)
+    else:
+        # Try to convert to Series first, then to DataFrame
+        try:
+            df = pd.Series(data).to_frame(name=__name_of_column)
+        except Exception as e:
+            raise ValueError(
+                f"Cannot convert data of type {type(data)} to DataFrame for parquet export: {e}"
+            )
+
+    return df.to_parquet(*args, **kwargs)
+
+
+# Note: Note used anymore, but useful if we want two-way codec for sequences->parquet
+def single_column_parquet_encode(sequences, col=_DFLT_SINGLE_COLUMN_NAME):
     """
     Encode a list of sequences into a single-column parquet file.
+    See more general function: cast_to_parquet.
+
+    The raison d'etre of this function is to have a two-way codec for sequences->parquet
 
     >>> sequences_1 = [[1, 2], [3, 4, 5]]
     >>> encoded_1 = single_column_parquet_encode(sequences_1)
@@ -238,9 +244,10 @@ def single_column_parquet_encode(sequences, col=0):
     return pd.DataFrame({col: sequences}).to_parquet()
 
 
-def single_column_parquet_decode(b: bytes, col=0):
+def single_column_parquet_decode(b: bytes, col=_DFLT_SINGLE_COLUMN_NAME):
     """
     Decode a single-column parquet file into a list of sequences.
+    See also: single_column_parquet_encode
 
     >>> sequences_2 = [['one', 'two'], ['three', 'four', 'five']]
     >>> encoded_2 = single_column_parquet_encode(sequences_2)
@@ -294,7 +301,6 @@ _extension_to_encoder = split_keys(
         # parquet format
         "parquet": cast_to_parquet,  # Need: pip install pyarrow, fastparquet
         # feather format
-        "single_column_parquet": single_column_parquet_encode,
         "feather": pd.DataFrame.to_feather,  # Need: pip install pyarrow
         # orc format
         "orc": pd.DataFrame.to_orc,  # Need: pip install pyarrow
@@ -318,7 +324,6 @@ _extension_to_decoder = split_keys(
         "tsv": partial(pd.read_csv, sep="\t", index_col=INDEX_COL),
         # parquet format
         "parquet": pd.read_parquet,
-        "single_column_parquet": single_column_parquet_decode,
         # json format
         "json": partial(pd.read_json, orient="records"),
         # html tables
