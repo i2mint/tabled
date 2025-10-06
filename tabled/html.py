@@ -21,7 +21,10 @@ def url_to_html_func(kind="requests") -> Callable:
         kind_tuple = kind
         kind, kind_kwargs = kind_tuple
     else:
-        kind_kwargs = {}
+        kind_kwargs = dict(
+            headers={"User-Agent": "Mozilla/5.0 (compatible; tabled/1.0)"}
+        )
+
 
     url_to_html = None
     if kind == "requests":
