@@ -25,7 +25,6 @@ def url_to_html_func(kind="requests") -> Callable:
             headers={"User-Agent": "Mozilla/5.0 (compatible; tabled/1.0)"}
         )
 
-
     url_to_html = None
     if kind == "requests":
         import requests  # pip install requests
@@ -154,7 +153,7 @@ def get_tables_from_url(
 
     try:
         html = url_to_html(url)
-        if 'requests.Response' in str(type(html)):
+        if "requests.Response" in str(type(html)):
             raise RuntimeError(
                 f"Failed to fetch HTML from {url}: {html.status_code} {html.reason}"
             )
