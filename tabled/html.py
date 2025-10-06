@@ -157,6 +157,10 @@ def get_tables_from_url(
             )
         if isinstance(html, bytes):
             html = html.decode(encoding)
+        if not isinstance(html, str):
+            raise TypeError(
+                f"html should be a string at this point. Was {type(html)}: {html}"
+            )
         tables = get_tables_from_html(io.StringIO(html), **tables_from_html_kwargs)
         return list(filter(filt_func, tables))
     except ValueError as e:
