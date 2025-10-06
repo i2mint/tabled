@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.wrappers &mdash; tabled 0.1.24 documentation</title>
+  <title>tabled.wrappers &mdash; tabled 0.1.25 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=ebdbb45b"></script>
+      <script src="../../_static/documentation_options.js?v=4fa33042"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -307,12 +307,46 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
+<span class="n">_DFLT_SINGLE_COLUMN_NAME</span> <span class="o">=</span> <span class="s2">&quot;__single_column_values&quot;</span>
 
+
+<div class="viewcode-block" id="cast_to_parquet">
+<a class="viewcode-back" href="../../module_docs/tabled/wrappers.html#tabled.wrappers.cast_to_parquet">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cast_to_parquet</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">__name_of_column</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert data to DataFrame if necessary, then save as parquet.</span>
+
+<span class="sd">    Handles:</span>
+<span class="sd">    - pandas.DataFrame: use as-is</span>
+<span class="sd">    - pandas.Series: convert to DataFrame using to_frame()</span>
+<span class="sd">    - list/other iterables: convert to Series then DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">__name_of_column</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Try to convert to Series first, then to DataFrame</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">__name_of_column</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot convert data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> to DataFrame for parquet export: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Note: Note used anymore, but useful if we want two-way codec for sequences-&gt;parquet</span>
 <div class="viewcode-block" id="single_column_parquet_encode">
 <a class="viewcode-back" href="../../module_docs/tabled/wrappers.html#tabled.wrappers.single_column_parquet_encode">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_encode</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_encode</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Encode a list of sequences into a single-column parquet file.</span>
+<span class="sd">    See more general function: cast_to_parquet.</span>
+
+<span class="sd">    The raison d&#39;etre of this function is to have a two-way codec for sequences-&gt;parquet</span>
 
 <span class="sd">    &gt;&gt;&gt; sequences_1 = [[1, 2], [3, 4, 5]]</span>
 <span class="sd">    &gt;&gt;&gt; encoded_1 = single_column_parquet_encode(sequences_1)</span>
@@ -327,9 +361,10 @@
 
 <div class="viewcode-block" id="single_column_parquet_decode">
 <a class="viewcode-back" href="../../module_docs/tabled/wrappers.html#tabled.wrappers.single_column_parquet_decode">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_decode</span><span class="p">(</span><span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_decode</span><span class="p">(</span><span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decode a single-column parquet file into a list of sequences.</span>
+<span class="sd">    See also: single_column_parquet_encode</span>
 
 <span class="sd">    &gt;&gt;&gt; sequences_2 = [[&#39;one&#39;, &#39;two&#39;], [&#39;three&#39;, &#39;four&#39;, &#39;five&#39;]]</span>
 <span class="sd">    &gt;&gt;&gt; encoded_2 = single_column_parquet_encode(sequences_2)</span>
@@ -382,9 +417,8 @@
         <span class="c1"># xml files</span>
         <span class="s2">&quot;xml&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_xml</span><span class="p">,</span>  <span class="c1"># Need: pip install lxml</span>
         <span class="c1"># parquet format</span>
-        <span class="s2">&quot;parquet&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow, fastparquet</span>
+        <span class="s2">&quot;parquet&quot;</span><span class="p">:</span> <span class="n">cast_to_parquet</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow, fastparquet</span>
         <span class="c1"># feather format</span>
-        <span class="s2">&quot;single_column_parquet&quot;</span><span class="p">:</span> <span class="n">single_column_parquet_encode</span><span class="p">,</span>
         <span class="s2">&quot;feather&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_feather</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
         <span class="c1"># orc format</span>
         <span class="s2">&quot;orc&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_orc</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
@@ -408,7 +442,6 @@
         <span class="s2">&quot;tsv&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">INDEX_COL</span><span class="p">),</span>
         <span class="c1"># parquet format</span>
         <span class="s2">&quot;parquet&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">,</span>
-        <span class="s2">&quot;single_column_parquet&quot;</span><span class="p">:</span> <span class="n">single_column_parquet_decode</span><span class="p">,</span>
         <span class="c1"># json format</span>
         <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">),</span>
         <span class="c1"># html tables</span>
@@ -572,13 +605,23 @@
 <div class="viewcode-block" id="extension_based_wrap">
 <a class="viewcode-back" href="../../module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_wrap">[docs]</a>
 <span class="nd">@store_decorator</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">extension_based_wrap</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extension_based_wrap</span><span class="p">(</span>
+    <span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span>
+    <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add extension-based encoding and decoding to a store.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">wrap_kvs</span><span class="p">(</span>
         <span class="n">store</span><span class="p">,</span>
-        <span class="n">postget</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">extension_based_decoding</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">),</span>
-        <span class="n">preset</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">),</span>
+        <span class="n">postget</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
+            <span class="n">extension_based_decoding</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span>
+        <span class="p">),</span>
+        <span class="n">preset</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
+            <span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span>
+        <span class="p">),</span>
     <span class="p">)</span></div>
+
 
 
 <span class="n">extension_based_wrap</span><span class="o">.</span><span class="n">dflt_extension_to_decoder</span> <span class="o">=</span> <span class="n">extension_to_decoder</span>
