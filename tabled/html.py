@@ -1,6 +1,7 @@
 """To work with html"""
 
-from typing import Callable, Union, Mapping, Optional, Sequence
+from typing import Union, Optional
+from collections.abc import Callable, Mapping, Sequence
 import re
 import io
 
@@ -116,8 +117,8 @@ def _ensure_table_filter(filt: TableFilter) -> Callable:
 def get_tables_from_url(
     url,
     *,
-    url_to_html: Union[Callable, str] = "requests",
-    filt: Optional[TableFilter] = None,
+    url_to_html: Callable | str = "requests",
+    filt: TableFilter | None = None,
     encoding: str = "utf-8",
     **tables_from_html_kwargs,
 ):

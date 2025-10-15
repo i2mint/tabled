@@ -1,6 +1,7 @@
 """Tools to compare tables"""
 
-from typing import Callable, Sequence, Union, Any
+from typing import Union, Any
+from collections.abc import Callable, Sequence
 import pandas as pd
 
 ComparisonName = str

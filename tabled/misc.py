@@ -6,7 +6,7 @@ from typing import List, Tuple
 import pandas as pd
 
 
-def scalar_columns(df: pd.DataFrame) -> List:
+def scalar_columns(df: pd.DataFrame) -> list:
     """
     Returns the list of columns that are scalar (therefore serializable to CSV)
 

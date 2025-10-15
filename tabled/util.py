@@ -3,7 +3,8 @@ Utils
 """
 
 from functools import partial
-from typing import Mapping, KT, VT, Iterable, Callable, List, Sized
+from typing import KT, VT, List
+from collections.abc import Mapping, Iterable, Callable, Sized
 from collections import deque
 
 
@@ -192,7 +193,7 @@ from typing import Dict, KT, Literal
 
 
 def intersection_graph(
-    sets: Dict[KT, set], edge_labels: Literal["elements", "size", False] = False
+    sets: dict[KT, set], edge_labels: Literal["elements", "size", False] = False
 ):
     """
     A graph of all intersections between sets.
@@ -473,13 +474,14 @@ def auto_decode_bytes(
 # Expand and collapse rows and columns
 
 import pandas as pd
-from typing import List, Callable, Iterable, Union
+from typing import List, Union
+from collections.abc import Callable, Iterable
 import pandas as pd
 
 
 def collapse_rows(
     df: pd.DataFrame,
-    by: List[KT],
+    by: list[KT],
     *,
     container: Callable[[Iterable], Iterable] = list,
 ) -> pd.DataFrame:
@@ -512,7 +514,7 @@ def collapse_rows(
 
 
 def expand_rows(
-    df: pd.DataFrame, grouped_columns: Union[str, List[KT]]
+    df: pd.DataFrame, grouped_columns: str | list[KT]
 ) -> pd.DataFrame:
     """
     Expands a DataFrame where specific columns were collapsed into containers back to its original form.
@@ -568,7 +570,7 @@ def expand_rows(
 
 def collapse_columns(
     df: pd.DataFrame,
-    groupings: Union[Dict[str, List[str]], Union[str, List[KT]]],
+    groupings: dict[str, list[str]] | str | list[KT],
 ) -> pd.DataFrame:
     """
     Transforms specified columns of a dataframe into single columns where each row
@@ -641,7 +643,7 @@ def column_sep_key_mapper(key, column_name, sep: str):
 _column_dot_key_mapper = partial(column_sep_key_mapper, sep=".")
 
 
-def _apply_key_mapper_to_keys(d: Union[dict, list], column_name, key_mapper):
+def _apply_key_mapper_to_keys(d: dict | list, column_name, key_mapper):
     if isinstance(d, dict):
         return {key_mapper(key, column_name): value for key, value in d.items()}
     else:
@@ -650,7 +652,7 @@ def _apply_key_mapper_to_keys(d: Union[dict, list], column_name, key_mapper):
 
 def expand_columns(
     df: pd.DataFrame,
-    expand_columns: Union[str, List[str]],
+    expand_columns: str | list[str],
     *,
     drop=True,
     key_mapper=_column_dot_key_mapper,

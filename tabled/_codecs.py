@@ -20,7 +20,7 @@ with ignore_import_errors:
     import numpy as np
     from typing import Union, Dict, Any
 
-    def mat_bytes_to_dataframe(mat_bytes: Union[bytes, io.BytesIO]) -> pd.DataFrame:
+    def mat_bytes_to_dataframe(mat_bytes: bytes | io.BytesIO) -> pd.DataFrame:
         """
         Convert bytes of a .mat file to a pandas DataFrame.
 

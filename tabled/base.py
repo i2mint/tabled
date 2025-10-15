@@ -7,13 +7,12 @@
 from functools import partial
 from io import BytesIO
 from typing import (
-    Mapping,
     KT,
     VT,
     Dict,
-    Iterable,
     Union,
 )
+from collections.abc import Mapping, Iterable
 
 import pandas as pd
 
@@ -175,10 +174,10 @@ class DfFiles(Files):
         self,
         rootdir: str,
         *,
-        extension_encoder_mapping: Dict[Extension, DfDecoder] = extension_to_encoder,
-        extension_decoder_mapping: Dict[Extension, DfDecoder] = dflt_ext_mapping,
-        extra_encoder_kwargs: Union[dict, Iterable] = (),
-        extra_decoder_kwargs: Union[dict, Iterable] = (),
+        extension_encoder_mapping: dict[Extension, DfDecoder] = extension_to_encoder,
+        extension_decoder_mapping: dict[Extension, DfDecoder] = dflt_ext_mapping,
+        extra_encoder_kwargs: dict | Iterable = (),
+        extra_decoder_kwargs: dict | Iterable = (),
         allow_writing_bytes: bool = True,  # Note: can extend to validation callable
     ):
         super().__init__(rootdir)

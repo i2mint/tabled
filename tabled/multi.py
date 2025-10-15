@@ -2,7 +2,8 @@
 
 from functools import cached_property
 import pandas as pd
-from typing import TypeVar, Callable, KT, Union, Iterable, Mapping, Dict
+from typing import TypeVar, KT, Union, Dict
+from collections.abc import Callable, Iterable, Mapping
 
 Column = TypeVar("Column")
 TableKey = TypeVar("TableKey")
@@ -80,12 +81,12 @@ class Join:
 
 @dataclass
 class Remove:
-    fields: Union[str, Iterable[str]]
+    fields: str | Iterable[str]
 
 
 @dataclass
 class Rename:
-    rename_mapping: Dict[str, str]
+    rename_mapping: dict[str, str]
 
 
 def set_scope_value(scope, key, value):
@@ -194,7 +195,7 @@ class ColumnOrientedMapping(Mapping):
     def __init__(
         self,
         tables: MappingOfDataFrames,
-        columns: Union[Callable, Iterable[Column]] = columns_of_first_table,
+        columns: Callable | Iterable[Column] = columns_of_first_table,
     ):
         self.tables = mapping_of_dataframes(tables)
         self._init_columns = columns

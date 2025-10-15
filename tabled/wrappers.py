@@ -15,7 +15,8 @@ import pandas as pd
 import json
 import pickle
 from posixpath import splitext
-from typing import Mapping, Union, Callable, Dict, TypeVar, KT, VT, BinaryIO
+from typing import Union, Dict, TypeVar, KT, VT, BinaryIO
+from collections.abc import Mapping, Callable
 
 import numpy as np
 from dol import Pipe, wrap_kvs, written_bytes, store_decorator
@@ -534,7 +535,7 @@ df_from_data_given_ext = resolve_to_dataframe  # back-compatibility alias
 
 
 def df_from_data_according_to_key(
-    data: Obj, mapping: Dict[Extension, DfDecoder], key: KT, **extra_decoder_kwargs
+    data: Obj, mapping: dict[Extension, DfDecoder], key: KT, **extra_decoder_kwargs
 ):
     """Get a dataframe from a (data, mapping, key) triple"""
     decoder = key_func_mapping(data, mapping, key=key, not_found_sentinel=None)

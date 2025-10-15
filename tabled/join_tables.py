@@ -52,7 +52,8 @@ Example:
 
 """
 
-from typing import KT, VT, Literal, Iterable, Callable, List, Tuple, Set, Mapping, Dict
+from typing import KT, VT, Literal, List, Tuple, Set, Dict
+from collections.abc import Iterable, Callable, Mapping
 import pandas as pd
 from collections import deque
 from tabled.util import (
@@ -64,7 +65,7 @@ from tabled.util import (
 
 
 class Join:
-    def __init__(self, table_id: str, remove: List[str] = None):
+    def __init__(self, table_id: str, remove: list[str] = None):
         self.table_id = table_id
         self.remove = remove or []
 
@@ -106,8 +107,8 @@ def minimum_covering_tree(
 
 
 def get_leaf_edges(
-    tables: Mapping[str, pd.DataFrame], target_subset: Set[VT], start_node: KT = None
-) -> List[Tuple[KT, KT]]:
+    tables: Mapping[str, pd.DataFrame], target_subset: set[VT], start_node: KT = None
+) -> list[tuple[KT, KT]]:
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
     intersections = intersection_graph(labeled_sets, edge_labels="elements")
     graph = {k: list(v) for k, v in intersections.items()}
@@ -138,9 +139,9 @@ def get_leaf_edges(
 
 def update_leaf_edges_after_removal(
     tables: Mapping[str, pd.DataFrame],
-    target_sub_set: Set[str],
-    current_leaf_edges: List[Tuple[str, str]],
-) -> List[Tuple[str, str]]:
+    target_sub_set: set[str],
+    current_leaf_edges: list[tuple[str, str]],
+) -> list[tuple[str, str]]:
     """
     Update the list of leaf edges after removing an edge, ensuring that the resulting
     leaf edges do not lead to the loss of any elements in the target subset.
@@ -186,11 +187,11 @@ def update_leaf_edges_after_removal(
 
 
 def determine_remove_fields(
-    labeled_sets: Dict[str, Set[str]],
-    target_sub_set: Set[str],
-    joined_tables: Set[str],
+    labeled_sets: dict[str, set[str]],
+    target_sub_set: set[str],
+    joined_tables: set[str],
     current_table: str,
-) -> List[str]:
+) -> list[str]:
     """
     Determine which fields should be removed for a given table
 
@@ -216,9 +217,9 @@ def determine_remove_fields(
 
 def generate_join_sequence(
     tables: Mapping[str, pd.DataFrame],
-    leaf_edges: List[Tuple[str, str]],
-    target_sub_set: Set[str],
-) -> List[Join]:
+    leaf_edges: list[tuple[str, str]],
+    target_sub_set: set[str],
+) -> list[Join]:
     """
     Generate a sequence of joins with remove commands based on leaf edges
 
