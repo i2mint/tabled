@@ -20,6 +20,7 @@ from tabled.base import (
 )
 from tabled.multi import ColumnOrientedMapping
 from tabled.util import (
+    upsert_data,  # upsert data from one dataframe to another (add columns/rows as needed)
     duplicate_groups,  # get the groups of duplicates in a dataframe
     collapse_rows,  # collapse rows in a dataframe
     expand_rows,  # expand rows in a dataframe

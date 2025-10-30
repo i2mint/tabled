@@ -3,13 +3,130 @@ Utils
 """
 
 from functools import partial
-from typing import KT, VT, List
+from typing import KT, VT, Optional, Literal
 from collections.abc import Mapping, Iterable, Callable, Sized
 from collections import deque
+import pandas as pd
 
 
 def identity(x):
     return x
+
+
+def upsert_data(
+    target_df: Optional[pd.DataFrame],
+    source_df: pd.DataFrame,
+    axis: Literal[0, 1] = 1,
+    align_index_value: bool = False,
+) -> pd.DataFrame:
+    """
+    Updates or Inserts (Upserts) data into a target DataFrame, handling initial
+    creation and growth along a specified axis.
+
+    The function returns a new DataFrame, even though it modifies the target
+    in-place for column updates (axis=1).
+
+    Args:
+        target_df: The DataFrame to be updated (can be None or empty).
+        source_df: The DataFrame containing the new/source data.
+        axis: 1 for adding columns (default), 0 for adding rows.
+        align_index_value: If True, the concatenation requires indices (or columns
+                           when axis=0) to match both in number AND value.
+                           If False, alignment is ignored (positional concat).
+
+    Returns:
+        The updated DataFrame.
+
+    Examples:
+        >>> # 1. Initial creation (target_df is None)
+        >>> df_target = None
+        >>> df_source_A = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
+        >>> df_target = upsert_data(df_target, df_source_A)
+        >>> df_target.equals(df_source_A)
+        True
+
+        >>> # 2. Adding new columns (axis=1, default)
+        >>> df_source_B = pd.DataFrame({'c': [5, 6], 'd': [7, 8]})
+        >>> df_target = upsert_data(df_target, df_source_B)
+        >>> df_target.columns.tolist()
+        ['a', 'b', 'c', 'd']
+
+        >>> # 3. Overwriting existing columns (axis=1)
+        >>> # Indices must align when updating
+        >>> df_source_C = pd.DataFrame({'a': [10, 20], 'e': [30, 40]})
+        >>> df_target = upsert_data(df_target, df_source_C)
+        >>> df_target['a'].tolist()
+        [10, 20]
+        >>> df_target.columns.tolist()
+        ['a', 'b', 'c', 'd', 'e']
+
+        >>> # 4. Adding rows (axis=0)
+        >>> df_target_row = pd.DataFrame({'col1': [1], 'col2': [2]})
+        >>> df_source_row = pd.DataFrame({'col1': [3], 'col2': [4]})
+        >>> df_target_row = upsert_data(df_target_row, df_source_row, axis=0)
+        >>> df_target_row.shape
+        (2, 2)
+        >>> df_target_row['col1'].tolist()
+        [1, 3]
+    """
+
+    # --- 1. Handle Initial Creation ---
+    if target_df is None or target_df.empty:
+        # Return a copy of the source for safety
+        return source_df.copy()
+
+    # --- 2. Check Positional Alignment ---
+    join_mode = 'outer'
+
+    if not align_index_value:
+        # If not aligning by value, we must check lengths and align by position
+        if axis == 1 and len(target_df) != len(source_df):
+            raise ValueError(
+                f"When adding columns (axis=1) without index alignment, "
+                f"the number of rows must match: {len(target_df)} != {len(source_df)}"
+            )
+        if axis == 0 and len(target_df.columns) != len(source_df.columns):
+            raise ValueError(
+                f"When adding rows (axis=0) without column alignment, "
+                f"the number of columns must match: {len(target_df.columns)} != {len(source_df.columns)}"
+            )
+
+        # Align indices/columns positionally to ensure clean concat
+        if axis == 1:
+            # Align rows (index) positionally
+            source_df = source_df.set_axis(target_df.index, axis=0, copy=True)
+        else:  # axis == 0
+            # Align columns positionally
+            source_df = source_df.set_axis(target_df.columns, axis=1, copy=True)
+
+    # --- 3. Upsert Logic ---
+
+    if axis == 1:
+        # Column Addition/Update (Upsert)
+
+        # Identify shared columns
+        shared_cols = source_df.columns.intersection(target_df.columns)
+
+        # 3a. UPDATE (Overwrites existing columns in-place)
+        if not shared_cols.empty:
+            # target_df.update() uses index alignment to overwrite/update rows
+            target_df.update(source_df[shared_cols])
+
+        # 3b. INSERT (Adds new columns)
+        # Select columns in source_df that are NOT in target_df
+        cols_to_add = source_df.columns.difference(target_df.columns)
+        new_cols_df = source_df[cols_to_add]
+
+        if not new_cols_df.empty:
+            # Concatenate the new columns
+            target_df = pd.concat([target_df, new_cols_df], axis=axis, join=join_mode)
+
+    else:  # axis == 0 (Row Insertion)
+        # Row Addition (Insert - No overwrite logic for axis=0 is assumed here)
+        # pd.concat handles adding new rows (inserting)
+        target_df = pd.concat([target_df, source_df], axis=axis, join=join_mode)
+
+    return target_df
 
 
 def duplicate_groups(
@@ -513,9 +630,7 @@ def collapse_rows(
     return df.groupby(by, as_index=False).agg(container)
 
 
-def expand_rows(
-    df: pd.DataFrame, grouped_columns: str | list[KT]
-) -> pd.DataFrame:
+def expand_rows(df: pd.DataFrame, grouped_columns: str | list[KT]) -> pd.DataFrame:
     """
     Expands a DataFrame where specific columns were collapsed into containers back to its original form.
     Each column in `grouped_columns` should contain lists of the same length within each row.
