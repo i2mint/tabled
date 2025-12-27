@@ -193,8 +193,14 @@ def map_values(
 #       if index=True in encoder,  decoder needs to include index_col=0
 #       if index=False in encoder, decoder needs to include index_col=None
 
-USE_INDEX = True  # set here for the encoders
-INDEX_COL = 0 if USE_INDEX else None  # ... and this will be used for the decoders
+USE_INDEX = True  # default for most encoders
+INDEX_COL = 0 if USE_INDEX else None  # ... and this will be used for most decoders
+
+# CSV/TSV are often used to ingest "external" data where the first column is usually
+# data, not an index. Keep the historical round-trip defaults for most formats, but
+# make CSV/TSV default to not using an index.
+CSV_USE_INDEX = False
+CSV_INDEX_COL = 0 if CSV_USE_INDEX else None
 
 import io
 import pandas as pd
@@ -265,11 +271,11 @@ _extension_to_encoder = split_keys(
         # csv files
         # note: if index=True, decoder needs to include index_col=0
         #       if index=False, decoder needs to include index_col=None
-        "csv txt": partial(pd.DataFrame.to_csv, index=USE_INDEX),
+        "csv txt": partial(pd.DataFrame.to_csv, index=CSV_USE_INDEX),
         # tab-separated files
         "tsv": partial(
             pd.DataFrame.to_csv,
-            index=USE_INDEX,
+            index=CSV_USE_INDEX,
             sep="\t",
             escapechar="\\",
             quotechar='"',
@@ -320,9 +326,9 @@ from dol.util import read_from_bytes
 _extension_to_decoder = split_keys(
     {
         # csv and text
-        "csv txt": partial(pd.read_csv, index_col=INDEX_COL),
+        "csv txt": partial(pd.read_csv, index_col=CSV_INDEX_COL),
         # tab-separated files
-        "tsv": partial(pd.read_csv, sep="\t", index_col=INDEX_COL),
+        "tsv": partial(pd.read_csv, sep="\t", index_col=CSV_INDEX_COL),
         # parquet format
         "parquet": pd.read_parquet,
         # json format
