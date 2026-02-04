@@ -4,7 +4,6 @@ import pytest
 import pandas as pd
 from tabled.diagnose import (
     dataframe_info,
-    diagnose_table_collection,
     print_dataframe_info,
     register_info_func,
     list_info_funcs,
@@ -17,6 +16,7 @@ from tabled.diagnose import (
     _get_numeric_stats,
     _get_categorical_stats,
 )
+from tabled.tools import diagnose_table_collection
 
 
 @pytest.fixture(scope='session', autouse=True)

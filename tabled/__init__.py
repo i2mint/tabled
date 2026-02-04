@@ -44,10 +44,12 @@ from tabled.base import (
     key_func_mapping,
     split_keys,
 )
+from tabled.tools import (
+    diagnose_table_collection,  # diagnose a collection of tables
+)
 from tabled.multi import ColumnOrientedMapping
 from tabled.diagnose import (
     dataframe_info,  # extract configurable information from DataFrames
-    diagnose_table_collection,  # diagnose a collection of tables
     register_info_func,  # register custom analysis functions
     list_info_funcs,  # list available analysis functions
     scalar_columns,  # get columns that are scalar (CSV-serializable)
@@ -69,7 +71,6 @@ from tabled.util import (
 from tabled.diagnose import (
     print_dataframe_info,  # print dataframe information
     dataframe_info,  # extract dataframe information as a dictionary
-    diagnose_table_collection,  # diagnose a collection of tables
     DFLT_INFO_FUNCS,  # default info functions for dataframe analysis
     scalar_columns,  # get list of columns that are scalar (therefore serializable to CSV)
 )

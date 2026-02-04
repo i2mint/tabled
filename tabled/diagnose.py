@@ -272,27 +272,3 @@ def _format_dataframe_info(info_dict: dict, mode: str) -> str:
 
     return s
 
-
-def diagnose_table_collection(tables, *, egress: Callable = dict):
-    """Diagnose a collection of tables and return diagnostic information.
-
-    Args:
-        tables: Collection of tables (mapping from keys to DataFrames)
-        egress: Function to process the generator of (table_key, info_dict) pairs
-
-    Returns:
-        Result of egress applied to the info generator
-
-    >>> import pandas as pd
-    >>> tables = {'table1': pd.DataFrame({'a': [1, 2], 'b': [3, 4]})}
-    >>> result = diagnose_table_collection(tables)
-    >>> 'table1' in result
-    True
-    """
-
-    def info_dicts_gen():
-        for table_key, df in tables.items():
-            info_dict = dataframe_info(df)
-            yield table_key, info_dict
-
-    return egress(info_dicts_gen())
