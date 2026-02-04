@@ -6,11 +6,16 @@
 #   * Allow on-the-fly parametrization (e.g. sep='\t', index_col=False...)
 from functools import partial
 from io import BytesIO
+from pathlib import Path
+import tempfile
+import atexit
 from typing import (
     KT,
     VT,
     Dict,
     Union,
+    Optional,
+    Sequence,
 )
 from collections.abc import Mapping, Iterable
 
@@ -52,6 +57,26 @@ from tabled.wrappers import (
 # ) -> VT:
 #     """Map an object to a value based on a key function"""
 #     return mapping.get(key(obj), not_found_sentinel)
+
+
+def _is_sqlite_file(filepath: Union[str, Path]) -> bool:
+    """Check if a file is likely a SQLite database file."""
+    filepath = Path(filepath)
+
+    # Check file extension
+    if filepath.suffix.lower() in {'.db', '.sqlite', '.sqlite3'}:
+        return True
+
+    # Check if it's a file and has SQLite magic bytes
+    if filepath.is_file():
+        try:
+            with open(filepath, 'rb') as f:
+                header = f.read(16)
+                return header.startswith(b'SQLite format 3\x00')
+        except (OSError, IOError):
+            return False
+
+    return False
 
 
 class KeyFuncReader(KvReader):
@@ -162,8 +187,12 @@ class DfFiles(Files):
     dataframes that were saved in some way. You want to a key-value store whose values
     are the (decoded) dataframes corresponding to the files in the folder.
 
+    Additionally, if you provide a SQLite database file instead of a directory,
+    it will automatically extract the tables as parquet files in a temporary directory
+    and provide access to them as DataFrames.
+
     Args:
-    rootdir: A root directory.
+    rootdir: A root directory or a SQLite database file.
     extension_decoder_mapping: A mapping from file extensions to functions that can
         read the dataframes
     extra_decoder_kwargs: Extra arguments to pass to the decoder functions.
@@ -179,7 +208,27 @@ class DfFiles(Files):
         extra_encoder_kwargs: dict | Iterable = (),
         extra_decoder_kwargs: dict | Iterable = (),
         allow_writing_bytes: bool = True,  # Note: can extend to validation callable
+        # SQLite-specific parameters
+        sqlite_tables: Optional[Sequence[str]] = None,
+        sqlite_verbose: bool = False,
     ):
+        # Check if rootdir is a SQLite file
+        if isinstance(rootdir, (str, Path)) and _is_sqlite_file(rootdir):
+            # Delegate to from_sqlite_file
+            instance = self.from_sqlite_file(
+                rootdir,
+                tables=sqlite_tables,
+                verbose=sqlite_verbose,
+                extension_encoder_mapping=extension_encoder_mapping,
+                extension_decoder_mapping=extension_decoder_mapping,
+                extra_encoder_kwargs=extra_encoder_kwargs,
+                extra_decoder_kwargs=extra_decoder_kwargs,
+                allow_writing_bytes=allow_writing_bytes,
+            )
+            # Copy the instance's attributes to self
+            self.__dict__.update(instance.__dict__)
+            return
+
         super().__init__(rootdir)
 
         self.key_to_ext = file_extension
@@ -200,6 +249,65 @@ class DfFiles(Files):
         # self.extension_based_encoder = partial(
         #     extension_based_encoding, extension_encoder_mapping
         # )
+
+    @classmethod
+    def from_sqlite_file(
+        cls,
+        sqlite_file: Union[str, Path],
+        *,
+        tables: Optional[Sequence[str]] = None,
+        verbose: bool = False,
+        **kwargs,
+    ) -> 'DfFiles':
+        """Create a DfFiles instance from a SQLite database file.
+
+        This method exports all tables from the SQLite database to parquet files
+        in a temporary directory and returns a DfFiles instance that provides
+        access to these tables as DataFrames.
+
+        Args:
+            sqlite_file: Path to the SQLite database file
+            tables: Optional list of table names to export. If None, exports all tables.
+            verbose: Whether to print progress information
+            **kwargs: Additional arguments passed to the DfFiles constructor
+
+        Returns:
+            A DfFiles instance providing access to the SQLite tables as DataFrames
+        """
+        from tabled.sqlite_tools import export_sqlite_to_parquet
+
+        sqlite_file = Path(sqlite_file)
+        if not sqlite_file.exists():
+            raise FileNotFoundError(f"SQLite file not found: {sqlite_file}")
+
+        if not _is_sqlite_file(sqlite_file):
+            raise ValueError(
+                f"File does not appear to be a SQLite database: {sqlite_file}"
+            )
+
+        # Create a temporary directory that will be cleaned up automatically
+        temp_dir = tempfile.mkdtemp(prefix='dffiles_sqlite_', suffix='_parquet')
+
+        # Export SQLite tables to parquet files
+        export_sqlite_to_parquet(
+            sqlite_file,
+            temp_dir,
+            tables=tables,
+            verbose=verbose,
+        )
+
+        # Register cleanup function
+        def cleanup_temp_dir():
+            try:
+                import shutil
+
+                shutil.rmtree(temp_dir, ignore_errors=True)
+            except Exception:
+                pass
+
+        atexit.register(cleanup_temp_dir)
+
+        return cls(temp_dir, **kwargs)
 
     def __getitem__(self, k):
         ext = self.key_to_ext(k)

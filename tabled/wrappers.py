@@ -524,9 +524,6 @@ def extension_based_wrap(
 extension_based_wrap.dflt_extension_to_decoder = extension_to_decoder
 extension_based_wrap.dflt_extension_to_encoder = extension_to_encoder
 
-# ----------------------------------------
-# moved from tabled.base
-
 
 def resolve_to_dataframe(
     data,
