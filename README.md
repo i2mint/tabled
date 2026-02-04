@@ -5,6 +5,31 @@ A (key-value) data-object-layer to get (pandas) tables from a variety of sources
 
 To install:	```pip install tabled```
 
+## Table Analysis and Diagnosis
+
+The `dataframe_info` function provides flexible analysis of pandas DataFrames:
+
+```python
+from tabled.diagnose import dataframe_info, register_info_func
+import pandas as pd
+
+# Analyze a DataFrame
+df = pd.DataFrame({'a': [1, 2, 3], 'b': ['x', 'y', 'z']})
+info = dataframe_info(df)
+print(info['shape'])  # (3, 2)
+print(info['columns'])  # ['a', 'b']
+
+# Extend with custom analysis functions
+def memory_usage(df):
+    return df.memory_usage(deep=True).sum()
+
+register_info_func('memory', memory_usage)
+info = dataframe_info(df)
+print(info['memory'])  # Memory usage in bytes
+```
+
+The analysis is completely customizable - you can register new analysis functions or provide custom info function dictionaries to focus on specific aspects of your data.
+
 
 
 

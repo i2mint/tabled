@@ -18,6 +18,23 @@ from posixpath import splitext
 from typing import Union, Dict, TypeVar, KT, VT, BinaryIO
 from collections.abc import Mapping, Callable
 
+# Handle pandas_gbq import for BigQuery support
+try:
+    import pandas_gbq
+    # Create a wrapper function that matches DataFrame.to_gbq interface
+    def _to_gbq_wrapper(df, *args, **kwargs):
+        """Wrapper for pandas_gbq.to_gbq to match DataFrame.to_gbq interface"""
+        return pandas_gbq.to_gbq(df, *args, **kwargs)
+    _gbq_to_method = _to_gbq_wrapper
+except ImportError:
+    # If pandas_gbq is not available, create a function that raises a helpful error
+    def _to_gbq_unavailable(*args, **kwargs):
+        raise ImportError(
+            "BigQuery functionality requires pandas-gbq. "
+            "Install it with: pip install pandas-gbq"
+        )
+    _gbq_to_method = _to_gbq_unavailable
+
 import numpy as np
 from dol import Pipe, wrap_kvs, written_bytes, store_decorator
 from dol.zipfiledol import file_or_folder_to_zip_file
@@ -297,7 +314,7 @@ _extension_to_encoder = split_keys(
         # sql queries
         "sql sqlite": pd.DataFrame.to_sql,
         # Google BigQuery
-        "gbq": pd.DataFrame.to_gbq,
+        "gbq": _gbq_to_method,
         # ------------ extensions requiring extra dependencies ------------
         # excel files
         "xls xlsx": partial(
