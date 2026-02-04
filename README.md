@@ -5,6 +5,44 @@ A (key-value) data-object-layer to get (pandas) tables from a variety of sources
 
 To install:	```pip install tabled```
 
+## SQLite Database Support
+
+Tabled provides seamless integration with SQLite databases through `DfFiles`:
+
+```python
+from tabled import DfFiles
+
+# Automatic SQLite detection - just pass the database file path
+df_files = DfFiles('my_database.db')
+
+# Access tables as DataFrames
+customers = df_files['customers.parquet']  # Full filename
+orders = df_files['orders']                # Clean table name (both work)
+
+# List available tables
+print(list(df_files.keys()))  # ['customers.parquet', 'orders.parquet', ...]
+
+# Or use the explicit method
+df_files = DfFiles.from_sqlite_file('my_database.db')
+```
+
+Under the hood, SQLite tables are exported to temporary Parquet files for efficient access, with automatic cleanup when the program exits.
+
+### SQLite Export Tools
+
+For more control over SQLite data extraction, use the `sqlite_tools` module:
+
+```python
+from tabled.sqlite_tools import export_sqlite_to_dataframes, export_sqlite_to_parquet
+
+# Export to DataFrames
+tables = export_sqlite_to_dataframes('database.db')
+customers_df = tables['customers']
+
+# Export to Parquet files
+export_sqlite_to_parquet('database.db', 'output_directory/')
+```
+
 ## Table Analysis and Diagnosis
 
 The `dataframe_info` function provides flexible analysis of pandas DataFrames:
@@ -32,15 +70,9 @@ The analysis is completely customizable - you can register new analysis function
 
 
 
-
-
-```python
-
-```
-
 # DfFiles
 
-This notebook demonstrates how to use `DfFiles` to store and retrieve pandas DataFrames using various file formats.
+This section demonstrates how to use `DfFiles` to store and retrieve pandas DataFrames using various file formats.
 
 ## Setup
 

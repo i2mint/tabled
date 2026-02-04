@@ -1,4 +1,17 @@
-"""General-purpose SQLite to DataFrame/Parquet export tools using DuckDB."""
+"""General-purpose SQLite to DataFrame/Parquet export tools using DuckDB.
+
+This module provides utilities for extracting data from SQLite databases and exporting
+it to pandas DataFrames or Parquet files. It uses DuckDB with the sqlite_scanner
+extension for efficient data extraction.
+
+Key functions:
+- export_sqlite_to_dataframes: Extract SQLite tables to pandas DataFrames
+- export_sqlite_to_parquet: Export SQLite tables directly to Parquet files
+- export_sqlite_to_dataframes_and_parquet: Combined export to both formats
+
+All functions use DuckDB's sqlite_scanner extension which provides fast, efficient
+access to SQLite databases without loading the entire database into memory.
+"""
 
 from __future__ import annotations
 
@@ -302,6 +315,38 @@ def export_sqlite_to_dataframes_and_parquet(
     install_extensions: bool = True,
     verbose: bool = DFLT_VERBOSE,
 ) -> tuple[Dict[str, "pd.DataFrame"], Optional[Path]]:
+    """Export SQLite tables to both DataFrames and Parquet files.
+
+    This is a combined function that exports SQLite tables to pandas DataFrames
+    and optionally saves them to Parquet files in a single operation.
+
+    Parameters
+    ----------
+    sqlite_db_file:
+        Path to the SQLite database file (.db / .sqlite / .sqlite3).
+    out_dir:
+        Optional directory where Parquet files will be written.
+        If None, only DataFrames are returned.
+    tables:
+        Optional list of table names to export. If None, exports all tables.
+    schema:
+        DuckDB schema name to attach the SQLite DB as (default "src").
+    compression:
+        Parquet compression codec. Common: "ZSTD", "SNAPPY", "GZIP", "NONE".
+    overwrite:
+        If False, skip exporting tables where parquet files already exist.
+    install_extensions:
+        If True, runs INSTALL/LOAD sqlite_scanner (helpful for first run).
+    verbose:
+        Print progress information.
+
+    Returns
+    -------
+    tuple[Dict[str, pd.DataFrame], Optional[Path]]
+        A tuple containing:
+        - Dictionary mapping table names to DataFrames
+        - Output directory path (if out_dir was provided)
+    """
     """
     Export tables from SQLite to both DataFrames AND Parquet files.
 
