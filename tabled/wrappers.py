@@ -21,10 +21,12 @@ from collections.abc import Mapping, Callable
 # Handle pandas_gbq import for BigQuery support
 try:
     import pandas_gbq
+
     # Create a wrapper function that matches DataFrame.to_gbq interface
     def _to_gbq_wrapper(df, *args, **kwargs):
         """Wrapper for pandas_gbq.to_gbq to match DataFrame.to_gbq interface"""
         return pandas_gbq.to_gbq(df, *args, **kwargs)
+
     _gbq_to_method = _to_gbq_wrapper
 except ImportError:
     # If pandas_gbq is not available, create a function that raises a helpful error
@@ -33,6 +35,7 @@ except ImportError:
             "BigQuery functionality requires pandas-gbq. "
             "Install it with: pip install pandas-gbq"
         )
+
     _gbq_to_method = _to_gbq_unavailable
 
 import numpy as np

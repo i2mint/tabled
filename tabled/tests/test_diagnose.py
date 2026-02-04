@@ -279,7 +279,9 @@ class TestRegistrationFunctions:
         info = dataframe_info(df)
 
         assert 'memory' in info
-        assert isinstance(info['memory'], (int, type(info['memory'])))  # Accept both Python int and numpy int types
+        assert isinstance(
+            info['memory'], (int, type(info['memory']))
+        )  # Accept both Python int and numpy int types
         assert info['memory'] > 0
 
 
