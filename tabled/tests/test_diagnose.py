@@ -19,6 +19,37 @@ from tabled.diagnose import (
 )
 
 
+@pytest.fixture(scope='session', autouse=True)
+def setup_clean_session():
+    """Session-scoped fixture to ensure clean state at the start of test session."""
+    # Store the original functions at session start
+    original_funcs = DFLT_INFO_FUNCS.copy()
+    yield
+    # Restore original state at session end
+    DFLT_INFO_FUNCS.clear()
+    DFLT_INFO_FUNCS.update(original_funcs)
+
+
+@pytest.fixture(autouse=True)
+def preserve_info_funcs():
+    """Fixture to preserve and restore the original DFLT_INFO_FUNCS."""
+    # Reset to original 6 functions before each test
+    original_funcs = {
+        'shape': _get_shape,
+        'columns': _get_columns,
+        'first_row': _get_first_row,
+        'sample_rows': _get_sample_rows,
+        'numeric_stats': _get_numeric_stats,
+        'categorical_stats': _get_categorical_stats,
+    }
+    DFLT_INFO_FUNCS.clear()
+    DFLT_INFO_FUNCS.update(original_funcs)
+    yield
+    # Clean up any additions made during the test
+    DFLT_INFO_FUNCS.clear()
+    DFLT_INFO_FUNCS.update(original_funcs)
+
+
 class TestScalarColumns:
     """Tests for the scalar_columns function."""
 
