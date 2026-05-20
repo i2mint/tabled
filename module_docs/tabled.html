@@ -6,18 +6,18 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled &mdash; tabled 0.1.25 documentation</title>
+  <title>tabled &mdash; tabled 0.1.26 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=4fa33042"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=785bba28"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -53,16 +53,20 @@
 <li class="toctree-l1"><a class="reference internal" href="tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tabled/diagnose.html">tabled.diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/html.html">tabled.html</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/join_tables.html">tabled.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tabled/tools.html">tabled.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/util.html">tabled.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tabled/wrappers.html">tabled.wrappers</a></li>
 </ul>
@@ -93,7 +97,29 @@
              
   <section id="module-tabled">
 <span id="tabled"></span><h1>tabled<a class="headerlink" href="#module-tabled" title="Link to this heading"></a></h1>
-<p>A  (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease.</p>
+<p>A data-object-layer package for accessing pandas DataFrames from various sources.</p>
+<p>This package provides a unified interface for reading, writing, and manipulating
+tabular data from multiple sources including files, URLs, and custom data stores.
+It offers flexible key-value mapping functionality where keys can represent file
+paths, URLs, or other identifiers, and values are pandas DataFrames.</p>
+<p>Key Features:
+- Read tables from URLs, HTML pages, and various file formats
+- Store abstraction (DfFiles) for mapping keys to DataFrames
+- Extension-based encoding/decoding for different file formats
+- Column-oriented data manipulation utilities
+- DataFrame comparison and diff functionality
+- JSON serialization support for pandas objects
+- Row/column expansion and collapse operations
+- Duplicate detection and handling</p>
+<p>Main Components:
+- HTML table extraction from web pages
+- File-based DataFrame storage with automatic format detection
+- Multi-source data readers with customizable key functions
+- Utility functions for DataFrame manipulation and analysis
+- Codec system for handling different data formats
+- Comparison tools for analyzing differences between tables</p>
+<p>The package is designed to simplify data pipeline workflows where tabular data
+needs to be accessed from heterogeneous sources and processed in a consistent manner.</p>
 </section>
 
 

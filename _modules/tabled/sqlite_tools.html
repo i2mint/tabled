@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.sqlite_tools &mdash; tabled 0.1.26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=785bba28"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tools.html">tabled.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tabled.sqlite_tools</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tabled.sqlite_tools</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;General-purpose SQLite to DataFrame/Parquet export tools using DuckDB.</span>
+
+<span class="sd">This module provides utilities for extracting data from SQLite databases and exporting</span>
+<span class="sd">it to pandas DataFrames or Parquet files. It uses DuckDB with the sqlite_scanner</span>
+<span class="sd">extension for efficient data extraction.</span>
+
+<span class="sd">Key functions:</span>
+<span class="sd">- export_sqlite_to_dataframes: Extract SQLite tables to pandas DataFrames</span>
+<span class="sd">- export_sqlite_to_parquet: Export SQLite tables directly to Parquet files</span>
+<span class="sd">- export_sqlite_to_dataframes_and_parquet: Combined export to both formats</span>
+
+<span class="sd">All functions use DuckDB&#39;s sqlite_scanner extension which provides fast, efficient</span>
+<span class="sd">access to SQLite databases without loading the entire database into memory.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="n">DFLT_VERBOSE</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Core / standard SQLite database extensions</span>
+<span class="n">SQLITE_EXTENSIONS_CORE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;.db&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.sqlite&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.sqlite3&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Common alternative extensions used by tools and platforms</span>
+<span class="n">SQLITE_EXTENSIONS_COMMON</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;.db3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.s3db&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.sl3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.sq3&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Application-specific extensions that are often SQLite under the hood</span>
+<span class="n">SQLITE_EXTENSIONS_APP_SPECIFIC</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;.dat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.store&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.cache&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.catalog&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.wallet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.browser&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># SQLite auxiliary / transient files (usually NOT the main database)</span>
+<span class="n">SQLITE_EXTENSIONS_AUXILIARY</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;.db-journal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.sqlite-journal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.db-wal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.sqlite-wal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.db-shm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.sqlite-shm&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="export_sqlite_to_dataframes">
+<a class="viewcode-back" href="../../module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_dataframes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_sqlite_to_dataframes</span><span class="p">(</span>
+    <span class="n">sqlite_db_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;src&quot;</span><span class="p">,</span>
+    <span class="n">install_extensions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">DFLT_VERBOSE</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;pd.DataFrame&quot;</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Export tables from SQLite to pandas DataFrames using DuckDB + sqlite_scanner.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sqlite_db_file:</span>
+<span class="sd">        Path to the SQLite database file (.db / .sqlite / .sqlite3).</span>
+<span class="sd">    tables:</span>
+<span class="sd">        Optional list of table names to export. If None, exports all discovered tables.</span>
+<span class="sd">    schema:</span>
+<span class="sd">        DuckDB schema name to attach the SQLite DB as (default &quot;src&quot;).</span>
+<span class="sd">    install_extensions:</span>
+<span class="sd">        If True, runs INSTALL/LOAD sqlite_scanner (helpful for first run).</span>
+<span class="sd">    verbose:</span>
+<span class="sd">        Print progress.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Dict[str, pd.DataFrame]</span>
+<span class="sd">        Dictionary mapping table names to DataFrames.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
+
+    <span class="c1"># Verbose logging helper</span>
+    <span class="n">clog</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">sqlite_db_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sqlite_db_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sqlite_db_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SQLite DB not found: </span><span class="si">{</span><span class="n">sqlite_db_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DuckDB: connecting to extract DataFrames&quot;</span><span class="p">)</span>
+
+    <span class="n">con</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">install_extensions</span><span class="p">:</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;DuckDB: installing/loading sqlite_scanner extension...&quot;</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSTALL sqlite_scanner;&quot;</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LOAD sqlite_scanner;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LOAD sqlite_scanner;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Attach the SQLite database</span>
+        <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DuckDB: attaching SQLite db as schema &#39;</span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">&#39;...&quot;</span><span class="p">)</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ATTACH &#39;</span><span class="si">{</span><span class="n">sqlite_db_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; AS </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2"> (TYPE sqlite);&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Determine tables to export</span>
+        <span class="k">if</span> <span class="n">tables</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">discovered</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SHOW TABLES FROM </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+            <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">discovered</span><span class="p">]</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Tables discovered:&quot;</span><span class="p">,</span> <span class="n">tables</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Tables specified:&quot;</span><span class="p">,</span> <span class="n">tables</span><span class="p">)</span>
+
+        <span class="c1"># Export each table to DataFrame</span>
+        <span class="n">dataframes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+            <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> -&gt; DataFrame&quot;</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">df</span><span class="p">()</span>
+            <span class="n">dataframes</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
+
+        <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Done extracting DataFrames.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataframes</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="export_sqlite_to_parquet">
+<a class="viewcode-back" href="../../module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_parquet">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_sqlite_to_parquet</span><span class="p">(</span>
+    <span class="n">sqlite_db_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;src&quot;</span><span class="p">,</span>
+    <span class="n">compression</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ZSTD&quot;</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">install_extensions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">DFLT_VERBOSE</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Export tables from a SQLite .db file to Parquet using DuckDB + sqlite_scanner.</span>
+
+<span class="sd">    This is a general-purpose exporter:</span>
+<span class="sd">      - attaches the SQLite file to DuckDB</span>
+<span class="sd">      - discovers tables (or uses the provided list)</span>
+<span class="sd">      - writes each table to &lt;out_dir&gt;/&lt;table&gt;.parquet</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sqlite_db_file:</span>
+<span class="sd">        Path to the SQLite database file (.db / .sqlite / .sqlite3).</span>
+<span class="sd">    out_dir:</span>
+<span class="sd">        Directory where Parquet files will be written.</span>
+<span class="sd">    tables:</span>
+<span class="sd">        Optional list of table names to export. If None, exports all discovered tables.</span>
+<span class="sd">    schema:</span>
+<span class="sd">        DuckDB schema name to attach the SQLite DB as (default &quot;src&quot;).</span>
+<span class="sd">    compression:</span>
+<span class="sd">        Parquet compression codec. Common: &quot;ZSTD&quot;, &quot;SNAPPY&quot;, &quot;GZIP&quot;, &quot;NONE&quot;.</span>
+<span class="sd">    overwrite:</span>
+<span class="sd">        If False, skip exporting a table if the target parquet file already exists.</span>
+<span class="sd">    install_extensions:</span>
+<span class="sd">        If True, runs INSTALL/LOAD sqlite_scanner (helpful for first run).</span>
+<span class="sd">    verbose:</span>
+<span class="sd">        Print progress.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Path</span>
+<span class="sd">        The output directory (resolved).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
+
+    <span class="c1"># Verbose logging helper</span>
+    <span class="n">clog</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">sqlite_db_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sqlite_db_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sqlite_db_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SQLite DB not found: </span><span class="si">{</span><span class="n">sqlite_db_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">out_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DuckDB: connecting (export -&gt; </span><span class="si">{</span><span class="n">out_dir</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+    <span class="n">con</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">install_extensions</span><span class="p">:</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;DuckDB: installing/loading sqlite_scanner extension...&quot;</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSTALL sqlite_scanner;&quot;</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LOAD sqlite_scanner;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LOAD sqlite_scanner;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Attach the SQLite database under a schema name (e.g. src)</span>
+        <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DuckDB: attaching SQLite db as schema &#39;</span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">&#39;...&quot;</span><span class="p">)</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ATTACH &#39;</span><span class="si">{</span><span class="n">sqlite_db_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; AS </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2"> (TYPE sqlite);&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Determine tables to export</span>
+        <span class="k">if</span> <span class="n">tables</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># DuckDB returns one column: table name</span>
+            <span class="n">discovered</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SHOW TABLES FROM </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+            <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">discovered</span><span class="p">]</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Tables discovered:&quot;</span><span class="p">,</span> <span class="n">tables</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Tables specified:&quot;</span><span class="p">,</span> <span class="n">tables</span><span class="p">)</span>
+
+        <span class="c1"># Export each table</span>
+        <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+            <span class="n">out_path</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">.parquet&quot;</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite</span> <span class="ow">and</span> <span class="n">out_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> (exists): </span><span class="si">{</span><span class="n">out_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exporting </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">out_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># COPY ... TO writes Parquet directly</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                COPY (SELECT * FROM </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">                TO &#39;</span><span class="si">{</span><span class="n">out_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;</span>
+<span class="s2">                (FORMAT PARQUET, COMPRESSION </span><span class="si">{</span><span class="n">compression</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">                &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out_dir</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="export_sqlite_query_to_parquet">
+<a class="viewcode-back" href="../../module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_query_to_parquet">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_sqlite_query_to_parquet</span><span class="p">(</span>
+    <span class="n">sqlite_db_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">out_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;src&quot;</span><span class="p">,</span>
+    <span class="n">compression</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ZSTD&quot;</span><span class="p">,</span>
+    <span class="n">install_extensions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">DFLT_VERBOSE</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Export an arbitrary SQL query (against the attached SQLite DB) to a Parquet file.</span>
+
+<span class="sd">    Useful for generating:</span>
+<span class="sd">      - edge lists (source/target)</span>
+<span class="sd">      - node tables (id + attributes)</span>
+<span class="sd">      - filtered subsets</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        export_sqlite_query_to_parquet(</span>
+<span class="sd">            &quot;my.db&quot;,</span>
+<span class="sd">            &quot;edges.parquet&quot;,</span>
+<span class="sd">            query=&quot;SELECT from_id AS source, to_id AS target, weight FROM edges&quot;</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
+
+    <span class="c1"># Verbose logging helper</span>
+    <span class="n">clog</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">sqlite_db_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sqlite_db_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sqlite_db_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SQLite DB not found: </span><span class="si">{</span><span class="n">sqlite_db_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">out_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">out_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">con</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">install_extensions</span><span class="p">:</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSTALL sqlite_scanner;&quot;</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LOAD sqlite_scanner;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LOAD sqlite_scanner;&quot;</span><span class="p">)</span>
+
+        <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ATTACH &#39;</span><span class="si">{</span><span class="n">sqlite_db_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; AS </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2"> (TYPE sqlite);&quot;</span><span class="p">)</span>
+
+        <span class="c1"># If caller wrote query against SQLite tables without schema prefix,</span>
+        <span class="c1"># they can include it themselves. We also allow a convenience placeholder:</span>
+        <span class="c1">#   {schema} in the query string.</span>
+        <span class="n">formatted_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+
+        <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exporting query -&gt; </span><span class="si">{</span><span class="n">out_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            COPY (</span><span class="si">{</span><span class="n">formatted_query</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">            TO &#39;</span><span class="si">{</span><span class="n">out_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;</span>
+<span class="s2">            (FORMAT PARQUET, COMPRESSION </span><span class="si">{</span><span class="n">compression</span><span class="si">}</span><span class="s2">);</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out_path</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="export_sqlite_to_dataframes_and_parquet">
+<a class="viewcode-back" href="../../module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_dataframes_and_parquet">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_sqlite_to_dataframes_and_parquet</span><span class="p">(</span>
+    <span class="n">sqlite_db_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;src&quot;</span><span class="p">,</span>
+    <span class="n">compression</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ZSTD&quot;</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">install_extensions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">DFLT_VERBOSE</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;pd.DataFrame&quot;</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export SQLite tables to both DataFrames and Parquet files.</span>
+
+<span class="sd">    This is a combined function that exports SQLite tables to pandas DataFrames</span>
+<span class="sd">    and optionally saves them to Parquet files in a single operation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sqlite_db_file:</span>
+<span class="sd">        Path to the SQLite database file (.db / .sqlite / .sqlite3).</span>
+<span class="sd">    out_dir:</span>
+<span class="sd">        Optional directory where Parquet files will be written.</span>
+<span class="sd">        If None, only DataFrames are returned.</span>
+<span class="sd">    tables:</span>
+<span class="sd">        Optional list of table names to export. If None, exports all tables.</span>
+<span class="sd">    schema:</span>
+<span class="sd">        DuckDB schema name to attach the SQLite DB as (default &quot;src&quot;).</span>
+<span class="sd">    compression:</span>
+<span class="sd">        Parquet compression codec. Common: &quot;ZSTD&quot;, &quot;SNAPPY&quot;, &quot;GZIP&quot;, &quot;NONE&quot;.</span>
+<span class="sd">    overwrite:</span>
+<span class="sd">        If False, skip exporting tables where parquet files already exist.</span>
+<span class="sd">    install_extensions:</span>
+<span class="sd">        If True, runs INSTALL/LOAD sqlite_scanner (helpful for first run).</span>
+<span class="sd">    verbose:</span>
+<span class="sd">        Print progress information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[Dict[str, pd.DataFrame], Optional[Path]]</span>
+<span class="sd">        A tuple containing:</span>
+<span class="sd">        - Dictionary mapping table names to DataFrames</span>
+<span class="sd">        - Output directory path (if out_dir was provided)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Export tables from SQLite to both DataFrames AND Parquet files.</span>
+
+<span class="sd">    More efficient than calling both functions separately since it reuses</span>
+<span class="sd">    the same DuckDB connection and table discovery.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sqlite_db_file:</span>
+<span class="sd">        Path to the SQLite database file.</span>
+<span class="sd">    out_dir:</span>
+<span class="sd">        Directory where Parquet files will be written. If None, only DataFrames returned.</span>
+<span class="sd">    tables:</span>
+<span class="sd">        Optional list of table names to export. If None, exports all discovered tables.</span>
+<span class="sd">    schema:</span>
+<span class="sd">        DuckDB schema name to attach the SQLite DB as (default &quot;src&quot;).</span>
+<span class="sd">    compression:</span>
+<span class="sd">        Parquet compression codec.</span>
+<span class="sd">    overwrite:</span>
+<span class="sd">        If False, skip exporting a table if the target parquet file already exists.</span>
+<span class="sd">    install_extensions:</span>
+<span class="sd">        If True, runs INSTALL/LOAD sqlite_scanner.</span>
+<span class="sd">    verbose:</span>
+<span class="sd">        Print progress.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[Dict[str, pd.DataFrame], Optional[Path]]</span>
+<span class="sd">        (dataframes_dict, output_directory_path_or_none)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
+
+    <span class="c1"># Verbose logging helper</span>
+    <span class="n">clog</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">sqlite_db_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sqlite_db_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sqlite_db_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SQLite DB not found: </span><span class="si">{</span><span class="n">sqlite_db_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">out_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">out_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DuckDB: connecting (DataFrames + export -&gt; </span><span class="si">{</span><span class="n">out_dir</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DuckDB: connecting (DataFrames only)&quot;</span><span class="p">)</span>
+
+    <span class="n">con</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">install_extensions</span><span class="p">:</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;DuckDB: installing/loading sqlite_scanner extension...&quot;</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSTALL sqlite_scanner;&quot;</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LOAD sqlite_scanner;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;LOAD sqlite_scanner;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Attach the SQLite database</span>
+        <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DuckDB: attaching SQLite db as schema &#39;</span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">&#39;...&quot;</span><span class="p">)</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ATTACH &#39;</span><span class="si">{</span><span class="n">sqlite_db_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; AS </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2"> (TYPE sqlite);&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Determine tables to export</span>
+        <span class="k">if</span> <span class="n">tables</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">discovered</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SHOW TABLES FROM </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+            <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">discovered</span><span class="p">]</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Tables discovered:&quot;</span><span class="p">,</span> <span class="n">tables</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+            <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Tables specified:&quot;</span><span class="p">,</span> <span class="n">tables</span><span class="p">)</span>
+
+        <span class="c1"># Extract DataFrames and optionally save to Parquet</span>
+        <span class="n">dataframes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+            <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">df</span><span class="p">()</span>
+            <span class="n">dataframes</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
+
+            <span class="c1"># Optionally save to Parquet</span>
+            <span class="k">if</span> <span class="n">out_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">out_path</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">.parquet&quot;</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite</span> <span class="ow">and</span> <span class="n">out_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> (exists): </span><span class="si">{</span><span class="n">out_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="n">clog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">out_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="n">clog</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataframes</span><span class="p">,</span> <span class="n">out_dir</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -6,18 +6,18 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.util &mdash; tabled 0.1.25 documentation</title>
+  <title>tabled.util &mdash; tabled 0.1.26 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=4fa33042"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=785bba28"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="tabled.wrappers" href="wrappers.html" />
-    <link rel="prev" title="tabled.tests.util" href="tests/util.html" /> 
+    <link rel="prev" title="tabled.tools" href="tools.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,16 +53,20 @@
 <li class="toctree-l1"><a class="reference internal" href="_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnose.html">tabled.diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="html.html">tabled.html</a></li>
 <li class="toctree-l1"><a class="reference internal" href="join_tables.html">tabled.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sqlite_tools.html">tabled.sqlite_tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">tabled.tools</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">tabled.util</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.PandasJSONEncoder"><code class="docutils literal notranslate"><span class="pre">PandasJSONEncoder</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#tabled.util.PandasJSONEncoder.default"><code class="docutils literal notranslate"><span class="pre">PandasJSONEncoder.default()</span></code></a></li>
@@ -83,6 +87,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.is_non_null_or_empty"><code class="docutils literal notranslate"><span class="pre">is_non_null_or_empty()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.map_values"><code class="docutils literal notranslate"><span class="pre">map_values()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tabled.util.split_keys"><code class="docutils literal notranslate"><span class="pre">split_keys()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabled.util.upsert_data"><code class="docutils literal notranslate"><span class="pre">upsert_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">tabled.wrappers</a></li>
@@ -117,7 +122,7 @@
 <p>Utils</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tabled.util.PandasJSONEncoder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">PandasJSONEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#PandasJSONEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.PandasJSONEncoder" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">PandasJSONEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipkeys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensure_ascii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#PandasJSONEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.PandasJSONEncoder" title="Link to this definition"></a></dt>
 <dd><p>A custom JSON encoder that can handle pandas and numpy types more robustly,
 even if they appear within nested data structures.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">datetime</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -129,14 +134,14 @@ even if they appear within nested data structures.</p>
 <span class="gp">... </span>          <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2023-04-09 00:02:53+0000&#39;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;UTC&#39;</span><span class="p">)]</span>
 <span class="gp">... </span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PandasJSONEncoder</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span>
 <span class="go">&#39;[{&quot;a&quot;: 1, &quot;b&quot;: &quot;2023-04-09T00:02:53...&quot;}..., {&quot;a&quot;: 2, &quot;b&quot;: null}, {&quot;a&quot;: 3, &quot;b&quot;: &quot;2023-04-09T00:02:53...&quot;}...]&#39;</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Test with a Series containing timestamps and missing values.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2023-04-09 00:02:53+0000&#39;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;UTC&#39;</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">NaT</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PandasJSONEncoder</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span>
 <span class="go">&#39;{&quot;0&quot;: &quot;2023-04-09T00:02:53...&quot;, &quot;1&quot;: null}&#39;</span>
 </pre></div>
 </div>
@@ -147,13 +152,13 @@ even if they appear within nested data structures.</p>
 <span class="gp">... </span>    <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="gp">... </span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PandasJSONEncoder</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_str</span>
 <span class="go">&#39;{&quot;arr&quot;: [1, 2, 3], &quot;flt&quot;: 3.14..., &quot;bool&quot;: false}&#39;</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Test with a datetime.date.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">date_val</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">date_val</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PandasJSONEncoder</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">date_val</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PandasJSONEncoder</span><span class="p">)</span>
 <span class="go">&#39;&quot;2002-01-01&quot;&#39;</span>
 </pre></div>
 </div>
@@ -173,7 +178,7 @@ implement default like this:</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
     <span class="c1"># Let the base class default method raise the TypeError</span>
-    <span class="k">return</span> <span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -182,7 +187,7 @@ implement default like this:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.auto_decode_bytes">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">auto_decode_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">try_first_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1000000.0,</span> <span class="pre">10000000.0,</span> <span class="pre">100000000.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#auto_decode_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.auto_decode_bytes" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">auto_decode_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">try_first_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1000000.0,</span> <span class="pre">10000000.0,</span> <span class="pre">100000000.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#auto_decode_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.auto_decode_bytes" title="Link to this definition"></a></dt>
 <dd><p>Decode a byte sequence into a string, trying charset_normalizer gueses if fails.</p>
 <p>This function attempts to decode the given bytes using the default encoding (usually ‘utf-8’).
 If that fails due to a <cite>UnicodeDecodeError</cite>, it uses <cite>charset_normalizer</cite> to detect the encoding
@@ -231,12 +236,12 @@ explicitness, and the errors that come with it, can be vital.</p>
 <p>Here are a few examples. We’ll</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s_latin1</span> <span class="o">=</span> <span class="s1">&#39;Héllo, wörld! Ça va?&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b_latin1</span> <span class="o">=</span> <span class="n">s_latin1</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin-1&#39;</span><span class="p">)</span>  <span class="c1"># latin-1 is ISO-8859-1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span> <span class="o">=</span> <span class="n">auto_decode_bytes</span><span class="p">(</span><span class="n">b_latin1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span> <span class="o">=</span> <span class="n">auto_decode_bytes</span><span class="p">(</span><span class="n">b_latin1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">Trying encoding: &#39;utf-8&#39;</span>
 <span class="go">Trying encoding: ...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span>
 <span class="go">&#39;H幨lo, w顤ld! ド va?&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span> <span class="o">==</span> <span class="n">s_latin1</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decoded_s</span> <span class="o">==</span> <span class="n">s_latin1</span>
 <span class="go">False</span>
 </pre></div>
 </div>
@@ -257,7 +262,7 @@ is not deterministic and can vary depending on the system and the version of
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.breadth_first_traversal">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">breadth_first_traversal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_node</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yield_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#breadth_first_traversal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.breadth_first_traversal" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">breadth_first_traversal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_node</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">yield_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#breadth_first_traversal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.breadth_first_traversal" title="Link to this definition"></a></dt>
 <dd><p>Yields nodes starting from the root node, expanding to neighbors recursively,
 using breadth-first search, without repeating nodes.</p>
 <dl class="field-list simple">
@@ -283,7 +288,7 @@ The edges are yielded as tuples of (node, neighbor).</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.collapse_columns">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">collapse_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#collapse_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.collapse_columns" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">collapse_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">KT</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#collapse_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.collapse_columns" title="Link to this definition"></a></dt>
 <dd><p>Transforms specified columns of a dataframe into single columns where each row
 contains a dictionary of column names and values from the original dataframe.</p>
 <dl class="field-list simple">
@@ -308,13 +313,13 @@ and a new column <cite>new_column_name</cite> containing dictionaries of the col
 <span class="gp">... </span>    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>
 <span class="go">   a  b   c</span>
 <span class="go">0  1  3   7</span>
 <span class="go">1  1  4   8</span>
 <span class="go">2  2  5   9</span>
 <span class="go">3  2  6  10</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">collapse_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ab&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]})</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collapse_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;ab&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]})</span>
 <span class="go">   c   ab</span>
 <span class="go">0  7  {&#39;a&#39;: 1, &#39;b&#39;: 3}</span>
 <span class="go">1  8  {&#39;a&#39;: 1, &#39;b&#39;: 4}</span>
@@ -326,7 +331,7 @@ and a new column <cite>new_column_name</cite> containing dictionaries of the col
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.collapse_rows">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">collapse_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">df:</span> <span class="pre">~pandas.core.frame.DataFrame,</span> <span class="pre">by:</span> <span class="pre">~typing.List,</span> <span class="pre">*,</span> <span class="pre">container:</span> <span class="pre">~typing.Callable[[~typing.Iterable],</span> <span class="pre">~typing.Iterable]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'list'&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#collapse_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.collapse_rows" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">collapse_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">df:</span> <span class="pre">~pandas.DataFrame,</span> <span class="pre">by:</span> <span class="pre">list[KT],</span> <span class="pre">*,</span> <span class="pre">container:</span> <span class="pre">~collections.abc.Callable[[~collections.abc.Iterable],</span> <span class="pre">~collections.abc.Iterable]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'list'&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#collapse_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.collapse_rows" title="Link to this definition"></a></dt>
 <dd><p>Do a groupby to collapse (the rows of) a dataframe, gathering the other
 column’s values (the ones that are not keys of the groupby) into lists.</p>
 <dl class="field-list simple">
@@ -343,13 +348,13 @@ column’s values (the ones that are not keys of the groupby) into lists.</p>
 <span class="gp">... </span>    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>
 <span class="go">   a  b   c</span>
 <span class="go">0  1  3   7</span>
 <span class="go">1  1  4   8</span>
 <span class="go">2  2  5   9</span>
 <span class="go">3  2  6  10</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">collapse_rows</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collapse_rows</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span>
 <span class="go">   a       b        c</span>
 <span class="go">0  1  [3, 4]   [7, 8]</span>
 <span class="go">1  2  [5, 6]  [9, 10]</span>
@@ -359,7 +364,7 @@ column’s values (the ones that are not keys of the groupby) into lists.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.duplicate_groups">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">duplicate_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataframe'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#duplicate_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.duplicate_groups" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">duplicate_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataframe'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#duplicate_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.duplicate_groups" title="Link to this definition"></a></dt>
 <dd><p>Get a DataFrame containing rows that have duplicate values for subset of columns.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -380,7 +385,7 @@ or DataFrame with duplicated rows with the specified subset as index.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dups</span> <span class="o">=</span> <span class="n">duplicate_groups</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dups</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dups</span>
 <span class="go">   B  index</span>
 <span class="go">A</span>
 <span class="go">1  a      0</span>
@@ -398,7 +403,7 @@ or DataFrame with duplicated rows with the specified subset as index.</p>
 <span class="go">(2, 2)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Without keep_indices</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dups_orig_idx</span> <span class="o">=</span> <span class="n">duplicate_groups</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">keep_indices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dups_orig_idx</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dups_orig_idx</span>
 <span class="go">   B</span>
 <span class="go">A</span>
 <span class="go">1  a</span>
@@ -432,7 +437,7 @@ preceding in the order they were in the original dataframe.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.expand_columns">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">expand_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">df:</span> <span class="pre">~pandas.core.frame.DataFrame,</span> <span class="pre">expand_columns:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">*,</span> <span class="pre">drop=True,</span> <span class="pre">key_mapper=functools.partial(&lt;function</span> <span class="pre">column_sep_key_mapper&gt;,</span> <span class="pre">sep='.'),</span> <span class="pre">drop_non_iterable_rows=False</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#expand_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.expand_columns" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">expand_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">df:</span> <span class="pre">~pandas.DataFrame,</span> <span class="pre">expand_columns:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">list[str],</span> <span class="pre">*,</span> <span class="pre">drop=True,</span> <span class="pre">key_mapper=functools.partial(&lt;function</span> <span class="pre">column_sep_key_mapper&gt;,</span> <span class="pre">sep='.'),</span> <span class="pre">drop_non_iterable_rows=False</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#expand_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.expand_columns" title="Link to this definition"></a></dt>
 <dd><p>Expands the iterable values of specified columns in to new columns.
 The new columns will be named using the column_name and the key of the values of
 the iterable that is expanded (key if dict, integer index if sequence).</p>
@@ -474,7 +479,7 @@ dicts, we ask to not drop, and we use <cite>key_mapper=None</cite>:</p>
 <span class="gp">... </span>    <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
 <span class="gp">... </span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">expand_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">key_mapper</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expand_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">key_mapper</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="go">    c       X  0  1</span>
 <span class="go">0   7  [1, 3]  1  3</span>
 <span class="go">1   8  [1, 4]  1  4</span>
@@ -486,7 +491,7 @@ dicts, we ask to not drop, and we use <cite>key_mapper=None</cite>:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.expand_rows">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">expand_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouped_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#expand_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.expand_rows" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">expand_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grouped_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">KT</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#expand_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.expand_rows" title="Link to this definition"></a></dt>
 <dd><p>Expands a DataFrame where specific columns were collapsed into containers back to its original form.
 Each column in <cite>grouped_columns</cite> should contain lists of the same length within each row.</p>
 <dl class="field-list simple">
@@ -505,7 +510,7 @@ Each column in <cite>grouped_columns</cite> should contain lists of the same len
 <span class="gp">... </span>    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">66</span><span class="p">]],</span>
 <span class="gp">... </span>    <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]]</span>
 <span class="gp">... </span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">expand_rows</span><span class="p">(</span><span class="n">df_collapsed</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expand_rows</span><span class="p">(</span><span class="n">df_collapsed</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>
 <span class="go">    a  b   c</span>
 <span class="go">0  1  3   7</span>
 <span class="go">1  1  4   8</span>
@@ -518,7 +523,7 @@ Each column in <cite>grouped_columns</cite> should contain lists of the same len
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.intersection_graph">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">intersection_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">set</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'elements'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'size'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">False</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#intersection_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.intersection_graph" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">intersection_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">set</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'elements'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'size'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">False</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tabled/util.html#intersection_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.intersection_graph" title="Link to this definition"></a></dt>
 <dd><p>A graph of all intersections between sets.
 (See <a class="reference external" href="https://en.wikipedia.org/wiki/Intersection_graph">https://en.wikipedia.org/wiki/Intersection_graph</a>.)</p>
 <p>In graph theory, an adjacency list is a collection of sets used to represent a
@@ -574,7 +579,7 @@ optionally with some information about this intersection.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tabled.util.invert_labeled_collection">
-<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">invert_labeled_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">d:</span> <span class="pre">~typing.Mapping[KT,</span> <span class="pre">~typing.Iterable],</span> <span class="pre">values_container:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'list'&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">VT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#invert_labeled_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.invert_labeled_collection" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">invert_labeled_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">d:</span> <span class="pre">~collections.abc.Mapping[KT,</span> <span class="pre">~collections.abc.Iterable],</span> <span class="pre">values_container:</span> <span class="pre">~collections.abc.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'list'&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">VT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#invert_labeled_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.invert_labeled_collection" title="Link to this definition"></a></dt>
 <dd><p>Invert a mapping whose values are iterables of objects,
 getting a mapping from objects to iterables of keys.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">original_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -642,13 +647,73 @@ mapping where several keys map to the same value.</p>
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="tabled.util.upsert_data">
+<span class="sig-prename descclassname"><span class="pre">tabled.util.</span></span><span class="sig-name descname"><span class="pre">upsert_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align_index_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../../_modules/tabled/util.html#upsert_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.util.upsert_data" title="Link to this definition"></a></dt>
+<dd><p>Updates or Inserts (Upserts) data into a target DataFrame, handling initial
+creation and growth along a specified axis.</p>
+<p>The function returns a new DataFrame, even though it modifies the target
+in-place for column updates (axis=1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_df</strong> – The DataFrame to be updated (can be None or empty).</p></li>
+<li><p><strong>source_df</strong> – The DataFrame containing the new/source data.</p></li>
+<li><p><strong>axis</strong> – 1 for adding columns (default), 0 for adding rows.</p></li>
+<li><p><strong>align_index_value</strong> – If True, the concatenation requires indices (or columns
+when axis=0) to match both in number AND value.
+If False, alignment is ignored (positional concat).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated DataFrame.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># 1. Initial creation (target_df is None)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_source_A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target</span> <span class="o">=</span> <span class="n">upsert_data</span><span class="p">(</span><span class="n">df_target</span><span class="p">,</span> <span class="n">df_source_A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">df_source_A</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># 2. Adding new columns (axis=1, default)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_source_B</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target</span> <span class="o">=</span> <span class="n">upsert_data</span><span class="p">(</span><span class="n">df_target</span><span class="p">,</span> <span class="n">df_source_B</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># 3. Overwriting existing columns (axis=1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Indices must align when updating</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_source_C</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target</span> <span class="o">=</span> <span class="n">upsert_data</span><span class="p">(</span><span class="n">df_target</span><span class="p">,</span> <span class="n">df_source_C</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="go">[10, 20]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># 4. Adding rows (axis=0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target_row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_source_row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target_row</span> <span class="o">=</span> <span class="n">upsert_data</span><span class="p">(</span><span class="n">df_target_row</span><span class="p">,</span> <span class="n">df_source_row</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target_row</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_target_row</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="go">[1, 3]</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tests/util.html" class="btn btn-neutral float-left" title="tabled.tests.util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tools.html" class="btn btn-neutral float-left" title="tabled.tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="wrappers.html" class="btn btn-neutral float-right" title="tabled.wrappers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

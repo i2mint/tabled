@@ -5,18 +5,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; tabled 0.1.25 documentation</title>
+  <title>Index &mdash; tabled 0.1.26 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=4fa33042"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/documentation_options.js?v=785bba28"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="_static/copybutton.js?v=f281be69"></script>
@@ -50,16 +50,20 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/html.html">tabled.html</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tools.html">tabled.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/util.html">tabled.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
 </ul>
@@ -173,6 +177,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/compare_tables.html#tabled.compare_tables.dataframe_diffs">dataframe_diffs() (in module tabled.compare_tables)</a>
 </li>
+      <li><a href="module_docs/tabled/diagnose.html#tabled.diagnose.dataframe_info">dataframe_info() (in module tabled.diagnose)</a>
+</li>
       <li><a href="module_docs/tabled/_codecs.html#tabled._codecs.dataframe_to_arrow_bytes">dataframe_to_arrow_bytes() (in module tabled._codecs)</a>
 </li>
       <li><a href="module_docs/tabled/base.html#tabled.base.DataframeKvReader">DataframeKvReader (class in tabled.base)</a>
@@ -199,6 +205,8 @@
 </li>
       <li><a href="module_docs/tabled/html.html#tabled.html.dfs_to_html_pretty">dfs_to_html_pretty() (in module tabled.html)</a>
 </li>
+      <li><a href="module_docs/tabled/tools.html#tabled.tools.diagnose_table_collection">diagnose_table_collection() (in module tabled.tools)</a>
+</li>
       <li><a href="module_docs/tabled/compare_tables.html#tabled.compare_tables.dtypes_diff">dtypes_diff() (in module tabled.compare_tables)</a>
 </li>
       <li><a href="module_docs/tabled/util.html#tabled.util.duplicate_groups">duplicate_groups() (in module tabled.util)</a>
@@ -219,11 +227,19 @@
 </li>
       <li><a href="module_docs/tabled/multi.html#tabled.multi.execute_commands">execute_commands() (in module tabled.multi)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/util.html#tabled.util.expand_columns">expand_columns() (in module tabled.util)</a>
 </li>
       <li><a href="module_docs/tabled/util.html#tabled.util.expand_rows">expand_rows() (in module tabled.util)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_query_to_parquet">export_sqlite_query_to_parquet() (in module tabled.sqlite_tools)</a>
+</li>
+      <li><a href="module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_dataframes">export_sqlite_to_dataframes() (in module tabled.sqlite_tools)</a>
+</li>
+      <li><a href="module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_dataframes_and_parquet">export_sqlite_to_dataframes_and_parquet() (in module tabled.sqlite_tools)</a>
+</li>
+      <li><a href="module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_parquet">export_sqlite_to_parquet() (in module tabled.sqlite_tools)</a>
 </li>
       <li><a href="module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_decoding">extension_based_decoding() (in module tabled.wrappers)</a>
 </li>
@@ -238,6 +254,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/wrappers.html#tabled.wrappers.file_extension">file_extension() (in module tabled.wrappers)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/base.html#tabled.base.DfFiles.from_sqlite_file">from_sqlite_file() (tabled.base.DfFiles class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -303,6 +323,10 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/diagnose.html#tabled.diagnose.list_info_funcs">list_info_funcs() (in module tabled.diagnose)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/multi.html#tabled.multi.Load">Load (class in tabled.multi)</a>
 </li>
   </ul></td>
@@ -331,6 +355,8 @@
 </li>
         <li><a href="module_docs/tabled/compare_tables.html#module-tabled.compare_tables">tabled.compare_tables</a>
 </li>
+        <li><a href="module_docs/tabled/diagnose.html#module-tabled.diagnose">tabled.diagnose</a>
+</li>
         <li><a href="module_docs/tabled/html.html#module-tabled.html">tabled.html</a>
 </li>
         <li><a href="module_docs/tabled/join_tables.html#module-tabled.join_tables">tabled.join_tables</a>
@@ -339,11 +365,15 @@
 </li>
         <li><a href="module_docs/tabled/multi.html#module-tabled.multi">tabled.multi</a>
 </li>
+        <li><a href="module_docs/tabled/sqlite_tools.html#module-tabled.sqlite_tools">tabled.sqlite_tools</a>
+</li>
         <li><a href="module_docs/tabled/tests/data.html#module-tabled.tests.data">tabled.tests.data</a>
 </li>
         <li><a href="module_docs/tabled/tests/generate_data.html#module-tabled.tests.generate_data">tabled.tests.generate_data</a>
 </li>
         <li><a href="module_docs/tabled/tests/util.html#module-tabled.tests.util">tabled.tests.util</a>
+</li>
+        <li><a href="module_docs/tabled/tools.html#module-tabled.tools">tabled.tools</a>
 </li>
         <li><a href="module_docs/tabled/util.html#module-tabled.util">tabled.util</a>
 </li>
@@ -359,11 +389,17 @@
       <li><a href="module_docs/tabled/util.html#tabled.util.PandasJSONEncoder">PandasJSONEncoder (class in tabled.util)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/diagnose.html#tabled.diagnose.print_dataframe_info">print_dataframe_info() (in module tabled.diagnose)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/diagnose.html#tabled.diagnose.register_info_func">register_info_func() (in module tabled.diagnose)</a>
+</li>
       <li><a href="module_docs/tabled/multi.html#tabled.multi.Remove">Remove (class in tabled.multi)</a>
 </li>
   </ul></td>
@@ -380,7 +416,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/wrappers.html#tabled.wrappers.save_df_to_zipped_tsv">save_df_to_zipped_tsv() (in module tabled.wrappers)</a>
 </li>
-      <li><a href="module_docs/tabled/misc.html#tabled.misc.scalar_columns">scalar_columns() (in module tabled.misc)</a>
+      <li><a href="module_docs/tabled/diagnose.html#tabled.diagnose.scalar_columns">scalar_columns() (in module tabled.diagnose)</a>
 </li>
       <li><a href="module_docs/tabled/compare_tables.html#tabled.compare_tables.shape_diff">shape_diff() (in module tabled.compare_tables)</a>
 </li>
@@ -427,6 +463,13 @@
 </li>
       </ul></li>
       <li>
+    tabled.diagnose
+
+      <ul>
+        <li><a href="module_docs/tabled/diagnose.html#module-tabled.diagnose">module</a>
+</li>
+      </ul></li>
+      <li>
     tabled.html
 
       <ul>
@@ -457,6 +500,13 @@
 </li>
       </ul></li>
       <li>
+    tabled.sqlite_tools
+
+      <ul>
+        <li><a href="module_docs/tabled/sqlite_tools.html#module-tabled.sqlite_tools">module</a>
+</li>
+      </ul></li>
+      <li>
     tabled.tests.data
 
       <ul>
@@ -475,6 +525,13 @@
 
       <ul>
         <li><a href="module_docs/tabled/tests/util.html#module-tabled.tests.util">module</a>
+</li>
+      </ul></li>
+      <li>
+    tabled.tools
+
+      <ul>
+        <li><a href="module_docs/tabled/tools.html#module-tabled.tools">module</a>
 </li>
       </ul></li>
       <li>
@@ -501,6 +558,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/util.html#tabled.util.upsert_data">upsert_data() (in module tabled.util)</a>
+</li>
       <li><a href="module_docs/tabled/html.html#tabled.html.url_to_html_func">url_to_html_func() (in module tabled.html)</a>
 </li>
   </ul></td>

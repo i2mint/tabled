@@ -5,18 +5,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.util &mdash; tabled 0.1.25 documentation</title>
+  <title>tabled.util &mdash; tabled 0.1.26 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=4fa33042"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=785bba28"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -50,16 +50,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tools.html">tabled.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
 </ul>
@@ -94,12 +98,133 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sized</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Sized</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span>
+
+
+<div class="viewcode-block" id="upsert_data">
+<a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.upsert_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">upsert_data</span><span class="p">(</span>
+    <span class="n">target_df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+    <span class="n">source_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">axis</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">align_index_value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates or Inserts (Upserts) data into a target DataFrame, handling initial</span>
+<span class="sd">    creation and growth along a specified axis.</span>
+
+<span class="sd">    The function returns a new DataFrame, even though it modifies the target</span>
+<span class="sd">    in-place for column updates (axis=1).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        target_df: The DataFrame to be updated (can be None or empty).</span>
+<span class="sd">        source_df: The DataFrame containing the new/source data.</span>
+<span class="sd">        axis: 1 for adding columns (default), 0 for adding rows.</span>
+<span class="sd">        align_index_value: If True, the concatenation requires indices (or columns</span>
+<span class="sd">                           when axis=0) to match both in number AND value.</span>
+<span class="sd">                           If False, alignment is ignored (positional concat).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The updated DataFrame.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; # 1. Initial creation (target_df is None)</span>
+<span class="sd">        &gt;&gt;&gt; df_target = None</span>
+<span class="sd">        &gt;&gt;&gt; df_source_A = pd.DataFrame({&#39;a&#39;: [1, 2], &#39;b&#39;: [3, 4]})</span>
+<span class="sd">        &gt;&gt;&gt; df_target = upsert_data(df_target, df_source_A)</span>
+<span class="sd">        &gt;&gt;&gt; df_target.equals(df_source_A)</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &gt;&gt;&gt; # 2. Adding new columns (axis=1, default)</span>
+<span class="sd">        &gt;&gt;&gt; df_source_B = pd.DataFrame({&#39;c&#39;: [5, 6], &#39;d&#39;: [7, 8]})</span>
+<span class="sd">        &gt;&gt;&gt; df_target = upsert_data(df_target, df_source_B)</span>
+<span class="sd">        &gt;&gt;&gt; df_target.columns.tolist()</span>
+<span class="sd">        [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</span>
+
+<span class="sd">        &gt;&gt;&gt; # 3. Overwriting existing columns (axis=1)</span>
+<span class="sd">        &gt;&gt;&gt; # Indices must align when updating</span>
+<span class="sd">        &gt;&gt;&gt; df_source_C = pd.DataFrame({&#39;a&#39;: [10, 20], &#39;e&#39;: [30, 40]})</span>
+<span class="sd">        &gt;&gt;&gt; df_target = upsert_data(df_target, df_source_C)</span>
+<span class="sd">        &gt;&gt;&gt; df_target[&#39;a&#39;].tolist()</span>
+<span class="sd">        [10, 20]</span>
+<span class="sd">        &gt;&gt;&gt; df_target.columns.tolist()</span>
+<span class="sd">        [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;]</span>
+
+<span class="sd">        &gt;&gt;&gt; # 4. Adding rows (axis=0)</span>
+<span class="sd">        &gt;&gt;&gt; df_target_row = pd.DataFrame({&#39;col1&#39;: [1], &#39;col2&#39;: [2]})</span>
+<span class="sd">        &gt;&gt;&gt; df_source_row = pd.DataFrame({&#39;col1&#39;: [3], &#39;col2&#39;: [4]})</span>
+<span class="sd">        &gt;&gt;&gt; df_target_row = upsert_data(df_target_row, df_source_row, axis=0)</span>
+<span class="sd">        &gt;&gt;&gt; df_target_row.shape</span>
+<span class="sd">        (2, 2)</span>
+<span class="sd">        &gt;&gt;&gt; df_target_row[&#39;col1&#39;].tolist()</span>
+<span class="sd">        [1, 3]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># --- 1. Handle Initial Creation ---</span>
+    <span class="k">if</span> <span class="n">target_df</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">target_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="c1"># Return a copy of the source for safety</span>
+        <span class="k">return</span> <span class="n">source_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># --- 2. Check Positional Alignment ---</span>
+    <span class="n">join_mode</span> <span class="o">=</span> <span class="s1">&#39;outer&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">align_index_value</span><span class="p">:</span>
+        <span class="c1"># If not aligning by value, we must check lengths and align by position</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_df</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">source_df</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;When adding columns (axis=1) without index alignment, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;the number of rows must match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">target_df</span><span class="p">)</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">source_df</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">source_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;When adding rows (axis=0) without column alignment, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;the number of columns must match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">target_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">source_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Align indices/columns positionally to ensure clean concat</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Align rows (index) positionally</span>
+            <span class="n">source_df</span> <span class="o">=</span> <span class="n">source_df</span><span class="o">.</span><span class="n">set_axis</span><span class="p">(</span><span class="n">target_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># axis == 0</span>
+            <span class="c1"># Align columns positionally</span>
+            <span class="n">source_df</span> <span class="o">=</span> <span class="n">source_df</span><span class="o">.</span><span class="n">set_axis</span><span class="p">(</span><span class="n">target_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># --- 3. Upsert Logic ---</span>
+
+    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Column Addition/Update (Upsert)</span>
+
+        <span class="c1"># Identify shared columns</span>
+        <span class="n">shared_cols</span> <span class="o">=</span> <span class="n">source_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">target_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="c1"># 3a. UPDATE (Overwrites existing columns in-place)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">shared_cols</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="c1"># target_df.update() uses index alignment to overwrite/update rows</span>
+            <span class="n">target_df</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="n">shared_cols</span><span class="p">])</span>
+
+        <span class="c1"># 3b. INSERT (Adds new columns)</span>
+        <span class="c1"># Select columns in source_df that are NOT in target_df</span>
+        <span class="n">cols_to_add</span> <span class="o">=</span> <span class="n">source_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">target_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">new_cols_df</span> <span class="o">=</span> <span class="n">source_df</span><span class="p">[</span><span class="n">cols_to_add</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new_cols_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="c1"># Concatenate the new columns</span>
+            <span class="n">target_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">target_df</span><span class="p">,</span> <span class="n">new_cols_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="n">join_mode</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># axis == 0 (Row Insertion)</span>
+        <span class="c1"># Row Addition (Insert - No overwrite logic for axis=0 is assumed here)</span>
+        <span class="c1"># pd.concat handles adding new rows (inserting)</span>
+        <span class="n">target_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">target_df</span><span class="p">,</span> <span class="n">source_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="n">join_mode</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">target_df</span></div>
+
 
 
 <div class="viewcode-block" id="duplicate_groups">
@@ -303,7 +428,7 @@
 <div class="viewcode-block" id="intersection_graph">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.intersection_graph">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">intersection_graph</span><span class="p">(</span>
-    <span class="n">sets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="nb">set</span><span class="p">],</span> <span class="n">edge_labels</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;elements&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">sets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="nb">set</span><span class="p">],</span> <span class="n">edge_labels</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;elements&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A graph of all intersections between sets.</span>
@@ -597,7 +722,8 @@
 <span class="c1"># Expand and collapse rows and columns</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 
@@ -605,7 +731,7 @@
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.collapse_rows">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">collapse_rows</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">by</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">],</span>
+    <span class="n">by</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">KT</span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">container</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Iterable</span><span class="p">],</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -640,9 +766,7 @@
 
 <div class="viewcode-block" id="expand_rows">
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.expand_rows">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">expand_rows</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grouped_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">]]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">expand_rows</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">grouped_columns</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">KT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Expands a DataFrame where specific columns were collapsed into containers back to its original form.</span>
 <span class="sd">    Each column in `grouped_columns` should contain lists of the same length within each row.</span>
@@ -700,7 +824,7 @@
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.collapse_columns">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">collapse_columns</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">groupings</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">KT</span><span class="p">]]],</span>
+    <span class="n">groupings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">KT</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transforms specified columns of a dataframe into single columns where each row</span>
@@ -774,7 +898,7 @@
 <span class="n">_column_dot_key_mapper</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">column_sep_key_mapper</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_apply_key_mapper_to_keys</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">key_mapper</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_key_mapper_to_keys</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">key_mapper</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">key_mapper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     <span class="k">else</span><span class="p">:</span>
@@ -785,7 +909,7 @@
 <a class="viewcode-back" href="../../module_docs/tabled/util.html#tabled.util.expand_columns">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">expand_columns</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">expand_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">expand_columns</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">key_mapper</span><span class="o">=</span><span class="n">_column_dot_key_mapper</span><span class="p">,</span>
@@ -965,6 +1089,7 @@
 
 
 <span class="n">pandas_json_dumps</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PandasJSONEncoder</span><span class="p">)</span>
+
 </pre></div>
 
            </div>

@@ -1,0 +1,4 @@
+tabled.tests.test_diagnose
+==========================
+.. automodule:: tabled.tests.test_diagnose
+   :members:

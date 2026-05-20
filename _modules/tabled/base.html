@@ -5,18 +5,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.base &mdash; tabled 0.1.25 documentation</title>
+  <title>tabled.base &mdash; tabled 0.1.26 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=4fa33042"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=785bba28"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -50,16 +50,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tools.html">tabled.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
 </ul>
@@ -97,14 +101,18 @@
 <span class="c1">#   * Allow on-the-fly parametrization (e.g. sep=&#39;\t&#39;, index_col=False...)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">atexit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Mapping</span><span class="p">,</span>
     <span class="n">KT</span><span class="p">,</span>
     <span class="n">VT</span><span class="p">,</span>
     <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">Iterable</span><span class="p">,</span>
     <span class="n">Union</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Sequence</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Iterable</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
@@ -144,6 +152,26 @@
 <span class="c1"># ) -&gt; VT:</span>
 <span class="c1">#     &quot;&quot;&quot;Map an object to a value based on a key function&quot;&quot;&quot;</span>
 <span class="c1">#     return mapping.get(key(obj), not_found_sentinel)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_sqlite_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a file is likely a SQLite database file.&quot;&quot;&quot;</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+    <span class="c1"># Check file extension</span>
+    <span class="k">if</span> <span class="n">filepath</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;.db&#39;</span><span class="p">,</span> <span class="s1">&#39;.sqlite&#39;</span><span class="p">,</span> <span class="s1">&#39;.sqlite3&#39;</span><span class="p">}:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># Check if it&#39;s a file and has SQLite magic bytes</span>
+    <span class="k">if</span> <span class="n">filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">header</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;SQLite format 3</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">False</span>
 
 
 <div class="viewcode-block" id="KeyFuncReader">
@@ -262,8 +290,12 @@
 <span class="sd">    dataframes that were saved in some way. You want to a key-value store whose values</span>
 <span class="sd">    are the (decoded) dataframes corresponding to the files in the folder.</span>
 
+<span class="sd">    Additionally, if you provide a SQLite database file instead of a directory,</span>
+<span class="sd">    it will automatically extract the tables as parquet files in a temporary directory</span>
+<span class="sd">    and provide access to them as DataFrames.</span>
+
 <span class="sd">    Args:</span>
-<span class="sd">    rootdir: A root directory.</span>
+<span class="sd">    rootdir: A root directory or a SQLite database file.</span>
 <span class="sd">    extension_decoder_mapping: A mapping from file extensions to functions that can</span>
 <span class="sd">        read the dataframes</span>
 <span class="sd">    extra_decoder_kwargs: Extra arguments to pass to the decoder functions.</span>
@@ -274,12 +306,32 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">extension_encoder_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_encoder</span><span class="p">,</span>
-        <span class="n">extension_decoder_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">dflt_ext_mapping</span><span class="p">,</span>
-        <span class="n">extra_encoder_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
-        <span class="n">extra_decoder_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">extension_encoder_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_encoder</span><span class="p">,</span>
+        <span class="n">extension_decoder_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">dflt_ext_mapping</span><span class="p">,</span>
+        <span class="n">extra_encoder_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">extra_decoder_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">allow_writing_bytes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Note: can extend to validation callable</span>
+        <span class="c1"># SQLite-specific parameters</span>
+        <span class="n">sqlite_tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sqlite_verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="c1"># Check if rootdir is a SQLite file</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rootdir</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_is_sqlite_file</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
+            <span class="c1"># Delegate to from_sqlite_file</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_sqlite_file</span><span class="p">(</span>
+                <span class="n">rootdir</span><span class="p">,</span>
+                <span class="n">tables</span><span class="o">=</span><span class="n">sqlite_tables</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">sqlite_verbose</span><span class="p">,</span>
+                <span class="n">extension_encoder_mapping</span><span class="o">=</span><span class="n">extension_encoder_mapping</span><span class="p">,</span>
+                <span class="n">extension_decoder_mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
+                <span class="n">extra_encoder_kwargs</span><span class="o">=</span><span class="n">extra_encoder_kwargs</span><span class="p">,</span>
+                <span class="n">extra_decoder_kwargs</span><span class="o">=</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+                <span class="n">allow_writing_bytes</span><span class="o">=</span><span class="n">allow_writing_bytes</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># Copy the instance&#39;s attributes to self</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+            <span class="k">return</span>
+
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span> <span class="o">=</span> <span class="n">file_extension</span>
@@ -300,6 +352,68 @@
         <span class="c1"># self.extension_based_encoder = partial(</span>
         <span class="c1">#     extension_based_encoding, extension_encoder_mapping</span>
         <span class="c1"># )</span>
+
+<div class="viewcode-block" id="DfFiles.from_sqlite_file">
+<a class="viewcode-back" href="../../module_docs/tabled/base.html#tabled.base.DfFiles.from_sqlite_file">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_sqlite_file</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">sqlite_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DfFiles&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a DfFiles instance from a SQLite database file.</span>
+
+<span class="sd">        This method exports all tables from the SQLite database to parquet files</span>
+<span class="sd">        in a temporary directory and returns a DfFiles instance that provides</span>
+<span class="sd">        access to these tables as DataFrames.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sqlite_file: Path to the SQLite database file</span>
+<span class="sd">            tables: Optional list of table names to export. If None, exports all tables.</span>
+<span class="sd">            verbose: Whether to print progress information</span>
+<span class="sd">            **kwargs: Additional arguments passed to the DfFiles constructor</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A DfFiles instance providing access to the SQLite tables as DataFrames</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tabled.sqlite_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">export_sqlite_to_parquet</span>
+
+        <span class="n">sqlite_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sqlite_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sqlite_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SQLite file not found: </span><span class="si">{</span><span class="n">sqlite_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_sqlite_file</span><span class="p">(</span><span class="n">sqlite_file</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;File does not appear to be a SQLite database: </span><span class="si">{</span><span class="n">sqlite_file</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Create a temporary directory that will be cleaned up automatically</span>
+        <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;dffiles_sqlite_&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;_parquet&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Export SQLite tables to parquet files</span>
+        <span class="n">export_sqlite_to_parquet</span><span class="p">(</span>
+            <span class="n">sqlite_file</span><span class="p">,</span>
+            <span class="n">temp_dir</span><span class="p">,</span>
+            <span class="n">tables</span><span class="o">=</span><span class="n">tables</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Register cleanup function</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">cleanup_temp_dir</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+
+                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">cleanup_temp_dir</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>

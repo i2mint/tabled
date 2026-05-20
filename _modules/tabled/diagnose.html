@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.diagnose &mdash; tabled 0.1.26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=785bba28"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tools.html">tabled.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tabled.diagnose</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tabled.diagnose</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">DataFrame and table collection diagnosis utilities.</span>
+
+<span class="sd">This module provides flexible tools for analyzing pandas DataFrames and collections</span>
+<span class="sd">of tables. The core function `dataframe_info` extracts configurable information</span>
+<span class="sd">from DataFrames using pluggable info functions.</span>
+
+<span class="sd">Key Features:</span>
+<span class="sd">- Configurable info extraction with `dataframe_info`</span>
+<span class="sd">- Collection diagnosis with `diagnose_table_collection`</span>
+<span class="sd">- Extensible via custom info functions</span>
+<span class="sd">- Backward-compatible `print_dataframe_info` from cosmodata</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({&#39;a&#39;: [1, 2, 3], &#39;b&#39;: [&#39;x&#39;, &#39;y&#39;, &#39;z&#39;]})</span>
+<span class="sd">    &gt;&gt;&gt; info = dataframe_info(df)</span>
+<span class="sd">    &gt;&gt;&gt; info[&#39;shape&#39;]</span>
+<span class="sd">    (3, 2)</span>
+
+<span class="sd">    # Register custom info function</span>
+<span class="sd">    &gt;&gt;&gt; def get_memory_usage(df):</span>
+<span class="sd">    ...     return df.memory_usage(deep=True).sum()</span>
+<span class="sd">    &gt;&gt;&gt; register_info_func(&#39;custom_memory&#39;, get_memory_usage)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="scalar_columns">
+<a class="viewcode-back" href="../../module_docs/tabled/diagnose.html#tabled.diagnose.scalar_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">scalar_columns</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the list of columns that are scalar (therefore serializable to CSV)</span>
+
+<span class="sd">    More precisely, this function returns the list of columns that contain only</span>
+<span class="sd">    scalar values (e.g., int, float, str, bool, etc.) and can be saved to a CSV</span>
+<span class="sd">    file.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;A&#39;: [1, 2, 3],</span>
+<span class="sd">    ...     &#39;B&#39;: [&#39;x&#39;, &#39;y&#39;, &#39;z&#39;],</span>
+<span class="sd">    ...     &#39;C&#39;: [{&#39;a&#39;: 1}, {&#39;b&#39;: 2}, {&#39;c&#39;: 3}],  # Non-serializable column</span>
+<span class="sd">    ...     &#39;D&#39;: [[1, 2], [3, 4], [5, 6]]         # Non-serializable column</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; scalar_columns(df)</span>
+<span class="sd">    [&#39;A&#39;, &#39;B&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas.api.types</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pdt</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pdt</span><span class="o">.</span><span class="n">is_scalar</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+
+<span class="c1"># Default info functions for DataFrame analysis</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_shape</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get DataFrame shape.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_columns</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get DataFrame column names.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_first_row</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get first row of DataFrame.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_sample_rows</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get random sample of DataFrame rows.&quot;&quot;&quot;</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_numeric_stats</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get descriptive statistics for numeric columns.&quot;&quot;&quot;</span>
+    <span class="n">numeric_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">numeric_cols</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numeric_cols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_categorical_stats</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get value counts for categorical columns.&quot;&quot;&quot;</span>
+    <span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categorical_cols</span><span class="p">:</span>
+        <span class="n">value_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value_counts&#39;</span><span class="p">:</span> <span class="n">value_counts</span><span class="p">,</span> <span class="s1">&#39;total_unique&#39;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="c1"># Default info functions dictionary</span>
+<span class="n">DFLT_INFO_FUNCS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
+    <span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="n">_get_columns</span><span class="p">,</span>
+    <span class="s1">&#39;first_row&#39;</span><span class="p">:</span> <span class="n">_get_first_row</span><span class="p">,</span>
+    <span class="s1">&#39;sample_rows&#39;</span><span class="p">:</span> <span class="n">_get_sample_rows</span><span class="p">,</span>
+    <span class="s1">&#39;numeric_stats&#39;</span><span class="p">:</span> <span class="n">_get_numeric_stats</span><span class="p">,</span>
+    <span class="s1">&#39;categorical_stats&#39;</span><span class="p">:</span> <span class="n">_get_categorical_stats</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="register_info_func">
+<a class="viewcode-back" href="../../module_docs/tabled/diagnose.html#tabled.diagnose.register_info_func">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">register_info_func</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="nb">any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Register a new info function in the default info functions dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name: Name for the info function</span>
+<span class="sd">        func: Function that takes a DataFrame and returns info</span>
+<span class="sd">        overwrite: Whether to overwrite existing functions with the same name</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; def get_memory_usage(df):</span>
+<span class="sd">        ...     return df.memory_usage(deep=True).sum()</span>
+<span class="sd">        &gt;&gt;&gt; register_info_func(&#39;test_memory&#39;, get_memory_usage)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">DFLT_INFO_FUNCS</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Info function &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; already exists. Use overwrite=True to replace.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">DFLT_INFO_FUNCS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span></div>
+
+
+
+<div class="viewcode-block" id="list_info_funcs">
+<a class="viewcode-back" href="../../module_docs/tabled/diagnose.html#tabled.diagnose.list_info_funcs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_info_funcs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List all registered info function names.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">DFLT_INFO_FUNCS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+
+
+<span class="c1"># Mode-specific info function selections</span>
+<span class="n">_MODE_INFO_FUNCS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;short&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
+        <span class="s1">&#39;first_row&#39;</span><span class="p">:</span> <span class="n">_get_first_row</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
+        <span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="n">_get_columns</span><span class="p">,</span>
+        <span class="s1">&#39;sample_rows&#39;</span><span class="p">:</span> <span class="n">_get_sample_rows</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
+        <span class="s1">&#39;numeric_stats&#39;</span><span class="p">:</span> <span class="n">_get_numeric_stats</span><span class="p">,</span>
+        <span class="s1">&#39;categorical_stats&#39;</span><span class="p">:</span> <span class="n">_get_categorical_stats</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="dataframe_info">
+<a class="viewcode-back" href="../../module_docs/tabled/diagnose.html#tabled.diagnose.dataframe_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dataframe_info</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">info_funcs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_INFO_FUNCS</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">egress</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract information from a DataFrame using specified info functions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df: The DataFrame to analyze</span>
+<span class="sd">        info_funcs: Dict mapping info keys to functions that take a DataFrame</span>
+<span class="sd">        egress: Function to process the generator of (key, value) pairs</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Result of egress applied to the info generator</span>
+
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({&#39;a&#39;: [1, 2, 3], &#39;b&#39;: [4, 5, 6]})</span>
+<span class="sd">    &gt;&gt;&gt; info = dataframe_info(df, {&#39;shape&#39;: _get_shape})</span>
+<span class="sd">    &gt;&gt;&gt; info[&#39;shape&#39;]</span>
+<span class="sd">    (3, 2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">info_gen</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">info_key</span><span class="p">,</span> <span class="n">info_func</span> <span class="ow">in</span> <span class="n">info_funcs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">info_key</span><span class="p">,</span> <span class="n">info_func</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">egress</span><span class="p">(</span><span class="n">info_gen</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="print_dataframe_info">
+<a class="viewcode-back" href="../../module_docs/tabled/diagnose.html#tabled.diagnose.print_dataframe_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_dataframe_info</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">exclude_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;short&#39;</span><span class="p">,</span> <span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;stats&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;short&#39;</span><span class="p">,</span>
+    <span class="n">egress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">print</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print information about a DataFrame.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df: The DataFrame to analyze</span>
+<span class="sd">        exclude_columns: Columns to exclude from analysis</span>
+<span class="sd">        mode: Type of information to display</span>
+<span class="sd">            - &#39;short&#39;: shape and first row</span>
+<span class="sd">            - &#39;sample&#39;: shape, columns, and random rows</span>
+<span class="sd">            - &#39;stats&#39;: descriptive statistics</span>
+<span class="sd">        egress: Callback function for output (None returns string instead of printing)</span>
+
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({&#39;a&#39;: [1, 2, 3], &#39;b&#39;: [4, 5, 6]})</span>
+<span class="sd">    &gt;&gt;&gt; info = print_dataframe_info(df, egress=None)</span>
+<span class="sd">    &gt;&gt;&gt; &#39;shape: (3, 2)&#39; in info</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exclude_columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">exclude_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">exclude_columns</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">egress</span> <span class="o">==</span> <span class="s1">&#39;copy&#39;</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyperclip</span>  <span class="c1"># pip install pyperclip</span>
+
+        <span class="n">egress</span> <span class="o">=</span> <span class="n">pyperclip</span><span class="o">.</span><span class="n">copy</span>
+
+    <span class="k">if</span> <span class="n">exclude_columns</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">exclude_columns</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Get the appropriate info functions for the mode</span>
+    <span class="n">info_funcs</span> <span class="o">=</span> <span class="n">_MODE_INFO_FUNCS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">info_funcs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown mode: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">. Use &#39;short&#39;, &#39;sample&#39;, or &#39;stats&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get the information</span>
+    <span class="n">info_dict</span> <span class="o">=</span> <span class="n">dataframe_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">info_funcs</span><span class="p">)</span>
+
+    <span class="c1"># Format the information as a string</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">_format_dataframe_info</span><span class="p">(</span><span class="n">info_dict</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">egress</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="n">egress</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_dataframe_info</span><span class="p">(</span><span class="n">info_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format the DataFrame info dictionary into a readable string.&quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;DataFrame shape: </span><span class="si">{</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;First row</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;first_row&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">:</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;sample_rows&#39;</span><span class="p">])</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;DataFrame shape: </span><span class="si">{</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Columns: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">])</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Random sample (</span><span class="si">{</span><span class="n">n_samples</span><span class="si">}</span><span class="s2"> rows)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;sample_rows&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;stats&#39;</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;DataFrame shape: </span><span class="si">{</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Statistics</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">numeric_stats</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;numeric_stats&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numeric_stats</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;Numeric columns:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="n">numeric_stats</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">categorical_stats</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;categorical_stats&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">categorical_stats</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Categorical columns:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">stats</span> <span class="ow">in</span> <span class="n">categorical_stats</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;value_counts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+                <span class="n">total_unique</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;total_unique&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">total_unique</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  ... (</span><span class="si">{</span><span class="n">total_unique</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="si">}</span><span class="s2"> more unique values)&quot;</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">return</span> <span class="n">s</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

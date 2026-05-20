@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.tools &mdash; tabled 0.1.26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=785bba28"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tools.html">tabled.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tabled.tools</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tabled.tools</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Various high-level tools using tabled&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabled.diagnose</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataframe_info</span><span class="p">,</span> <span class="n">DFLT_INFO_FUNCS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabled.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">DfFiles</span>
+
+
+<div class="viewcode-block" id="diagnose_table_collection">
+<a class="viewcode-back" href="../../module_docs/tabled/tools.html#tabled.tools.diagnose_table_collection">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">diagnose_table_collection</span><span class="p">(</span>
+    <span class="n">tables</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">info_funcs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_INFO_FUNCS</span><span class="p">,</span>
+    <span class="n">egress</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="nb">dict</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Diagnose a collection of tables and return diagnostic information.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tables: Collection of tables - can be:</span>
+<span class="sd">            - A mapping from keys to DataFrames</span>
+<span class="sd">            - A non-mapping, non-string iterable of DataFrames (will use enumerate for keys)</span>
+<span class="sd">            - A string URI to create DfFiles mapping</span>
+<span class="sd">        info_funcs: Dictionary of info functions to apply</span>
+<span class="sd">        egress: Function to process the generator of (table_key, info_dict) pairs</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Result of egress applied to the info generator</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import pandas as pd</span>
+
+<span class="sd">        # Mapping case</span>
+<span class="sd">        &gt;&gt;&gt; tables_dict = {&#39;table1&#39;: pd.DataFrame({&#39;a&#39;: [1, 2], &#39;b&#39;: [3, 4]})}</span>
+<span class="sd">        &gt;&gt;&gt; result = diagnose_table_collection(tables_dict)</span>
+<span class="sd">        &gt;&gt;&gt; &#39;table1&#39; in result</span>
+<span class="sd">        True</span>
+
+<span class="sd">        # Iterable case</span>
+<span class="sd">        &gt;&gt;&gt; df1 = pd.DataFrame({&#39;a&#39;: [1, 2]})</span>
+<span class="sd">        &gt;&gt;&gt; df2 = pd.DataFrame({&#39;b&#39;: [3, 4]})</span>
+<span class="sd">        &gt;&gt;&gt; result = diagnose_table_collection([df1, df2])</span>
+<span class="sd">        &gt;&gt;&gt; 0 in result and 1 in result</span>
+<span class="sd">        True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Handle different input types</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># String case: treat as URI and create DfFiles mapping</span>
+        <span class="n">tables_uri</span> <span class="o">=</span> <span class="n">tables</span>
+        <span class="n">tables</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="p">(</span><span class="n">tables_uri</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="c1"># Non-mapping iterable case: use enumerate for keys</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+            <span class="n">tables</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">tables</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;tables must be a mapping, iterable, or string URI&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">info_dicts_gen</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">table_key</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">info_dict</span> <span class="o">=</span> <span class="n">dataframe_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">info_funcs</span><span class="o">=</span><span class="n">info_funcs</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">table_key</span><span class="p">,</span> <span class="n">info_dict</span>
+
+    <span class="k">return</span> <span class="n">egress</span><span class="p">(</span><span class="n">info_dicts_gen</span><span class="p">())</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
