@@ -1,0 +1,616 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tabled.coerce &mdash; tabled 0.1.27 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=dc233e31"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tabled
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/coerce.html">tabled.coerce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tools.html">tabled.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tabled</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tabled.coerce</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tabled.coerce</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Column type coercion utilities for pandas DataFrames.</span>
+
+<span class="sd">This module provides tools for conditionally transforming DataFrame columns</span>
+<span class="sd">based on sampled value inspection. The primary use case is detecting and</span>
+<span class="sd">converting columns that contain serialized data (e.g., JSON strings that</span>
+<span class="sd">should be lists or dicts).</span>
+
+<span class="sd">The design follows a sample-then-transform pattern:</span>
+<span class="sd">1. Sample a subset of non-null values from a column</span>
+<span class="sd">2. Test if a condition holds for a threshold fraction of samples</span>
+<span class="sd">3. If so, apply a transformation to all non-null values</span>
+
+<span class="sd">This approach is efficient for large DataFrames where checking every value</span>
+<span class="sd">would be expensive, and robust to mixed or partially malformed data.</span>
+
+<span class="sd">Example</span>
+<span class="sd">-------</span>
+<span class="sd">&gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">&gt;&gt;&gt; from tabled.coerce import coerce_json_list_column</span>
+<span class="sd">&gt;&gt;&gt;</span>
+<span class="sd">&gt;&gt;&gt; # A column with JSON list strings</span>
+<span class="sd">&gt;&gt;&gt; s = pd.Series([&#39;[1, 2, 3]&#39;, &#39;[&quot;a&quot;, &quot;b&quot;]&#39;, None, &#39;[4, 5]&#39;])</span>
+<span class="sd">&gt;&gt;&gt; coerced = coerce_json_list_column(s)</span>
+<span class="sd">&gt;&gt;&gt; coerced.iloc[0]</span>
+<span class="sd">[1, 2, 3]</span>
+<span class="sd">&gt;&gt;&gt; coerced.iloc[1]</span>
+<span class="sd">[&#39;a&#39;, &#39;b&#39;]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+
+<div class="viewcode-block" id="coerce_series_conditionally">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.coerce_series_conditionally">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">coerce_series_conditionally</span><span class="p">(</span>
+    <span class="n">series</span><span class="p">:</span> <span class="s2">&quot;pd.Series&quot;</span><span class="p">,</span>
+    <span class="n">condition</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">transform</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pd.Series&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Conditionally transform a pandas Series based on sampled values.</span>
+
+<span class="sd">    This function samples non-null values to check if a condition holds,</span>
+<span class="sd">    and if so, applies the transform to all non-null values. This is useful</span>
+<span class="sd">    for efficiently detecting and converting columns with serialized data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    series : pd.Series</span>
+<span class="sd">        The series to potentially transform.</span>
+<span class="sd">    condition : callable</span>
+<span class="sd">        A function (value -&gt; bool) that tests whether a value needs</span>
+<span class="sd">        transformation. Applied to a sample to determine if transformation</span>
+<span class="sd">        should occur for the whole series.</span>
+<span class="sd">    transform : callable</span>
+<span class="sd">        A function (value -&gt; new_value) to apply to each non-null value</span>
+<span class="sd">        if the condition threshold is met.</span>
+<span class="sd">    sample_size : int</span>
+<span class="sd">        Maximum number of non-null values to sample for condition testing.</span>
+<span class="sd">        Larger samples give more reliable detection but cost more time.</span>
+<span class="sd">    threshold : float</span>
+<span class="sd">        Fraction of sampled values that must satisfy the condition (0.0 to 1.0)</span>
+<span class="sd">        for the transform to be applied. Use lower values for columns with</span>
+<span class="sd">        mixed or partially valid data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.Series</span>
+<span class="sd">        The original series if condition not met, otherwise a new series</span>
+<span class="sd">        with transformed values (null values are preserved).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; s = pd.Series([&#39;[1, 2]&#39;, &#39;[3, 4]&#39;, None, &#39;[5]&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; is_json_list = lambda x: isinstance(x, str) and x.startswith(&#39;[&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; import json</span>
+<span class="sd">    &gt;&gt;&gt; result = coerce_series_conditionally(s, is_json_list, json.loads)</span>
+<span class="sd">    &gt;&gt;&gt; result.iloc[0]</span>
+<span class="sd">    [1, 2]</span>
+<span class="sd">    &gt;&gt;&gt; pd.isna(result.iloc[2])  # null values are preserved (None or NaN)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function uses a fixed random_state (42) for reproducible sampling.</span>
+<span class="sd">    If the series has fewer non-null values than sample_size, all non-null</span>
+<span class="sd">    values are used for testing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+    <span class="c1"># Get non-null values</span>
+    <span class="n">non_null_mask</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+    <span class="n">non_null</span> <span class="o">=</span> <span class="n">series</span><span class="p">[</span><span class="n">non_null_mask</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_null</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">series</span>
+
+    <span class="c1"># Sample for condition testing</span>
+    <span class="n">actual_sample_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sample_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_null</span><span class="p">))</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">non_null</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">actual_sample_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+    <span class="c1"># Check if condition holds for enough sampled values</span>
+    <span class="n">condition_met</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">threshold</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">condition_met</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">series</span>
+
+    <span class="c1"># Apply transform to non-null values only</span>
+    <span class="n">transformed</span> <span class="o">=</span> <span class="n">non_null</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">transform</span><span class="p">)</span>
+
+    <span class="c1"># If the transformed values have a different type (e.g., strings -&gt; lists),</span>
+    <span class="c1"># we need to convert to object dtype to avoid Arrow string array errors</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">non_null_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">transformed</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="is_json_string">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.is_json_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_json_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a value looks like a JSON-encoded string.</span>
+
+<span class="sd">    Detects strings that appear to contain JSON arrays or objects</span>
+<span class="sd">    (starting with &#39;[&#39; or &#39;{&#39; and ending with &#39;]&#39; or &#39;}&#39;).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value : any</span>
+<span class="sd">        The value to check.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the value appears to be a JSON string.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; is_json_string(&#39;[1, 2, 3]&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; is_json_string(&#39;{&quot;key&quot;: &quot;value&quot;}&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; is_json_string(&#39;plain text&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_json_string(123)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">stripped</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">stripped</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">))</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">stripped</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">))</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_json_list_string">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.is_json_list_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_json_list_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a value looks like a JSON list encoded as a string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value : any</span>
+<span class="sd">        The value to check.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the value appears to be a JSON list string.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; is_json_list_string(&#39;[1, 2, 3]&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; is_json_list_string(&#39;[&quot;a&quot;, &quot;b&quot;]&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; is_json_list_string(&#39;{&quot;key&quot;: &quot;value&quot;}&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_json_list_string(&#39;not json&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">stripped</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">stripped</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_json_dict_string">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.is_json_dict_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_json_dict_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a value looks like a JSON object/dict encoded as a string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value : any</span>
+<span class="sd">        The value to check.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the value appears to be a JSON object string.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; is_json_dict_string(&#39;{&quot;key&quot;: &quot;value&quot;}&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; is_json_dict_string(&#39;[1, 2, 3]&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">stripped</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">stripped</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_json_safe">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.parse_json_safe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_json_safe</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a JSON string, returning the original value if parsing fails.</span>
+
+<span class="sd">    This is a safe wrapper around json.loads that never raises exceptions,</span>
+<span class="sd">    making it suitable for use with coerce_series_conditionally on columns</span>
+<span class="sd">    that may contain some malformed JSON.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value : any</span>
+<span class="sd">        The value to parse. If not a valid JSON string, returned as-is.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    any</span>
+<span class="sd">        The parsed JSON value, or the original value if parsing failed.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; parse_json_safe(&#39;[1, 2, 3]&#39;)</span>
+<span class="sd">    [1, 2, 3]</span>
+<span class="sd">    &gt;&gt;&gt; parse_json_safe(&#39;{&quot;a&quot;: 1}&#39;)</span>
+<span class="sd">    {&#39;a&#39;: 1}</span>
+<span class="sd">    &gt;&gt;&gt; parse_json_safe(&#39;not json&#39;)</span>
+<span class="sd">    &#39;not json&#39;</span>
+<span class="sd">    &gt;&gt;&gt; parse_json_safe(None)  # Non-strings pass through</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+
+
+<div class="viewcode-block" id="coerce_json_column">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.coerce_json_column">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">coerce_json_column</span><span class="p">(</span><span class="n">series</span><span class="p">:</span> <span class="s2">&quot;pd.Series&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pd.Series&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Coerce a column of JSON strings to Python objects.</span>
+
+<span class="sd">    Detects and converts strings that contain JSON arrays or objects</span>
+<span class="sd">    to their Python equivalents (lists or dicts).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    series : pd.Series</span>
+<span class="sd">        The series to coerce.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional arguments passed to coerce_series_conditionally</span>
+<span class="sd">        (sample_size, threshold).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.Series</span>
+<span class="sd">        Series with JSON strings converted to Python objects.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; s = pd.Series([&#39;[1, 2]&#39;, &#39;{&quot;a&quot;: 1}&#39;, &#39;text&#39;, None])</span>
+<span class="sd">    &gt;&gt;&gt; # Note: won&#39;t transform if &lt; 80% are JSON by default</span>
+<span class="sd">    &gt;&gt;&gt; s_homogeneous = pd.Series([&#39;[1]&#39;, &#39;[2]&#39;, &#39;[3]&#39;, None])</span>
+<span class="sd">    &gt;&gt;&gt; coerced = coerce_json_column(s_homogeneous)</span>
+<span class="sd">    &gt;&gt;&gt; coerced.iloc[0]</span>
+<span class="sd">    [1]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">coerce_series_conditionally</span><span class="p">(</span>
+        <span class="n">series</span><span class="p">,</span>
+        <span class="n">condition</span><span class="o">=</span><span class="n">is_json_string</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">parse_json_safe</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="coerce_json_list_column">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.coerce_json_list_column">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">coerce_json_list_column</span><span class="p">(</span><span class="n">series</span><span class="p">:</span> <span class="s2">&quot;pd.Series&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pd.Series&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Coerce a column of JSON list strings to Python lists.</span>
+
+<span class="sd">    This is a convenience wrapper around coerce_series_conditionally</span>
+<span class="sd">    configured for the common case of columns containing JSON list strings.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    series : pd.Series</span>
+<span class="sd">        The series to coerce.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional arguments passed to coerce_series_conditionally</span>
+<span class="sd">        (sample_size, threshold).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.Series</span>
+<span class="sd">        Series with JSON list strings converted to Python lists.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; s = pd.Series([&#39;[1, 2, 3]&#39;, &#39;[&quot;a&quot;, &quot;b&quot;]&#39;, None])</span>
+<span class="sd">    &gt;&gt;&gt; coerced = coerce_json_list_column(s)</span>
+<span class="sd">    &gt;&gt;&gt; coerced.iloc[0]</span>
+<span class="sd">    [1, 2, 3]</span>
+<span class="sd">    &gt;&gt;&gt; coerced.iloc[1]</span>
+<span class="sd">    [&#39;a&#39;, &#39;b&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">coerce_series_conditionally</span><span class="p">(</span>
+        <span class="n">series</span><span class="p">,</span>
+        <span class="n">condition</span><span class="o">=</span><span class="n">is_json_list_string</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">parse_json_safe</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="coerce_dataframe_columns">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.coerce_dataframe_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">coerce_dataframe_columns</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="s2">&quot;pd.DataFrame&quot;</span><span class="p">,</span>
+    <span class="n">condition</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">transform</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pd.DataFrame&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Conditionally coerce columns in a DataFrame.</span>
+
+<span class="sd">    Applies coerce_series_conditionally to specified columns (or all</span>
+<span class="sd">    object-dtype columns if none specified).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pd.DataFrame</span>
+<span class="sd">        The DataFrame to process.</span>
+<span class="sd">    condition : callable</span>
+<span class="sd">        A function (value -&gt; bool) to test if values need transformation.</span>
+<span class="sd">    transform : callable</span>
+<span class="sd">        A function (value -&gt; new_value) to apply to matching values.</span>
+<span class="sd">    columns : list of str or None</span>
+<span class="sd">        Specific columns to check. If None, checks all object-dtype columns.</span>
+<span class="sd">    sample_size : int</span>
+<span class="sd">        Maximum number of values to sample per column.</span>
+<span class="sd">    threshold : float</span>
+<span class="sd">        Fraction of samples that must satisfy condition to trigger transform.</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        If True, print which columns were transformed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        DataFrame with coerced columns.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;json_col&#39;: [&#39;[1]&#39;, &#39;[2]&#39;, &#39;[3]&#39;],</span>
+<span class="sd">    ...     &#39;text_col&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; from tabled.coerce import is_json_list_string, parse_json_safe</span>
+<span class="sd">    &gt;&gt;&gt; result = coerce_dataframe_columns(</span>
+<span class="sd">    ...     df, is_json_list_string, parse_json_safe</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; result[&#39;json_col&#39;].iloc[0]</span>
+<span class="sd">    [1]</span>
+<span class="sd">    &gt;&gt;&gt; result[&#39;text_col&#39;].iloc[0]  # unchanged - not a JSON list</span>
+<span class="sd">    &#39;a&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Only check object columns (strings)</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">original</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+        <span class="n">coerced</span> <span class="o">=</span> <span class="n">coerce_series_conditionally</span><span class="p">(</span>
+            <span class="n">original</span><span class="p">,</span>
+            <span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+            <span class="n">sample_size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span>
+            <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Check if any transformation occurred</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">original</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">coerced</span><span class="p">):</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">coerced</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Coerced column &#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="coerce_json_columns">
+<a class="viewcode-back" href="../../module_docs/tabled/coerce.html#tabled.coerce.coerce_json_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">coerce_json_columns</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="s2">&quot;pd.DataFrame&quot;</span><span class="p">,</span>
+    <span class="n">columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pd.DataFrame&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Coerce JSON string columns in a DataFrame to Python objects.</span>
+
+<span class="sd">    A convenience function that applies JSON coercion to specified columns</span>
+<span class="sd">    (or all object-dtype columns) in a DataFrame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pd.DataFrame</span>
+<span class="sd">        The DataFrame to process.</span>
+<span class="sd">    columns : list of str or None</span>
+<span class="sd">        Specific columns to check. If None, checks all object-dtype columns.</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        If True, print which columns were transformed.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional arguments passed to coerce_series_conditionally</span>
+<span class="sd">        (sample_size, threshold).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        DataFrame with JSON string columns coerced to Python objects.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ...     &#39;tags&#39;: [&#39;[&quot;a&quot;, &quot;b&quot;]&#39;, &#39;[&quot;c&quot;]&#39;, &#39;[&quot;d&quot;, &quot;e&quot;, &quot;f&quot;]&#39;],</span>
+<span class="sd">    ...     &#39;ids&#39;: [&#39;[1, 2]&#39;, &#39;[3]&#39;, &#39;[4, 5]&#39;],</span>
+<span class="sd">    ...     &#39;name&#39;: [&#39;Alice&#39;, &#39;Bob&#39;, &#39;Charlie&#39;]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; result = coerce_json_columns(df)</span>
+<span class="sd">    &gt;&gt;&gt; result[&#39;tags&#39;].iloc[0]</span>
+<span class="sd">    [&#39;a&#39;, &#39;b&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; result[&#39;name&#39;].iloc[0]  # Unchanged - not JSON</span>
+<span class="sd">    &#39;Alice&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">coerce_dataframe_columns</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">condition</span><span class="o">=</span><span class="n">is_json_string</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">parse_json_safe</span><span class="p">,</span>
+        <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

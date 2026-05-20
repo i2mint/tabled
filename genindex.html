@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; tabled 0.1.26 documentation</title>
+  <title>Index &mdash; tabled 0.1.27 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=785bba28"></script>
+      <script src="_static/documentation_options.js?v=dc233e31"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled.html">tabled</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/coerce.html">tabled.coerce</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/html.html">tabled.html</a></li>
@@ -147,16 +148,26 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/wrappers.html#tabled.wrappers.cast_to_parquet">cast_to_parquet() (in module tabled.wrappers)</a>
 </li>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.coerce_dataframe_columns">coerce_dataframe_columns() (in module tabled.coerce)</a>
+</li>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.coerce_json_column">coerce_json_column() (in module tabled.coerce)</a>
+</li>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.coerce_json_columns">coerce_json_columns() (in module tabled.coerce)</a>
+</li>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.coerce_json_list_column">coerce_json_list_column() (in module tabled.coerce)</a>
+</li>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.coerce_series_conditionally">coerce_series_conditionally() (in module tabled.coerce)</a>
+</li>
       <li><a href="module_docs/tabled/util.html#tabled.util.collapse_columns">collapse_columns() (in module tabled.util)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/util.html#tabled.util.collapse_rows">collapse_rows() (in module tabled.util)</a>
 </li>
       <li><a href="module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping">ColumnOrientedMapping (class in tabled.multi)</a>
 </li>
       <li><a href="module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping.columns">columns (tabled.multi.ColumnOrientedMapping property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/compare_tables.html#tabled.compare_tables.columns_diff">columns_diff() (in module tabled.compare_tables)</a>
 </li>
       <li><a href="module_docs/tabled/multi.html#tabled.multi.columns_of_all_tables">columns_of_all_tables() (in module tabled.multi)</a>
@@ -289,11 +300,17 @@
 </li>
       <li><a href="module_docs/tabled/util.html#tabled.util.intersection_graph">intersection_graph() (in module tabled.util)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/tabled/compare_tables.html#tabled.compare_tables.InvalidComparison">InvalidComparison</a>
 </li>
       <li><a href="module_docs/tabled/util.html#tabled.util.invert_labeled_collection">invert_labeled_collection() (in module tabled.util)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.is_json_dict_string">is_json_dict_string() (in module tabled.coerce)</a>
+</li>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.is_json_list_string">is_json_list_string() (in module tabled.coerce)</a>
+</li>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.is_json_string">is_json_string() (in module tabled.coerce)</a>
 </li>
       <li><a href="module_docs/tabled/util.html#tabled.util.is_non_null_or_empty">is_non_null_or_empty() (in module tabled.util)</a>
 </li>
@@ -353,6 +370,8 @@
 </li>
         <li><a href="module_docs/tabled/base.html#module-tabled.base">tabled.base</a>
 </li>
+        <li><a href="module_docs/tabled/coerce.html#module-tabled.coerce">tabled.coerce</a>
+</li>
         <li><a href="module_docs/tabled/compare_tables.html#module-tabled.compare_tables">tabled.compare_tables</a>
 </li>
         <li><a href="module_docs/tabled/diagnose.html#module-tabled.diagnose">tabled.diagnose</a>
@@ -390,6 +409,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/tabled/coerce.html#tabled.coerce.parse_json_safe">parse_json_safe() (in module tabled.coerce)</a>
+</li>
       <li><a href="module_docs/tabled/diagnose.html#tabled.diagnose.print_dataframe_info">print_dataframe_info() (in module tabled.diagnose)</a>
 </li>
   </ul></td>
@@ -453,6 +474,13 @@
 
       <ul>
         <li><a href="module_docs/tabled/base.html#module-tabled.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    tabled.coerce
+
+      <ul>
+        <li><a href="module_docs/tabled/coerce.html#module-tabled.coerce">module</a>
 </li>
       </ul></li>
       <li>

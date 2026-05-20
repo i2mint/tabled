@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.diagnose &mdash; tabled 0.1.26 documentation</title>
+  <title>tabled.diagnose &mdash; tabled 0.1.27 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=785bba28"></script>
+      <script src="../../_static/documentation_options.js?v=dc233e31"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/coerce.html">tabled.coerce</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
@@ -180,28 +181,38 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_numeric_stats</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get descriptive statistics for numeric columns.&quot;&quot;&quot;</span>
-    <span class="n">numeric_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+    <span class="n">numeric_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
     <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">numeric_cols</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numeric_cols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_categorical_stats</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get value counts for categorical columns.&quot;&quot;&quot;</span>
-    <span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get value counts for categorical columns.</span>
+
+<span class="sd">    Only includes columns with hashable (scalar) values. Columns containing</span>
+<span class="sd">    arrays, lists, dicts, or other unhashable types are skipped.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get non-numeric columns</span>
+    <span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+
+    <span class="c1"># Filter to only scalar (hashable) columns to avoid errors with arrays/lists</span>
+    <span class="n">scalar_cols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">scalar_columns</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+    <span class="n">categorical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categorical_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">scalar_cols</span><span class="p">]</span>
+
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categorical_cols</span><span class="p">:</span>
         <span class="n">value_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-        <span class="n">result</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value_counts&#39;</span><span class="p">:</span> <span class="n">value_counts</span><span class="p">,</span> <span class="s1">&#39;total_unique&#39;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()}</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value_counts&quot;</span><span class="p">:</span> <span class="n">value_counts</span><span class="p">,</span> <span class="s2">&quot;total_unique&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()}</span>
     <span class="k">return</span> <span class="n">result</span>
 
 
 <span class="c1"># Default info functions dictionary</span>
 <span class="n">DFLT_INFO_FUNCS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
-    <span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="n">_get_columns</span><span class="p">,</span>
-    <span class="s1">&#39;first_row&#39;</span><span class="p">:</span> <span class="n">_get_first_row</span><span class="p">,</span>
-    <span class="s1">&#39;sample_rows&#39;</span><span class="p">:</span> <span class="n">_get_sample_rows</span><span class="p">,</span>
-    <span class="s1">&#39;numeric_stats&#39;</span><span class="p">:</span> <span class="n">_get_numeric_stats</span><span class="p">,</span>
-    <span class="s1">&#39;categorical_stats&#39;</span><span class="p">:</span> <span class="n">_get_categorical_stats</span><span class="p">,</span>
+    <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
+    <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">_get_columns</span><span class="p">,</span>
+    <span class="s2">&quot;first_row&quot;</span><span class="p">:</span> <span class="n">_get_first_row</span><span class="p">,</span>
+    <span class="s2">&quot;sample_rows&quot;</span><span class="p">:</span> <span class="n">_get_sample_rows</span><span class="p">,</span>
+    <span class="s2">&quot;numeric_stats&quot;</span><span class="p">:</span> <span class="n">_get_numeric_stats</span><span class="p">,</span>
+    <span class="s2">&quot;categorical_stats&quot;</span><span class="p">:</span> <span class="n">_get_categorical_stats</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -241,19 +252,19 @@
 
 <span class="c1"># Mode-specific info function selections</span>
 <span class="n">_MODE_INFO_FUNCS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;short&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
-        <span class="s1">&#39;first_row&#39;</span><span class="p">:</span> <span class="n">_get_first_row</span><span class="p">,</span>
+    <span class="s2">&quot;short&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
+        <span class="s2">&quot;first_row&quot;</span><span class="p">:</span> <span class="n">_get_first_row</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
-        <span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="n">_get_columns</span><span class="p">,</span>
-        <span class="s1">&#39;sample_rows&#39;</span><span class="p">:</span> <span class="n">_get_sample_rows</span><span class="p">,</span>
+    <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
+        <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">_get_columns</span><span class="p">,</span>
+        <span class="s2">&quot;sample_rows&quot;</span><span class="p">:</span> <span class="n">_get_sample_rows</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
-        <span class="s1">&#39;numeric_stats&#39;</span><span class="p">:</span> <span class="n">_get_numeric_stats</span><span class="p">,</span>
-        <span class="s1">&#39;categorical_stats&#39;</span><span class="p">:</span> <span class="n">_get_categorical_stats</span><span class="p">,</span>
+    <span class="s2">&quot;stats&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="n">_get_shape</span><span class="p">,</span>
+        <span class="s2">&quot;numeric_stats&quot;</span><span class="p">:</span> <span class="n">_get_numeric_stats</span><span class="p">,</span>
+        <span class="s2">&quot;categorical_stats&quot;</span><span class="p">:</span> <span class="n">_get_categorical_stats</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
 
@@ -297,7 +308,7 @@
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">exclude_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(),</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;short&#39;</span><span class="p">,</span> <span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;stats&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;short&#39;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;short&quot;</span><span class="p">,</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span> <span class="s2">&quot;stats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;short&quot;</span><span class="p">,</span>
     <span class="n">egress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">print</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Print information about a DataFrame.</span>
@@ -319,13 +330,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exclude_columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">exclude_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">exclude_columns</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">egress</span> <span class="o">==</span> <span class="s1">&#39;copy&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">egress</span> <span class="o">==</span> <span class="s2">&quot;copy&quot;</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">pyperclip</span>  <span class="c1"># pip install pyperclip</span>
 
         <span class="n">egress</span> <span class="o">=</span> <span class="n">pyperclip</span><span class="o">.</span><span class="n">copy</span>
 
     <span class="k">if</span> <span class="n">exclude_columns</span><span class="p">:</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">exclude_columns</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">exclude_columns</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
     <span class="c1"># Get the appropriate info functions for the mode</span>
     <span class="n">info_funcs</span> <span class="o">=</span> <span class="n">_MODE_INFO_FUNCS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
@@ -346,42 +357,41 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_format_dataframe_info</span><span class="p">(</span><span class="n">info_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Format the DataFrame info dictionary into a readable string.&quot;&quot;&quot;</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;short&quot;</span><span class="p">:</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;DataFrame shape: </span><span class="si">{</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;First row</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;first_row&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;first_row&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
 
-    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">:</span>
-        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;sample_rows&#39;</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;sample&quot;</span><span class="p">:</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;sample_rows&quot;</span><span class="p">])</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;DataFrame shape: </span><span class="si">{</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Columns: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">])</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Random sample (</span><span class="si">{</span><span class="n">n_samples</span><span class="si">}</span><span class="s2"> rows)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;sample_rows&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;sample_rows&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
 
-    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;stats&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;stats&quot;</span><span class="p">:</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;DataFrame shape: </span><span class="si">{</span><span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Statistics</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-        <span class="n">numeric_stats</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;numeric_stats&#39;</span><span class="p">]</span>
+        <span class="n">numeric_stats</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;numeric_stats&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">numeric_stats</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;Numeric columns:</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">numeric_stats</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-        <span class="n">categorical_stats</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s1">&#39;categorical_stats&#39;</span><span class="p">]</span>
+        <span class="n">categorical_stats</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;categorical_stats&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">categorical_stats</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Categorical columns:</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">stats</span> <span class="ow">in</span> <span class="n">categorical_stats</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="n">s</span> <span class="o">+=</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;value_counts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
-                <span class="n">total_unique</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;total_unique&#39;</span><span class="p">]</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;value_counts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+                <span class="n">total_unique</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;total_unique&quot;</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">total_unique</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
                     <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  ... (</span><span class="si">{</span><span class="n">total_unique</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="si">}</span><span class="s2"> more unique values)&quot;</span>
                 <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
     <span class="k">return</span> <span class="n">s</span>
-
 </pre></div>
 
            </div>

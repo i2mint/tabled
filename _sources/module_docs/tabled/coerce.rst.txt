@@ -1,0 +1,4 @@
+tabled.coerce
+=============
+.. automodule:: tabled.coerce
+   :members:
