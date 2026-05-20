@@ -10,7 +10,7 @@ def diagnose_table_collection(
     tables,
     *,
     info_funcs: dict[str, Callable] = DFLT_INFO_FUNCS,
-    egress: Callable = dict
+    egress: Callable = dict,
 ):
     """Diagnose a collection of tables and return diagnostic information.
 

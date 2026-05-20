@@ -82,28 +82,28 @@ def _get_sample_rows(df: pd.DataFrame, n_samples: int = 3) -> pd.DataFrame:
 
 def _get_numeric_stats(df: pd.DataFrame) -> pd.DataFrame:
     """Get descriptive statistics for numeric columns."""
-    numeric_cols = df.select_dtypes(include='number').columns
+    numeric_cols = df.select_dtypes(include="number").columns
     return df[numeric_cols].describe() if len(numeric_cols) > 0 else pd.DataFrame()
 
 
 def _get_categorical_stats(df: pd.DataFrame) -> dict[str, pd.Series]:
     """Get value counts for categorical columns."""
-    categorical_cols = df.select_dtypes(exclude='number').columns
+    categorical_cols = df.select_dtypes(exclude="number").columns
     result = {}
     for col in categorical_cols:
         value_counts = df[col].value_counts().head(5)
-        result[col] = {'value_counts': value_counts, 'total_unique': df[col].nunique()}
+        result[col] = {"value_counts": value_counts, "total_unique": df[col].nunique()}
     return result
 
 
 # Default info functions dictionary
 DFLT_INFO_FUNCS = {
-    'shape': _get_shape,
-    'columns': _get_columns,
-    'first_row': _get_first_row,
-    'sample_rows': _get_sample_rows,
-    'numeric_stats': _get_numeric_stats,
-    'categorical_stats': _get_categorical_stats,
+    "shape": _get_shape,
+    "columns": _get_columns,
+    "first_row": _get_first_row,
+    "sample_rows": _get_sample_rows,
+    "numeric_stats": _get_numeric_stats,
+    "categorical_stats": _get_categorical_stats,
 }
 
 
@@ -137,19 +137,19 @@ def list_info_funcs() -> list[str]:
 
 # Mode-specific info function selections
 _MODE_INFO_FUNCS = {
-    'short': {
-        'shape': _get_shape,
-        'first_row': _get_first_row,
+    "short": {
+        "shape": _get_shape,
+        "first_row": _get_first_row,
     },
-    'sample': {
-        'shape': _get_shape,
-        'columns': _get_columns,
-        'sample_rows': _get_sample_rows,
+    "sample": {
+        "shape": _get_shape,
+        "columns": _get_columns,
+        "sample_rows": _get_sample_rows,
     },
-    'stats': {
-        'shape': _get_shape,
-        'numeric_stats': _get_numeric_stats,
-        'categorical_stats': _get_categorical_stats,
+    "stats": {
+        "shape": _get_shape,
+        "numeric_stats": _get_numeric_stats,
+        "categorical_stats": _get_categorical_stats,
     },
 }
 
@@ -188,7 +188,7 @@ def print_dataframe_info(
     df: pd.DataFrame,
     exclude_columns: Union[str, list[str]] = (),
     *,
-    mode: Literal['short', 'sample', 'stats'] = 'short',
+    mode: Literal["short", "sample", "stats"] = "short",
     egress: Optional[Callable[[str], None]] = print,
 ):
     """Print information about a DataFrame.
@@ -210,13 +210,13 @@ def print_dataframe_info(
     """
     if isinstance(exclude_columns, str):
         exclude_columns = [exclude_columns]
-    if egress == 'copy':
+    if egress == "copy":
         import pyperclip  # pip install pyperclip
 
         egress = pyperclip.copy
 
     if exclude_columns:
-        df = df.drop(columns=exclude_columns, errors='ignore')
+        df = df.drop(columns=exclude_columns, errors="ignore")
 
     # Get the appropriate info functions for the mode
     info_funcs = _MODE_INFO_FUNCS.get(mode)
@@ -236,39 +236,38 @@ def print_dataframe_info(
 
 def _format_dataframe_info(info_dict: dict, mode: str) -> str:
     """Format the DataFrame info dictionary into a readable string."""
-    s = ''
+    s = ""
 
-    if mode == 'short':
+    if mode == "short":
         s += f"DataFrame shape: {info_dict['shape']}\n"
         s += "First row\n" + "-" * 60 + "\n"
-        s += info_dict['first_row'].to_string()
+        s += info_dict["first_row"].to_string()
 
-    elif mode == 'sample':
-        n_samples = len(info_dict['sample_rows'])
+    elif mode == "sample":
+        n_samples = len(info_dict["sample_rows"])
         s += f"DataFrame shape: {info_dict['shape']}\n"
         s += f"Columns: {', '.join(info_dict['columns'])}\n"
         s += f"\nRandom sample ({n_samples} rows)\n" + "-" * 60 + "\n"
-        s += info_dict['sample_rows'].to_string()
+        s += info_dict["sample_rows"].to_string()
 
-    elif mode == 'stats':
+    elif mode == "stats":
         s += f"DataFrame shape: {info_dict['shape']}\n"
         s += "\nStatistics\n" + "-" * 60 + "\n"
 
-        numeric_stats = info_dict['numeric_stats']
+        numeric_stats = info_dict["numeric_stats"]
         if not numeric_stats.empty:
             s += "Numeric columns:\n"
             s += numeric_stats.to_string() + "\n"
 
-        categorical_stats = info_dict['categorical_stats']
+        categorical_stats = info_dict["categorical_stats"]
         if categorical_stats:
             s += "\nCategorical columns:\n"
             for col, stats in categorical_stats.items():
                 s += f"\n{col}:\n"
-                s += stats['value_counts'].to_string()
-                total_unique = stats['total_unique']
+                s += stats["value_counts"].to_string()
+                total_unique = stats["total_unique"]
                 if total_unique > 5:
                     s += f"\n  ... ({total_unique - 5} more unique values)"
                 s += "\n"
 
     return s
-

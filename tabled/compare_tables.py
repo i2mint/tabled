@@ -114,7 +114,7 @@ def dataframe_diffs(
     df2: pd.DataFrame,
     comparisons: Comparisons = DFLT_COMPARISONS,
     *,
-    diff_condition=bool
+    diff_condition=bool,
 ) -> dict:
     """
     Compare the diff of dataframes using specified diff comparison functions.

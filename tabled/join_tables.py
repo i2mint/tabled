@@ -297,7 +297,6 @@ def compute_join_resolution(
 
 
 if __name__ == "__main__":
-
     tables = {
         "A": pd.DataFrame({"b": [1, 2, 3, 33], "c": [4, 5, 6, 66]}),
         "B": pd.DataFrame(

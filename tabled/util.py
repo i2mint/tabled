@@ -76,7 +76,7 @@ def upsert_data(
         return source_df.copy()
 
     # --- 2. Check Positional Alignment ---
-    join_mode = 'outer'
+    join_mode = "outer"
 
     if not align_index_value:
         # If not aligning by value, we must check lengths and align by position
@@ -940,4 +940,3 @@ class PandasJSONEncoder(json.JSONEncoder):
 
 
 pandas_json_dumps = partial(json.dumps, cls=PandasJSONEncoder)
-

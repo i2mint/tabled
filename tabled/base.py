@@ -64,15 +64,15 @@ def _is_sqlite_file(filepath: Union[str, Path]) -> bool:
     filepath = Path(filepath)
 
     # Check file extension
-    if filepath.suffix.lower() in {'.db', '.sqlite', '.sqlite3'}:
+    if filepath.suffix.lower() in {".db", ".sqlite", ".sqlite3"}:
         return True
 
     # Check if it's a file and has SQLite magic bytes
     if filepath.is_file():
         try:
-            with open(filepath, 'rb') as f:
+            with open(filepath, "rb") as f:
                 header = f.read(16)
-                return header.startswith(b'SQLite format 3\x00')
+                return header.startswith(b"SQLite format 3\x00")
         except (OSError, IOError):
             return False
 
@@ -258,7 +258,7 @@ class DfFiles(Files):
         tables: Optional[Sequence[str]] = None,
         verbose: bool = False,
         **kwargs,
-    ) -> 'DfFiles':
+    ) -> "DfFiles":
         """Create a DfFiles instance from a SQLite database file.
 
         This method exports all tables from the SQLite database to parquet files
@@ -286,7 +286,7 @@ class DfFiles(Files):
             )
 
         # Create a temporary directory that will be cleaned up automatically
-        temp_dir = tempfile.mkdtemp(prefix='dffiles_sqlite_', suffix='_parquet')
+        temp_dir = tempfile.mkdtemp(prefix="dffiles_sqlite_", suffix="_parquet")
 
         # Export SQLite tables to parquet files
         export_sqlite_to_parquet(

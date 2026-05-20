@@ -207,9 +207,9 @@ class ColumnOrientedMapping(Mapping):
             return [self._init_columns]
         elif callable(self._init_columns):
             return self._init_columns(self.tables)
-        assert isinstance(
-            self._init_columns, Iterable
-        ), f"Expected Callable or Iterable, got {self._init_columns}"
+        assert isinstance(self._init_columns, Iterable), (
+            f"Expected Callable or Iterable, got {self._init_columns}"
+        )
         return self._init_columns
 
     @cached_property
