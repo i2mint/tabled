@@ -87,8 +87,18 @@ def _get_numeric_stats(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def _get_categorical_stats(df: pd.DataFrame) -> dict[str, pd.Series]:
-    """Get value counts for categorical columns."""
+    """Get value counts for categorical columns.
+
+    Only includes columns with hashable (scalar) values. Columns containing
+    arrays, lists, dicts, or other unhashable types are skipped.
+    """
+    # Get non-numeric columns
     categorical_cols = df.select_dtypes(exclude="number").columns
+
+    # Filter to only scalar (hashable) columns to avoid errors with arrays/lists
+    scalar_cols = set(scalar_columns(df))
+    categorical_cols = [col for col in categorical_cols if col in scalar_cols]
+
     result = {}
     for col in categorical_cols:
         value_counts = df[col].value_counts().head(5)

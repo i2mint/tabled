@@ -85,6 +85,17 @@ from tabled.wrappers import (
 from tabled.compare_tables import (
     dataframe_diffs,  # compare two dataframes using specified comparison functions
 )
+from tabled.coerce import (
+    coerce_series_conditionally,  # conditionally transform a series based on sampled values
+    coerce_dataframe_columns,  # conditionally coerce columns in a DataFrame
+    coerce_json_columns,  # coerce JSON string columns to Python objects
+    coerce_json_column,  # coerce a single JSON string column
+    coerce_json_list_column,  # coerce a JSON list string column
+    is_json_string,  # check if a value is a JSON string
+    is_json_list_string,  # check if a value is a JSON list string
+    is_json_dict_string,  # check if a value is a JSON dict string
+    parse_json_safe,  # parse JSON safely (no exceptions)
+)
 
 # Import the codecs to register them
 import tabled._codecs
