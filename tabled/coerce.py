@@ -115,8 +115,8 @@ def coerce_series_conditionally(
     # If the transformed values have a different type (e.g., strings -> lists),
     # we need to convert to object dtype to avoid Arrow string array errors
     result = series.copy()
-    if result.dtype != 'object':
-        result = result.astype('object')
+    if result.dtype != "object":
+        result = result.astype("object")
 
     result.loc[non_null_mask] = transformed
     return result
@@ -153,9 +153,8 @@ def is_json_string(value) -> bool:
     if not isinstance(value, str):
         return False
     stripped = value.strip()
-    return (
-        (stripped.startswith('[') and stripped.endswith(']'))
-        or (stripped.startswith('{') and stripped.endswith('}'))
+    return (stripped.startswith("[") and stripped.endswith("]")) or (
+        stripped.startswith("{") and stripped.endswith("}")
     )
 
 
@@ -187,7 +186,7 @@ def is_json_list_string(value) -> bool:
     if not isinstance(value, str):
         return False
     stripped = value.strip()
-    return stripped.startswith('[') and stripped.endswith(']')
+    return stripped.startswith("[") and stripped.endswith("]")
 
 
 def is_json_dict_string(value) -> bool:
@@ -214,7 +213,7 @@ def is_json_dict_string(value) -> bool:
     if not isinstance(value, str):
         return False
     stripped = value.strip()
-    return stripped.startswith('{') and stripped.endswith('}')
+    return stripped.startswith("{") and stripped.endswith("}")
 
 
 def parse_json_safe(value):
@@ -385,7 +384,7 @@ def coerce_dataframe_columns(
 
     if columns is None:
         # Only check object columns (strings)
-        columns = df.select_dtypes(include=['object']).columns.tolist()
+        columns = df.select_dtypes(include=["object"]).columns.tolist()
 
     for col in columns:
         if col not in df.columns:

@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tabled"
-version = "0.1.27"
+version = "0.1.28"
 description = "A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease"
 readme = "README.md"
 requires-python = ">=3.10"
