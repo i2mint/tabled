@@ -81,7 +81,7 @@ def coerce_series_conditionally(
     >>> result = coerce_series_conditionally(s, is_json_list, json.loads)
     >>> result.iloc[0]
     [1, 2]
-    >>> result.iloc[2] is None
+    >>> pd.isna(result.iloc[2])  # null values are preserved (None or NaN)
     True
 
     Notes
