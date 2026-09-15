@@ -7,6 +7,7 @@ converting columns that contain serialized data (e.g., JSON strings that
 should be lists or dicts).
 
 The design follows a sample-then-transform pattern:
+
 1. Sample a subset of non-null values from a column
 2. Test if a condition holds for a threshold fraction of samples
 3. If so, apply a transformation to all non-null values
@@ -16,6 +17,7 @@ would be expensive, and robust to mixed or partially malformed data.
 
 Example
 -------
+
 >>> import pandas as pd
 >>> from tabled.coerce import coerce_json_list_column
 >>>
@@ -31,15 +33,17 @@ Example
 from typing import Callable, Optional, List
 import json
 
+import pandas as pd
+
 
 def coerce_series_conditionally(
-    series: "pd.Series",
+    series: pd.Series,
     condition: Callable,
     transform: Callable,
     *,
     sample_size: int = 100,
     threshold: float = 0.8,
-) -> "pd.Series":
+) -> pd.Series:
     """
     Conditionally transform a pandas Series based on sampled values.
 
@@ -74,6 +78,7 @@ def coerce_series_conditionally(
 
     Examples
     --------
+
     >>> import pandas as pd
     >>> s = pd.Series(['[1, 2]', '[3, 4]', None, '[5]'])
     >>> is_json_list = lambda x: isinstance(x, str) and x.startswith('[')
@@ -141,6 +146,7 @@ def is_json_string(value) -> bool:
 
     Examples
     --------
+
     >>> is_json_string('[1, 2, 3]')
     True
     >>> is_json_string('{"key": "value"}')
@@ -174,6 +180,7 @@ def is_json_list_string(value) -> bool:
 
     Examples
     --------
+
     >>> is_json_list_string('[1, 2, 3]')
     True
     >>> is_json_list_string('["a", "b"]')
@@ -205,6 +212,7 @@ def is_json_dict_string(value) -> bool:
 
     Examples
     --------
+
     >>> is_json_dict_string('{"key": "value"}')
     True
     >>> is_json_dict_string('[1, 2, 3]')
@@ -236,6 +244,7 @@ def parse_json_safe(value):
 
     Examples
     --------
+
     >>> parse_json_safe('[1, 2, 3]')
     [1, 2, 3]
     >>> parse_json_safe('{"a": 1}')
@@ -250,7 +259,7 @@ def parse_json_safe(value):
         return value
 
 
-def coerce_json_column(series: "pd.Series", **kwargs) -> "pd.Series":
+def coerce_json_column(series: pd.Series, **kwargs) -> pd.Series:
     """
     Coerce a column of JSON strings to Python objects.
 
@@ -272,6 +281,7 @@ def coerce_json_column(series: "pd.Series", **kwargs) -> "pd.Series":
 
     Examples
     --------
+
     >>> import pandas as pd
     >>> s = pd.Series(['[1, 2]', '{"a": 1}', 'text', None])
     >>> # Note: won't transform if < 80% are JSON by default
@@ -288,7 +298,7 @@ def coerce_json_column(series: "pd.Series", **kwargs) -> "pd.Series":
     )
 
 
-def coerce_json_list_column(series: "pd.Series", **kwargs) -> "pd.Series":
+def coerce_json_list_column(series: pd.Series, **kwargs) -> pd.Series:
     """
     Coerce a column of JSON list strings to Python lists.
 
@@ -310,6 +320,7 @@ def coerce_json_list_column(series: "pd.Series", **kwargs) -> "pd.Series":
 
     Examples
     --------
+
     >>> import pandas as pd
     >>> s = pd.Series(['[1, 2, 3]', '["a", "b"]', None])
     >>> coerced = coerce_json_list_column(s)
@@ -327,7 +338,7 @@ def coerce_json_list_column(series: "pd.Series", **kwargs) -> "pd.Series":
 
 
 def coerce_dataframe_columns(
-    df: "pd.DataFrame",
+    df: pd.DataFrame,
     condition: Callable,
     transform: Callable,
     columns: Optional[List[str]] = None,
@@ -335,7 +346,7 @@ def coerce_dataframe_columns(
     sample_size: int = 100,
     threshold: float = 0.8,
     verbose: bool = False,
-) -> "pd.DataFrame":
+) -> pd.DataFrame:
     """
     Conditionally coerce columns in a DataFrame.
 
@@ -366,6 +377,7 @@ def coerce_dataframe_columns(
 
     Examples
     --------
+
     >>> import pandas as pd
     >>> df = pd.DataFrame({
     ...     'json_col': ['[1]', '[2]', '[3]'],
@@ -409,12 +421,12 @@ def coerce_dataframe_columns(
 
 
 def coerce_json_columns(
-    df: "pd.DataFrame",
+    df: pd.DataFrame,
     columns: Optional[List[str]] = None,
     *,
     verbose: bool = False,
     **kwargs,
-) -> "pd.DataFrame":
+) -> pd.DataFrame:
     """
     Coerce JSON string columns in a DataFrame to Python objects.
 
@@ -440,6 +452,7 @@ def coerce_json_columns(
 
     Examples
     --------
+
     >>> import pandas as pd
     >>> df = pd.DataFrame({
     ...     'tags': ['["a", "b"]', '["c"]', '["d", "e", "f"]'],

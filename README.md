@@ -5,6 +5,16 @@ A (key-value) data-object-layer to get (pandas) tables from a variety of sources
 
 To install:	```pip install tabled```
 
+<!-- epythet:agentic-readme:start -->
+## For AI agents
+
+`tabled` publishes its documentation in forms made for coding agents. If you are one, start here.
+
+**The documentation, machine-readable**: [`llms.txt`](https://i2mint.github.io/tabled/llms.txt) indexes every page; [`tabled.md`](https://i2mint.github.io/tabled/tabled.md) is the whole documentation in one file; every page has a `.md` twin; [`objects.inv`](https://i2mint.github.io/tabled/objects.inv) maps symbols to URLs.
+
+If you still read documentation with your own eyes, the rest of this README is written for you, starting at [SQLite Database Support](#sqlite-database-support).
+<!-- epythet:agentic-readme:end -->
+
 ## SQLite Database Support
 
 Tabled provides seamless integration with SQLite databases through `DfFiles`:

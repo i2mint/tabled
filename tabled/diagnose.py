@@ -6,6 +6,7 @@ of tables. The core function `dataframe_info` extracts configurable information
 from DataFrames using pluggable info functions.
 
 Key Features:
+
 - Configurable info extraction with `dataframe_info`
 - Collection diagnosis with `diagnose_table_collection`
 - Extensible via custom info functions
@@ -18,7 +19,8 @@ Example:
     >>> info['shape']
     (3, 2)
 
-    # Register custom info function
+    .. rubric:: Register custom info function
+
     >>> def get_memory_usage(df):
     ...     return df.memory_usage(deep=True).sum()
     >>> register_info_func('custom_memory', get_memory_usage)
@@ -37,15 +39,15 @@ def scalar_columns(df: pd.DataFrame) -> list:
     file.
 
     Example:
-    >>> import pandas as pd
-    >>> df = pd.DataFrame({
-    ...     'A': [1, 2, 3],
-    ...     'B': ['x', 'y', 'z'],
-    ...     'C': [{'a': 1}, {'b': 2}, {'c': 3}],  # Non-serializable column
-    ...     'D': [[1, 2], [3, 4], [5, 6]]         # Non-serializable column
-    ... })
-    >>> scalar_columns(df)
-    ['A', 'B']
+        >>> import pandas as pd
+        >>> df = pd.DataFrame({
+        ...     'A': [1, 2, 3],
+        ...     'B': ['x', 'y', 'z'],
+        ...     'C': [{'a': 1}, {'b': 2}, {'c': 3}],  # Non-serializable column
+        ...     'D': [[1, 2], [3, 4], [5, 6]]         # Non-serializable column
+        ... })
+        >>> scalar_columns(df)
+        ['A', 'B']
     """
     import pandas.api.types as pdt
 
@@ -128,6 +130,9 @@ def register_info_func(
         func: Function that takes a DataFrame and returns info
         overwrite: Whether to overwrite existing functions with the same name
 
+    Raises:
+        ValueError: If `name` is already registered and `overwrite` is `False`.
+
     Example:
         >>> def get_memory_usage(df):
         ...     return df.memory_usage(deep=True).sum()
@@ -207,10 +212,19 @@ def print_dataframe_info(
         df: The DataFrame to analyze
         exclude_columns: Columns to exclude from analysis
         mode: Type of information to display
+
             - 'short': shape and first row
             - 'sample': shape, columns, and random rows
             - 'stats': descriptive statistics
+
         egress: Callback function for output (None returns string instead of printing)
+
+    Returns:
+        The formatted info string when `egress` is `None` or falsy; otherwise
+        the result of calling `egress` on that string.
+
+    Raises:
+        ValueError: If `mode` is not one of `'short'`, `'sample'`, `'stats'`.
 
     >>> import pandas as pd
     >>> df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})

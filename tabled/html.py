@@ -12,7 +12,6 @@ DFLT_CHROME_WAIT = 3
 
 def url_to_html_func(kind="requests") -> Callable:
     """Get a url_to_html function of a given kind."""
-
     # If kind is a tuple, the first element is the kind and the second element is the kwargs
     # to be used to parametrize the function
     # NOTE: For now, I'm just simply passing the kwargs to the place I think is most
@@ -80,21 +79,21 @@ def _ensure_table_filter(filt: TableFilter) -> Callable:
 
     Examples:
 
-    >>> filt_func = _ensure_table_filter('foo')
-    >>> bool(filt_func(pd.DataFrame({'foo': [1, 2]})))
-    True
-    >>> bool(filt_func(pd.DataFrame({'bar': [1, 2]})))
-    False
-    >>> filt_func = _ensure_table_filter(['foo', 'bar'])
-    >>> bool(filt_func(pd.DataFrame({'football': [1, 2], 'baring': [3, 4]})))
-    True
-    >>> bool(filt_func(pd.DataFrame({'football': [1, 2], 'neither': [3, 4]})))
-    False
+        >>> filt_func = _ensure_table_filter('foo')
+        >>> bool(filt_func(pd.DataFrame({'foo': [1, 2]})))
+        True
+        >>> bool(filt_func(pd.DataFrame({'bar': [1, 2]})))
+        False
+        >>> filt_func = _ensure_table_filter(['foo', 'bar'])
+        >>> bool(filt_func(pd.DataFrame({'football': [1, 2], 'baring': [3, 4]})))
+        True
+        >>> bool(filt_func(pd.DataFrame({'football': [1, 2], 'neither': [3, 4]})))
+        False
 
-    But if a same column name matches both regexes, it should return True:
+        But if a same column name matches both regexes, it should return True:
 
-    >>> bool(filt_func(pd.DataFrame({'foobar': [1, 2], 'huh': [3, 4]})))
-    True
+        >>> bool(filt_func(pd.DataFrame({'foobar': [1, 2], 'huh': [3, 4]})))
+        True
 
     """
     if filt is None:
@@ -134,10 +133,11 @@ def get_tables_from_url(
     (I mean, why have to figure out the language of an API, when someone already did that
     for you in their webpage!!):
 
-    ```python
-    url = 'https://www.worldometers.info/coronavirus/?utm_campaign=homeAdvegas1?'
-    tables = get_tables_from_url(url, url_to_html='chrome')  # doctest: +SKIP
-    ```
+    .. code-block:: python
+
+        url = 'https://www.worldometers.info/coronavirus/?utm_campaign=homeAdvegas1?'
+        tables = get_tables_from_url(url, url_to_html='chrome')  # doctest: +SKIP
+
 
     To make selenium work:
 
@@ -213,6 +213,7 @@ HTML_TEMPLATE2 = """
 
 
 def df_to_html(df, title=None):
+    """Render `df` as an HTML table, with an optional `<h2>` title above it."""
     ht = ""
     if title is not None:
         ht += f"<h2> {title} </h2>\n"
@@ -221,6 +222,7 @@ def df_to_html(df, title=None):
 
 
 def df_store_to_html(df_store, sep="\n<br>\n"):
+    """Render each dataframe in `df_store`, titled by its key's leading non-digit prefix, joined by `sep`."""
     ht = ""
     for k, df in df_store.items():
         title = re.match(r"[^\d]+", k).group(0)
@@ -236,7 +238,6 @@ def dfs_to_html_pretty(dfs, title=None):
     Thanks to @stackoverflowuser2010 for the
     pretty printer see https://stackoverflow.com/a/47723330/362951
     """
-
     if isinstance(dfs, pd.DataFrame):
         ht = df_to_html(dfs, title=title)
     elif isinstance(dfs, Mapping):
@@ -248,6 +249,10 @@ def dfs_to_html_pretty(dfs, title=None):
 
 
 def dfs_to_pdf_bytes(dfs, title=None):
+    """Render `dfs` (a DataFrame, a mapping, or an iterable of DataFrames) to PDF bytes.
+
+    Requires the optional `weasyprint` dependency.
+    """
     import weasyprint
 
     html = dfs_to_html_pretty(dfs, title)

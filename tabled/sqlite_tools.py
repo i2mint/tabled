@@ -5,6 +5,7 @@ it to pandas DataFrames or Parquet files. It uses DuckDB with the sqlite_scanner
 extension for efficient data extraction.
 
 Key functions:
+
 - export_sqlite_to_dataframes: Extract SQLite tables to pandas DataFrames
 - export_sqlite_to_parquet: Export SQLite tables directly to Parquet files
 - export_sqlite_to_dataframes_and_parquet: Combined export to both formats
@@ -17,6 +18,8 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Dict, Iterable, Optional, Sequence, Union
+
+import pandas as pd
 
 DFLT_VERBOSE = False
 
@@ -63,7 +66,7 @@ def export_sqlite_to_dataframes(
     schema: str = "src",
     install_extensions: bool = True,
     verbose: bool = DFLT_VERBOSE,
-) -> Dict[str, "pd.DataFrame"]:
+) -> Dict[str, pd.DataFrame]:
     """
     Export tables from SQLite to pandas DataFrames using DuckDB + sqlite_scanner.
 
@@ -146,10 +149,11 @@ def export_sqlite_to_parquet(
     """
     Export tables from a SQLite .db file to Parquet using DuckDB + sqlite_scanner.
 
-    This is a general-purpose exporter:
-      - attaches the SQLite file to DuckDB
-      - discovers tables (or uses the provided list)
-      - writes each table to <out_dir>/<table>.parquet
+    This is a general-purpose exporter that:
+
+    - attaches the SQLite file to DuckDB
+    - discovers tables (or uses the provided list)
+    - writes each table to <out_dir>/<table>.parquet
 
     Parameters
     ----------
@@ -252,16 +256,20 @@ def export_sqlite_query_to_parquet(
     Export an arbitrary SQL query (against the attached SQLite DB) to a Parquet file.
 
     Useful for generating:
-      - edge lists (source/target)
-      - node tables (id + attributes)
-      - filtered subsets
+
+    - edge lists (source/target)
+    - node tables (id + attributes)
+    - filtered subsets
 
     Example:
-        export_sqlite_query_to_parquet(
-            "my.db",
-            "edges.parquet",
-            query="SELECT from_id AS source, to_id AS target, weight FROM edges"
-        )
+
+        .. code-block:: python
+
+            export_sqlite_query_to_parquet(
+                "my.db",
+                "edges.parquet",
+                query="SELECT from_id AS source, to_id AS target, weight FROM edges",
+            )
     """
     import duckdb
 
@@ -314,7 +322,7 @@ def export_sqlite_to_dataframes_and_parquet(
     overwrite: bool = True,
     install_extensions: bool = True,
     verbose: bool = DFLT_VERBOSE,
-) -> tuple[Dict[str, "pd.DataFrame"], Optional[Path]]:
+) -> tuple[Dict[str, pd.DataFrame], Optional[Path]]:
     """Export SQLite tables to both DataFrames and Parquet files.
 
     This is a combined function that exports SQLite tables to pandas DataFrames
@@ -344,6 +352,7 @@ def export_sqlite_to_dataframes_and_parquet(
     -------
     tuple[Dict[str, pd.DataFrame], Optional[Path]]
         A tuple containing:
+
         - Dictionary mapping table names to DataFrames
         - Output directory path (if out_dir was provided)
     """

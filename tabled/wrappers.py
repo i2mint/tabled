@@ -148,12 +148,14 @@ def key_func_mapping(
 
 
 def if_extension_not_present_add_it(filepath, extension):
+    """Append `extension` to `filepath` unless it's already there."""
     if not filepath.endswith(extension):
         return filepath + extension
     return filepath
 
 
 def if_extension_present_remove_it(filepath, extension):
+    """Strip a trailing `extension` from `filepath`, if present."""
     if filepath.endswith(extension):
         return filepath[: -len(extension)]
     return filepath
@@ -233,6 +235,7 @@ def cast_to_parquet(data, *args, __name_of_column=_DFLT_SINGLE_COLUMN_NAME, **kw
     Convert data to DataFrame if necessary, then save as parquet.
 
     Handles:
+
     - pandas.DataFrame: use as-is
     - pandas.Series: convert to DataFrame using to_frame()
     - list/other iterables: convert to Series then DataFrame
@@ -274,7 +277,9 @@ def single_column_parquet_encode(sequences, col=_DFLT_SINGLE_COLUMN_NAME):
 def single_column_parquet_decode(b: bytes, col=_DFLT_SINGLE_COLUMN_NAME):
     """
     Decode a single-column parquet file into a list of sequences.
-    See also: single_column_parquet_encode
+
+    See Also:
+        single_column_parquet_encode
 
     >>> sequences_2 = [['one', 'two'], ['three', 'four', 'five']]
     >>> encoded_2 = single_column_parquet_encode(sequences_2)
@@ -399,6 +404,7 @@ def get_codec_mappings(
     extension_to_encoder=extension_to_encoder,
     extension_to_decoder=extension_to_decoder,
 ):
+    """Return `{"encoders": extension_to_encoder, "decoders": extension_to_decoder}`."""
     return dict(
         encoders=extension_to_encoder,
         decoders=extension_to_decoder,
@@ -406,6 +412,7 @@ def get_codec_mappings(
 
 
 def print_current_mappings():
+    """Print the current extension-to-encoder and extension-to-decoder mappings."""
     from pprint import pprint
 
     pprint("Current encoder and decoder mappings:")
@@ -421,20 +428,15 @@ def add_extension_codec(extension=None, *, encoder=None, decoder=None, overwrite
 
     If no arguments are passed, it will print the current mappings.
 
-    Returns: None (it just adds the in-memory mappings)
+    Args:
+        extension: The file extension to add the codec for. If None, it will print the current mappings.
+        encoder: The encoder function to add. If None, it will print the current mappings.
+        decoder: The decoder function to add. If None, it will print the current mappings.
+        overwrite: If True, it will overwrite the existing encoder/decoder for the given extension.
+            If False, it will raise a ValueError if the extension already exists.
 
-    Parameters:
-    ----------
-    extension: str
-        The file extension to add the codec for. If None, it will print the current mappings.
-    encoder: callable
-        The encoder function to add. If None, it will print the current mappings.
-    decoder: callable
-        The decoder function to add. If None, it will print the current mappings.
-    overwrite: bool
-        If True, it will overwrite the existing encoder/decoder for the given extension.
-        If False, it will raise a ValueError if the extension already exists.
-        Default is False.
+    Returns:
+        None. It just adds to the in-memory mappings (or prints them).
 
     """
     if extension is None and encoder is None and decoder is None:
@@ -579,6 +581,7 @@ BinaryIOCaster = Callable[[TableSrc], BinaryIO]
 
 # TODO: Routing pattern!
 def default_io_resolver(src: TableSrc) -> BinaryIO:
+    """Resolve `src` (a local path, an http(s)/graze URL, or bytes) to a binary file-like object."""
     if isinstance(src, str):
         if os.path.isfile(src):
             return open(src, "rb")

@@ -1,6 +1,4 @@
-"""
-Utils
-"""
+"""General-purpose utilities for working with DataFrames, dicts, and byte decoding."""
 
 from functools import partial
 from typing import KT, VT, Optional, Literal
@@ -10,6 +8,7 @@ import pandas as pd
 
 
 def identity(x):
+    """Return `x` unchanged."""
     return x
 
 
@@ -36,6 +35,10 @@ def upsert_data(
 
     Returns:
         The updated DataFrame.
+
+    Raises:
+        ValueError: If `align_index_value` is `False` and the row count (axis=1)
+            or column count (axis=0) of `target_df` and `source_df` don't match.
 
     Examples:
         >>> # 1. Initial creation (target_df is None)
@@ -69,7 +72,6 @@ def upsert_data(
         >>> df_target_row['col1'].tolist()
         [1, 3]
     """
-
     # --- 1. Handle Initial Creation ---
     if target_df is None or target_df.empty:
         # Return a copy of the source for safety
@@ -146,6 +148,9 @@ def duplicate_groups(
     Returns:
         Series with unique duplicate values as index and corresponding DataFrames as values
         or DataFrame with duplicated rows with the specified subset as index.
+
+    Raises:
+        ValueError: If `output` is not `"dataframe"` or `"series"`.
 
     >>> import pandas as pd
     >>> df = pd.DataFrame({"A": [1, 1, 2, 3, 3], "B": ["a", "b", "c", "d", "e"]})
@@ -267,16 +272,17 @@ def is_non_null_or_empty(value):
 
     Often used with pandas dataframes to check if a cell is null or non-empty.
 
-    ```
-    num_of_non_empties_in_row = df.map(is_non_null_or_empty).sum(axis=1)
-    num_of_non_empties_in_col = df.map(is_non_null_or_empty).sum(axis=0)
-    ```
+    .. code-block:: text
+
+        num_of_non_empties_in_row = df.map(is_non_null_or_empty).sum(axis=1)
+        num_of_non_empties_in_col = df.map(is_non_null_or_empty).sum(axis=0)
+
 
     And then you can do:
 
-    ```
-    num_of_non_empties_in_row.sort_values(ascending=False) to see which rows have the least empties (most actual data)
-    ```
+    .. code-block:: text
+
+        num_of_non_empties_in_row.sort_values(ascending=False) to see which rows have the least empties (most actual data)
 
     """
     if isinstance(value, Sized):
@@ -286,11 +292,12 @@ def is_non_null_or_empty(value):
 
 
 def _isinstance(obj, class_or_tuple):
-    """isinstance but not positional only arguments (so we can partial it)"""
+    """Like `isinstance`, but with keyword arguments (so we can `partial` it)."""
     return isinstance(obj, class_or_tuple)
 
 
 def is_instance_of(class_or_tuple):
+    """Return a predicate `obj -> isinstance(obj, class_or_tuple)`."""
     return partial(_isinstance, class_or_tuple=class_or_tuple)
 
 
@@ -452,7 +459,6 @@ def breadth_first_traversal(graph: Mapping, start_node, *, yield_edges=False):
     [('B', 'A'), ('B', 'C'), ('B', 'D'), ('D', 'E')]
 
     """
-
     visited = set()
     queue = deque([start_node])
 
@@ -484,12 +490,13 @@ def auto_decode_bytes(
     If all attempts fail, it analyzes the entire byte sequence to detect the encoding.
 
     Parameters:
-        b (bytes): The byte sequence to decode.
-        try_first_bytes (tuple of floats): Byte lengths to use for encoding detection samples.
-            Defaults to (1e6, 1e7, 1e8).
+        b: The byte sequence to decode.
+        try_first_bytes: Byte lengths to use for encoding detection samples.
+        encoding: The encoding to try first, before falling back to detection.
+        verbose: If True, print each encoding tried.
 
     Returns:
-        str: The decoded string.
+        The decoded string.
 
     Raises:
         UnicodeDecodeError: If the byte sequence cannot be decoded after all attempts.
@@ -542,7 +549,6 @@ def auto_decode_bytes(
         'Special characters: А г е й о'
 
     """
-
     import charset_normalizer  # pip install charset-normalizer
 
     if verbose:
@@ -700,26 +706,27 @@ def collapse_columns(
 
     :return: A dataframe with the original columns not specified in `columns` untouched,
         and a new column `new_column_name` containing dictionaries of the collapsed columns.
+    :raises ValueError: If none of a grouping's column names are found in `df`.
 
     Example:
 
-    >>> df = pd.DataFrame({
-    ...     'a': [1, 1, 2, 2],
-    ...     'b': [3, 4, 5, 6],
-    ...     'c': [7, 8, 9, 10]
-    ... })
-    >>> df  # doctest: +NORMALIZE_WHITESPACE
-       a  b   c
-    0  1  3   7
-    1  1  4   8
-    2  2  5   9
-    3  2  6  10
-    >>> collapse_columns(df, {'ab': ['a', 'b']})  # doctest: +NORMALIZE_WHITESPACE
-       c   ab
-    0  7  {'a': 1, 'b': 3}
-    1  8  {'a': 1, 'b': 4}
-    2  9  {'a': 2, 'b': 5}
-    3 10  {'a': 2, 'b': 6}
+        >>> df = pd.DataFrame({
+        ...     'a': [1, 1, 2, 2],
+        ...     'b': [3, 4, 5, 6],
+        ...     'c': [7, 8, 9, 10]
+        ... })
+        >>> df  # doctest: +NORMALIZE_WHITESPACE
+           a  b   c
+        0  1  3   7
+        1  1  4   8
+        2  2  5   9
+        3  2  6  10
+        >>> collapse_columns(df, {'ab': ['a', 'b']})  # doctest: +NORMALIZE_WHITESPACE
+           c   ab
+        0  7  {'a': 1, 'b': 3}
+        1  8  {'a': 1, 'b': 4}
+        2  9  {'a': 2, 'b': 5}
+        3 10  {'a': 2, 'b': 6}
     """
     if isinstance(groupings, str):
         groupings = [groupings]
@@ -752,6 +759,7 @@ def collapse_columns(
 
 
 def column_sep_key_mapper(key, column_name, sep: str):
+    """Join `column_name` and `key` with `sep` (e.g. `"X"`, `"a"`, `"."` -> `"X.a"`)."""
     return f"{column_name}{sep}{key}"
 
 
@@ -790,32 +798,34 @@ def expand_columns(
         used in more than one column.
 
     :return: A dataframe with the expanded columns added.
+    :raises ValueError: If a name in `expand_columns` is not a column of `df`.
 
     Examples:
-    >>> df = pd.DataFrame({
-    ...     'c': [7, 8, 9, 10],
-    ...     'X': [{'a': 1, 'b': 3}, {'a': 1, 'b': 4}, {'a': 2, 'b': 5}, {'a': 2, 'b': 6}]
-    ... })
-    >>> expand_columns(df, ['X'])  # doctest: +NORMALIZE_WHITESPACE
-       c  X.a  X.b
-    0  7  1  3
-    1  8  1  4
-    2  9  2  5
-    3 10  2  6
 
-    Let's see what happens when the elements of an expanded column are lists instead of
-    dicts, we ask to not drop, and we use `key_mapper=None`:
+        >>> df = pd.DataFrame({
+        ...     'c': [7, 8, 9, 10],
+        ...     'X': [{'a': 1, 'b': 3}, {'a': 1, 'b': 4}, {'a': 2, 'b': 5}, {'a': 2, 'b': 6}]
+        ... })
+        >>> expand_columns(df, ['X'])  # doctest: +NORMALIZE_WHITESPACE
+           c  X.a  X.b
+        0  7  1  3
+        1  8  1  4
+        2  9  2  5
+        3 10  2  6
 
-    >>> df = pd.DataFrame({
-    ...     'c': [7, 8, 9, 10],
-    ...     'X': [[1, 3], [1, 4], [2, 5], [2, 6]]
-    ... })
-    >>> expand_columns(df, ['X'], drop=False, key_mapper=None)  # doctest: +NORMALIZE_WHITESPACE
-        c       X  0  1
-    0   7  [1, 3]  1  3
-    1   8  [1, 4]  1  4
-    2   9  [2, 5]  2  5
-    3  10  [2, 6]  2  6
+        Let's see what happens when the elements of an expanded column are lists instead of
+        dicts, we ask to not drop, and we use `key_mapper=None`:
+
+        >>> df = pd.DataFrame({
+        ...     'c': [7, 8, 9, 10],
+        ...     'X': [[1, 3], [1, 4], [2, 5], [2, 6]]
+        ... })
+        >>> expand_columns(df, ['X'], drop=False, key_mapper=None)  # doctest: +NORMALIZE_WHITESPACE
+            c       X  0  1
+        0   7  [1, 3]  1  3
+        1   8  [1, 4]  1  4
+        2   9  [2, 5]  2  5
+        3  10  [2, 6]  2  6
 
     """
     if isinstance(expand_columns, str):
@@ -903,6 +913,7 @@ class PandasJSONEncoder(json.JSONEncoder):
     """
 
     def default(self, obj):
+        """Convert `obj` (a pandas/numpy value the default encoder can't handle) to a JSON-safe value."""
         # Handle pandas DataFrame by delegating to its own JSON conversion.
         if isinstance(obj, pd.DataFrame):
             # Using 'records' orientation to produce a list of row dictionaries.

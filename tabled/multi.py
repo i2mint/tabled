@@ -71,33 +71,49 @@ def execute_commands(
 
 @dataclass
 class Load:
+    """Command: set the accumulator (`scope["cumul"]`) to `scope[key]`."""
+
     key: str
 
 
 @dataclass
 class Join:
+    """Command: inner-join the accumulator with the table at `scope[table_key]`."""
+
     table_key: str
 
 
 @dataclass
 class Remove:
+    """Command: drop `fields` (column or columns) from the accumulator."""
+
     fields: str | Iterable[str]
 
 
 @dataclass
 class Rename:
+    """Command: rename accumulator columns per `rename_mapping` (old name -> new name)."""
+
     rename_mapping: dict[str, str]
 
 
 def set_scope_value(scope, key, value):
+    """Set `scope[key] = value` (in place)."""
     scope[key] = value
 
 
 def load_func(scope, command):
+    """Interpreter for `Load`: set `scope["cumul"]` to `scope[command.key]`."""
     return set_scope_value(scope, "cumul", scope[command.key])
 
 
 def join_func(scope, command):
+    """Interpreter for `Join`: inner-merge the table at `command.table_key` into `scope["cumul"]`.
+
+    If `scope["renamed_columns"]` was set by a prior `Rename`, that column
+    renaming is applied to the joined table first, so a later rename stays
+    consistent across joins.
+    """
     table = scope[command.table_key].copy()
     if "renamed_columns" in scope:
         for old_col, new_col in scope["renamed_columns"].items():
@@ -108,10 +124,12 @@ def join_func(scope, command):
 
 
 def remove_func(scope, command):
+    """Interpreter for `Remove`: drop `command.fields` from `scope["cumul"]`."""
     scope["cumul"] = scope["cumul"].drop(columns=command.fields)
 
 
 def rename_func(scope, command):
+    """Interpreter for `Rename`: rename `scope["cumul"]` columns and record the mapping in `scope`."""
     scope["renamed_columns"] = command.rename_mapping
     for old_col, new_col in command.rename_mapping.items():
         scope["cumul"] = scope["cumul"].rename(columns={old_col: new_col})
@@ -132,6 +150,7 @@ def execute_table_commands(
     *,
     extra_scope=None,
 ):
+    """Run `commands` (`Load`/`Join`/`Remove`/`Rename`) against `tables`; see `execute_commands`."""
     return execute_commands(commands, tables, interpreter_map, extra_scope=extra_scope)
 
 
@@ -173,6 +192,7 @@ def execute_table_commands(
 
 
 def columns_of_first_table(tables: MappingOfDataFrames) -> Iterable[Column]:
+    """Return the column names of the first table in `tables`."""
     tables = mapping_of_dataframes(tables)
     first_table = next(iter(dataframes(tables)))
     return first_table.columns.values.tolist()
@@ -192,6 +212,12 @@ def columns_of_all_tables(tables: MappingOfDataFrames) -> Iterable[Column]:
 
 
 class ColumnOrientedMapping(Mapping):
+    """A `{column_name: concatenated_column_values}` view over several tables.
+
+    Keys are column names (by default, the columns of the first table);
+    each value is that column concatenated across all `tables`.
+    """
+
     def __init__(
         self,
         tables: MappingOfDataFrames,
@@ -230,15 +256,17 @@ class ColumnOrientedMapping(Mapping):
         return k in self.columns
 
     def df(self, columns=None):
-        """Concatinate all dataframes of given columns from all tables,
-        returning a single dataframe."""
+        """Concatenate the given columns (all columns by default) from all tables into one dataframe."""
         if columns is None:
             columns = self.columns
         return pd.concat([table[columns] for table in dataframes(self.tables)])
 
     def array(self, columns=None):
-        """Concatinate all the arrays of given columns from all tables,
-        returning a single array."""
+        """Concatenate a single column from all tables into one array.
+
+        `columns` must be a single column name (not a list): `.df(columns)`
+        then has to return a Series (not a DataFrame) for `.array` to work.
+        """
         return self.df(columns).array
 
 
