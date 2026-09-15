@@ -27,6 +27,9 @@ def diagnose_table_collection(
     Returns:
         Result of egress applied to the info generator
 
+    Raises:
+        TypeError: If `tables` is not a mapping, iterable, or string URI.
+
     Examples:
         >>> import pandas as pd
 
@@ -45,7 +48,6 @@ def diagnose_table_collection(
         >>> 0 in result and 1 in result
         True
     """
-
     # Handle different input types
     if isinstance(tables, str):
         # String case: treat as URI and create DfFiles mapping

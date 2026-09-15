@@ -58,6 +58,8 @@ from tabled.util import (
 
 
 class Join:
+    """A join step: which table to join in next, and which of its fields to drop after."""
+
     def __init__(self, table_id: str, remove: list[str] = None):
         self.table_id = table_id
         self.remove = remove or []
@@ -78,7 +80,12 @@ def minimum_covering_tree(
     target_subset: Iterable[VT],
     start_node=None,
 ):
+    """Return the edges (pairs of table names) of a tree of joins covering `target_subset`.
 
+    Walks the tables' column-overlap graph breadth-first from `start_node`
+    (or an arbitrary table if not given), accumulating edges until every
+    column in `target_subset` is covered by the tables seen so far.
+    """
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
     intersections = intersection_graph(labeled_sets, edge_labels="elements")
     graph = {k: list(v) for k, v in intersections.items()}
@@ -102,6 +109,7 @@ def minimum_covering_tree(
 def get_leaf_edges(
     tables: Mapping[str, pd.DataFrame], target_subset: set[VT], start_node: KT = None
 ) -> list[tuple[KT, KT]]:
+    """Return the covering-tree edges (see `minimum_covering_tree`) whose second table is a leaf (visited once)."""
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
     intersections = intersection_graph(labeled_sets, edge_labels="elements")
     graph = {k: list(v) for k, v in intersections.items()}
@@ -139,11 +147,10 @@ def update_leaf_edges_after_removal(
     Update the list of leaf edges after removing an edge, ensuring that the resulting
     leaf edges do not lead to the loss of any elements in the target subset.
 
-    :param graph: The graph represented as an adjacency list.
-    :param labeled_sets: The sets of elements labeled by nodes.
-    :param target_subset: The target subset of elements that must remain covered.
+    :param tables: A mapping of table names to tables (pd.DataFrame).
+    :param target_sub_set: The target subset of columns that must remain covered.
     :param current_leaf_edges: The current list of leaf edges.
-    :return: An updated list of leaf edges.
+    :return: The leaf edges that must be kept to keep `target_sub_set` covered.
     """
     new_leaf_edges = []
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}
@@ -260,6 +267,7 @@ def generate_join_sequence(
 
 
 def ensure_join_op(obj):
+    """Return `obj` if it is already a `Join`, else wrap it as `Join(obj)` (no fields removed)."""
     if not isinstance(obj, Join):
         return Join(obj)
     return obj

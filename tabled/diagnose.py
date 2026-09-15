@@ -130,6 +130,9 @@ def register_info_func(
         func: Function that takes a DataFrame and returns info
         overwrite: Whether to overwrite existing functions with the same name
 
+    Raises:
+        ValueError: If `name` is already registered and `overwrite` is `False`.
+
     Example:
         >>> def get_memory_usage(df):
         ...     return df.memory_usage(deep=True).sum()
@@ -215,6 +218,13 @@ def print_dataframe_info(
             - 'stats': descriptive statistics
 
         egress: Callback function for output (None returns string instead of printing)
+
+    Returns:
+        The formatted info string when `egress` is `None` or falsy; otherwise
+        the result of calling `egress` on that string.
+
+    Raises:
+        ValueError: If `mode` is not one of `'short'`, `'sample'`, `'stats'`.
 
     >>> import pandas as pd
     >>> df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})

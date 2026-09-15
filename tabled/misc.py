@@ -1,3 +1,1 @@
-"""
-Miscellaneous utility functions for tables.
-"""
+"""Miscellaneous utility functions for tables."""

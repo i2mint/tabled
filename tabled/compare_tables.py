@@ -12,11 +12,14 @@ Comparisons = Union[ComparisonsDict, ComparisonsList, ComparisonName, Comparison
 
 
 class BinaryFuncResult(dict):
+    """A `{left_right, right_left}` dict, truthy if either value is truthy."""
+
     def __bool__(self):
         return any(self.values())
 
     @classmethod
     def from_func(cls, func, x, y):
+        """Build a `BinaryFuncResult` from `func(x, y)` and `func(y, x)`."""
         return cls(
             left_right=func(x, y),
             right_left=func(y, x),

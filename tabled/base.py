@@ -80,6 +80,12 @@ def _is_sqlite_file(filepath: Union[str, Path]) -> bool:
 
 
 class KeyFuncReader(KvReader):
+    """A read-only mapping view that transforms keys before lookup in `mapping`.
+
+    Iteration and length reflect `mapping` as-is; `__getitem__` and
+    `__contains__` apply `key` to the given key first.
+    """
+
     def __init__(self, mapping: Mapping[KT, VT], key: KeyFunc = identity):
         self.mapping = mapping
         self.key = key
@@ -101,6 +107,7 @@ class KeyFuncReader(KvReader):
 
 
 def convert_collection_to_dataframe_if_possible(x):
+    """Return `x` as a DataFrame if it is a dict, list, tuple, Series or Index; else `x` unchanged."""
     if isinstance(x, pd.DataFrame):
         return x
     elif isinstance(x, (dict, list, tuple)):
@@ -122,9 +129,7 @@ def get_table(
     resolve_to_io=default_io_resolver,
     **extra_decoder_kwargs,
 ) -> pd.DataFrame:
-    """
-    Get a table from a variety of sources.
-    """
+    """Get a table from a variety of sources."""
     # If table_src is None, the user is trying to fix the parameters of the function
 
     if table_src is None:
@@ -193,9 +198,18 @@ class DfFiles(Files):
 
     Args:
         rootdir: A root directory or a SQLite database file.
+        extension_encoder_mapping: A mapping from file extensions to functions that
+            encode a DataFrame to bytes for writing.
         extension_decoder_mapping: A mapping from file extensions to functions that can
             read the dataframes
+        extra_encoder_kwargs: Extra arguments to pass to the encoder functions.
         extra_decoder_kwargs: Extra arguments to pass to the decoder functions.
+        allow_writing_bytes: If True, values that are already `bytes` can be written
+            as-is; if False, writing raw bytes raises a `ValueError`.
+        sqlite_tables: When `rootdir` is a SQLite database file, the table names to
+            export (all tables, if None).
+        sqlite_verbose: When `rootdir` is a SQLite database file, whether to print
+            progress while exporting its tables.
 
     """
 
@@ -273,6 +287,10 @@ class DfFiles(Files):
 
         Returns:
             A DfFiles instance providing access to the SQLite tables as DataFrames
+
+        Raises:
+            FileNotFoundError: If `sqlite_file` does not exist.
+            ValueError: If `sqlite_file` does not look like a SQLite database.
         """
         from tabled.sqlite_tools import export_sqlite_to_parquet
 
@@ -336,6 +354,8 @@ class DfFiles(Files):
 
 
 class DfReader(DfFiles):
+    """A read-only `DfFiles`: writes and deletes raise `NotImplementedError`."""
+
     def __setitem__(self, k, v):
         raise NotImplementedError("DfReader is a read-only store.")
 
@@ -354,6 +374,7 @@ from collections.abc import Mapping
 
 
 def validate_fields(df, key_fields, value_columns):
+    """Raise `ValueError` if any `key_fields` or `value_columns` are missing from `df`."""
     all_columns = df.columns.tolist()
     all_index_levels = list(df.index.names)
 
@@ -373,9 +394,12 @@ def validate_fields(df, key_fields, value_columns):
 # For example, consider (and add to the test) the case where I have df.set_index('A'),
 # but remove the name "A" from the index. Now I can't say key_fields=['A', 'B'] anymore.
 class DataframeKvReader(Mapping):
-    """
-    A class to wrap a DataFrame and provide a Mapping interface where keys are
-    combinations of specified columns or index levels, and values are sub-dataframes of specified columns.
+    """A Mapping view of a DataFrame, keyed by combinations of columns or index levels.
+
+    Args:
+        df: The DataFrame to wrap.
+        key_fields: Field(s) (columns or index levels) to use as keys.
+        value_columns: Column(s) to use as values. Defaults to all columns.
 
     Example usage:
 
@@ -421,15 +445,6 @@ class DataframeKvReader(Mapping):
     """
 
     def __init__(self, df, key_fields, value_columns=None):
-        """
-        Initialize the DataframeKvReader.
-
-        Args:
-            df: The DataFrame to wrap.
-            key_fields: Field(s) (columns or index levels) to use as keys.
-            value_columns: Column(s) to use as values. Defaults to all columns.
-
-        """
         if value_columns is None:
             value_columns = df.columns.tolist()
         validate_fields(df, key_fields, value_columns)

@@ -12,7 +12,6 @@ DFLT_CHROME_WAIT = 3
 
 def url_to_html_func(kind="requests") -> Callable:
     """Get a url_to_html function of a given kind."""
-
     # If kind is a tuple, the first element is the kind and the second element is the kwargs
     # to be used to parametrize the function
     # NOTE: For now, I'm just simply passing the kwargs to the place I think is most
@@ -214,6 +213,7 @@ HTML_TEMPLATE2 = """
 
 
 def df_to_html(df, title=None):
+    """Render `df` as an HTML table, with an optional `<h2>` title above it."""
     ht = ""
     if title is not None:
         ht += f"<h2> {title} </h2>\n"
@@ -222,6 +222,7 @@ def df_to_html(df, title=None):
 
 
 def df_store_to_html(df_store, sep="\n<br>\n"):
+    """Render each dataframe in `df_store`, titled by its key, joined by `sep`."""
     ht = ""
     for k, df in df_store.items():
         title = re.match(r"[^\d]+", k).group(0)
@@ -237,7 +238,6 @@ def dfs_to_html_pretty(dfs, title=None):
     Thanks to @stackoverflowuser2010 for the
     pretty printer see https://stackoverflow.com/a/47723330/362951
     """
-
     if isinstance(dfs, pd.DataFrame):
         ht = df_to_html(dfs, title=title)
     elif isinstance(dfs, Mapping):
@@ -249,6 +249,10 @@ def dfs_to_html_pretty(dfs, title=None):
 
 
 def dfs_to_pdf_bytes(dfs, title=None):
+    """Render `dfs` (a DataFrame, a mapping, or an iterable of DataFrames) to PDF bytes.
+
+    Requires the optional `weasyprint` dependency.
+    """
     import weasyprint
 
     html = dfs_to_html_pretty(dfs, title)
