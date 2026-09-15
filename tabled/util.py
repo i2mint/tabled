@@ -267,16 +267,17 @@ def is_non_null_or_empty(value):
 
     Often used with pandas dataframes to check if a cell is null or non-empty.
 
-    ```
-    num_of_non_empties_in_row = df.map(is_non_null_or_empty).sum(axis=1)
-    num_of_non_empties_in_col = df.map(is_non_null_or_empty).sum(axis=0)
-    ```
+    .. code-block:: text
+
+        num_of_non_empties_in_row = df.map(is_non_null_or_empty).sum(axis=1)
+        num_of_non_empties_in_col = df.map(is_non_null_or_empty).sum(axis=0)
+
 
     And then you can do:
 
-    ```
-    num_of_non_empties_in_row.sort_values(ascending=False) to see which rows have the least empties (most actual data)
-    ```
+    .. code-block:: text
+
+        num_of_non_empties_in_row.sort_values(ascending=False) to see which rows have the least empties (most actual data)
 
     """
     if isinstance(value, Sized):

@@ -134,10 +134,11 @@ def get_tables_from_url(
     (I mean, why have to figure out the language of an API, when someone already did that
     for you in their webpage!!):
 
-    ```python
-    url = 'https://www.worldometers.info/coronavirus/?utm_campaign=homeAdvegas1?'
-    tables = get_tables_from_url(url, url_to_html='chrome')  # doctest: +SKIP
-    ```
+    .. code-block:: python
+
+        url = 'https://www.worldometers.info/coronavirus/?utm_campaign=homeAdvegas1?'
+        tables = get_tables_from_url(url, url_to_html='chrome')  # doctest: +SKIP
+
 
     To make selenium work:
 

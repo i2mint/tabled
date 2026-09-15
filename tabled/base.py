@@ -195,6 +195,7 @@ class DfFiles(Files):
     rootdir: A root directory or a SQLite database file.
     extension_decoder_mapping: A mapping from file extensions to functions that can
         read the dataframes
+
     extra_decoder_kwargs: Extra arguments to pass to the decoder functions.
 
     """
@@ -378,6 +379,7 @@ class DataframeKvReader(Mapping):
     combinations of specified columns or index levels, and values are sub-dataframes of specified columns.
 
     Example usage:
+
     >>> df = pd.DataFrame({
     ...     'A': [1, 2, 1],
     ...     'B': [4, 5, 4],

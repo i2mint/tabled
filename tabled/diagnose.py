@@ -6,6 +6,7 @@ of tables. The core function `dataframe_info` extracts configurable information
 from DataFrames using pluggable info functions.
 
 Key Features:
+
 - Configurable info extraction with `dataframe_info`
 - Collection diagnosis with `diagnose_table_collection`
 - Extensible via custom info functions
@@ -18,7 +19,8 @@ Example:
     >>> info['shape']
     (3, 2)
 
-    # Register custom info function
+    .. rubric:: Register custom info function
+
     >>> def get_memory_usage(df):
     ...     return df.memory_usage(deep=True).sum()
     >>> register_info_func('custom_memory', get_memory_usage)
@@ -207,9 +209,11 @@ def print_dataframe_info(
         df: The DataFrame to analyze
         exclude_columns: Columns to exclude from analysis
         mode: Type of information to display
+
             - 'short': shape and first row
             - 'sample': shape, columns, and random rows
             - 'stats': descriptive statistics
+
         egress: Callback function for output (None returns string instead of printing)
 
     >>> import pandas as pd

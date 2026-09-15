@@ -233,6 +233,7 @@ def cast_to_parquet(data, *args, __name_of_column=_DFLT_SINGLE_COLUMN_NAME, **kw
     Convert data to DataFrame if necessary, then save as parquet.
 
     Handles:
+
     - pandas.DataFrame: use as-is
     - pandas.Series: convert to DataFrame using to_frame()
     - list/other iterables: convert to Series then DataFrame
@@ -274,7 +275,9 @@ def single_column_parquet_encode(sequences, col=_DFLT_SINGLE_COLUMN_NAME):
 def single_column_parquet_decode(b: bytes, col=_DFLT_SINGLE_COLUMN_NAME):
     """
     Decode a single-column parquet file into a list of sequences.
-    See also: single_column_parquet_encode
+
+    See also:
+        single_column_parquet_encode
 
     >>> sequences_2 = [['one', 'two'], ['three', 'four', 'five']]
     >>> encoded_2 = single_column_parquet_encode(sequences_2)

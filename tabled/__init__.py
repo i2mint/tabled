@@ -7,6 +7,7 @@ It offers flexible key-value mapping functionality where keys can represent file
 paths, URLs, or other identifiers, and values are pandas DataFrames.
 
 Key Features:
+
 - Read tables from URLs, HTML pages, and various file formats
 - Store abstraction (DfFiles) for mapping keys to DataFrames
 - Extension-based encoding/decoding for different file formats
@@ -17,6 +18,7 @@ Key Features:
 - Duplicate detection and handling
 
 Main Components:
+
 - HTML table extraction from web pages
 - File-based DataFrame storage with automatic format detection
 - Multi-source data readers with customizable key functions

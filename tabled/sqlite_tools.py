@@ -5,6 +5,7 @@ it to pandas DataFrames or Parquet files. It uses DuckDB with the sqlite_scanner
 extension for efficient data extraction.
 
 Key functions:
+
 - export_sqlite_to_dataframes: Extract SQLite tables to pandas DataFrames
 - export_sqlite_to_parquet: Export SQLite tables directly to Parquet files
 - export_sqlite_to_dataframes_and_parquet: Combined export to both formats
@@ -147,6 +148,7 @@ def export_sqlite_to_parquet(
     Export tables from a SQLite .db file to Parquet using DuckDB + sqlite_scanner.
 
     This is a general-purpose exporter:
+
       - attaches the SQLite file to DuckDB
       - discovers tables (or uses the provided list)
       - writes each table to <out_dir>/<table>.parquet
@@ -344,6 +346,7 @@ def export_sqlite_to_dataframes_and_parquet(
     -------
     tuple[Dict[str, pd.DataFrame], Optional[Path]]
         A tuple containing:
+
         - Dictionary mapping table names to DataFrames
         - Output directory path (if out_dir was provided)
     """
