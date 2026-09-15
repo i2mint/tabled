@@ -192,11 +192,10 @@ class DfFiles(Files):
     and provide access to them as DataFrames.
 
     Args:
-    rootdir: A root directory or a SQLite database file.
-    extension_decoder_mapping: A mapping from file extensions to functions that can
-        read the dataframes
-
-    extra_decoder_kwargs: Extra arguments to pass to the decoder functions.
+        rootdir: A root directory or a SQLite database file.
+        extension_decoder_mapping: A mapping from file extensions to functions that can
+            read the dataframes
+        extra_decoder_kwargs: Extra arguments to pass to the decoder functions.
 
     """
 
@@ -425,10 +424,10 @@ class DataframeKvReader(Mapping):
         """
         Initialize the DataframeKvReader.
 
-        Parameters:
-        df (pd.DataFrame): The DataFrame to wrap.
-        key_fields (str or list of str): Fields (columns or index levels) to use as keys.
-        value_columns (str or list of str): Column(s) to use as values. Default is all columns.
+        Args:
+            df: The DataFrame to wrap.
+            key_fields: Field(s) (columns or index levels) to use as keys.
+            value_columns: Column(s) to use as values. Defaults to all columns.
 
         """
         if value_columns is None:

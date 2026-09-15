@@ -147,11 +147,11 @@ def export_sqlite_to_parquet(
     """
     Export tables from a SQLite .db file to Parquet using DuckDB + sqlite_scanner.
 
-    This is a general-purpose exporter:
+    This is a general-purpose exporter that:
 
-      - attaches the SQLite file to DuckDB
-      - discovers tables (or uses the provided list)
-      - writes each table to <out_dir>/<table>.parquet
+    - attaches the SQLite file to DuckDB
+    - discovers tables (or uses the provided list)
+    - writes each table to <out_dir>/<table>.parquet
 
     Parameters
     ----------
@@ -254,9 +254,10 @@ def export_sqlite_query_to_parquet(
     Export an arbitrary SQL query (against the attached SQLite DB) to a Parquet file.
 
     Useful for generating:
-      - edge lists (source/target)
-      - node tables (id + attributes)
-      - filtered subsets
+
+    - edge lists (source/target)
+    - node tables (id + attributes)
+    - filtered subsets
 
     Example:
         export_sqlite_query_to_parquet(

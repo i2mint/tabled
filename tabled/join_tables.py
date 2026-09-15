@@ -1,23 +1,16 @@
-"""
-This module provides functionality for joining multiple tables (pandas DataFrames) based on a target subset of columns.
-It includes classes and functions to determine the optimal sequence of joins and the fields to remove during the join process.
-Classes:
-    Join: Represents a join operation with optional fields to remove.
-Functions:
-    minimum_covering_tree(tables, target_subset, start_node=None):
-        Computes the minimum covering tree for the given tables and target subset of columns.
-    get_leaf_edges(tables, target_subset, start_node=None):
-        Retrieves the leaf edges of the minimum covering tree for the given tables and target subset of columns.
-    update_leaf_edges_after_removal(tables, target_sub_set, current_leaf_edges):
-        Updates the list of leaf edges after removing an edge, ensuring that the resulting leaf edges do not lead to the loss of any elements in the target subset.
-    determine_remove_fields(labeled_sets, target_sub_set, joined_tables, current_table):
-        Determines which fields should be removed for a given table to ensure the target subset remains covered.
-    generate_join_sequence(tables, leaf_edges, target_sub_set):
-        Generates a sequence of joins with remove commands based on leaf edges and the target subset of columns.
-    ensure_join_op(obj):
-        Ensures that the given object is a Join instance.
-    compute_join_resolution(resolution_sequence, tables):
-        Carries out the join operations specified in the resolution sequence with the given tables.
+"""Join multiple tables (pandas DataFrames) down to a target subset of columns.
+
+Given a mapping of tables and the set of columns you want in the result, this
+module figures out which pairs of tables to join, in what order, and which
+overlapping fields to drop at each step, so the final result has exactly the
+target columns.
+
+Main entry points:
+
+- `Join`: a join operation paired with optional fields to remove.
+- `minimum_covering_tree`: the minimal tree of table joins covering the target subset.
+- `generate_join_sequence`: the ordered sequence of `Join` operations to run.
+- `compute_join_resolution`: carries out a join sequence and returns the result.
 
 Example:
     >>> tables = {

@@ -424,7 +424,8 @@ def add_extension_codec(extension=None, *, encoder=None, decoder=None, overwrite
 
     If no arguments are passed, it will print the current mappings.
 
-    Returns: None (it just adds the in-memory mappings)
+    Returns:
+        None. It just adds to the in-memory mappings (or prints them).
 
     Parameters:
     ----------

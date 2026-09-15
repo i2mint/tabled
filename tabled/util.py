@@ -704,23 +704,23 @@ def collapse_columns(
 
     Example:
 
-    >>> df = pd.DataFrame({
-    ...     'a': [1, 1, 2, 2],
-    ...     'b': [3, 4, 5, 6],
-    ...     'c': [7, 8, 9, 10]
-    ... })
-    >>> df  # doctest: +NORMALIZE_WHITESPACE
-       a  b   c
-    0  1  3   7
-    1  1  4   8
-    2  2  5   9
-    3  2  6  10
-    >>> collapse_columns(df, {'ab': ['a', 'b']})  # doctest: +NORMALIZE_WHITESPACE
-       c   ab
-    0  7  {'a': 1, 'b': 3}
-    1  8  {'a': 1, 'b': 4}
-    2  9  {'a': 2, 'b': 5}
-    3 10  {'a': 2, 'b': 6}
+        >>> df = pd.DataFrame({
+        ...     'a': [1, 1, 2, 2],
+        ...     'b': [3, 4, 5, 6],
+        ...     'c': [7, 8, 9, 10]
+        ... })
+        >>> df  # doctest: +NORMALIZE_WHITESPACE
+           a  b   c
+        0  1  3   7
+        1  1  4   8
+        2  2  5   9
+        3  2  6  10
+        >>> collapse_columns(df, {'ab': ['a', 'b']})  # doctest: +NORMALIZE_WHITESPACE
+           c   ab
+        0  7  {'a': 1, 'b': 3}
+        1  8  {'a': 1, 'b': 4}
+        2  9  {'a': 2, 'b': 5}
+        3 10  {'a': 2, 'b': 6}
     """
     if isinstance(groupings, str):
         groupings = [groupings]
@@ -793,30 +793,31 @@ def expand_columns(
     :return: A dataframe with the expanded columns added.
 
     Examples:
-    >>> df = pd.DataFrame({
-    ...     'c': [7, 8, 9, 10],
-    ...     'X': [{'a': 1, 'b': 3}, {'a': 1, 'b': 4}, {'a': 2, 'b': 5}, {'a': 2, 'b': 6}]
-    ... })
-    >>> expand_columns(df, ['X'])  # doctest: +NORMALIZE_WHITESPACE
-       c  X.a  X.b
-    0  7  1  3
-    1  8  1  4
-    2  9  2  5
-    3 10  2  6
 
-    Let's see what happens when the elements of an expanded column are lists instead of
-    dicts, we ask to not drop, and we use `key_mapper=None`:
+        >>> df = pd.DataFrame({
+        ...     'c': [7, 8, 9, 10],
+        ...     'X': [{'a': 1, 'b': 3}, {'a': 1, 'b': 4}, {'a': 2, 'b': 5}, {'a': 2, 'b': 6}]
+        ... })
+        >>> expand_columns(df, ['X'])  # doctest: +NORMALIZE_WHITESPACE
+           c  X.a  X.b
+        0  7  1  3
+        1  8  1  4
+        2  9  2  5
+        3 10  2  6
 
-    >>> df = pd.DataFrame({
-    ...     'c': [7, 8, 9, 10],
-    ...     'X': [[1, 3], [1, 4], [2, 5], [2, 6]]
-    ... })
-    >>> expand_columns(df, ['X'], drop=False, key_mapper=None)  # doctest: +NORMALIZE_WHITESPACE
-        c       X  0  1
-    0   7  [1, 3]  1  3
-    1   8  [1, 4]  1  4
-    2   9  [2, 5]  2  5
-    3  10  [2, 6]  2  6
+        Let's see what happens when the elements of an expanded column are lists instead of
+        dicts, we ask to not drop, and we use `key_mapper=None`:
+
+        >>> df = pd.DataFrame({
+        ...     'c': [7, 8, 9, 10],
+        ...     'X': [[1, 3], [1, 4], [2, 5], [2, 6]]
+        ... })
+        >>> expand_columns(df, ['X'], drop=False, key_mapper=None)  # doctest: +NORMALIZE_WHITESPACE
+            c       X  0  1
+        0   7  [1, 3]  1  3
+        1   8  [1, 4]  1  4
+        2   9  [2, 5]  2  5
+        3  10  [2, 6]  2  6
 
     """
     if isinstance(expand_columns, str):

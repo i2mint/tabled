@@ -39,15 +39,15 @@ def scalar_columns(df: pd.DataFrame) -> list:
     file.
 
     Example:
-    >>> import pandas as pd
-    >>> df = pd.DataFrame({
-    ...     'A': [1, 2, 3],
-    ...     'B': ['x', 'y', 'z'],
-    ...     'C': [{'a': 1}, {'b': 2}, {'c': 3}],  # Non-serializable column
-    ...     'D': [[1, 2], [3, 4], [5, 6]]         # Non-serializable column
-    ... })
-    >>> scalar_columns(df)
-    ['A', 'B']
+        >>> import pandas as pd
+        >>> df = pd.DataFrame({
+        ...     'A': [1, 2, 3],
+        ...     'B': ['x', 'y', 'z'],
+        ...     'C': [{'a': 1}, {'b': 2}, {'c': 3}],  # Non-serializable column
+        ...     'D': [[1, 2], [3, 4], [5, 6]]         # Non-serializable column
+        ... })
+        >>> scalar_columns(df)
+        ['A', 'B']
     """
     import pandas.api.types as pdt
 
