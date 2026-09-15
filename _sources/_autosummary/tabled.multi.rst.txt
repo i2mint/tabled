@@ -1,0 +1,32 @@
+tabled.multi
+============
+
+.. automodule:: tabled.multi
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      columns_of_all_tables
+      columns_of_first_table
+      dataframes
+      execute_commands
+      execute_table_commands
+      join_func
+      load_func
+      mapping_of_dataframes
+      remove_func
+      rename_func
+      set_scope_value
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ColumnOrientedMapping
+      Join
+      Load
+      Remove
+      Rename
+   

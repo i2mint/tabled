@@ -1,4 +1,0 @@
-tabled.diagnose
-===============
-.. automodule:: tabled.diagnose
-   :members:

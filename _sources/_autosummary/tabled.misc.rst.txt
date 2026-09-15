@@ -1,0 +1,6 @@
+tabled.misc
+===========
+
+.. automodule:: tabled.misc
+
+   

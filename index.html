@@ -1,278 +1,618 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html lang="en" data-accent-color="blue" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to tabled’s documentation! &mdash; tabled 0.1.28 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>tabled</title><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API reference" href="api.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d88b86f9" />
+    <link rel="stylesheet" type="text/css" href="_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link media="print" rel="stylesheet" type="text/css" href="_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/><meta property="og:title" content="tabled"/>
+    <meta name="twitter:card" content="summary"/>
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=34399df3"></script>
+<link rel="alternate" type="text/markdown" href="index.html.md">
+<link rel="describedby" href="llms.txt" type="text/markdown">
+</head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="#">
+      
+      
+      <strong>tabled</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/i2mint/tabled" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/tabled.html">tabled</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.base.html">tabled.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.coerce.html">tabled.coerce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.diagnose.html">tabled.diagnose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.html.html">tabled.html</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.misc.html">tabled.misc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.multi.html">tabled.multi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.sqlite_tools.html">tabled.sqlite_tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.tools.html">tabled.tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.util.html">tabled.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tabled.wrappers.html">tabled.wrappers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#">tabled</a><ul>
+<li><a class="reference internal" href="#for-ai-agents">For AI agents</a></li>
+<li><a class="reference internal" href="#sqlite-database-support">SQLite Database Support</a><ul>
+<li><a class="reference internal" href="#sqlite-export-tools">SQLite Export Tools</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#table-analysis-and-diagnosis">Table Analysis and Diagnosis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dffiles">DfFiles</a><ul>
+<li><a class="reference internal" href="#setup">Setup</a></li>
+<li><a class="reference internal" href="#creating-test-directory">Creating Test Directory</a></li>
+<li><a class="reference internal" href="#initialize-dffiles">Initialize DfFiles</a></li>
+<li><a class="reference internal" href="#creating-and-saving-dataframes">Creating and Saving DataFrames</a></li>
+<li><a class="reference internal" href="#reading-data-back">Reading Data Back</a></li>
+<li><a class="reference internal" href="#mutablemapping-interface">MutableMapping Interface</a></li>
+<li><a class="reference internal" href="#supported-file-extensions">Supported File Extensions</a></li>
+<li><a class="reference internal" href="#testing-different-extensions">Testing Different Extensions</a></li>
+</ul>
+</li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="#"><span itemprop="name">tabled</span></a>
+        <meta itemprop="position" content="1" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <article class="yue dark-code" role="main">
+          <!-- generated by epythet -->
+<section id="tabled">
+<h1>tabled<a class="headerlink" href="#tabled" title="Link to this heading">#</a></h1>
+<p>A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease</p>
+<p>To install:	<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tabled</span></code></p>
+<!-- epythet:agentic-readme:start -->
+<section id="for-ai-agents">
+<h2>For AI agents<a class="headerlink" href="#for-ai-agents" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tabled</span></code> publishes its documentation in forms made for coding agents. If you are one, start here.</p>
+<p><strong>The documentation, machine-readable</strong>: <a class="reference external" href="https://i2mint.github.io/tabled/llms.txt"><code class="docutils literal notranslate"><span class="pre">llms.txt</span></code></a> indexes every page; <a class="reference external" href="https://i2mint.github.io/tabled/tabled.md"><code class="docutils literal notranslate"><span class="pre">tabled.md</span></code></a> is the whole documentation in one file; every page has a <code class="docutils literal notranslate"><span class="pre">.md</span></code> twin; <a class="reference external" href="https://i2mint.github.io/tabled/objects.inv"><code class="docutils literal notranslate"><span class="pre">objects.inv</span></code></a> maps symbols to URLs.</p>
+<p>If you still read documentation with your own eyes, the rest of this README is written for you, starting at <a class="reference internal" href="#sqlite-database-support">SQLite Database Support</a>.</p>
+<!-- epythet:agentic-readme:end -->
+</section>
+<section id="sqlite-database-support">
+<h2>SQLite Database Support<a class="headerlink" href="#sqlite-database-support" title="Link to this heading">#</a></h2>
+<p>Tabled provides seamless integration with SQLite databases through <code class="docutils literal notranslate"><span class="pre">DfFiles</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled</span><span class="w"> </span><span class="kn">import</span> <span class="n">DfFiles</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="c1"># Automatic SQLite detection - just pass the database file path</span>
+</span><span data-line="4"><span class="n">df_files</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="p">(</span><span class="s1">'my_database.db'</span><span class="p">)</span>
+</span><span data-line="5">
+</span><span data-line="6"><span class="c1"># Access tables as DataFrames</span>
+</span><span data-line="7"><span class="n">customers</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s1">'customers.parquet'</span><span class="p">]</span>  <span class="c1"># Full filename</span>
+</span><span data-line="8"><span class="n">orders</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s1">'orders'</span><span class="p">]</span>                <span class="c1"># Clean table name (both work)</span>
+</span><span data-line="9">
+</span><span data-line="10"><span class="c1"># List available tables</span>
+</span><span data-line="11"><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df_files</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>  <span class="c1"># ['customers.parquet', 'orders.parquet', ...]</span>
+</span><span data-line="12">
+</span><span data-line="13"><span class="c1"># Or use the explicit method</span>
+</span><span data-line="14"><span class="n">df_files</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="o">.</span><span class="n">from_sqlite_file</span><span class="p">(</span><span class="s1">'my_database.db'</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>Under the hood, SQLite tables are exported to temporary Parquet files for efficient access, with automatic cleanup when the program exits.</p>
+<section id="sqlite-export-tools">
+<h3>SQLite Export Tools<a class="headerlink" href="#sqlite-export-tools" title="Link to this heading">#</a></h3>
+<p>For more control over SQLite data extraction, use the <code class="docutils literal notranslate"><span class="pre">sqlite_tools</span></code> module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled.sqlite_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">export_sqlite_to_dataframes</span><span class="p">,</span> <span class="n">export_sqlite_to_parquet</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="c1"># Export to DataFrames</span>
+</span><span data-line="4"><span class="n">tables</span> <span class="o">=</span> <span class="n">export_sqlite_to_dataframes</span><span class="p">(</span><span class="s1">'database.db'</span><span class="p">)</span>
+</span><span data-line="5"><span class="n">customers_df</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="s1">'customers'</span><span class="p">]</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="c1"># Export to Parquet files</span>
+</span><span data-line="8"><span class="n">export_sqlite_to_parquet</span><span class="p">(</span><span class="s1">'database.db'</span><span class="p">,</span> <span class="s1">'output_directory/'</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="table-analysis-and-diagnosis">
+<h2>Table Analysis and Diagnosis<a class="headerlink" href="#table-analysis-and-diagnosis" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">dataframe_info</span></code> function provides flexible analysis of pandas DataFrames:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled.diagnose</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataframe_info</span><span class="p">,</span> <span class="n">register_info_func</span>
+</span><span data-line="2"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="c1"># Analyze a DataFrame</span>
+</span><span data-line="5"><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">'b'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">]})</span>
+</span><span data-line="6"><span class="n">info</span> <span class="o">=</span> <span class="n">dataframe_info</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span><span data-line="7"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'shape'</span><span class="p">])</span>  <span class="c1"># (3, 2)</span>
+</span><span data-line="8"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'columns'</span><span class="p">])</span>  <span class="c1"># ['a', 'b']</span>
+</span><span data-line="9">
+</span><span data-line="10"><span class="c1"># Extend with custom analysis functions</span>
+</span><span data-line="11"><span class="k">def</span><span class="w"> </span><span class="nf">memory_usage</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+</span><span data-line="12">    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</span><span data-line="13">
+</span><span data-line="14"><span class="n">register_info_func</span><span class="p">(</span><span class="s1">'memory'</span><span class="p">,</span> <span class="n">memory_usage</span><span class="p">)</span>
+</span><span data-line="15"><span class="n">info</span> <span class="o">=</span> <span class="n">dataframe_info</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span><span data-line="16"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'memory'</span><span class="p">])</span>  <span class="c1"># Memory usage in bytes</span>
+</span></pre></div>
+</div>
+<p>The analysis is completely customizable - you can register new analysis functions or provide custom info function dictionaries to focus on specific aspects of your data.</p>
+</section>
+</section>
+<section id="dffiles">
+<h1>DfFiles<a class="headerlink" href="#dffiles" title="Link to this heading">#</a></h1>
+<p>This section demonstrates how to use <code class="docutils literal notranslate"><span class="pre">DfFiles</span></code> to store and retrieve pandas DataFrames using various file formats.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
+<p>First, let’s import required packages and define our test data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</span><span data-line="2"><span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+</span><span data-line="3"><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</span><span data-line="6"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled</span><span class="w"> </span><span class="kn">import</span> <span class="n">DfFiles</span>
+</span><span data-line="7">
+</span><span data-line="8"><span class="c1"># Test data dictionary</span>
+</span><span data-line="9"><span class="n">misc_small_dicts</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="10">    <span class="s2">"fantasy_tavern_menu"</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="11">        <span class="s2">"item"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Dragon Ale"</span><span class="p">,</span> <span class="s2">"Elf Bread"</span><span class="p">,</span> <span class="s2">"Goblin Stew"</span><span class="p">],</span>
+</span><span data-line="12">        <span class="s2">"price"</span><span class="p">:</span> <span class="p">[</span><span class="mf">7.5</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">],</span>
+</span><span data-line="13">        <span class="s2">"is_alcoholic"</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+</span><span data-line="14">        <span class="s2">"servings_left"</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+</span><span data-line="15">    <span class="p">},</span>
+</span><span data-line="16">    <span class="s2">"alien_abduction_log"</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="17">        <span class="s2">"abductee_name"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Bob"</span><span class="p">,</span> <span class="s2">"Alice"</span><span class="p">,</span> <span class="s2">"Zork"</span><span class="p">],</span>
+</span><span data-line="18">        <span class="s2">"location"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Kansas City"</span><span class="p">,</span> <span class="s2">"Roswell"</span><span class="p">,</span> <span class="s2">"Jupiter"</span><span class="p">],</span>
+</span><span data-line="19">        <span class="s2">"duration_minutes"</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+</span><span data-line="20">        <span class="s2">"was_returned"</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span>
+</span><span data-line="21">    <span class="p">}</span>
+</span><span data-line="22"><span class="p">}</span>
+</span></pre></div>
+</div>
+</section>
+<section id="creating-test-directory">
+<h2>Creating Test Directory<a class="headerlink" href="#creating-test-directory" title="Link to this heading">#</a></h2>
+<p>We’ll create a temporary directory for our files:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">def</span><span class="w"> </span><span class="nf">create_test_directory</span><span class="p">():</span>
+</span><span data-line="2">    <span class="c1"># Create a directory for the test files</span>
+</span><span data-line="3">    <span class="n">rootdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s1">'tabled_df_files_test'</span><span class="p">)</span>
+</span><span data-line="4">    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
+</span><span data-line="5">        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
+</span><span data-line="6">    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
+</span><span data-line="7">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Created directory at: </span><span class="si">{</span><span class="n">rootdir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="8">    <span class="k">return</span> <span class="n">rootdir</span>
+</span><span data-line="9">
+</span><span data-line="10"><span class="n">rootdir</span> <span class="o">=</span> <span class="n">create_test_directory</span><span class="p">()</span>
+</span><span data-line="11"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Created directory at: </span><span class="si">{</span><span class="n">rootdir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Created directory at: /var/folders/mc/c070wfh51kxd9lft8dl74q1r0000gn/T/tabled_df_files_test
+</span><span data-line="2">Created directory at: /var/folders/mc/c070wfh51kxd9lft8dl74q1r0000gn/T/tabled_df_files_test
+</span></pre></div>
+</div>
+</section>
+<section id="initialize-dffiles">
+<h2>Initialize DfFiles<a class="headerlink" href="#initialize-dffiles" title="Link to this heading">#</a></h2>
+<p>Create a new DfFiles instance pointing to our directory:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">df_files</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>Let’s verify it starts empty:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">list</span><span class="p">(</span><span class="n">df_files</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">[]
+</span></pre></div>
+</div>
+</section>
+<section id="creating-and-saving-dataframes">
+<h2>Creating and Saving DataFrames<a class="headerlink" href="#creating-and-saving-dataframes" title="Link to this heading">#</a></h2>
+<p>Let’s create DataFrames from our test data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">fantasy_tavern_menu_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">misc_small_dicts</span><span class="p">[</span><span class="s1">'fantasy_tavern_menu'</span><span class="p">])</span>
+</span><span data-line="2"><span class="n">alien_abduction_log_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">misc_small_dicts</span><span class="p">[</span><span class="s1">'alien_abduction_log'</span><span class="p">])</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="nb">print</span><span class="p">(</span><span class="s2">"Fantasy Tavern Menu:"</span><span class="p">)</span>
+</span><span data-line="5"><span class="n">display</span><span class="p">(</span><span class="n">fantasy_tavern_menu_df</span><span class="p">)</span>
+</span><span data-line="6"><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Alien Abduction Log:"</span><span class="p">)</span>
+</span><span data-line="7"><span class="n">display</span><span class="p">(</span><span class="n">alien_abduction_log_df</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Fantasy Tavern Menu:
+</span></pre></div>
+</div>
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>item</th>
+      <th>price</th>
+      <th>is_alcoholic</th>
+      <th>servings_left</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Dragon Ale</td>
+      <td>7.5</td>
+      <td>True</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Elf Bread</td>
+      <td>3.0</td>
+      <td>False</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Goblin Stew</td>
+      <td>5.5</td>
+      <td>False</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Alien Abduction Log:
+</span></pre></div>
+</div>
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>abductee_name</th>
+      <th>location</th>
+      <th>duration_minutes</th>
+      <th>was_returned</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Bob</td>
+      <td>Kansas City</td>
+      <td>15</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Alice</td>
+      <td>Roswell</td>
+      <td>120</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Zork</td>
+      <td>Jupiter</td>
+      <td>30</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>Now let’s save these DataFrames using different formats:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">df_files</span><span class="p">[</span><span class="s1">'fantasy_tavern_menu.csv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">fantasy_tavern_menu_df</span>
+</span><span data-line="2"><span class="n">df_files</span><span class="p">[</span><span class="s1">'alien_abduction_log.json'</span><span class="p">]</span> <span class="o">=</span> <span class="n">alien_abduction_log_df</span>
+</span></pre></div>
+</div>
+</section>
+<section id="reading-data-back">
+<h2>Reading Data Back<a class="headerlink" href="#reading-data-back" title="Link to this heading">#</a></h2>
+<p>Let’s verify we can read the data back correctly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">saved_df</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s1">'fantasy_tavern_menu.csv'</span><span class="p">]</span>
+</span><span data-line="2"><span class="n">saved_df</span>
+</span></pre></div>
+</div>
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>item</th>
+      <th>price</th>
+      <th>is_alcoholic</th>
+      <th>servings_left</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Dragon Ale</td>
+      <td>7.5</td>
+      <td>True</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Elf Bread</td>
+      <td>3.0</td>
+      <td>False</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Goblin Stew</td>
+      <td>5.5</td>
+      <td>False</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</section>
+<section id="mutablemapping-interface">
+<h2>MutableMapping Interface<a class="headerlink" href="#mutablemapping-interface" title="Link to this heading">#</a></h2>
+<p>DfFiles implements the MutableMapping interface, making it behave like a dictionary.</p>
+<p>Let’s see how many files we have:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">len</span><span class="p">(</span><span class="n">df_files</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">2
+</span></pre></div>
+</div>
+<p>List all available files:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">list</span><span class="p">(</span><span class="n">df_files</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">['fantasy_tavern_menu.csv', 'alien_abduction_log.json']
+</span></pre></div>
+</div>
+<p>Check if a file exists:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="s1">'fantasy_tavern_menu.csv'</span> <span class="ow">in</span> <span class="n">df_files</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">True
+</span></pre></div>
+</div>
+</section>
+<section id="supported-file-extensions">
+<h2>Supported File Extensions<a class="headerlink" href="#supported-file-extensions" title="Link to this heading">#</a></h2>
+<p>Let’s see what file formats DfFiles supports out of the box.</p>
+<p>(<strong>Note that some of these will require installing extra packages, which you’ll realize if you get an ImportError</strong>)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">print</span><span class="p">(</span><span class="s2">"Encoder supported extensions:"</span><span class="p">)</span>
+</span><span data-line="2"><span class="n">list_of_encoder_supported_extensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_files</span><span class="o">.</span><span class="n">extension_encoder_mapping</span><span class="p">)</span>
+</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">list_of_encoder_supported_extensions</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">', '</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Encoder supported extensions:
+</span><span data-line="2">csv, txt, tsv, json, html, p, pickle, pkl, npy, parquet, zip, feather, h5, hdf5, stata, dta, sql, sqlite, gbq, xls, xlsx, xml, orc
+</span></pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">print</span><span class="p">(</span><span class="s2">"Decoder supported extensions:"</span><span class="p">)</span>
+</span><span data-line="2"><span class="n">list_of_decoder_supported_extensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_files</span><span class="o">.</span><span class="n">extension_decoder_mapping</span><span class="p">)</span>
+</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">list_of_decoder_supported_extensions</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">', '</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Decoder supported extensions:
+</span><span data-line="2">csv, txt, tsv, parquet, json, html, p, pickle, pkl, xml, sql, sqlite, feather, stata, dta, sas, h5, hdf5, xls, xlsx, orc, sav
+</span></pre></div>
+</div>
+</section>
+<section id="testing-different-extensions">
+<h2>Testing Different Extensions<a class="headerlink" href="#testing-different-extensions" title="Link to this heading">#</a></h2>
+<p>Let’s try saving and loading our test DataFrame in different formats:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">extensions_supported_by_encoder_and_decoder</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="2">    <span class="nb">set</span><span class="p">(</span><span class="n">list_of_encoder_supported_extensions</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">list_of_decoder_supported_extensions</span><span class="p">)</span>
+</span><span data-line="3"><span class="p">)</span>
+</span><span data-line="4"><span class="nb">sorted</span><span class="p">(</span><span class="n">extensions_supported_by_encoder_and_decoder</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">['csv',
+</span><span data-line="2"> 'dta',
+</span><span data-line="3"> 'feather',
+</span><span data-line="4"> 'h5',
+</span><span data-line="5"> 'hdf5',
+</span><span data-line="6"> 'html',
+</span><span data-line="7"> 'json',
+</span><span data-line="8"> 'orc',
+</span><span data-line="9"> 'p',
+</span><span data-line="10"> 'parquet',
+</span><span data-line="11"> 'pickle',
+</span><span data-line="12"> 'pkl',
+</span><span data-line="13"> 'sql',
+</span><span data-line="14"> 'sqlite',
+</span><span data-line="15"> 'stata',
+</span><span data-line="16"> 'tsv',
+</span><span data-line="17"> 'txt',
+</span><span data-line="18"> 'xls',
+</span><span data-line="19"> 'xlsx',
+</span><span data-line="20"> 'xml']
+</span></pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1">
+</span></pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">def</span><span class="w"> </span><span class="nf">test_extension</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
+</span><span data-line="2">    <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'test_file.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s1">'</span>
+</span><span data-line="3">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="4">        <span class="n">df_files</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">fantasy_tavern_menu_df</span>
+</span><span data-line="5">        <span class="n">df_loaded</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span>
+</span><span data-line="6">        <span class="c1"># test the decoded df is the same as the one that was saved (round-trip test)</span>
+</span><span data-line="7">        <span class="c1"># Note that we drop the index, since the index is not saved in the file by default for all codecs</span>
+</span><span data-line="8">        <span class="n">pd</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_frame_equal</span><span class="p">(</span>
+</span><span data-line="9">            <span class="n">fantasy_tavern_menu_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+</span><span data-line="10">            <span class="n">df_loaded</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+</span><span data-line="11">        <span class="p">)</span>
+</span><span data-line="12">        <span class="k">return</span> <span class="kc">True</span>
+</span><span data-line="13">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="14">        <span class="k">return</span> <span class="kc">False</span>
+</span><span data-line="15">
+</span><span data-line="16">
+</span><span data-line="17"><span class="n">test_extensions</span> <span class="o">=</span> <span class="p">[</span>
+</span><span data-line="18">    <span class="s1">'csv'</span><span class="p">,</span>
+</span><span data-line="19">    <span class="s1">'feather'</span><span class="p">,</span>
+</span><span data-line="20">    <span class="s1">'json'</span><span class="p">,</span>
+</span><span data-line="21">    <span class="s1">'orc'</span><span class="p">,</span>
+</span><span data-line="22">    <span class="s1">'parquet'</span><span class="p">,</span>
+</span><span data-line="23">    <span class="s1">'pkl'</span><span class="p">,</span>
+</span><span data-line="24">    <span class="s1">'tsv'</span><span class="p">,</span>  
+</span><span data-line="25">    <span class="c1"># 'dta',  # TODO: fix</span>
+</span><span data-line="26">    <span class="c1"># 'h5',  # TODO: fix</span>
+</span><span data-line="27">    <span class="c1"># 'html',  # TODO: fix</span>
+</span><span data-line="28">    <span class="c1"># 'sql',  # TODO: fix</span>
+</span><span data-line="29">    <span class="c1"># 'xml',  # TODO: fix</span>
+</span><span data-line="30"><span class="p">]</span>
+</span><span data-line="31">
+</span><span data-line="32"><span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">test_extensions</span><span class="p">:</span>
+</span><span data-line="33">    <span class="nb">print</span><span class="p">(</span><span class="s2">"Testing extension:"</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+</span><span data-line="34">    <span class="n">success</span> <span class="o">=</span> <span class="n">test_extension</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
+</span><span data-line="35">    <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+</span><span data-line="36">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Extension </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">: ✓"</span><span class="p">)</span>
+</span><span data-line="37">    <span class="k">else</span><span class="p">:</span>
+</span><span data-line="38">        <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\033</span><span class="s1">[91m'</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Fix extension </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">: ✗"</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\033</span><span class="s1">[0m'</span><span class="p">)</span>
+</span><span data-line="39">        
+</span><span data-line="40">    <span class="c1"># marker = '✓' if success else '\033[91m✗\033[0m'</span>
+</span><span data-line="41">    <span class="c1"># print(f"\tExtension {ext}: {marker}")</span>
+</span></pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Testing extension: csv
+</span><span data-line="2">	Extension csv: ✓
+</span><span data-line="3">Testing extension: feather
+</span><span data-line="4">	Extension feather: ✓
+</span><span data-line="5">Testing extension: json
+</span><span data-line="6">	Extension json: ✓
+</span><span data-line="7">Testing extension: orc
+</span><span data-line="8">	Extension orc: ✓
+</span><span data-line="9">Testing extension: parquet
+</span><span data-line="10">	Extension parquet: ✓
+</span><span data-line="11">Testing extension: pkl
+</span><span data-line="12">	Extension pkl: ✓
+</span><span data-line="13">Testing extension: tsv
+</span><span data-line="14">	Extension tsv: ✓
+</span><span data-line="15">Testing extension: dta
+</span><span data-line="16">[91m	Fix extension dta: ✗[0m
+</span><span data-line="17">Testing extension: h5
+</span><span data-line="18">[91m	Fix extension h5: ✗[0m
+</span><span data-line="19">Testing extension: html
+</span><span data-line="20">[91m	Fix extension html: ✗[0m
+</span><span data-line="21">Testing extension: sql
+</span><span data-line="22">[91m	Fix extension sql: ✗[0m
+</span><span data-line="23">Testing extension: xml
+</span><span data-line="24">[91m	Fix extension xml: ✗[0m
+</span></pre></div>
+</div>
+<p class="epythet-aggregates">This documentation as a single file: <a href="tabled.md">tabled.md</a> (Markdown, for agents).</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-09-15 13:07 UTC from <a href="https://github.com/i2mint/tabled/commit/2929fedee809938183fe35026702650a1c55a5ca">2929fed</a> (master) · tabled 0.1.29 · <a href="about-this-build.html">about this build</a></p>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-next">
+    <a href="api.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">API reference</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright">
+  <p>
+    Made with
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/i2mint/tabled" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
+  </div>
+</footer>
+      <script src="_static/documentation_options.js?v=904119ea"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="tabled" href="module_docs/tabled.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="#" class="icon icon-home">
-            tabled
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled.html">tabled</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/_codecs.html">tabled._codecs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/base.html">tabled.base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/coerce.html">tabled.coerce</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/html.html">tabled.html</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/misc.html">tabled.misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/multi.html">tabled.multi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tools.html">tabled.tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/util.html">tabled.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
-</ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">tabled</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to tabled’s documentation!</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="welcome-to-tabled-s-documentation">
-<h1>Welcome to tabled’s documentation!<a class="headerlink" href="#welcome-to-tabled-s-documentation" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled.html">tabled</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/_codecs.html">tabled._codecs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/_codecs.html#tabled._codecs.arrow_bytes_to_dataframe"><code class="docutils literal notranslate"><span class="pre">arrow_bytes_to_dataframe()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/_codecs.html#tabled._codecs.dataframe_to_arrow_bytes"><code class="docutils literal notranslate"><span class="pre">dataframe_to_arrow_bytes()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/base.html">tabled.base</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.DataframeKvReader"><code class="docutils literal notranslate"><span class="pre">DataframeKvReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.DfFiles"><code class="docutils literal notranslate"><span class="pre">DfFiles</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.DfLocalFileReader"><code class="docutils literal notranslate"><span class="pre">DfLocalFileReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.DfReader"><code class="docutils literal notranslate"><span class="pre">DfReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.KeyFuncReader"><code class="docutils literal notranslate"><span class="pre">KeyFuncReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/base.html#tabled.base.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/coerce.html">tabled.coerce</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.coerce_dataframe_columns"><code class="docutils literal notranslate"><span class="pre">coerce_dataframe_columns()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.coerce_json_column"><code class="docutils literal notranslate"><span class="pre">coerce_json_column()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.coerce_json_columns"><code class="docutils literal notranslate"><span class="pre">coerce_json_columns()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.coerce_json_list_column"><code class="docutils literal notranslate"><span class="pre">coerce_json_list_column()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.coerce_series_conditionally"><code class="docutils literal notranslate"><span class="pre">coerce_series_conditionally()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.is_json_dict_string"><code class="docutils literal notranslate"><span class="pre">is_json_dict_string()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.is_json_list_string"><code class="docutils literal notranslate"><span class="pre">is_json_list_string()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.is_json_string"><code class="docutils literal notranslate"><span class="pre">is_json_string()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/coerce.html#tabled.coerce.parse_json_safe"><code class="docutils literal notranslate"><span class="pre">parse_json_safe()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/compare_tables.html">tabled.compare_tables</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.BinaryFuncResult"><code class="docutils literal notranslate"><span class="pre">BinaryFuncResult</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.InvalidComparison"><code class="docutils literal notranslate"><span class="pre">InvalidComparison</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.columns_diff"><code class="docutils literal notranslate"><span class="pre">columns_diff()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.columns_value_diff"><code class="docutils literal notranslate"><span class="pre">columns_value_diff()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.dataframe_diffs"><code class="docutils literal notranslate"><span class="pre">dataframe_diffs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.dtypes_diff"><code class="docutils literal notranslate"><span class="pre">dtypes_diff()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.ensure_comparisons_dict"><code class="docutils literal notranslate"><span class="pre">ensure_comparisons_dict()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.index_diff"><code class="docutils literal notranslate"><span class="pre">index_diff()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/compare_tables.html#tabled.compare_tables.shape_diff"><code class="docutils literal notranslate"><span class="pre">shape_diff()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/diagnose.html">tabled.diagnose</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/diagnose.html#tabled.diagnose.dataframe_info"><code class="docutils literal notranslate"><span class="pre">dataframe_info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/diagnose.html#tabled.diagnose.list_info_funcs"><code class="docutils literal notranslate"><span class="pre">list_info_funcs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/diagnose.html#tabled.diagnose.print_dataframe_info"><code class="docutils literal notranslate"><span class="pre">print_dataframe_info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/diagnose.html#tabled.diagnose.register_info_func"><code class="docutils literal notranslate"><span class="pre">register_info_func()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/diagnose.html#tabled.diagnose.scalar_columns"><code class="docutils literal notranslate"><span class="pre">scalar_columns()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/html.html">tabled.html</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/html.html#tabled.html.dfs_to_html_pretty"><code class="docutils literal notranslate"><span class="pre">dfs_to_html_pretty()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/html.html#tabled.html.get_tables_from_url"><code class="docutils literal notranslate"><span class="pre">get_tables_from_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/html.html#tabled.html.url_to_html_func"><code class="docutils literal notranslate"><span class="pre">url_to_html_func()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/join_tables.html">tabled.join_tables</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/join_tables.html#tabled.join_tables.compute_join_resolution"><code class="docutils literal notranslate"><span class="pre">compute_join_resolution()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/join_tables.html#tabled.join_tables.determine_remove_fields"><code class="docutils literal notranslate"><span class="pre">determine_remove_fields()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/join_tables.html#tabled.join_tables.generate_join_sequence"><code class="docutils literal notranslate"><span class="pre">generate_join_sequence()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/join_tables.html#tabled.join_tables.update_leaf_edges_after_removal"><code class="docutils literal notranslate"><span class="pre">update_leaf_edges_after_removal()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/misc.html">tabled.misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/multi.html">tabled.multi</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping"><code class="docutils literal notranslate"><span class="pre">ColumnOrientedMapping</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.Join"><code class="docutils literal notranslate"><span class="pre">Join</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.Load"><code class="docutils literal notranslate"><span class="pre">Load</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.Remove"><code class="docutils literal notranslate"><span class="pre">Remove</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.Rename"><code class="docutils literal notranslate"><span class="pre">Rename</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.columns_of_all_tables"><code class="docutils literal notranslate"><span class="pre">columns_of_all_tables()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.dataframes"><code class="docutils literal notranslate"><span class="pre">dataframes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.execute_commands"><code class="docutils literal notranslate"><span class="pre">execute_commands()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/multi.html#tabled.multi.mapping_of_dataframes"><code class="docutils literal notranslate"><span class="pre">mapping_of_dataframes()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_query_to_parquet"><code class="docutils literal notranslate"><span class="pre">export_sqlite_query_to_parquet()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_dataframes"><code class="docutils literal notranslate"><span class="pre">export_sqlite_to_dataframes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_dataframes_and_parquet"><code class="docutils literal notranslate"><span class="pre">export_sqlite_to_dataframes_and_parquet()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/sqlite_tools.html#tabled.sqlite_tools.export_sqlite_to_parquet"><code class="docutils literal notranslate"><span class="pre">export_sqlite_to_parquet()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/tools.html">tabled.tools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/tools.html#tabled.tools.diagnose_table_collection"><code class="docutils literal notranslate"><span class="pre">diagnose_table_collection()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/util.html">tabled.util</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.PandasJSONEncoder"><code class="docutils literal notranslate"><span class="pre">PandasJSONEncoder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.auto_decode_bytes"><code class="docutils literal notranslate"><span class="pre">auto_decode_bytes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.breadth_first_traversal"><code class="docutils literal notranslate"><span class="pre">breadth_first_traversal()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.collapse_columns"><code class="docutils literal notranslate"><span class="pre">collapse_columns()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.collapse_rows"><code class="docutils literal notranslate"><span class="pre">collapse_rows()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.duplicate_groups"><code class="docutils literal notranslate"><span class="pre">duplicate_groups()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.ensure_columns"><code class="docutils literal notranslate"><span class="pre">ensure_columns()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.ensure_first_columns"><code class="docutils literal notranslate"><span class="pre">ensure_first_columns()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.ensure_last_columns"><code class="docutils literal notranslate"><span class="pre">ensure_last_columns()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.expand_columns"><code class="docutils literal notranslate"><span class="pre">expand_columns()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.expand_rows"><code class="docutils literal notranslate"><span class="pre">expand_rows()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.intersection_graph"><code class="docutils literal notranslate"><span class="pre">intersection_graph()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.invert_labeled_collection"><code class="docutils literal notranslate"><span class="pre">invert_labeled_collection()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.is_non_null_or_empty"><code class="docutils literal notranslate"><span class="pre">is_non_null_or_empty()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.map_values"><code class="docutils literal notranslate"><span class="pre">map_values()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.split_keys"><code class="docutils literal notranslate"><span class="pre">split_keys()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/util.html#tabled.util.upsert_data"><code class="docutils literal notranslate"><span class="pre">upsert_data()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/tabled/wrappers.html">tabled.wrappers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.add_extension_codec"><code class="docutils literal notranslate"><span class="pre">add_extension_codec()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.cast_to_parquet"><code class="docutils literal notranslate"><span class="pre">cast_to_parquet()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.df_from_data_according_to_key"><code class="docutils literal notranslate"><span class="pre">df_from_data_according_to_key()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.df_from_data_given_ext"><code class="docutils literal notranslate"><span class="pre">df_from_data_given_ext()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_decoding"><code class="docutils literal notranslate"><span class="pre">extension_based_decoding()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_encoding"><code class="docutils literal notranslate"><span class="pre">extension_based_encoding()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.extension_based_wrap"><code class="docutils literal notranslate"><span class="pre">extension_based_wrap()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.file_extension"><code class="docutils literal notranslate"><span class="pre">file_extension()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.get_extension"><code class="docutils literal notranslate"><span class="pre">get_extension()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.get_file_ext"><code class="docutils literal notranslate"><span class="pre">get_file_ext()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.get_protocol"><code class="docutils literal notranslate"><span class="pre">get_protocol()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.key_func_mapping"><code class="docutils literal notranslate"><span class="pre">key_func_mapping()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.map_values"><code class="docutils literal notranslate"><span class="pre">map_values()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.resolve_to_dataframe"><code class="docutils literal notranslate"><span class="pre">resolve_to_dataframe()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.save_df_to_zipped_tsv"><code class="docutils literal notranslate"><span class="pre">save_df_to_zipped_tsv()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.single_column_parquet_decode"><code class="docutils literal notranslate"><span class="pre">single_column_parquet_decode()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/tabled/wrappers.html#tabled.wrappers.single_column_parquet_encode"><code class="docutils literal notranslate"><span class="pre">single_column_parquet_encode()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-<p>Release: 0.1.28</p>
-<p>Last change: May 27, 2026</p>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="module_docs/tabled.html" class="btn btn-neutral float-right" title="tabled" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+      <script src="_static/copybutton.js?v=fd10adb8"></script>
+      <script src="_static/shibuya.js?v=50760d75"></script></body>
 </html>

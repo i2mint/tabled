@@ -1,0 +1,24 @@
+﻿tabled
+======
+
+.. automodule:: tabled
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   base
+   coerce
+   compare_tables
+   diagnose
+   html
+   join_tables
+   misc
+   multi
+   sqlite_tools
+   tools
+   util
+   wrappers

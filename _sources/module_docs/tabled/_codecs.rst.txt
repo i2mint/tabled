@@ -1,4 +1,0 @@
-tabled._codecs
-==============
-.. automodule:: tabled._codecs
-   :members:

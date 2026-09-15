@@ -1,0 +1,15 @@
+tabled.sqlite\_tools
+====================
+
+.. automodule:: tabled.sqlite_tools
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      export_sqlite_query_to_parquet
+      export_sqlite_to_dataframes
+      export_sqlite_to_dataframes_and_parquet
+      export_sqlite_to_parquet
+   

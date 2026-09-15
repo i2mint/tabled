@@ -1,0 +1,24 @@
+tabled.join\_tables
+===================
+
+.. automodule:: tabled.join_tables
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_join_resolution
+      determine_remove_fields
+      ensure_join_op
+      generate_join_sequence
+      get_leaf_edges
+      minimum_covering_tree
+      update_leaf_edges_after_removal
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Join
+   

@@ -1,4 +1,0 @@
-tabled.tests.compare_tables_test
-================================
-.. automodule:: tabled.tests.compare_tables_test
-   :members:

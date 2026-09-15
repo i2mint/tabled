@@ -1,4 +1,0 @@
-tabled.join_tables
-==================
-.. automodule:: tabled.join_tables
-   :members:

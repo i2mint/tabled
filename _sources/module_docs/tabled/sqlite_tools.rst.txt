@@ -1,4 +1,0 @@
-tabled.sqlite_tools
-===================
-.. automodule:: tabled.sqlite_tools
-   :members:

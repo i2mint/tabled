@@ -1,0 +1,20 @@
+tabled.coerce
+=============
+
+.. automodule:: tabled.coerce
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      coerce_dataframe_columns
+      coerce_json_column
+      coerce_json_columns
+      coerce_json_list_column
+      coerce_series_conditionally
+      is_json_dict_string
+      is_json_list_string
+      is_json_string
+      parse_json_safe
+   

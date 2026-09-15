@@ -1,0 +1,24 @@
+tabled.base
+===========
+
+.. automodule:: tabled.base
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      convert_collection_to_dataframe_if_possible
+      get_table
+      validate_fields
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      DataframeKvReader
+      DfFiles
+      DfLocalFileReader
+      DfReader
+      KeyFuncReader
+   

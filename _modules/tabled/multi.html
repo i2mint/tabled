@@ -1,406 +1,846 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+<html lang="en" data-accent-color="blue" data-content_root="../../">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tabled.multi &mdash; tabled 0.1.28 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-
-  
-      <script src="../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=34399df3"></script>
-      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            tabled
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>tabled.multi - tabled</title><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d88b86f9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link media="print" rel="stylesheet" type="text/css" href="../../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/><meta property="og:title" content="tabled.multi"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../../index.html">
+      
+      
+      <strong>tabled</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/i2mint/tabled" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled.html">tabled</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/_codecs.html">tabled._codecs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/base.html">tabled.base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/coerce.html">tabled.coerce</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/compare_tables.html">tabled.compare_tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/diagnose.html">tabled.diagnose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/html.html">tabled.html</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/join_tables.html">tabled.join_tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/misc.html">tabled.misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/multi.html">tabled.multi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/sqlite_tools.html">tabled.sqlite_tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/compare_tables_test.html">tabled.tests.compare_tables_test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/data.html">tabled.tests.data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/generate_data.html">tabled.tests.generate_data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/join_tables.html">tabled.tests.join_tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_base.html">tabled.tests.test_base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/test_diagnose.html">tabled.tests.test_diagnose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tests/util.html">tabled.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/tools.html">tabled.tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/util.html">tabled.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tabled/wrappers.html">tabled.wrappers</a></li>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/tabled.html">tabled</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.base.html">tabled.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.coerce.html">tabled.coerce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.compare_tables.html">tabled.compare_tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.diagnose.html">tabled.diagnose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.html.html">tabled.html</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.join_tables.html">tabled.join_tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.misc.html">tabled.misc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.multi.html">tabled.multi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.sqlite_tools.html">tabled.sqlite_tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.tools.html">tabled.tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.util.html">tabled.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tabled.wrappers.html">tabled.wrappers</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">tabled</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">tabled.multi</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for tabled.multi</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Multi-tabled data structures.&quot;&quot;&quot;</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
-
-<span class="n">Column</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Column&quot;</span><span class="p">)</span>
-<span class="n">TableKey</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TableKey&quot;</span><span class="p">)</span>
-<span class="n">MappingOfDataFrames</span> <span class="o">=</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
-<span class="n">DataFrames</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">MappingOfDataFrames</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]</span>
-
-<span class="c1"># --------------------------------------------------------------------------------------</span>
-<span class="c1"># Utils</span>
-
-
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../index.html"><span itemprop="name">tabled</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">Module code</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">tabled.multi</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <article class="yue dark-code" role="main">
+          <h1>Source code for tabled.multi</h1><div class="highlight"><pre>
+<span></span><span data-line="1"><span class="sd">"""Multi-tabled data structures."""</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
+</span><span data-line="4"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</span><span data-line="5"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
+</span><span data-line="6"><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
+</span><span data-line="7">
+</span><span data-line="8"><span class="n">Column</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"Column"</span><span class="p">)</span>
+</span><span data-line="9"><span class="n">TableKey</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"TableKey"</span><span class="p">)</span>
+</span><span data-line="10"><span class="n">MappingOfDataFrames</span> <span class="o">=</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
+</span><span data-line="11"><span class="n">DataFrames</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">MappingOfDataFrames</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]</span>
+</span><span data-line="12">
+</span><span data-line="13"><span class="c1"># --------------------------------------------------------------------------------------</span>
+</span><span data-line="14"><span class="c1"># Utils</span>
+</span><span data-line="15">
+</span><span data-line="16">
 <div class="viewcode-block" id="mapping_of_dataframes">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.mapping_of_dataframes">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">DataFrames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MappingOfDataFrames</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cast to a mapping of dataframes&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
-            <span class="n">tables</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">tables</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected Mapping or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tables</span></div>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.mapping_of_dataframes">[docs]</a>
+</span><span data-line="17"><span class="k">def</span><span class="w"> </span><span class="nf">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">DataFrames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MappingOfDataFrames</span><span class="p">:</span>
+</span><span data-line="18"><span class="w">    </span><span class="sd">"""Cast to a mapping of dataframes"""</span>
+</span><span data-line="19">    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+</span><span data-line="20">        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+</span><span data-line="21">            <span class="n">tables</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">tables</span><span class="p">))</span>
+</span><span data-line="22">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="23">            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected Mapping or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="24">    <span class="k">return</span> <span class="n">tables</span></div>
 
-
-
+</span><span data-line="25">
+</span><span data-line="26">
 <div class="viewcode-block" id="dataframes">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.dataframes">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">DataFrames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cast to an iterable of dataframes.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-        <span class="n">tables</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">tables</span></div>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.dataframes">[docs]</a>
+</span><span data-line="27"><span class="k">def</span><span class="w"> </span><span class="nf">dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">DataFrames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+</span><span data-line="28"><span class="w">    </span><span class="sd">"""Cast to an iterable of dataframes."""</span>
+</span><span data-line="29">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+</span><span data-line="30">        <span class="n">tables</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span data-line="31">    <span class="k">return</span> <span class="n">tables</span></div>
 
-
-
-<span class="c1"># --------------------------------------------------------------------------------------</span>
-<span class="c1"># Combined datasets</span>
-<span class="c1"># See https://github.com/i2mint/tabled/discussions/3</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChainMap</span>
-
-
+</span><span data-line="32">
+</span><span data-line="33">
+</span><span data-line="34"><span class="c1"># --------------------------------------------------------------------------------------</span>
+</span><span data-line="35"><span class="c1"># Combined datasets</span>
+</span><span data-line="36"><span class="c1"># See https://github.com/i2mint/tabled/discussions/3</span>
+</span><span data-line="37"><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+</span><span data-line="38"><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChainMap</span>
+</span><span data-line="39">
+</span><span data-line="40">
 <div class="viewcode-block" id="execute_commands">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.execute_commands">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">execute_commands</span><span class="p">(</span>
-    <span class="n">commands</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span>
-    <span class="n">scope</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
-    <span class="n">interpreter_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">extra_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Carries `commands` operations out with tables taken from `scope`.</span>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.execute_commands">[docs]</a>
+</span><span data-line="41"><span class="k">def</span><span class="w"> </span><span class="nf">execute_commands</span><span class="p">(</span>
+</span><span data-line="42">    <span class="n">commands</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span>
+</span><span data-line="43">    <span class="n">scope</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+</span><span data-line="44">    <span class="n">interpreter_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+</span><span data-line="45">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="46">    <span class="n">extra_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="47"><span class="p">):</span>
+</span><span data-line="48"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="49"><span class="sd">    Carries `commands` operations out with tables taken from `scope`.</span>
+</span><span data-line="50">
+</span><span data-line="51"><span class="sd">    :param commands: An iterable of join operations to carry out.</span>
+</span><span data-line="52"><span class="sd">    """</span>
+</span><span data-line="53">    <span class="k">if</span> <span class="n">extra_scope</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="54">        <span class="n">extra_scope</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+</span><span data-line="55">    <span class="n">_scope</span> <span class="o">=</span> <span class="n">ChainMap</span><span class="p">(</span><span class="n">extra_scope</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+</span><span data-line="56">
+</span><span data-line="57">    <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">:</span>
+</span><span data-line="58">        <span class="n">command_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+</span><span data-line="59">        <span class="n">command_executor</span> <span class="o">=</span> <span class="n">interpreter_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">command_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="60">        <span class="k">if</span> <span class="n">command_executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="61">            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown command type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="62">        <span class="k">yield</span> <span class="n">command_executor</span><span class="p">(</span><span class="n">_scope</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span></div>
 
-<span class="sd">    :param commands: An iterable of join operations to carry out.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">extra_scope</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">extra_scope</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">_scope</span> <span class="o">=</span> <span class="n">ChainMap</span><span class="p">(</span><span class="n">extra_scope</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">:</span>
-        <span class="n">command_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
-        <span class="n">command_executor</span> <span class="o">=</span> <span class="n">interpreter_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">command_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">command_executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown command type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="n">command_executor</span><span class="p">(</span><span class="n">_scope</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span></div>
-
-
-
-<span class="c1"># Define the JoinWith dataclass</span>
-<span class="c1"># @dataclass</span>
-<span class="c1"># class JoinWith:</span>
-<span class="c1">#     table_key: str</span>
-<span class="c1">#     remove: list = None</span>
-
-
+</span><span data-line="63">
+</span><span data-line="64">
+</span><span data-line="65"><span class="c1"># Define the JoinWith dataclass</span>
+</span><span data-line="66"><span class="c1"># @dataclass</span>
+</span><span data-line="67"><span class="c1"># class JoinWith:</span>
+</span><span data-line="68"><span class="c1">#     table_key: str</span>
+</span><span data-line="69"><span class="c1">#     remove: list = None</span>
+</span><span data-line="70">
+</span><span data-line="71">
 <div class="viewcode-block" id="Load">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.Load">[docs]</a>
-<span class="nd">@dataclass</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Load</span><span class="p">:</span>
-    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span></div>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.Load">[docs]</a>
+</span><span data-line="72"><span class="nd">@dataclass</span>
+</span><span data-line="73"><span class="k">class</span><span class="w"> </span><span class="nc">Load</span><span class="p">:</span>
+</span><span data-line="74"><span class="w">    </span><span class="sd">"""Command: set the accumulator (`scope["cumul"]`) to `scope[key]`."""</span>
+</span><span data-line="75">
+</span><span data-line="76">    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span></div>
 
-
-
+</span><span data-line="77">
+</span><span data-line="78">
 <div class="viewcode-block" id="Join">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.Join">[docs]</a>
-<span class="nd">@dataclass</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Join</span><span class="p">:</span>
-    <span class="n">table_key</span><span class="p">:</span> <span class="nb">str</span></div>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.Join">[docs]</a>
+</span><span data-line="79"><span class="nd">@dataclass</span>
+</span><span data-line="80"><span class="k">class</span><span class="w"> </span><span class="nc">Join</span><span class="p">:</span>
+</span><span data-line="81"><span class="w">    </span><span class="sd">"""Command: inner-join the accumulator with the table at `scope[table_key]`."""</span>
+</span><span data-line="82">
+</span><span data-line="83">    <span class="n">table_key</span><span class="p">:</span> <span class="nb">str</span></div>
 
-
-
+</span><span data-line="84">
+</span><span data-line="85">
 <div class="viewcode-block" id="Remove">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.Remove">[docs]</a>
-<span class="nd">@dataclass</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Remove</span><span class="p">:</span>
-    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.Remove">[docs]</a>
+</span><span data-line="86"><span class="nd">@dataclass</span>
+</span><span data-line="87"><span class="k">class</span><span class="w"> </span><span class="nc">Remove</span><span class="p">:</span>
+</span><span data-line="88"><span class="w">    </span><span class="sd">"""Command: drop `fields` (column or columns) from the accumulator."""</span>
+</span><span data-line="89">
+</span><span data-line="90">    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
 
-
-
+</span><span data-line="91">
+</span><span data-line="92">
 <div class="viewcode-block" id="Rename">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.Rename">[docs]</a>
-<span class="nd">@dataclass</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Rename</span><span class="p">:</span>
-    <span class="n">rename_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span></div>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.Rename">[docs]</a>
+</span><span data-line="93"><span class="nd">@dataclass</span>
+</span><span data-line="94"><span class="k">class</span><span class="w"> </span><span class="nc">Rename</span><span class="p">:</span>
+</span><span data-line="95"><span class="w">    </span><span class="sd">"""Command: rename accumulator columns per `rename_mapping` (old name -&gt; new name)."""</span>
+</span><span data-line="96">
+</span><span data-line="97">    <span class="n">rename_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span></div>
 
+</span><span data-line="98">
+</span><span data-line="99">
+<div class="viewcode-block" id="set_scope_value">
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.set_scope_value">[docs]</a>
+</span><span data-line="100"><span class="k">def</span><span class="w"> </span><span class="nf">set_scope_value</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+</span><span data-line="101"><span class="w">    </span><span class="sd">"""Set `scope[key] = value` (in place)."""</span>
+</span><span data-line="102">    <span class="n">scope</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
+</span><span data-line="103">
+</span><span data-line="104">
+<div class="viewcode-block" id="load_func">
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.load_func">[docs]</a>
+</span><span data-line="105"><span class="k">def</span><span class="w"> </span><span class="nf">load_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span data-line="106"><span class="w">    </span><span class="sd">"""Interpreter for `Load`: set `scope["cumul"]` to `scope[command.key]`."""</span>
+</span><span data-line="107">    <span class="k">return</span> <span class="n">set_scope_value</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="s2">"cumul"</span><span class="p">,</span> <span class="n">scope</span><span class="p">[</span><span class="n">command</span><span class="o">.</span><span class="n">key</span><span class="p">])</span></div>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">set_scope_value</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="n">scope</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span data-line="108">
+</span><span data-line="109">
+<div class="viewcode-block" id="join_func">
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.join_func">[docs]</a>
+</span><span data-line="110"><span class="k">def</span><span class="w"> </span><span class="nf">join_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span data-line="111"><span class="w">    </span><span class="sd">"""Interpreter for `Join`: inner-merge the table at `command.table_key` into `scope["cumul"]`.</span>
+</span><span data-line="112">
+</span><span data-line="113"><span class="sd">    If `scope["renamed_columns"]` was set by a prior `Rename`, that column</span>
+</span><span data-line="114"><span class="sd">    renaming is applied to the joined table first, so a later rename stays</span>
+</span><span data-line="115"><span class="sd">    consistent across joins.</span>
+</span><span data-line="116"><span class="sd">    """</span>
+</span><span data-line="117">    <span class="n">table</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="n">command</span><span class="o">.</span><span class="n">table_key</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</span><span data-line="118">    <span class="k">if</span> <span class="s2">"renamed_columns"</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">:</span>
+</span><span data-line="119">        <span class="k">for</span> <span class="n">old_col</span><span class="p">,</span> <span class="n">new_col</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">[</span><span class="s2">"renamed_columns"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span data-line="120">            <span class="k">if</span> <span class="n">old_col</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+</span><span data-line="121">                <span class="n">table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">old_col</span><span class="p">:</span> <span class="n">new_col</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span data-line="122">    <span class="n">cumul</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">"cumul"</span><span class="p">]</span>
+</span><span data-line="123">    <span class="n">scope</span><span class="p">[</span><span class="s2">"cumul"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumul</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"inner"</span><span class="p">)</span></div>
 
+</span><span data-line="124">
+</span><span data-line="125">
+<div class="viewcode-block" id="remove_func">
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.remove_func">[docs]</a>
+</span><span data-line="126"><span class="k">def</span><span class="w"> </span><span class="nf">remove_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span data-line="127"><span class="w">    </span><span class="sd">"""Interpreter for `Remove`: drop `command.fields` from `scope["cumul"]`."""</span>
+</span><span data-line="128">    <span class="n">scope</span><span class="p">[</span><span class="s2">"cumul"</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">"cumul"</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span></div>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">load_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">set_scope_value</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="s2">&quot;cumul&quot;</span><span class="p">,</span> <span class="n">scope</span><span class="p">[</span><span class="n">command</span><span class="o">.</span><span class="n">key</span><span class="p">])</span>
+</span><span data-line="129">
+</span><span data-line="130">
+<div class="viewcode-block" id="rename_func">
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.rename_func">[docs]</a>
+</span><span data-line="131"><span class="k">def</span><span class="w"> </span><span class="nf">rename_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span data-line="132"><span class="w">    </span><span class="sd">"""Interpreter for `Rename`: rename `scope["cumul"]` columns and record the mapping in `scope`."""</span>
+</span><span data-line="133">    <span class="n">scope</span><span class="p">[</span><span class="s2">"renamed_columns"</span><span class="p">]</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span>
+</span><span data-line="134">    <span class="k">for</span> <span class="n">old_col</span><span class="p">,</span> <span class="n">new_col</span> <span class="ow">in</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span data-line="135">        <span class="n">scope</span><span class="p">[</span><span class="s2">"cumul"</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">"cumul"</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">old_col</span><span class="p">:</span> <span class="n">new_col</span><span class="p">})</span></div>
 
+</span><span data-line="136">
+</span><span data-line="137">
+</span><span data-line="138"><span class="n">dflt_tables_interpreter_map</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="139">    <span class="n">Load</span><span class="p">:</span> <span class="n">load_func</span><span class="p">,</span>
+</span><span data-line="140">    <span class="n">Join</span><span class="p">:</span> <span class="n">join_func</span><span class="p">,</span>
+</span><span data-line="141">    <span class="n">Remove</span><span class="p">:</span> <span class="n">remove_func</span><span class="p">,</span>
+</span><span data-line="142">    <span class="n">Rename</span><span class="p">:</span> <span class="n">rename_func</span><span class="p">,</span>
+</span><span data-line="143"><span class="p">}</span>
+</span><span data-line="144">
+</span><span data-line="145">
+<div class="viewcode-block" id="execute_table_commands">
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.execute_table_commands">[docs]</a>
+</span><span data-line="146"><span class="k">def</span><span class="w"> </span><span class="nf">execute_table_commands</span><span class="p">(</span>
+</span><span data-line="147">    <span class="n">commands</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span>
+</span><span data-line="148">    <span class="n">tables</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+</span><span data-line="149">    <span class="n">interpreter_map</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="n">dflt_tables_interpreter_map</span><span class="p">,</span>
+</span><span data-line="150">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="151">    <span class="n">extra_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="152"><span class="p">):</span>
+</span><span data-line="153"><span class="w">    </span><span class="sd">"""Run `commands` (`Load`/`Join`/`Remove`/`Rename`) against `tables`; see `execute_commands`."""</span>
+</span><span data-line="154">    <span class="k">return</span> <span class="n">execute_commands</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">tables</span><span class="p">,</span> <span class="n">interpreter_map</span><span class="p">,</span> <span class="n">extra_scope</span><span class="o">=</span><span class="n">extra_scope</span><span class="p">)</span></div>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">join_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="n">command</span><span class="o">.</span><span class="n">table_key</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">if</span> <span class="s2">&quot;renamed_columns&quot;</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">old_col</span><span class="p">,</span> <span class="n">new_col</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;renamed_columns&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">old_col</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
-                <span class="n">table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">old_col</span><span class="p">:</span> <span class="n">new_col</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">cumul</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span>
-    <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumul</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+</span><span data-line="155">
+</span><span data-line="156">
+</span><span data-line="157"><span class="c1"># def execute_commands(</span>
+</span><span data-line="158"><span class="c1">#     commands: Iterable, tables: Mapping[str, pd.DataFrame]</span>
+</span><span data-line="159"><span class="c1"># ) -&gt; pd.DataFrame:</span>
+</span><span data-line="160"><span class="c1">#     """</span>
+</span><span data-line="161"><span class="c1">#     Carries `commands` operations out with tables taken from `tables`.</span>
+</span><span data-line="162">
+</span><span data-line="163"><span class="c1">#     :param commands: An iterable of join operations to carry out.</span>
+</span><span data-line="164"><span class="c1">#         Each join operation is either a table name (str) or a JoinWith object.</span>
+</span><span data-line="165"><span class="c1">#         If it's a JoinWith object, it's assumed that the table has already been joined</span>
+</span><span data-line="166"><span class="c1">#         and the fields to remove are in the `remove` attribute of the object.</span>
+</span><span data-line="167"><span class="c1">#     :param tables: A mapping of table names to tables (pd.DataFrame)</span>
+</span><span data-line="168"><span class="c1">#     """</span>
+</span><span data-line="169"><span class="c1">#     # join_ops = map(ensure_join_op, resolution_sequence)</span>
+</span><span data-line="170"><span class="c1">#     commands = iter(commands)</span>
+</span><span data-line="171"><span class="c1">#     first_command = next(commands)</span>
+</span><span data-line="172"><span class="c1">#     assert isinstance(first_command, Join)</span>
+</span><span data-line="173"><span class="c1">#     table_key = first_command.table_key</span>
+</span><span data-line="174"><span class="c1">#     cumul = tables[table_key]  # initialize my accumulator</span>
+</span><span data-line="175"><span class="c1">#     for command in commands:</span>
+</span><span data-line="176"><span class="c1">#         if isinstance(command, Join):</span>
+</span><span data-line="177"><span class="c1">#             table = tables[command.table_key]</span>
+</span><span data-line="178"><span class="c1">#             cumul = cumul.merge(table, how='inner')</span>
+</span><span data-line="179"><span class="c1">#         elif isinstance(command, Remove):</span>
+</span><span data-line="180"><span class="c1">#             cumul = cumul.drop(columns=command.fields)</span>
+</span><span data-line="181"><span class="c1">#         else:</span>
+</span><span data-line="182"><span class="c1">#             raise TypeError(f'Unknown command type: {type(command)}')</span>
+</span><span data-line="183"><span class="c1">#     return cumul</span>
+</span><span data-line="184">
+</span><span data-line="185">
+</span><span data-line="186"><span class="c1"># --------------------------------------------------------------------------------------</span>
+</span><span data-line="187"><span class="c1"># Row-oriented mapping of multiple tables</span>
+</span><span data-line="188">
+</span><span data-line="189">
+</span><span data-line="190"><span class="c1"># --------------------------------------------------------------------------------------</span>
+</span><span data-line="191"><span class="c1"># Column-oriented mapping of multiple tables</span>
+</span><span data-line="192">
+</span><span data-line="193">
+<div class="viewcode-block" id="columns_of_first_table">
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.columns_of_first_table">[docs]</a>
+</span><span data-line="194"><span class="k">def</span><span class="w"> </span><span class="nf">columns_of_first_table</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">MappingOfDataFrames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]:</span>
+</span><span data-line="195"><span class="w">    </span><span class="sd">"""Return the column names of the first table in `tables`."""</span>
+</span><span data-line="196">    <span class="n">tables</span> <span class="o">=</span> <span class="n">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+</span><span data-line="197">    <span class="n">first_table</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)))</span>
+</span><span data-line="198">    <span class="k">return</span> <span class="n">first_table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 
-
-<span class="k">def</span><span class="w"> </span><span class="nf">remove_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-    <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">rename_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-    <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;renamed_columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span>
-    <span class="k">for</span> <span class="n">old_col</span><span class="p">,</span> <span class="n">new_col</span> <span class="ow">in</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">&quot;cumul&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">old_col</span><span class="p">:</span> <span class="n">new_col</span><span class="p">})</span>
-
-
-<span class="n">dflt_tables_interpreter_map</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">Load</span><span class="p">:</span> <span class="n">load_func</span><span class="p">,</span>
-    <span class="n">Join</span><span class="p">:</span> <span class="n">join_func</span><span class="p">,</span>
-    <span class="n">Remove</span><span class="p">:</span> <span class="n">remove_func</span><span class="p">,</span>
-    <span class="n">Rename</span><span class="p">:</span> <span class="n">rename_func</span><span class="p">,</span>
-<span class="p">}</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">execute_table_commands</span><span class="p">(</span>
-    <span class="n">commands</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span>
-    <span class="n">tables</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
-    <span class="n">interpreter_map</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="n">dflt_tables_interpreter_map</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">extra_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
-    <span class="k">return</span> <span class="n">execute_commands</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">tables</span><span class="p">,</span> <span class="n">interpreter_map</span><span class="p">,</span> <span class="n">extra_scope</span><span class="o">=</span><span class="n">extra_scope</span><span class="p">)</span>
-
-
-<span class="c1"># def execute_commands(</span>
-<span class="c1">#     commands: Iterable, tables: Mapping[str, pd.DataFrame]</span>
-<span class="c1"># ) -&gt; pd.DataFrame:</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     Carries `commands` operations out with tables taken from `tables`.</span>
-
-<span class="c1">#     :param commands: An iterable of join operations to carry out.</span>
-<span class="c1">#         Each join operation is either a table name (str) or a JoinWith object.</span>
-<span class="c1">#         If it&#39;s a JoinWith object, it&#39;s assumed that the table has already been joined</span>
-<span class="c1">#         and the fields to remove are in the `remove` attribute of the object.</span>
-<span class="c1">#     :param tables: A mapping of table names to tables (pd.DataFrame)</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     # join_ops = map(ensure_join_op, resolution_sequence)</span>
-<span class="c1">#     commands = iter(commands)</span>
-<span class="c1">#     first_command = next(commands)</span>
-<span class="c1">#     assert isinstance(first_command, Join)</span>
-<span class="c1">#     table_key = first_command.table_key</span>
-<span class="c1">#     cumul = tables[table_key]  # initialize my accumulator</span>
-<span class="c1">#     for command in commands:</span>
-<span class="c1">#         if isinstance(command, Join):</span>
-<span class="c1">#             table = tables[command.table_key]</span>
-<span class="c1">#             cumul = cumul.merge(table, how=&#39;inner&#39;)</span>
-<span class="c1">#         elif isinstance(command, Remove):</span>
-<span class="c1">#             cumul = cumul.drop(columns=command.fields)</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             raise TypeError(f&#39;Unknown command type: {type(command)}&#39;)</span>
-<span class="c1">#     return cumul</span>
-
-
-<span class="c1"># --------------------------------------------------------------------------------------</span>
-<span class="c1"># Row-oriented mapping of multiple tables</span>
-
-
-<span class="c1"># --------------------------------------------------------------------------------------</span>
-<span class="c1"># Column-oriented mapping of multiple tables</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">columns_of_first_table</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">MappingOfDataFrames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]:</span>
-    <span class="n">tables</span> <span class="o">=</span> <span class="n">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
-    <span class="n">first_table</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="n">first_table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-
+</span><span data-line="199">
+</span><span data-line="200">
 <div class="viewcode-block" id="columns_of_all_tables">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.columns_of_all_tables">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">columns_of_all_tables</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">MappingOfDataFrames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return all columns from all tables, in order of first appearance.</span>
-<span class="sd">    This is useful for making a ColumnOrientedMapping without reverting to</span>
-<span class="sd">    the default columns argument, which is to use the columns of the first table.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.columns_of_all_tables">[docs]</a>
+</span><span data-line="201"><span class="k">def</span><span class="w"> </span><span class="nf">columns_of_all_tables</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">MappingOfDataFrames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]:</span>
+</span><span data-line="202"><span class="w">    </span><span class="sd">"""Return all columns from all tables, in order of first appearance.</span>
+</span><span data-line="203"><span class="sd">    This is useful for making a ColumnOrientedMapping without reverting to</span>
+</span><span data-line="204"><span class="sd">    the default columns argument, which is to use the columns of the first table.</span>
+</span><span data-line="205"><span class="sd">    """</span>
+</span><span data-line="206">    <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+</span><span data-line="207">
+</span><span data-line="208">    <span class="n">tables</span> <span class="o">=</span> <span class="n">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+</span><span data-line="209">    <span class="n">all_columns</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span> <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</span><span data-line="210">    <span class="c1"># return unique columns in order of first appearance</span>
+</span><span data-line="211">    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">all_columns</span><span class="p">))</span></div>
 
-    <span class="n">tables</span> <span class="o">=</span> <span class="n">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
-    <span class="n">all_columns</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span> <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="c1"># return unique columns in order of first appearance</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">all_columns</span><span class="p">))</span></div>
-
-
-
+</span><span data-line="212">
+</span><span data-line="213">
 <div class="viewcode-block" id="ColumnOrientedMapping">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ColumnOrientedMapping</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">tables</span><span class="p">:</span> <span class="n">MappingOfDataFrames</span><span class="p">,</span>
-        <span class="n">columns</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]</span> <span class="o">=</span> <span class="n">columns_of_first_table</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tables</span> <span class="o">=</span> <span class="n">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span> <span class="o">=</span> <span class="n">columns</span>
-
-    <span class="nd">@cached_property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The columns that will be used in this mapping (the keys of the mapping)&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">),</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Expected Callable or Iterable, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span>
-
-    <span class="nd">@cached_property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_table_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TableKey</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a table with the given columns from all tables.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
-
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.ColumnOrientedMapping">[docs]</a>
+</span><span data-line="214"><span class="k">class</span><span class="w"> </span><span class="nc">ColumnOrientedMapping</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+</span><span data-line="215"><span class="w">    </span><span class="sd">"""A `{column_name: concatenated_column_values}` view over several tables.</span>
+</span><span data-line="216">
+</span><span data-line="217"><span class="sd">    Keys are column names (by default, the columns of the first table);</span>
+</span><span data-line="218"><span class="sd">    each value is that column concatenated across all `tables`.</span>
+</span><span data-line="219"><span class="sd">    """</span>
+</span><span data-line="220">
+</span><span data-line="221">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+</span><span data-line="222">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="223">        <span class="n">tables</span><span class="p">:</span> <span class="n">MappingOfDataFrames</span><span class="p">,</span>
+</span><span data-line="224">        <span class="n">columns</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]</span> <span class="o">=</span> <span class="n">columns_of_first_table</span><span class="p">,</span>
+</span><span data-line="225">    <span class="p">):</span>
+</span><span data-line="226">        <span class="bp">self</span><span class="o">.</span><span class="n">tables</span> <span class="o">=</span> <span class="n">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+</span><span data-line="227">        <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span> <span class="o">=</span> <span class="n">columns</span>
+</span><span data-line="228">
+</span><span data-line="229">    <span class="nd">@cached_property</span>
+</span><span data-line="230">    <span class="k">def</span><span class="w"> </span><span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="231"><span class="w">        </span><span class="sd">"""The columns that will be used in this mapping (the keys of the mapping)"""</span>
+</span><span data-line="232">        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+</span><span data-line="233">            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">]</span>
+</span><span data-line="234">        <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">):</span>
+</span><span data-line="235">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">)</span>
+</span><span data-line="236">        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">),</span> <span class="p">(</span>
+</span><span data-line="237">            <span class="sa">f</span><span class="s2">"Expected Callable or Iterable, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="238">        <span class="p">)</span>
+</span><span data-line="239">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span>
+</span><span data-line="240">
+</span><span data-line="241">    <span class="nd">@cached_property</span>
+</span><span data-line="242">    <span class="k">def</span><span class="w"> </span><span class="nf">_table_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TableKey</span><span class="p">]:</span>
+</span><span data-line="243">        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span><span data-line="244">
+</span><span data-line="245">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]:</span>
+</span><span data-line="246">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</span><span data-line="247">
+</span><span data-line="248">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="249"><span class="w">        </span><span class="sd">"""Return a table with the given columns from all tables."""</span>
+</span><span data-line="250">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span data-line="251">
+</span><span data-line="252">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="253">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</span><span data-line="254">
+</span><span data-line="255">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="256">        <span class="k">return</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+</span><span data-line="257">
 <div class="viewcode-block" id="ColumnOrientedMapping.df">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping.df">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Concatinate all dataframes of given columns from all tables,</span>
-<span class="sd">        returning a single dataframe.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">table</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span> <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">dataframes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">)])</span></div>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.ColumnOrientedMapping.df">[docs]</a>
+</span><span data-line="258">    <span class="k">def</span><span class="w"> </span><span class="nf">df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="259"><span class="w">        </span><span class="sd">"""Concatenate the given columns (all columns by default) from all tables into one dataframe."""</span>
+</span><span data-line="260">        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="261">            <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+</span><span data-line="262">        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">table</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span> <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">dataframes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">)])</span></div>
 
-
+</span><span data-line="263">
 <div class="viewcode-block" id="ColumnOrientedMapping.array">
-<a class="viewcode-back" href="../../module_docs/tabled/multi.html#tabled.multi.ColumnOrientedMapping.array">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Concatinate all the arrays of given columns from all tables,</span>
-<span class="sd">        returning a single array.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">array</span></div>
+<a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.ColumnOrientedMapping.array">[docs]</a>
+</span><span data-line="264">    <span class="k">def</span><span class="w"> </span><span class="nf">array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="265"><span class="w">        </span><span class="sd">"""Concatenate a single column from all tables into one array.</span>
+</span><span data-line="266">
+</span><span data-line="267"><span class="sd">        `columns` must be a single column name (not a list): `.df(columns)`</span>
+</span><span data-line="268"><span class="sd">        then has to return a Series (not a DataFrame) for `.array` to work.</span>
+</span><span data-line="269"><span class="sd">        """</span>
+</span><span data-line="270">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">array</span></div>
 </div>
 
-
-
-<span class="c1"># Convenience functions, placed in ColumnOrientedMapping for easy access</span>
-<span class="n">ColumnOrientedMapping</span><span class="o">.</span><span class="n">columns_of_first_table</span> <span class="o">=</span> <span class="n">columns_of_first_table</span>
-<span class="n">ColumnOrientedMapping</span><span class="o">.</span><span class="n">columns_of_all_tables</span> <span class="o">=</span> <span class="n">columns_of_all_tables</span>
-</pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+</span><span data-line="271">
+</span><span data-line="272">
+</span><span data-line="273"><span class="c1"># Convenience functions, placed in ColumnOrientedMapping for easy access</span>
+</span><span data-line="274"><span class="n">ColumnOrientedMapping</span><span class="o">.</span><span class="n">columns_of_first_table</span> <span class="o">=</span> <span class="n">columns_of_first_table</span>
+</span><span data-line="275"><span class="n">ColumnOrientedMapping</span><span class="o">.</span><span class="n">columns_of_all_tables</span> <span class="o">=</span> <span class="n">columns_of_all_tables</span>
+</span></pre></div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright">
+  <p>
+    Made with
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/i2mint/tabled" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
   </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+      <script src="../../_static/documentation_options.js?v=904119ea"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+      <script src="../../_static/shibuya.js?v=50760d75"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
-</body>
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script></body>
 </html>

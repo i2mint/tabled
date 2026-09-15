@@ -1,0 +1,30 @@
+tabled.compare\_tables
+======================
+
+.. automodule:: tabled.compare_tables
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      columns_diff
+      columns_value_diff
+      dataframe_diffs
+      dtypes_diff
+      ensure_comparisons_dict
+      index_diff
+      shape_diff
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BinaryFuncResult
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      InvalidComparison
+   

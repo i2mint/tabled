@@ -1,0 +1,12 @@
+tabled.tools
+============
+
+.. automodule:: tabled.tools
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      diagnose_table_collection
+   

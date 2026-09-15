@@ -1,4 +1,0 @@
-tabled.tests.test_base
-======================
-.. automodule:: tabled.tests.test_base
-   :members:

@@ -1,0 +1,17 @@
+tabled.html
+===========
+
+.. automodule:: tabled.html
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      df_store_to_html
+      df_to_html
+      dfs_to_html_pretty
+      dfs_to_pdf_bytes
+      get_tables_from_url
+      url_to_html_func
+   

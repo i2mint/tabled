@@ -1,0 +1,36 @@
+tabled.util
+===========
+
+.. automodule:: tabled.util
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      auto_decode_bytes
+      breadth_first_traversal
+      collapse_columns
+      collapse_rows
+      column_sep_key_mapper
+      duplicate_groups
+      ensure_columns
+      ensure_first_columns
+      ensure_last_columns
+      expand_columns
+      expand_rows
+      identity
+      intersection_graph
+      invert_labeled_collection
+      is_instance_of
+      is_non_null_or_empty
+      map_values
+      split_keys
+      upsert_data
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      PandasJSONEncoder
+   

@@ -1,0 +1,31 @@
+# tabled
+
+> A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease
+
+
+## Pages
+
+- [tabled](index.html.md): A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease
+- [API reference](api.html.md): | [`tabled`](_autosummary/tabled.html.md#module-tabled)   | A data-object-layer package for accessin...
+- [tabled](_autosummary/tabled.html.md): A data-object-layer package for accessing pandas DataFrames from various sources.
+- [tabled.base](_autosummary/tabled.base.html.md): Based functionality for tabled
+- [tabled.coerce](_autosummary/tabled.coerce.html.md): Column type coercion utilities for pandas DataFrames.
+- [tabled.compare_tables](_autosummary/tabled.compare_tables.html.md): Tools to compare tables
+- [tabled.diagnose](_autosummary/tabled.diagnose.html.md): DataFrame and table collection diagnosis utilities.
+- [tabled.html](_autosummary/tabled.html.html.md): To work with html
+- [tabled.join_tables](_autosummary/tabled.join_tables.html.md): Join multiple tables (pandas DataFrames) down to a target subset of columns.
+- [tabled.misc](_autosummary/tabled.misc.html.md): Miscellaneous utility functions for tables.
+- [tabled.multi](_autosummary/tabled.multi.html.md): Multi-tabled data structures.
+- [tabled.sqlite_tools](_autosummary/tabled.sqlite_tools.html.md): General-purpose SQLite to DataFrame/Parquet export tools using DuckDB.
+- [tabled.tools](_autosummary/tabled.tools.html.md): Various high-level tools using tabled
+- [tabled.util](_autosummary/tabled.util.html.md): General-purpose utilities for working with DataFrames, dicts, and byte decoding.
+- [tabled.wrappers](_autosummary/tabled.wrappers.html.md): Wrapping tools
+- [About this build](about-this-build.html.md): This documentation was built on **2026-09-15 13:07 UTC** from commit <a href="https://github.com/i2m...
+
+---
+
+For more comprehensive documentation, see [tabled.md](tabled.md)
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

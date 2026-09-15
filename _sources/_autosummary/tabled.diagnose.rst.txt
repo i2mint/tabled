@@ -1,0 +1,16 @@
+tabled.diagnose
+===============
+
+.. automodule:: tabled.diagnose
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      dataframe_info
+      list_info_funcs
+      print_dataframe_info
+      register_info_func
+      scalar_columns
+   

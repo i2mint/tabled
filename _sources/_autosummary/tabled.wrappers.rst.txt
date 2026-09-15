@@ -1,0 +1,33 @@
+tabled.wrappers
+===============
+
+.. automodule:: tabled.wrappers
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      add_extension_codec
+      cast_to_parquet
+      default_io_resolver
+      df_from_data_according_to_key
+      df_from_data_given_ext
+      extension_based_decoding
+      extension_based_encoding
+      extension_based_wrap
+      file_extension
+      get_codec_mappings
+      get_extension
+      get_file_ext
+      get_protocol
+      if_extension_not_present_add_it
+      if_extension_present_remove_it
+      key_func_mapping
+      map_values
+      print_current_mappings
+      resolve_to_dataframe
+      save_df_to_zipped_tsv
+      single_column_parquet_decode
+      single_column_parquet_encode
+   
