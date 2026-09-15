@@ -33,15 +33,17 @@ Example
 from typing import Callable, Optional, List
 import json
 
+import pandas as pd
+
 
 def coerce_series_conditionally(
-    series: "pd.Series",
+    series: pd.Series,
     condition: Callable,
     transform: Callable,
     *,
     sample_size: int = 100,
     threshold: float = 0.8,
-) -> "pd.Series":
+) -> pd.Series:
     """
     Conditionally transform a pandas Series based on sampled values.
 
@@ -257,7 +259,7 @@ def parse_json_safe(value):
         return value
 
 
-def coerce_json_column(series: "pd.Series", **kwargs) -> "pd.Series":
+def coerce_json_column(series: pd.Series, **kwargs) -> pd.Series:
     """
     Coerce a column of JSON strings to Python objects.
 
@@ -296,7 +298,7 @@ def coerce_json_column(series: "pd.Series", **kwargs) -> "pd.Series":
     )
 
 
-def coerce_json_list_column(series: "pd.Series", **kwargs) -> "pd.Series":
+def coerce_json_list_column(series: pd.Series, **kwargs) -> pd.Series:
     """
     Coerce a column of JSON list strings to Python lists.
 
@@ -336,7 +338,7 @@ def coerce_json_list_column(series: "pd.Series", **kwargs) -> "pd.Series":
 
 
 def coerce_dataframe_columns(
-    df: "pd.DataFrame",
+    df: pd.DataFrame,
     condition: Callable,
     transform: Callable,
     columns: Optional[List[str]] = None,
@@ -344,7 +346,7 @@ def coerce_dataframe_columns(
     sample_size: int = 100,
     threshold: float = 0.8,
     verbose: bool = False,
-) -> "pd.DataFrame":
+) -> pd.DataFrame:
     """
     Conditionally coerce columns in a DataFrame.
 
@@ -419,12 +421,12 @@ def coerce_dataframe_columns(
 
 
 def coerce_json_columns(
-    df: "pd.DataFrame",
+    df: pd.DataFrame,
     columns: Optional[List[str]] = None,
     *,
     verbose: bool = False,
     **kwargs,
-) -> "pd.DataFrame":
+) -> pd.DataFrame:
     """
     Coerce JSON string columns in a DataFrame to Python objects.
 

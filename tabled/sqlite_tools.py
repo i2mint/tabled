@@ -19,6 +19,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, Iterable, Optional, Sequence, Union
 
+import pandas as pd
+
 DFLT_VERBOSE = False
 
 # Core / standard SQLite database extensions
@@ -64,7 +66,7 @@ def export_sqlite_to_dataframes(
     schema: str = "src",
     install_extensions: bool = True,
     verbose: bool = DFLT_VERBOSE,
-) -> Dict[str, "pd.DataFrame"]:
+) -> Dict[str, pd.DataFrame]:
     """
     Export tables from SQLite to pandas DataFrames using DuckDB + sqlite_scanner.
 
@@ -260,11 +262,14 @@ def export_sqlite_query_to_parquet(
     - filtered subsets
 
     Example:
-        export_sqlite_query_to_parquet(
-            "my.db",
-            "edges.parquet",
-            query="SELECT from_id AS source, to_id AS target, weight FROM edges"
-        )
+
+        .. code-block:: python
+
+            export_sqlite_query_to_parquet(
+                "my.db",
+                "edges.parquet",
+                query="SELECT from_id AS source, to_id AS target, weight FROM edges",
+            )
     """
     import duckdb
 
@@ -317,7 +322,7 @@ def export_sqlite_to_dataframes_and_parquet(
     overwrite: bool = True,
     install_extensions: bool = True,
     verbose: bool = DFLT_VERBOSE,
-) -> tuple[Dict[str, "pd.DataFrame"], Optional[Path]]:
+) -> tuple[Dict[str, pd.DataFrame], Optional[Path]]:
     """Export SQLite tables to both DataFrames and Parquet files.
 
     This is a combined function that exports SQLite tables to pandas DataFrames
