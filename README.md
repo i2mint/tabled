@@ -23,17 +23,17 @@ Tabled provides seamless integration with SQLite databases through `DfFiles`:
 from tabled import DfFiles
 
 # Automatic SQLite detection - just pass the database file path
-df_files = DfFiles('my_database.db')
+df_files = DfFiles("my_database.db")
 
 # Access tables as DataFrames
-customers = df_files['customers.parquet']  # Full filename
-orders = df_files['orders']                # Clean table name (both work)
+customers = df_files["customers.parquet"]  # Full filename
+orders = df_files["orders"]  # Clean table name (both work)
 
 # List available tables
 print(list(df_files.keys()))  # ['customers.parquet', 'orders.parquet', ...]
 
 # Or use the explicit method
-df_files = DfFiles.from_sqlite_file('my_database.db')
+df_files = DfFiles.from_sqlite_file("my_database.db")
 ```
 
 Under the hood, SQLite tables are exported to temporary Parquet files for efficient access, with automatic cleanup when the program exits.
@@ -46,11 +46,11 @@ For more control over SQLite data extraction, use the `sqlite_tools` module:
 from tabled.sqlite_tools import export_sqlite_to_dataframes, export_sqlite_to_parquet
 
 # Export to DataFrames
-tables = export_sqlite_to_dataframes('database.db')
-customers_df = tables['customers']
+tables = export_sqlite_to_dataframes("database.db")
+customers_df = tables["customers"]
 
 # Export to Parquet files
-export_sqlite_to_parquet('database.db', 'output_directory/')
+export_sqlite_to_parquet("database.db", "output_directory/")
 ```
 
 ## Table Analysis and Diagnosis
@@ -62,18 +62,20 @@ from tabled.diagnose import dataframe_info, register_info_func
 import pandas as pd
 
 # Analyze a DataFrame
-df = pd.DataFrame({'a': [1, 2, 3], 'b': ['x', 'y', 'z']})
+df = pd.DataFrame({"a": [1, 2, 3], "b": ["x", "y", "z"]})
 info = dataframe_info(df)
-print(info['shape'])  # (3, 2)
-print(info['columns'])  # ['a', 'b']
+print(info["shape"])  # (3, 2)
+print(info["columns"])  # ['a', 'b']
+
 
 # Extend with custom analysis functions
 def memory_usage(df):
     return df.memory_usage(deep=True).sum()
 
-register_info_func('memory', memory_usage)
+
+register_info_func("memory", memory_usage)
 info = dataframe_info(df)
-print(info['memory'])  # Memory usage in bytes
+print(info["memory"])  # Memory usage in bytes
 ```
 
 The analysis is completely customizable - you can register new analysis functions or provide custom info function dictionaries to focus on specific aspects of your data.
@@ -110,7 +112,7 @@ misc_small_dicts = {
         "location": ["Kansas City", "Roswell", "Jupiter"],
         "duration_minutes": [15, 120, 30],
         "was_returned": [True, False, True],
-    }
+    },
 }
 ```
 
@@ -122,12 +124,13 @@ We'll create a temporary directory for our files:
 ```python
 def create_test_directory():
     # Create a directory for the test files
-    rootdir = os.path.join(tempfile.gettempdir(), 'tabled_df_files_test')
+    rootdir = os.path.join(tempfile.gettempdir(), "tabled_df_files_test")
     if os.path.exists(rootdir):
         shutil.rmtree(rootdir)
     os.makedirs(rootdir)
     print(f"Created directory at: {rootdir}")
     return rootdir
+
 
 rootdir = create_test_directory()
 print(f"Created directory at: {rootdir}")
@@ -166,8 +169,8 @@ Let's create DataFrames from our test data:
 
 
 ```python
-fantasy_tavern_menu_df = pd.DataFrame(misc_small_dicts['fantasy_tavern_menu'])
-alien_abduction_log_df = pd.DataFrame(misc_small_dicts['alien_abduction_log'])
+fantasy_tavern_menu_df = pd.DataFrame(misc_small_dicts["fantasy_tavern_menu"])
+alien_abduction_log_df = pd.DataFrame(misc_small_dicts["alien_abduction_log"])
 
 print("Fantasy Tavern Menu:")
 display(fantasy_tavern_menu_df)
@@ -264,8 +267,8 @@ Now let's save these DataFrames using different formats:
 
 
 ```python
-df_files['fantasy_tavern_menu.csv'] = fantasy_tavern_menu_df
-df_files['alien_abduction_log.json'] = alien_abduction_log_df
+df_files["fantasy_tavern_menu.csv"] = fantasy_tavern_menu_df
+df_files["alien_abduction_log.json"] = alien_abduction_log_df
 ```
 
 ## Reading Data Back
@@ -274,7 +277,7 @@ Let's verify we can read the data back correctly:
 
 
 ```python
-saved_df = df_files['fantasy_tavern_menu.csv']
+saved_df = df_files["fantasy_tavern_menu.csv"]
 saved_df
 ```
 
@@ -354,7 +357,7 @@ Check if a file exists:
 
 
 ```python
-'fantasy_tavern_menu.csv' in df_files
+"fantasy_tavern_menu.csv" in df_files
 ```
 
 
@@ -374,7 +377,7 @@ Let's see what file formats DfFiles supports out of the box.
 ```python
 print("Encoder supported extensions:")
 list_of_encoder_supported_extensions = list(df_files.extension_encoder_mapping)
-print(*list_of_encoder_supported_extensions, sep=', ')
+print(*list_of_encoder_supported_extensions, sep=", ")
 ```
 
     Encoder supported extensions:
@@ -385,7 +388,7 @@ print(*list_of_encoder_supported_extensions, sep=', ')
 ```python
 print("Decoder supported extensions:")
 list_of_decoder_supported_extensions = list(df_files.extension_decoder_mapping)
-print(*list_of_decoder_supported_extensions, sep=', ')
+print(*list_of_decoder_supported_extensions, sep=", ")
 ```
 
     Decoder supported extensions:
@@ -398,9 +401,9 @@ Let's try saving and loading our test DataFrame in different formats:
 
 
 ```python
-extensions_supported_by_encoder_and_decoder = (
-    set(list_of_encoder_supported_extensions) & set(list_of_decoder_supported_extensions)
-)
+extensions_supported_by_encoder_and_decoder = set(
+    list_of_encoder_supported_extensions
+) & set(list_of_decoder_supported_extensions)
 sorted(extensions_supported_by_encoder_and_decoder)
 ```
 
@@ -436,7 +439,7 @@ sorted(extensions_supported_by_encoder_and_decoder)
 
 ```python
 def test_extension(ext):
-    filename = f'test_file.{ext}'
+    filename = f"test_file.{ext}"
     try:
         df_files[filename] = fantasy_tavern_menu_df
         df_loaded = df_files[filename]
@@ -452,13 +455,13 @@ def test_extension(ext):
 
 
 test_extensions = [
-    'csv',
-    'feather',
-    'json',
-    'orc',
-    'parquet',
-    'pkl',
-    'tsv',  
+    "csv",
+    "feather",
+    "json",
+    "orc",
+    "parquet",
+    "pkl",
+    "tsv",
     # 'dta',  # TODO: fix
     # 'h5',  # TODO: fix
     # 'html',  # TODO: fix
@@ -472,8 +475,8 @@ for ext in test_extensions:
     if success:
         print(f"\tExtension {ext}: ✓")
     else:
-        print('\033[91m' + f"\tFix extension {ext}: ✗" + '\033[0m')
-        
+        print("\033[91m" + f"\tFix extension {ext}: ✗" + "\033[0m")
+
     # marker = '✓' if success else '\033[91m✗\033[0m'
     # print(f"\tExtension {ext}: {marker}")
 ```
