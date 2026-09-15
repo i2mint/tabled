@@ -150,7 +150,7 @@ def update_leaf_edges_after_removal(
     :param tables: A mapping of table names to tables (pd.DataFrame).
     :param target_sub_set: The target subset of columns that must remain covered.
     :param current_leaf_edges: The current list of leaf edges.
-    :return: The leaf edges that must be kept to keep `target_sub_set` covered.
+    :return: An updated list of leaf edges.
     """
     new_leaf_edges = []
     labeled_sets = {table_id: set(df.columns) for table_id, df in tables.items()}

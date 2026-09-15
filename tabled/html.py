@@ -222,7 +222,7 @@ def df_to_html(df, title=None):
 
 
 def df_store_to_html(df_store, sep="\n<br>\n"):
-    """Render each dataframe in `df_store`, titled by its key, joined by `sep`."""
+    """Render each dataframe in `df_store`, titled by its key's leading non-digit prefix, joined by `sep`."""
     ht = ""
     for k, df in df_store.items():
         title = re.match(r"[^\d]+", k).group(0)

@@ -262,7 +262,11 @@ class ColumnOrientedMapping(Mapping):
         return pd.concat([table[columns] for table in dataframes(self.tables)])
 
     def array(self, columns=None):
-        """Concatenate the given columns (all columns by default) from all tables into one array."""
+        """Concatenate a single column from all tables into one array.
+
+        `columns` must be a single column name (not a list): `.df(columns)`
+        then has to return a Series (not a DataFrame) for `.array` to work.
+        """
         return self.df(columns).array
 
 
