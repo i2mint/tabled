@@ -1,39 +1,39 @@
 {
   "schema_version": 1,
-  "built_at": "2026-09-15T13:07:40Z",
+  "built_at": "2026-10-20T07:28:16Z",
   "package": {
     "name": "tabled",
-    "version": "0.1.29",
+    "version": "0.1.30",
     "display_name": "tabled",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "2929fedee809938183fe35026702650a1c55a5ca",
-    "short_commit": "2929fed",
+    "commit": "4c52d1ddc1b5c62520ebf3708d271f1f401a9567",
+    "short_commit": "4c52d1d",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/tabled",
-    "commit_url": "https://github.com/i2mint/tabled/commit/2929fedee809938183fe35026702650a1c55a5ca",
+    "commit_url": "https://github.com/i2mint/tabled/commit/4c52d1ddc1b5c62520ebf3708d271f1f401a9567",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/tabled",
-    "sha": "2929fedee809938183fe35026702650a1c55a5ca",
+    "sha": "4c52d1ddc1b5c62520ebf3708d271f1f401a9567",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "34972839655",
-    "run_url": "https://github.com/i2mint/tabled/actions/runs/34972839655",
+    "run_id": "39386528011",
+    "run_url": "https://github.com/i2mint/tabled/actions/runs/39386528011",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.12",
-    "sphinx": "9.1.0",
+    "epythet": "0.2.18",
+    "sphinx": "9.1.1",
     "docutils": "0.22.4",
-    "python": "3.12.14"
+    "python": "3.12.15"
   },
   "config": {
     "theme": "auto",
@@ -60,16 +60,16 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.30",
+    "latest": "0.1.31",
     "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/tabled && cd tabled\ngit checkout 2929fedee809938183fe35026702650a1c55a5ca\npip install \"epythet==0.2.12\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/tabled && cd tabled\ngit checkout 4c52d1ddc1b5c62520ebf3708d271f1f401a9567\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": false,
     "notes": [
-      "The documented version (0.1.29) is behind the latest release on PyPI (0.1.30): `pip install tabled` gives newer code than these docs describe."
+      "The documented version (0.1.30) is behind the latest release on PyPI (0.1.31): `pip install tabled` gives newer code than these docs describe."
     ]
   }
 }

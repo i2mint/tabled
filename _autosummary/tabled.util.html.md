@@ -186,7 +186,7 @@ contains a dictionary of column names and values from the original dataframe.
 
 * **Parameters:**
   * **df** (`DataFrame`) – The dataframe to transform.
-  * **groupings** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]) – A mapping that indicates which columns to collapse into dictionaries
+  * **groupings** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[`KT`]) – A mapping that indicates which columns to collapse into dictionaries
     and what to call the new resulting column.
     If only a list of column names to be collapsed is given, it will be interpreted as
     the group_column_names in a single `{"collapsed": group_column_names}` dictionary,
@@ -228,7 +228,7 @@ column’s values (the ones that are not keys of the groupby) into lists.
 
 * **Parameters:**
   * **df** (`DataFrame`) – the dataframe to collapse
-  * **by** ([`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]) – the columns to group by (the keys of the groupby)
+  * **by** ([`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[`KT`]) – the columns to group by (the keys of the groupby)
   * **container** ([`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)], [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)]) – the container to use to gather the other columns values
 * **Return type:**
   `DataFrame`
@@ -380,7 +380,7 @@ Each column in `grouped_columns` should contain lists of the same length within 
 
 * **Parameters:**
   * **df** (`DataFrame`) – The DataFrame to expand.
-  * **grouped_columns** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]) – The list of columns to expand
+  * **grouped_columns** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[`KT`]) – The list of columns to expand
 * **Return type:**
   `DataFrame`
 * **Returns:**
@@ -417,9 +417,9 @@ and there is an edge between two vertices if the sets intersect.
 The weight of the edge is the size of the intersection.
 
 * **Parameters:**
-  * **sets** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`), [`set`](https://docs.python.org/3/builtins/stdtypes.html#set)]) – A mapping of keys to sets of elements. These sets of elements will
+  * **sets** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[`KT`, [`set`](https://docs.python.org/3/builtins/stdtypes.html#set)]) – A mapping of keys to sets of elements. These sets of elements will
     be the vertices of the graph.
-  * **edge_labels** ([`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'elements'`, `'size'`, `False`]) – If ‘elements’, the edge labels are the elements of the intersection.
+  * **edge_labels** ([`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'elements'`, `'size'`, [`False`](https://docs.python.org/3/builtins/constants.html#False)]) – If ‘elements’, the edge labels are the elements of the intersection.
     If ‘size’, the edge labels are the size of the intersection.
     If False, there are no edge labels.
 * **Returns:**
@@ -461,9 +461,6 @@ The weight of the edge is the size of the intersection.
 Invert a mapping whose values are iterables of objects,
 getting a mapping from objects to iterables of keys.
 
-* **Return type:**
-  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`VT`), [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]]
-
 ```pycon
 >>> original_dict = {
 ...     "X": ['a', 'b'],
@@ -492,6 +489,9 @@ The `values_container` argument can be used to cast the values of the inverted d
 >>> invert_labeled_collection(t, ''.join)
 {'a': 'apple', 'b': 'aaabnn'}
 ```
+
+* **Return type:**
+  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[`VT`, [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`KT`]]
 
 ### tabled.util.is_instance_of(class_or_tuple)
 

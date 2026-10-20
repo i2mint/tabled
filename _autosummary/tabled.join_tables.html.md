@@ -119,7 +119,7 @@ Generate a sequence of joins with remove commands based on leaf edges
 Return the covering-tree edges (see `minimum_covering_tree`) whose second table is a leaf (visited once).
 
 * **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`), [`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]]
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[`KT`, `KT`]]
 
 ### tabled.join_tables.minimum_covering_tree(tables, target_subset, start_node=None)
 

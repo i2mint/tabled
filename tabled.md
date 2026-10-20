@@ -1,4 +1,4 @@
-> built 2026-09-15 13:07 UTC from 2929fed (master) · tabled 0.1.29. Details: build_info.json
+> built 2026-10-20 07:28 UTC from 4c52d1d (master) · tabled 0.1.30. Details: build_info.json
 
 # index.html.md
 
@@ -30,17 +30,17 @@ Tabled provides seamless integration with SQLite databases through `DfFiles`:
 from tabled import DfFiles
 
 # Automatic SQLite detection - just pass the database file path
-df_files = DfFiles('my_database.db')
+df_files = DfFiles("my_database.db")
 
 # Access tables as DataFrames
-customers = df_files['customers.parquet']  # Full filename
-orders = df_files['orders']                # Clean table name (both work)
+customers = df_files["customers.parquet"]  # Full filename
+orders = df_files["orders"]  # Clean table name (both work)
 
 # List available tables
 print(list(df_files.keys()))  # ['customers.parquet', 'orders.parquet', ...]
 
 # Or use the explicit method
-df_files = DfFiles.from_sqlite_file('my_database.db')
+df_files = DfFiles.from_sqlite_file("my_database.db")
 ```
 
 Under the hood, SQLite tables are exported to temporary Parquet files for efficient access, with automatic cleanup when the program exits.
@@ -53,11 +53,11 @@ For more control over SQLite data extraction, use the `sqlite_tools` module:
 from tabled.sqlite_tools import export_sqlite_to_dataframes, export_sqlite_to_parquet
 
 # Export to DataFrames
-tables = export_sqlite_to_dataframes('database.db')
-customers_df = tables['customers']
+tables = export_sqlite_to_dataframes("database.db")
+customers_df = tables["customers"]
 
 # Export to Parquet files
-export_sqlite_to_parquet('database.db', 'output_directory/')
+export_sqlite_to_parquet("database.db", "output_directory/")
 ```
 
 ## Table Analysis and Diagnosis
@@ -69,18 +69,20 @@ from tabled.diagnose import dataframe_info, register_info_func
 import pandas as pd
 
 # Analyze a DataFrame
-df = pd.DataFrame({'a': [1, 2, 3], 'b': ['x', 'y', 'z']})
+df = pd.DataFrame({"a": [1, 2, 3], "b": ["x", "y", "z"]})
 info = dataframe_info(df)
-print(info['shape'])  # (3, 2)
-print(info['columns'])  # ['a', 'b']
+print(info["shape"])  # (3, 2)
+print(info["columns"])  # ['a', 'b']
+
 
 # Extend with custom analysis functions
 def memory_usage(df):
     return df.memory_usage(deep=True).sum()
 
-register_info_func('memory', memory_usage)
+
+register_info_func("memory", memory_usage)
 info = dataframe_info(df)
-print(info['memory'])  # Memory usage in bytes
+print(info["memory"])  # Memory usage in bytes
 ```
 
 The analysis is completely customizable - you can register new analysis functions or provide custom info function dictionaries to focus on specific aspects of your data.
@@ -114,7 +116,7 @@ misc_small_dicts = {
         "location": ["Kansas City", "Roswell", "Jupiter"],
         "duration_minutes": [15, 120, 30],
         "was_returned": [True, False, True],
-    }
+    },
 }
 ```
 
@@ -125,12 +127,13 @@ We’ll create a temporary directory for our files:
 ```python
 def create_test_directory():
     # Create a directory for the test files
-    rootdir = os.path.join(tempfile.gettempdir(), 'tabled_df_files_test')
+    rootdir = os.path.join(tempfile.gettempdir(), "tabled_df_files_test")
     if os.path.exists(rootdir):
         shutil.rmtree(rootdir)
     os.makedirs(rootdir)
     print(f"Created directory at: {rootdir}")
     return rootdir
+
 
 rootdir = create_test_directory()
 print(f"Created directory at: {rootdir}")
@@ -164,8 +167,8 @@ list(df_files)
 Let’s create DataFrames from our test data:
 
 ```python
-fantasy_tavern_menu_df = pd.DataFrame(misc_small_dicts['fantasy_tavern_menu'])
-alien_abduction_log_df = pd.DataFrame(misc_small_dicts['alien_abduction_log'])
+fantasy_tavern_menu_df = pd.DataFrame(misc_small_dicts["fantasy_tavern_menu"])
+alien_abduction_log_df = pd.DataFrame(misc_small_dicts["alien_abduction_log"])
 
 print("Fantasy Tavern Menu:")
 display(fantasy_tavern_menu_df)
@@ -257,8 +260,8 @@ Alien Abduction Log:
 Now let’s save these DataFrames using different formats:
 
 ```python
-df_files['fantasy_tavern_menu.csv'] = fantasy_tavern_menu_df
-df_files['alien_abduction_log.json'] = alien_abduction_log_df
+df_files["fantasy_tavern_menu.csv"] = fantasy_tavern_menu_df
+df_files["alien_abduction_log.json"] = alien_abduction_log_df
 ```
 
 ## Reading Data Back
@@ -266,7 +269,7 @@ df_files['alien_abduction_log.json'] = alien_abduction_log_df
 Let’s verify we can read the data back correctly:
 
 ```python
-saved_df = df_files['fantasy_tavern_menu.csv']
+saved_df = df_files["fantasy_tavern_menu.csv"]
 saved_df
 ```
 
@@ -334,7 +337,7 @@ list(df_files)
 Check if a file exists:
 
 ```python
-'fantasy_tavern_menu.csv' in df_files
+"fantasy_tavern_menu.csv" in df_files
 ```
 
 ```none
@@ -350,7 +353,7 @@ Let’s see what file formats DfFiles supports out of the box.
 ```python
 print("Encoder supported extensions:")
 list_of_encoder_supported_extensions = list(df_files.extension_encoder_mapping)
-print(*list_of_encoder_supported_extensions, sep=', ')
+print(*list_of_encoder_supported_extensions, sep=", ")
 ```
 
 ```none
@@ -361,7 +364,7 @@ csv, txt, tsv, json, html, p, pickle, pkl, npy, parquet, zip, feather, h5, hdf5,
 ```python
 print("Decoder supported extensions:")
 list_of_decoder_supported_extensions = list(df_files.extension_decoder_mapping)
-print(*list_of_decoder_supported_extensions, sep=', ')
+print(*list_of_decoder_supported_extensions, sep=", ")
 ```
 
 ```none
@@ -374,9 +377,9 @@ csv, txt, tsv, parquet, json, html, p, pickle, pkl, xml, sql, sqlite, feather, s
 Let’s try saving and loading our test DataFrame in different formats:
 
 ```python
-extensions_supported_by_encoder_and_decoder = (
-    set(list_of_encoder_supported_extensions) & set(list_of_decoder_supported_extensions)
-)
+extensions_supported_by_encoder_and_decoder = set(
+    list_of_encoder_supported_extensions
+) & set(list_of_decoder_supported_extensions)
 sorted(extensions_supported_by_encoder_and_decoder)
 ```
 
@@ -409,7 +412,7 @@ sorted(extensions_supported_by_encoder_and_decoder)
 
 ```python
 def test_extension(ext):
-    filename = f'test_file.{ext}'
+    filename = f"test_file.{ext}"
     try:
         df_files[filename] = fantasy_tavern_menu_df
         df_loaded = df_files[filename]
@@ -425,13 +428,13 @@ def test_extension(ext):
 
 
 test_extensions = [
-    'csv',
-    'feather',
-    'json',
-    'orc',
-    'parquet',
-    'pkl',
-    'tsv',  
+    "csv",
+    "feather",
+    "json",
+    "orc",
+    "parquet",
+    "pkl",
+    "tsv",
     # 'dta',  # TODO: fix
     # 'h5',  # TODO: fix
     # 'html',  # TODO: fix
@@ -445,8 +448,8 @@ for ext in test_extensions:
     if success:
         print(f"\tExtension {ext}: ✓")
     else:
-        print('\033[91m' + f"\tFix extension {ext}: ✗" + '\033[0m')
-        
+        print("\033[91m" + f"\tFix extension {ext}: ✗" + "\033[0m")
+
     # marker = '✓' if success else '\033[91m✗\033[0m'
     # print(f"\tExtension {ext}: {marker}")
 ```
@@ -559,7 +562,7 @@ A
 True
 ```
 
-### *class* tabled.base.DfFiles(rootdir, \*, extension_encoder_mapping={'arrow': functools.partial(<function written_bytes>, <function dataframe_to_arrow_bytes>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function written_bytes>, <function DataFrame.to_feather>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'gbq': functools.partial(<function written_bytes>, <function \_to_gbq_unavailable>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_html>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function written_bytes>, <function NDFrame.to_json>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'npy': functools.partial(<function written_bytes>, <function save>, obj_arg_position_in_writer=1, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function written_bytes>, <function DataFrame.to_orc>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function written_bytes>, <function cast_to_parquet>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False, sep='\\\\t', escapechar='\\\\\\\\', quotechar='"'), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function written_bytes>, <function DataFrame.to_xml>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'zip': <function save_df_to_zipped_tsv>}, extension_decoder_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, extra_encoder_kwargs=(), extra_decoder_kwargs=(), allow_writing_bytes=True, sqlite_tables=None, sqlite_verbose=False)
+### *class* tabled.base.DfFiles(rootdir, \*, extension_encoder_mapping={'arrow': functools.partial(<function written_bytes>, <function dataframe_to_arrow_bytes>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function written_bytes>, <function DataFrame.to_feather>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'gbq': functools.partial(<function written_bytes>, <function \_to_gbq_unavailable>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_html>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function written_bytes>, <function NDFrame.to_json>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'npy': functools.partial(<function written_bytes>, <function save>, obj_arg_position_in_writer=1, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function written_bytes>, <function DataFrame.to_orc>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function written_bytes>, <function cast_to_parquet>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False, sep='\\t', escapechar='\\\\', quotechar='"'), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function written_bytes>, <function DataFrame.to_xml>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'zip': <function save_df_to_zipped_tsv>}, extension_decoder_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, extra_encoder_kwargs=(), extra_decoder_kwargs=(), allow_writing_bytes=True, sqlite_tables=None, sqlite_verbose=False)
 
 Bases: `Files`
 
@@ -575,9 +578,9 @@ and provide access to them as DataFrames.
 
 * **Parameters:**
   * **rootdir** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – A root directory or a SQLite database file.
-  * **extension_encoder_mapping** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Extension`), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Obj`)], `DataFrame`]]) – A mapping from file extensions to functions that
+  * **extension_encoder_mapping** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[`Extension`, [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`Obj`], `DataFrame`]]) – A mapping from file extensions to functions that
     encode a DataFrame to bytes for writing.
-  * **extension_decoder_mapping** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Extension`), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Obj`)], `DataFrame`]]) – A mapping from file extensions to functions that can
+  * **extension_decoder_mapping** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[`Extension`, [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`Obj`], `DataFrame`]]) – A mapping from file extensions to functions that can
     read the dataframes
   * **extra_encoder_kwargs** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict) | [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)) – Extra arguments to pass to the encoder functions.
   * **extra_decoder_kwargs** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict) | [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)) – Extra arguments to pass to the decoder functions.
@@ -597,7 +600,7 @@ in a temporary directory and returns a DfFiles instance that provides
 access to these tables as DataFrames.
 
 * **Parameters:**
-  * **sqlite_file** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file
+  * **sqlite_file** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file
   * **tables** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Optional list of table names to export. If None, exports all tables.
   * **verbose** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Whether to print progress information
   * **\*\*kwargs** – Additional arguments passed to the DfFiles constructor
@@ -613,7 +616,7 @@ access to these tables as DataFrames.
 
 alias of [`DfReader`](_autosummary/tabled.base.html.md#tabled.base.DfReader)
 
-### *class* tabled.base.DfReader(rootdir, \*, extension_encoder_mapping={'arrow': functools.partial(<function written_bytes>, <function dataframe_to_arrow_bytes>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function written_bytes>, <function DataFrame.to_feather>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'gbq': functools.partial(<function written_bytes>, <function \_to_gbq_unavailable>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_html>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function written_bytes>, <function NDFrame.to_json>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'npy': functools.partial(<function written_bytes>, <function save>, obj_arg_position_in_writer=1, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function written_bytes>, <function DataFrame.to_orc>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function written_bytes>, <function cast_to_parquet>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False, sep='\\\\t', escapechar='\\\\\\\\', quotechar='"'), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function written_bytes>, <function DataFrame.to_xml>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'zip': <function save_df_to_zipped_tsv>}, extension_decoder_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, extra_encoder_kwargs=(), extra_decoder_kwargs=(), allow_writing_bytes=True, sqlite_tables=None, sqlite_verbose=False)
+### *class* tabled.base.DfReader(rootdir, \*, extension_encoder_mapping={'arrow': functools.partial(<function written_bytes>, <function dataframe_to_arrow_bytes>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function written_bytes>, <function DataFrame.to_feather>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'gbq': functools.partial(<function written_bytes>, <function \_to_gbq_unavailable>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_html>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function written_bytes>, <function NDFrame.to_json>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'npy': functools.partial(<function written_bytes>, <function save>, obj_arg_position_in_writer=1, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function written_bytes>, <function DataFrame.to_orc>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function written_bytes>, <function cast_to_parquet>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False, sep='\\t', escapechar='\\\\', quotechar='"'), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function written_bytes>, <function DataFrame.to_xml>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'zip': <function save_df_to_zipped_tsv>}, extension_decoder_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, extra_encoder_kwargs=(), extra_decoder_kwargs=(), allow_writing_bytes=True, sqlite_tables=None, sqlite_verbose=False)
 
 Bases: [`DfFiles`](_autosummary/tabled.base.html.md#tabled.base.DfFiles)
 
@@ -632,7 +635,7 @@ Iteration and length reflect `mapping` as-is; `__getitem__` and
 
 Return `x` as a DataFrame if it is a dict, list, tuple, Series or Index; else `x` unchanged.
 
-### tabled.base.get_table(table_src=None, \*, ext=None, ext_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, resolve_to_io=<function default_io_resolver>, \*\*extra_decoder_kwargs)
+### tabled.base.get_table(table_src=None, \*, ext=None, ext_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, resolve_to_io=<function default_io_resolver>, \*\*extra_decoder_kwargs)
 
 Get a table from a variety of sources.
 
@@ -1027,7 +1030,7 @@ Returns a dictionary with comparison names as keys and comparison results as val
 * **Parameters:**
   * **df1** (`DataFrame`) – The first dataframe to compare.
   * **df2** (`DataFrame`) – The second dataframe to compare.
-  * **comparisons** (`Union`[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`DataFrame`, `DataFrame`], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]], [`Sequence`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence)[`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`DataFrame`, `DataFrame`], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]], [`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`DataFrame`, `DataFrame`], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]) – A dictionary or list of comparison functions or names.
+  * **comparisons** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`DataFrame`, `DataFrame`], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]], [`Sequence`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence)[[`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`DataFrame`, `DataFrame`], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]], [`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`DataFrame`, `DataFrame`], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]) – A dictionary or list of comparison functions or names.
     Defaults to DFLT_COMPARISONS.
   * **diff_condition** (*callable*) – A function that determines whether to include a comparison result
     in the output dictionary based on the comparison result.
@@ -1147,7 +1150,7 @@ Print information about a DataFrame.
 
 * **Parameters:**
   * **df** (`DataFrame`) – The DataFrame to analyze
-  * **exclude_columns** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Columns to exclude from analysis
+  * **exclude_columns** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Columns to exclude from analysis
   * **mode** ([`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'short'`, `'sample'`, `'stats'`]) – 
 
     Type of information to display
@@ -1196,9 +1199,6 @@ More precisely, this function returns the list of columns that contain only
 scalar values (e.g., int, float, str, bool, etc.) and can be saved to a CSV
 file.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
-
 ### Example
 
 ```pycon
@@ -1212,6 +1212,9 @@ file.
 >>> scalar_columns(df)
 ['A', 'B']
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
 
 # _autosummary/tabled.html.html.md
@@ -1461,7 +1464,7 @@ Generate a sequence of joins with remove commands based on leaf edges
 Return the covering-tree edges (see `minimum_covering_tree`) whose second table is a leaf (visited once).
 
 * **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`), [`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]]
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[`KT`, `KT`]]
 
 ### tabled.join_tables.minimum_covering_tree(tables, target_subset, start_node=None)
 
@@ -1550,14 +1553,14 @@ This is useful for making a ColumnOrientedMapping without reverting to
 the default columns argument, which is to use the columns of the first table.
 
 * **Return type:**
-  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Column`)]
+  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`Column`]
 
 #### columns_of_first_table()
 
 Return the column names of the first table in `tables`.
 
 * **Return type:**
-  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Column`)]
+  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`Column`]
 
 #### df(columns=None)
 
@@ -1594,14 +1597,14 @@ This is useful for making a ColumnOrientedMapping without reverting to
 the default columns argument, which is to use the columns of the first table.
 
 * **Return type:**
-  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Column`)]
+  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`Column`]
 
 ### tabled.multi.columns_of_first_table(tables)
 
 Return the column names of the first table in `tables`.
 
 * **Return type:**
-  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Column`)]
+  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`Column`]
 
 ### tabled.multi.dataframes(tables)
 
@@ -1638,7 +1641,7 @@ Interpreter for `Load`: set `scope["cumul"]` to `scope[command.key]`.
 Cast to a mapping of dataframes
 
 * **Return type:**
-  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`), `DataFrame`]
+  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[`KT`, `DataFrame`]
 
 ### tabled.multi.remove_func(scope, command)
 
@@ -1708,7 +1711,7 @@ export_sqlite_query_to_parquet(
 Export tables from SQLite to pandas DataFrames using DuckDB + sqlite_scanner.
 
 * **Parameters:**
-  * **sqlite_db_file** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
+  * **sqlite_db_file** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
   * **tables** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Optional list of table names to export. If None, exports all discovered tables.
   * **schema** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – DuckDB schema name to attach the SQLite DB as (default “src”).
   * **install_extensions** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – If True, runs INSTALL/LOAD sqlite_scanner (helpful for first run).
@@ -1726,8 +1729,8 @@ This is a combined function that exports SQLite tables to pandas DataFrames
 and optionally saves them to Parquet files in a single operation.
 
 * **Parameters:**
-  * **sqlite_db_file** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
-  * **out_dir** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Optional directory where Parquet files will be written.
+  * **sqlite_db_file** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
+  * **out_dir** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Optional directory where Parquet files will be written.
     If None, only DataFrames are returned.
   * **tables** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Optional list of table names to export. If None, exports all tables.
   * **schema** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – DuckDB schema name to attach the SQLite DB as (default “src”).
@@ -1753,8 +1756,8 @@ This is a general-purpose exporter that:
 - writes each table to <out_dir>/<table>.parquet
 
 * **Parameters:**
-  * **sqlite_db_file** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
-  * **out_dir** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Directory where Parquet files will be written.
+  * **sqlite_db_file** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
+  * **out_dir** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Directory where Parquet files will be written.
   * **tables** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Optional list of table names to export. If None, exports all discovered tables.
   * **schema** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – DuckDB schema name to attach the SQLite DB as (default “src”).
   * **compression** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Parquet compression codec. Common: “ZSTD”, “SNAPPY”, “GZIP”, “NONE”.
@@ -2012,7 +2015,7 @@ contains a dictionary of column names and values from the original dataframe.
 
 * **Parameters:**
   * **df** (`DataFrame`) – The dataframe to transform.
-  * **groupings** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]) – A mapping that indicates which columns to collapse into dictionaries
+  * **groupings** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]] | [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[`KT`]) – A mapping that indicates which columns to collapse into dictionaries
     and what to call the new resulting column.
     If only a list of column names to be collapsed is given, it will be interpreted as
     the group_column_names in a single `{"collapsed": group_column_names}` dictionary,
@@ -2054,7 +2057,7 @@ column’s values (the ones that are not keys of the groupby) into lists.
 
 * **Parameters:**
   * **df** (`DataFrame`) – the dataframe to collapse
-  * **by** ([`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]) – the columns to group by (the keys of the groupby)
+  * **by** ([`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[`KT`]) – the columns to group by (the keys of the groupby)
   * **container** ([`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)], [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)]) – the container to use to gather the other columns values
 * **Return type:**
   `DataFrame`
@@ -2206,7 +2209,7 @@ Each column in `grouped_columns` should contain lists of the same length within 
 
 * **Parameters:**
   * **df** (`DataFrame`) – The DataFrame to expand.
-  * **grouped_columns** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]) – The list of columns to expand
+  * **grouped_columns** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[`KT`]) – The list of columns to expand
 * **Return type:**
   `DataFrame`
 * **Returns:**
@@ -2243,9 +2246,9 @@ and there is an edge between two vertices if the sets intersect.
 The weight of the edge is the size of the intersection.
 
 * **Parameters:**
-  * **sets** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`), [`set`](https://docs.python.org/3/builtins/stdtypes.html#set)]) – A mapping of keys to sets of elements. These sets of elements will
+  * **sets** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[`KT`, [`set`](https://docs.python.org/3/builtins/stdtypes.html#set)]) – A mapping of keys to sets of elements. These sets of elements will
     be the vertices of the graph.
-  * **edge_labels** ([`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'elements'`, `'size'`, `False`]) – If ‘elements’, the edge labels are the elements of the intersection.
+  * **edge_labels** ([`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'elements'`, `'size'`, [`False`](https://docs.python.org/3/builtins/constants.html#False)]) – If ‘elements’, the edge labels are the elements of the intersection.
     If ‘size’, the edge labels are the size of the intersection.
     If False, there are no edge labels.
 * **Returns:**
@@ -2287,9 +2290,6 @@ The weight of the edge is the size of the intersection.
 Invert a mapping whose values are iterables of objects,
 getting a mapping from objects to iterables of keys.
 
-* **Return type:**
-  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`VT`), [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`)]]
-
 ```pycon
 >>> original_dict = {
 ...     "X": ['a', 'b'],
@@ -2318,6 +2318,9 @@ The `values_container` argument can be used to cast the values of the inverted d
 >>> invert_labeled_collection(t, ''.join)
 {'a': 'apple', 'b': 'aaabnn'}
 ```
+
+* **Return type:**
+  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[`VT`, [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`KT`]]
 
 ### tabled.util.is_instance_of(class_or_tuple)
 
@@ -2500,7 +2503,7 @@ Resolve `src` (a local path, an http(s)/graze URL, or bytes) to a binary file-li
 
 Get a dataframe from a (data, mapping, key) triple
 
-### tabled.wrappers.df_from_data_given_ext(data, ext, ext_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, \*\*extra_decoder_kwargs)
+### tabled.wrappers.df_from_data_given_ext(data, ext, ext_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, \*\*extra_decoder_kwargs)
 
 Get a dataframe from a (data, ext) pair
 
@@ -2523,15 +2526,15 @@ Add extension-based encoding and decoding to a store.
 
 Get the file extension from a key
 
-* **Return type:**
-  [`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Extension`)
-
 ```pycon
 >>> file_extension('hello.world')
 'world'
 >>> file_extension('hello')
 ''
 ```
+
+* **Return type:**
+  `Extension`
 
 ### tabled.wrappers.get_codec_mappings(\*, extension_to_encoder={'arrow': functools.partial(<function written_bytes>, <function dataframe_to_arrow_bytes>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function written_bytes>, <function DataFrame.to_feather>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'gbq': functools.partial(<function written_bytes>, <function \_to_gbq_unavailable>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function written_bytes>, <function NDFrame.to_hdf>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_html>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function written_bytes>, <function NDFrame.to_json>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'npy': functools.partial(<function written_bytes>, <function save>, obj_arg_position_in_writer=1, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function written_bytes>, <function DataFrame.to_orc>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function written_bytes>, <function cast_to_parquet>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function written_bytes>, <function NDFrame.to_pickle>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function written_bytes>, <function NDFrame.to_sql>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function written_bytes>, functools.partial(<function DataFrame.to_stata>, write_index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False, sep='\\t', escapechar='\\\\', quotechar='"'), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_csv>, index=False), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function written_bytes>, functools.partial(<function NDFrame.to_excel>, index=True), obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function written_bytes>, <function DataFrame.to_xml>, obj_arg_position_in_writer=0, io_buffer_cls=<class '_io.BytesIO'>), 'zip': <function save_df_to_zipped_tsv>}, extension_to_decoder={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)})
 
@@ -2542,9 +2545,6 @@ Return `{"encoders": extension_to_encoder, "decoders": extension_to_decoder}`.
 Return the extension of a file path.
 
 Note that it includes the dot.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> get_extension('hello.world')
@@ -2558,12 +2558,12 @@ If there’s no extension, it returns an empty string.
 ''
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### tabled.wrappers.get_file_ext(key)
 
 Get the file extension from a key
-
-* **Return type:**
-  [`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Extension`)
 
 ```pycon
 >>> file_extension('hello.world')
@@ -2571,6 +2571,9 @@ Get the file extension from a key
 >>> file_extension('hello')
 ''
 ```
+
+* **Return type:**
+  `Extension`
 
 ### tabled.wrappers.get_protocol(url)
 
@@ -2602,7 +2605,7 @@ Strip a trailing `extension` from `filepath`, if present.
 Map an object to a value based on a key function
 
 * **Return type:**
-  [`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`VT`)
+  `VT`
 
 ### tabled.wrappers.map_values(func, d, \*, except_condition=functools.partial(<function \_isinstance>, class_or_tuple=<class 'i2.util.LiteralVal'>), except_handler=operator.methodcaller('_\_call_\_'))
 
@@ -2627,14 +2630,14 @@ the litteral value from the `LiteralVal` object.
 
 Print the current extension-to-encoder and extension-to-decoder mappings.
 
-### tabled.wrappers.resolve_to_dataframe(data, ext, ext_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, \*\*extra_decoder_kwargs)
+### tabled.wrappers.resolve_to_dataframe(data, ext, ext_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, \*\*extra_decoder_kwargs)
 
 Get a dataframe from a (data, ext) pair
 
 * **Return type:**
   `DataFrame`
 
-### tabled.wrappers.save_df_to_zipped_tsv(df, name, sep='\\\\t', index=False, \*\*kwargs)
+### tabled.wrappers.save_df_to_zipped_tsv(df, name, sep='\\t', index=False, \*\*kwargs)
 
 Save a dataframe to a zipped tsv file.
 
@@ -2675,18 +2678,18 @@ True
 
 # About this build
 
-This documentation was built on **2026-09-15 13:07 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/2929fedee809938183fe35026702650a1c55a5ca"><code>2929fed</code></a> on branch <code>master</code>, for **tabled 0.1.29** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-20 07:28 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/4c52d1ddc1b5c62520ebf3708d271f1f401a9567"><code>4c52d1d</code></a> on branch <code>master</code>, for **tabled 0.1.30** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.29) is behind the latest release on PyPI (0.1.30): `pip install tabled` gives newer code than these docs describe.
+- The documented version (0.1.30) is behind the latest release on PyPI (0.1.31): `pip install tabled` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/tabled/commit/2929fedee809938183fe35026702650a1c55a5ca"><code>2929fedee809938183fe35026702650a1c55a5ca</code></a> |
+| Commit              | <a href="https://github.com/i2mint/tabled/commit/4c52d1ddc1b5c62520ebf3708d271f1f401a9567"><code>4c52d1ddc1b5c62520ebf3708d271f1f401a9567</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -2697,18 +2700,18 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/tabled</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/34972839655">34972839655</a>        |
+| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/39386528011">39386528011</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>2929fedee809938183fe35026702650a1c55a5ca</code> (in the history of the built commit) |
+| Event commit | <code>4c52d1ddc1b5c62520ebf3708d271f1f401a9567</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.12  |
-| Sphinx   | 9.1.0   |
+| epythet  | 0.2.18  |
+| Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
-| Python   | 3.12.14 |
+| Python   | 3.12.15 |
 
 ## Configuration as resolved
 
@@ -2724,14 +2727,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/tabled/0.1.30/">0.1.30</a>, newer than the documented version (0.1.29).
+Latest release: <a href="https://pypi.org/project/tabled/0.1.31/">0.1.31</a>, newer than the documented version (0.1.30).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/tabled && cd tabled
-git checkout 2929fedee809938183fe35026702650a1c55a5ca
-pip install "epythet==0.2.12"
+git checkout 4c52d1ddc1b5c62520ebf3708d271f1f401a9567
+pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

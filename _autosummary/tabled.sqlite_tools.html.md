@@ -51,7 +51,7 @@ export_sqlite_query_to_parquet(
 Export tables from SQLite to pandas DataFrames using DuckDB + sqlite_scanner.
 
 * **Parameters:**
-  * **sqlite_db_file** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
+  * **sqlite_db_file** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
   * **tables** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Optional list of table names to export. If None, exports all discovered tables.
   * **schema** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – DuckDB schema name to attach the SQLite DB as (default “src”).
   * **install_extensions** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – If True, runs INSTALL/LOAD sqlite_scanner (helpful for first run).
@@ -69,8 +69,8 @@ This is a combined function that exports SQLite tables to pandas DataFrames
 and optionally saves them to Parquet files in a single operation.
 
 * **Parameters:**
-  * **sqlite_db_file** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
-  * **out_dir** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Optional directory where Parquet files will be written.
+  * **sqlite_db_file** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
+  * **out_dir** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Optional directory where Parquet files will be written.
     If None, only DataFrames are returned.
   * **tables** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Optional list of table names to export. If None, exports all tables.
   * **schema** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – DuckDB schema name to attach the SQLite DB as (default “src”).
@@ -96,8 +96,8 @@ This is a general-purpose exporter that:
 - writes each table to <out_dir>/<table>.parquet
 
 * **Parameters:**
-  * **sqlite_db_file** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
-  * **out_dir** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Directory where Parquet files will be written.
+  * **sqlite_db_file** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Path to the SQLite database file (.db / .sqlite / .sqlite3).
+  * **out_dir** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – Directory where Parquet files will be written.
   * **tables** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Optional list of table names to export. If None, exports all discovered tables.
   * **schema** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – DuckDB schema name to attach the SQLite DB as (default “src”).
   * **compression** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Parquet compression codec. Common: “ZSTD”, “SNAPPY”, “GZIP”, “NONE”.

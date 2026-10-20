@@ -7,6 +7,7 @@
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d88b86f9" />
     <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -222,7 +223,7 @@ data-aria-dark="Switch to auto color mode">
 <dl class="py class">
 <dt class="sig sig-object py" id="tabled.multi.ColumnOrientedMapping">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tabled.multi.</span></span><span class="sig-name descname"><span class="pre">ColumnOrientedMapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">columns_of_first_table&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tabled/multi.html#ColumnOrientedMapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.multi.ColumnOrientedMapping" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></p>
 <p>A <code class="code docutils literal notranslate"><span class="pre">{column_name:</span> <span class="pre">concatenated_column_values}</span></code> view over several tables.</p>
 <p>Keys are column names (by default, the columns of the first table);
 each value is that column concatenated across all <code class="code docutils literal notranslate"><span class="pre">tables</span></code>.</p>
@@ -250,7 +251,7 @@ This is useful for making a ColumnOrientedMapping without reverting to
 the default columns argument, which is to use the columns of the first table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">Column</span></code>)]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<code class="docutils literal notranslate"><span class="pre">Column</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -261,7 +262,7 @@ the default columns argument, which is to use the columns of the first table.</p
 <dd><p>Return the column names of the first table in <code class="code docutils literal notranslate"><span class="pre">tables</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">Column</span></code>)]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<code class="docutils literal notranslate"><span class="pre">Column</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -277,7 +278,7 @@ the default columns argument, which is to use the columns of the first table.</p
 <dl class="py class">
 <dt class="sig sig-object py" id="tabled.multi.Join">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tabled.multi.</span></span><span class="sig-name descname"><span class="pre">Join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tabled/multi.html#Join"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.multi.Join" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Command: inner-join the accumulator with the table at <code class="code docutils literal notranslate"><span class="pre">scope[table_key]</span></code>.</p>
 <dl class="field-list simple">
 </dl>
@@ -286,7 +287,7 @@ the default columns argument, which is to use the columns of the first table.</p
 <dl class="py class">
 <dt class="sig sig-object py" id="tabled.multi.Load">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tabled.multi.</span></span><span class="sig-name descname"><span class="pre">Load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tabled/multi.html#Load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.multi.Load" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Command: set the accumulator (<code class="code docutils literal notranslate"><span class="pre">scope[&quot;cumul&quot;]</span></code>) to <code class="code docutils literal notranslate"><span class="pre">scope[key]</span></code>.</p>
 <dl class="field-list simple">
 </dl>
@@ -295,7 +296,7 @@ the default columns argument, which is to use the columns of the first table.</p
 <dl class="py class">
 <dt class="sig sig-object py" id="tabled.multi.Remove">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tabled.multi.</span></span><span class="sig-name descname"><span class="pre">Remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tabled/multi.html#Remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.multi.Remove" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Command: drop <code class="code docutils literal notranslate"><span class="pre">fields</span></code> (column or columns) from the accumulator.</p>
 <dl class="field-list simple">
 </dl>
@@ -304,7 +305,7 @@ the default columns argument, which is to use the columns of the first table.</p
 <dl class="py class">
 <dt class="sig sig-object py" id="tabled.multi.Rename">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tabled.multi.</span></span><span class="sig-name descname"><span class="pre">Rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rename_mapping</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tabled/multi.html#Rename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tabled.multi.Rename" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Command: rename accumulator columns per <code class="code docutils literal notranslate"><span class="pre">rename_mapping</span></code> (old name -&gt; new name).</p>
 <dl class="field-list simple">
 </dl>
@@ -318,7 +319,7 @@ This is useful for making a ColumnOrientedMapping without reverting to
 the default columns argument, which is to use the columns of the first table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">Column</span></code>)]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<code class="docutils literal notranslate"><span class="pre">Column</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -329,7 +330,7 @@ the default columns argument, which is to use the columns of the first table.</p
 <dd><p>Return the column names of the first table in <code class="code docutils literal notranslate"><span class="pre">tables</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">Column</span></code>)]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<code class="docutils literal notranslate"><span class="pre">Column</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -340,7 +341,7 @@ the default columns argument, which is to use the columns of the first table.</p
 <dd><p>Cast to an iterable of dataframes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -351,7 +352,7 @@ the default columns argument, which is to use the columns of the first table.</p
 <dd><p>Carries <code class="code docutils literal notranslate"><span class="pre">commands</span></code> operations out with tables taken from <code class="code docutils literal notranslate"><span class="pre">scope</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>commands</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a></span>) – An iterable of join operations to carry out.</p>
+<dd class="field-odd"><p><strong>commands</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a></span>) – An iterable of join operations to carry out.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -385,7 +386,7 @@ consistent across joins.</p>
 <dd><p>Cast to a mapping of dataframes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">KT</span></code>), <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<code class="docutils literal notranslate"><span class="pre">KT</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -450,7 +451,7 @@ consistent across joins.</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=904119ea"></script>
+      <script src="../_static/documentation_options.js?v=73657eb8"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

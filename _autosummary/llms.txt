@@ -1,0 +1,24 @@
+# tabled
+
+> A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease
+
+
+## Pages in this subsection
+
+- [tabled](tabled.html.md): A data-object-layer package for accessing pandas DataFrames from various sources.
+- [tabled.base](tabled.base.html.md): Based functionality for tabled
+- [tabled.coerce](tabled.coerce.html.md): Column type coercion utilities for pandas DataFrames.
+- [tabled.compare_tables](tabled.compare_tables.html.md): Tools to compare tables
+- [tabled.diagnose](tabled.diagnose.html.md): DataFrame and table collection diagnosis utilities.
+- [tabled.html](tabled.html.html.md): To work with html
+- [tabled.join_tables](tabled.join_tables.html.md): Join multiple tables (pandas DataFrames) down to a target subset of columns.
+- [tabled.misc](tabled.misc.html.md): Miscellaneous utility functions for tables.
+- [tabled.multi](tabled.multi.html.md): Multi-tabled data structures.
+- [tabled.sqlite_tools](tabled.sqlite_tools.html.md): General-purpose SQLite to DataFrame/Parquet export tools using DuckDB.
+- [tabled.tools](tabled.tools.html.md): Various high-level tools using tabled
+- [tabled.util](tabled.util.html.md): General-purpose utilities for working with DataFrames, dicts, and byte decoding.
+- [tabled.wrappers](tabled.wrappers.html.md): Wrapping tools
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

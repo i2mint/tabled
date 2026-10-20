@@ -5,19 +5,19 @@ orphan: true
 
 # About this build
 
-This documentation was built on **2026-09-15 13:07 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/2929fedee809938183fe35026702650a1c55a5ca"><code>2929fed</code></a> on branch <code>master</code>, for **tabled 0.1.29** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-20 07:28 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/4c52d1ddc1b5c62520ebf3708d271f1f401a9567"><code>4c52d1d</code></a> on branch <code>master</code>, for **tabled 0.1.30** (from <code>pyproject.toml</code>).
 
 :::{warning}
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.29) is behind the latest release on PyPI (0.1.30): `pip install tabled` gives newer code than these docs describe.
+- The documented version (0.1.30) is behind the latest release on PyPI (0.1.31): `pip install tabled` gives newer code than these docs describe.
 :::
 
 ## Source
 
 | | |
 |---|---|
-| Commit | <a href="https://github.com/i2mint/tabled/commit/2929fedee809938183fe35026702650a1c55a5ca"><code>2929fedee809938183fe35026702650a1c55a5ca</code></a> |
+| Commit | <a href="https://github.com/i2mint/tabled/commit/4c52d1ddc1b5c62520ebf3708d271f1f401a9567"><code>4c52d1ddc1b5c62520ebf3708d271f1f401a9567</code></a> |
 | Branch | <code>master</code> |
 | Tags at this commit | none |
 | Working tree | clean |
@@ -28,18 +28,18 @@ The documentation and the package may be misaligned:
 | | |
 |---|---|
 | Repository | <code>i2mint/tabled</code> |
-| Run | <a href="https://github.com/i2mint/tabled/actions/runs/34972839655">34972839655</a> |
+| Run | <a href="https://github.com/i2mint/tabled/actions/runs/39386528011">39386528011</a> |
 | Ref | <code>refs/heads/master</code> |
-| Event commit | <code>2929fedee809938183fe35026702650a1c55a5ca</code> (in the history of the built commit) |
+| Event commit | <code>4c52d1ddc1b5c62520ebf3708d271f1f401a9567</code> (in the history of the built commit) |
 
 ## Tools
 
 | | |
 |---|---|
-| epythet | 0.2.12 |
-| Sphinx | 9.1.0 |
+| epythet | 0.2.18 |
+| Sphinx | 9.1.1 |
 | docutils | 0.22.4 |
-| Python | 3.12.14 |
+| Python | 3.12.15 |
 
 ## Configuration as resolved
 
@@ -55,14 +55,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/tabled/0.1.30/">0.1.30</a>, newer than the documented version (0.1.29).
+Latest release: <a href="https://pypi.org/project/tabled/0.1.31/">0.1.31</a>, newer than the documented version (0.1.30).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/tabled && cd tabled
-git checkout 2929fedee809938183fe35026702650a1c55a5ca
-pip install "epythet==0.2.12"
+git checkout 4c52d1ddc1b5c62520ebf3708d271f1f401a9567
+pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

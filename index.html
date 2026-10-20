@@ -7,6 +7,7 @@
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d88b86f9" />
     <link rel="stylesheet" type="text/css" href="_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_autodoc_typehints.css?v=057ac668" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link media="print" rel="stylesheet" type="text/css" href="_static/print.css?v=20ff2c19" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,17 +159,17 @@ data-aria-dark="Switch to auto color mode">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled</span><span class="w"> </span><span class="kn">import</span> <span class="n">DfFiles</span>
 </span><span data-line="2">
 </span><span data-line="3"><span class="c1"># Automatic SQLite detection - just pass the database file path</span>
-</span><span data-line="4"><span class="n">df_files</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="p">(</span><span class="s1">'my_database.db'</span><span class="p">)</span>
+</span><span data-line="4"><span class="n">df_files</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="p">(</span><span class="s2">"my_database.db"</span><span class="p">)</span>
 </span><span data-line="5">
 </span><span data-line="6"><span class="c1"># Access tables as DataFrames</span>
-</span><span data-line="7"><span class="n">customers</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s1">'customers.parquet'</span><span class="p">]</span>  <span class="c1"># Full filename</span>
-</span><span data-line="8"><span class="n">orders</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s1">'orders'</span><span class="p">]</span>                <span class="c1"># Clean table name (both work)</span>
+</span><span data-line="7"><span class="n">customers</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">"customers.parquet"</span><span class="p">]</span>  <span class="c1"># Full filename</span>
+</span><span data-line="8"><span class="n">orders</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">"orders"</span><span class="p">]</span>  <span class="c1"># Clean table name (both work)</span>
 </span><span data-line="9">
 </span><span data-line="10"><span class="c1"># List available tables</span>
 </span><span data-line="11"><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df_files</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>  <span class="c1"># ['customers.parquet', 'orders.parquet', ...]</span>
 </span><span data-line="12">
 </span><span data-line="13"><span class="c1"># Or use the explicit method</span>
-</span><span data-line="14"><span class="n">df_files</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="o">.</span><span class="n">from_sqlite_file</span><span class="p">(</span><span class="s1">'my_database.db'</span><span class="p">)</span>
+</span><span data-line="14"><span class="n">df_files</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="o">.</span><span class="n">from_sqlite_file</span><span class="p">(</span><span class="s2">"my_database.db"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <p>Under the hood, SQLite tables are exported to temporary Parquet files for efficient access, with automatic cleanup when the program exits.</p>
@@ -178,11 +179,11 @@ data-aria-dark="Switch to auto color mode">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled.sqlite_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">export_sqlite_to_dataframes</span><span class="p">,</span> <span class="n">export_sqlite_to_parquet</span>
 </span><span data-line="2">
 </span><span data-line="3"><span class="c1"># Export to DataFrames</span>
-</span><span data-line="4"><span class="n">tables</span> <span class="o">=</span> <span class="n">export_sqlite_to_dataframes</span><span class="p">(</span><span class="s1">'database.db'</span><span class="p">)</span>
-</span><span data-line="5"><span class="n">customers_df</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="s1">'customers'</span><span class="p">]</span>
+</span><span data-line="4"><span class="n">tables</span> <span class="o">=</span> <span class="n">export_sqlite_to_dataframes</span><span class="p">(</span><span class="s2">"database.db"</span><span class="p">)</span>
+</span><span data-line="5"><span class="n">customers_df</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="s2">"customers"</span><span class="p">]</span>
 </span><span data-line="6">
 </span><span data-line="7"><span class="c1"># Export to Parquet files</span>
-</span><span data-line="8"><span class="n">export_sqlite_to_parquet</span><span class="p">(</span><span class="s1">'database.db'</span><span class="p">,</span> <span class="s1">'output_directory/'</span><span class="p">)</span>
+</span><span data-line="8"><span class="n">export_sqlite_to_parquet</span><span class="p">(</span><span class="s2">"database.db"</span><span class="p">,</span> <span class="s2">"output_directory/"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>
@@ -194,18 +195,20 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="2"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 </span><span data-line="3">
 </span><span data-line="4"><span class="c1"># Analyze a DataFrame</span>
-</span><span data-line="5"><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'a'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">'b'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">]})</span>
+</span><span data-line="5"><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"a"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">"b"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"x"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">]})</span>
 </span><span data-line="6"><span class="n">info</span> <span class="o">=</span> <span class="n">dataframe_info</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</span><span data-line="7"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'shape'</span><span class="p">])</span>  <span class="c1"># (3, 2)</span>
-</span><span data-line="8"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'columns'</span><span class="p">])</span>  <span class="c1"># ['a', 'b']</span>
+</span><span data-line="7"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">"shape"</span><span class="p">])</span>  <span class="c1"># (3, 2)</span>
+</span><span data-line="8"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">"columns"</span><span class="p">])</span>  <span class="c1"># ['a', 'b']</span>
 </span><span data-line="9">
-</span><span data-line="10"><span class="c1"># Extend with custom analysis functions</span>
-</span><span data-line="11"><span class="k">def</span><span class="w"> </span><span class="nf">memory_usage</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-</span><span data-line="12">    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-</span><span data-line="13">
-</span><span data-line="14"><span class="n">register_info_func</span><span class="p">(</span><span class="s1">'memory'</span><span class="p">,</span> <span class="n">memory_usage</span><span class="p">)</span>
-</span><span data-line="15"><span class="n">info</span> <span class="o">=</span> <span class="n">dataframe_info</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</span><span data-line="16"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'memory'</span><span class="p">])</span>  <span class="c1"># Memory usage in bytes</span>
+</span><span data-line="10">
+</span><span data-line="11"><span class="c1"># Extend with custom analysis functions</span>
+</span><span data-line="12"><span class="k">def</span><span class="w"> </span><span class="nf">memory_usage</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+</span><span data-line="13">    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</span><span data-line="14">
+</span><span data-line="15">
+</span><span data-line="16"><span class="n">register_info_func</span><span class="p">(</span><span class="s2">"memory"</span><span class="p">,</span> <span class="n">memory_usage</span><span class="p">)</span>
+</span><span data-line="17"><span class="n">info</span> <span class="o">=</span> <span class="n">dataframe_info</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span><span data-line="18"><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">"memory"</span><span class="p">])</span>  <span class="c1"># Memory usage in bytes</span>
 </span></pre></div>
 </div>
 <p>The analysis is completely customizable - you can register new analysis functions or provide custom info function dictionaries to focus on specific aspects of your data.</p>
@@ -237,7 +240,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="18">        <span class="s2">"location"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Kansas City"</span><span class="p">,</span> <span class="s2">"Roswell"</span><span class="p">,</span> <span class="s2">"Jupiter"</span><span class="p">],</span>
 </span><span data-line="19">        <span class="s2">"duration_minutes"</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
 </span><span data-line="20">        <span class="s2">"was_returned"</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span>
-</span><span data-line="21">    <span class="p">}</span>
+</span><span data-line="21">    <span class="p">},</span>
 </span><span data-line="22"><span class="p">}</span>
 </span></pre></div>
 </div>
@@ -247,15 +250,16 @@ data-aria-dark="Switch to auto color mode">
 <p>We’ll create a temporary directory for our files:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">def</span><span class="w"> </span><span class="nf">create_test_directory</span><span class="p">():</span>
 </span><span data-line="2">    <span class="c1"># Create a directory for the test files</span>
-</span><span data-line="3">    <span class="n">rootdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s1">'tabled_df_files_test'</span><span class="p">)</span>
+</span><span data-line="3">    <span class="n">rootdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s2">"tabled_df_files_test"</span><span class="p">)</span>
 </span><span data-line="4">    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
 </span><span data-line="5">        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
 </span><span data-line="6">    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
 </span><span data-line="7">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Created directory at: </span><span class="si">{</span><span class="n">rootdir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span><span data-line="8">    <span class="k">return</span> <span class="n">rootdir</span>
 </span><span data-line="9">
-</span><span data-line="10"><span class="n">rootdir</span> <span class="o">=</span> <span class="n">create_test_directory</span><span class="p">()</span>
-</span><span data-line="11"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Created directory at: </span><span class="si">{</span><span class="n">rootdir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="10">
+</span><span data-line="11"><span class="n">rootdir</span> <span class="o">=</span> <span class="n">create_test_directory</span><span class="p">()</span>
+</span><span data-line="12"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Created directory at: </span><span class="si">{</span><span class="n">rootdir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Created directory at: /var/folders/mc/c070wfh51kxd9lft8dl74q1r0000gn/T/tabled_df_files_test
@@ -280,8 +284,8 @@ data-aria-dark="Switch to auto color mode">
 <section id="creating-and-saving-dataframes">
 <h2>Creating and Saving DataFrames<a class="headerlink" href="#creating-and-saving-dataframes" title="Link to this heading">#</a></h2>
 <p>Let’s create DataFrames from our test data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">fantasy_tavern_menu_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">misc_small_dicts</span><span class="p">[</span><span class="s1">'fantasy_tavern_menu'</span><span class="p">])</span>
-</span><span data-line="2"><span class="n">alien_abduction_log_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">misc_small_dicts</span><span class="p">[</span><span class="s1">'alien_abduction_log'</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">fantasy_tavern_menu_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">misc_small_dicts</span><span class="p">[</span><span class="s2">"fantasy_tavern_menu"</span><span class="p">])</span>
+</span><span data-line="2"><span class="n">alien_abduction_log_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">misc_small_dicts</span><span class="p">[</span><span class="s2">"alien_abduction_log"</span><span class="p">])</span>
 </span><span data-line="3">
 </span><span data-line="4"><span class="nb">print</span><span class="p">(</span><span class="s2">"Fantasy Tavern Menu:"</span><span class="p">)</span>
 </span><span data-line="5"><span class="n">display</span><span class="p">(</span><span class="n">fantasy_tavern_menu_df</span><span class="p">)</span>
@@ -368,15 +372,15 @@ data-aria-dark="Switch to auto color mode">
 </table>
 </div>
 <p>Now let’s save these DataFrames using different formats:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">df_files</span><span class="p">[</span><span class="s1">'fantasy_tavern_menu.csv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">fantasy_tavern_menu_df</span>
-</span><span data-line="2"><span class="n">df_files</span><span class="p">[</span><span class="s1">'alien_abduction_log.json'</span><span class="p">]</span> <span class="o">=</span> <span class="n">alien_abduction_log_df</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">df_files</span><span class="p">[</span><span class="s2">"fantasy_tavern_menu.csv"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fantasy_tavern_menu_df</span>
+</span><span data-line="2"><span class="n">df_files</span><span class="p">[</span><span class="s2">"alien_abduction_log.json"</span><span class="p">]</span> <span class="o">=</span> <span class="n">alien_abduction_log_df</span>
 </span></pre></div>
 </div>
 </section>
 <section id="reading-data-back">
 <h2>Reading Data Back<a class="headerlink" href="#reading-data-back" title="Link to this heading">#</a></h2>
 <p>Let’s verify we can read the data back correctly:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">saved_df</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s1">'fantasy_tavern_menu.csv'</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">saved_df</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">"fantasy_tavern_menu.csv"</span><span class="p">]</span>
 </span><span data-line="2"><span class="n">saved_df</span>
 </span></pre></div>
 </div>
@@ -435,7 +439,7 @@ data-aria-dark="Switch to auto color mode">
 </span></pre></div>
 </div>
 <p>Check if a file exists:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="s1">'fantasy_tavern_menu.csv'</span> <span class="ow">in</span> <span class="n">df_files</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="s2">"fantasy_tavern_menu.csv"</span> <span class="ow">in</span> <span class="n">df_files</span>
 </span></pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">True
@@ -448,7 +452,7 @@ data-aria-dark="Switch to auto color mode">
 <p>(<strong>Note that some of these will require installing extra packages, which you’ll realize if you get an ImportError</strong>)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">print</span><span class="p">(</span><span class="s2">"Encoder supported extensions:"</span><span class="p">)</span>
 </span><span data-line="2"><span class="n">list_of_encoder_supported_extensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_files</span><span class="o">.</span><span class="n">extension_encoder_mapping</span><span class="p">)</span>
-</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">list_of_encoder_supported_extensions</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">', '</span><span class="p">)</span>
+</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">list_of_encoder_supported_extensions</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">", "</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Encoder supported extensions:
@@ -457,7 +461,7 @@ data-aria-dark="Switch to auto color mode">
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="nb">print</span><span class="p">(</span><span class="s2">"Decoder supported extensions:"</span><span class="p">)</span>
 </span><span data-line="2"><span class="n">list_of_decoder_supported_extensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_files</span><span class="o">.</span><span class="n">extension_decoder_mapping</span><span class="p">)</span>
-</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">list_of_decoder_supported_extensions</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">', '</span><span class="p">)</span>
+</span><span data-line="3"><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">list_of_decoder_supported_extensions</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">", "</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Decoder supported extensions:
@@ -468,9 +472,9 @@ data-aria-dark="Switch to auto color mode">
 <section id="testing-different-extensions">
 <h2>Testing Different Extensions<a class="headerlink" href="#testing-different-extensions" title="Link to this heading">#</a></h2>
 <p>Let’s try saving and loading our test DataFrame in different formats:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">extensions_supported_by_encoder_and_decoder</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="2">    <span class="nb">set</span><span class="p">(</span><span class="n">list_of_encoder_supported_extensions</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">list_of_decoder_supported_extensions</span><span class="p">)</span>
-</span><span data-line="3"><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">extensions_supported_by_encoder_and_decoder</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+</span><span data-line="2">    <span class="n">list_of_encoder_supported_extensions</span>
+</span><span data-line="3"><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">list_of_decoder_supported_extensions</span><span class="p">)</span>
 </span><span data-line="4"><span class="nb">sorted</span><span class="p">(</span><span class="n">extensions_supported_by_encoder_and_decoder</span><span class="p">)</span>
 </span></pre></div>
 </div>
@@ -500,7 +504,7 @@ data-aria-dark="Switch to auto color mode">
 </span></pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">def</span><span class="w"> </span><span class="nf">test_extension</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
-</span><span data-line="2">    <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'test_file.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s1">'</span>
+</span><span data-line="2">    <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"test_file.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">"</span>
 </span><span data-line="3">    <span class="k">try</span><span class="p">:</span>
 </span><span data-line="4">        <span class="n">df_files</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">fantasy_tavern_menu_df</span>
 </span><span data-line="5">        <span class="n">df_loaded</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span>
@@ -516,13 +520,13 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="15">
 </span><span data-line="16">
 </span><span data-line="17"><span class="n">test_extensions</span> <span class="o">=</span> <span class="p">[</span>
-</span><span data-line="18">    <span class="s1">'csv'</span><span class="p">,</span>
-</span><span data-line="19">    <span class="s1">'feather'</span><span class="p">,</span>
-</span><span data-line="20">    <span class="s1">'json'</span><span class="p">,</span>
-</span><span data-line="21">    <span class="s1">'orc'</span><span class="p">,</span>
-</span><span data-line="22">    <span class="s1">'parquet'</span><span class="p">,</span>
-</span><span data-line="23">    <span class="s1">'pkl'</span><span class="p">,</span>
-</span><span data-line="24">    <span class="s1">'tsv'</span><span class="p">,</span>  
+</span><span data-line="18">    <span class="s2">"csv"</span><span class="p">,</span>
+</span><span data-line="19">    <span class="s2">"feather"</span><span class="p">,</span>
+</span><span data-line="20">    <span class="s2">"json"</span><span class="p">,</span>
+</span><span data-line="21">    <span class="s2">"orc"</span><span class="p">,</span>
+</span><span data-line="22">    <span class="s2">"parquet"</span><span class="p">,</span>
+</span><span data-line="23">    <span class="s2">"pkl"</span><span class="p">,</span>
+</span><span data-line="24">    <span class="s2">"tsv"</span><span class="p">,</span>
 </span><span data-line="25">    <span class="c1"># 'dta',  # TODO: fix</span>
 </span><span data-line="26">    <span class="c1"># 'h5',  # TODO: fix</span>
 </span><span data-line="27">    <span class="c1"># 'html',  # TODO: fix</span>
@@ -536,8 +540,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="35">    <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
 </span><span data-line="36">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Extension </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">: ✓"</span><span class="p">)</span>
 </span><span data-line="37">    <span class="k">else</span><span class="p">:</span>
-</span><span data-line="38">        <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\033</span><span class="s1">[91m'</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Fix extension </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">: ✗"</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\033</span><span class="s1">[0m'</span><span class="p">)</span>
-</span><span data-line="39">        
+</span><span data-line="38">        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\033</span><span class="s2">[91m"</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Fix extension </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">: ✗"</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\033</span><span class="s2">[0m"</span><span class="p">)</span>
+</span><span data-line="39">
 </span><span data-line="40">    <span class="c1"># marker = '✓' if success else '\033[91m✗\033[0m'</span>
 </span><span data-line="41">    <span class="c1"># print(f"\tExtension {ext}: {marker}")</span>
 </span></pre></div>
@@ -574,7 +578,7 @@ data-aria-dark="Switch to auto color mode">
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-09-15 13:07 UTC from <a href="https://github.com/i2mint/tabled/commit/2929fedee809938183fe35026702650a1c55a5ca">2929fed</a> (master) · tabled 0.1.29 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-20 07:28 UTC from <a href="https://github.com/i2mint/tabled/commit/4c52d1ddc1b5c62520ebf3708d271f1f401a9567">4c52d1d</a> (master) · tabled 0.1.30 · <a href="about-this-build.html">about this build</a></p>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
@@ -609,7 +613,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="_static/documentation_options.js?v=904119ea"></script>
+      <script src="_static/documentation_options.js?v=73657eb8"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>

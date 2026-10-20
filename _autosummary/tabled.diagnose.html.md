@@ -72,7 +72,7 @@ Print information about a DataFrame.
 
 * **Parameters:**
   * **df** (`DataFrame`) – The DataFrame to analyze
-  * **exclude_columns** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Columns to exclude from analysis
+  * **exclude_columns** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Columns to exclude from analysis
   * **mode** ([`Literal`](https://docs.python.org/3/library/typing.html#typing.Literal)[`'short'`, `'sample'`, `'stats'`]) – 
 
     Type of information to display
@@ -121,9 +121,6 @@ More precisely, this function returns the list of columns that contain only
 scalar values (e.g., int, float, str, bool, etc.) and can be saved to a CSV
 file.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
-
 ### Example
 
 ```pycon
@@ -137,3 +134,6 @@ file.
 >>> scalar_columns(df)
 ['A', 'B']
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)

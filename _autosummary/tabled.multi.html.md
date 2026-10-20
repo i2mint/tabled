@@ -53,14 +53,14 @@ This is useful for making a ColumnOrientedMapping without reverting to
 the default columns argument, which is to use the columns of the first table.
 
 * **Return type:**
-  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Column`)]
+  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`Column`]
 
 #### columns_of_first_table()
 
 Return the column names of the first table in `tables`.
 
 * **Return type:**
-  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Column`)]
+  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`Column`]
 
 #### df(columns=None)
 
@@ -97,14 +97,14 @@ This is useful for making a ColumnOrientedMapping without reverting to
 the default columns argument, which is to use the columns of the first table.
 
 * **Return type:**
-  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Column`)]
+  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`Column`]
 
 ### tabled.multi.columns_of_first_table(tables)
 
 Return the column names of the first table in `tables`.
 
 * **Return type:**
-  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`Column`)]
+  [`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[`Column`]
 
 ### tabled.multi.dataframes(tables)
 
@@ -141,7 +141,7 @@ Interpreter for `Load`: set `scope["cumul"]` to `scope[command.key]`.
 Cast to a mapping of dataframes
 
 * **Return type:**
-  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`KT`), `DataFrame`]
+  [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[`KT`, `DataFrame`]
 
 ### tabled.multi.remove_func(scope, command)
 
