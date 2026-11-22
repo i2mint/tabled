@@ -121,7 +121,7 @@ DFLT_INFO_FUNCS = {
 
 def register_info_func(
     name: str, func: Callable[[pd.DataFrame], any], *, overwrite: bool = False
-):
+) -> None:
     """
     Register a new info function in the default info functions dictionary.
 

@@ -86,7 +86,7 @@ class KeyFuncReader(KvReader):
     `__contains__` apply `key` to the given key first.
     """
 
-    def __init__(self, mapping: Mapping[KT, VT], key: KeyFunc = identity):
+    def __init__(self, mapping: Mapping[KT, VT], key: KeyFunc = identity) -> None:
         """Store the ``mapping`` and the ``key`` function applied to keys before lookup."""
         self.mapping = mapping
         self.key = key
@@ -95,7 +95,7 @@ class KeyFuncReader(KvReader):
         """Return ``mapping[key(k)]``."""
         return self.mapping[self.key(k)]
 
-    def __contains__(self, k):
+    def __contains__(self, k) -> bool:
         """Return whether ``key(k)`` is in ``mapping``."""
         return self.key(k) in self.mapping
 
@@ -103,11 +103,11 @@ class KeyFuncReader(KvReader):
         """Iterate over the keys."""
         return iter(self.mapping)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Return the number of keys."""
         return len(self.mapping)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return a short representation."""
         return f"{type(self).__name__}({self.mapping}, key={self.key})"
 
@@ -231,7 +231,7 @@ class DfFiles(Files):
         # SQLite-specific parameters
         sqlite_tables: Optional[Sequence[str]] = None,
         sqlite_verbose: bool = False,
-    ):
+    ) -> None:
         """Set up the store; see the class docstring for the arguments."""
         # Check if rootdir is a SQLite file
         if isinstance(rootdir, (str, Path)) and _is_sqlite_file(rootdir):
@@ -322,7 +322,7 @@ class DfFiles(Files):
         )
 
         # Register cleanup function
-        def cleanup_temp_dir():
+        def cleanup_temp_dir() -> None:
             try:
                 import shutil
 
@@ -345,7 +345,7 @@ class DfFiles(Files):
     # from tabled import extension_base_wrap
     # extension_base_wrap(Files)
     # But not this:
-    def __setitem__(self, k, v):
+    def __setitem__(self, k, v) -> None:
         """Encode ``v`` to bytes according to the extension of ``k`` (unless it already is bytes, and that is allowed) and write it."""
         if not isinstance(v, bytes):
             bytes_ = extension_based_encoding(
@@ -358,7 +358,7 @@ class DfFiles(Files):
         # bytes_ = self.extension_based_encoding(v, file_extension(k))
         return super().__setitem__(k, bytes_)
 
-    def __delitem__(self, k):
+    def __delitem__(self, k) -> None:
         """Delete ``k``."""
         return super().__delitem__(k)
 
@@ -366,11 +366,11 @@ class DfFiles(Files):
 class DfReader(DfFiles):
     """A read-only `DfFiles`: writes and deletes raise `NotImplementedError`."""
 
-    def __setitem__(self, k, v):
+    def __setitem__(self, k, v) -> None:
         """Not supported: always raises ``NotImplementedError`` (read-only store)."""
         raise NotImplementedError("DfReader is a read-only store.")
 
-    def __delitem__(self, k):
+    def __delitem__(self, k) -> None:
         """Not supported: always raises ``NotImplementedError`` (read-only store)."""
         raise NotImplementedError("DfReader is a read-only store.")
 
@@ -385,7 +385,7 @@ import pandas as pd
 from collections.abc import Mapping
 
 
-def validate_fields(df, key_fields, value_columns):
+def validate_fields(df, key_fields, value_columns) -> None:
     """Raise `ValueError` if any `key_fields` or `value_columns` are missing from `df`."""
     all_columns = df.columns.tolist()
     all_index_levels = list(df.index.names)
@@ -456,7 +456,7 @@ class DataframeKvReader(Mapping):
 
     """
 
-    def __init__(self, df, key_fields, value_columns=None):
+    def __init__(self, df, key_fields, value_columns=None) -> None:
         """Validate the fields and index/sort ``df`` by the key fields."""
         if value_columns is None:
             value_columns = df.columns.tolist()
@@ -495,14 +495,14 @@ class DataframeKvReader(Mapping):
         keys = self.df.index.drop_duplicates().tolist()
         return iter(keys)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Return the number of distinct keys."""
         return self.df.index.nunique()
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         """Return whether ``key`` is in the index."""
         return key in self.df.index
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return a short representation."""
         return f"{type(self).__name__}(df=<{len(self.df)} rows>, key_fields={self.key_fields}, value_columns={self.value_columns})"

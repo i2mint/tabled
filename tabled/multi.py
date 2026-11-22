@@ -97,7 +97,7 @@ class Rename:
     rename_mapping: dict[str, str]
 
 
-def set_scope_value(scope, key, value):
+def set_scope_value(scope, key, value) -> None:
     """Set `scope[key] = value` (in place)."""
     scope[key] = value
 
@@ -107,7 +107,7 @@ def load_func(scope, command):
     return set_scope_value(scope, "cumul", scope[command.key])
 
 
-def join_func(scope, command):
+def join_func(scope, command) -> None:
     """Interpreter for `Join`: inner-merge the table at `command.table_key` into `scope["cumul"]`.
 
     If `scope["renamed_columns"]` was set by a prior `Rename`, that column
@@ -123,12 +123,12 @@ def join_func(scope, command):
     scope["cumul"] = cumul.merge(table, how="inner")
 
 
-def remove_func(scope, command):
+def remove_func(scope, command) -> None:
     """Interpreter for `Remove`: drop `command.fields` from `scope["cumul"]`."""
     scope["cumul"] = scope["cumul"].drop(columns=command.fields)
 
 
-def rename_func(scope, command):
+def rename_func(scope, command) -> None:
     """Interpreter for `Rename`: rename `scope["cumul"]` columns and record the mapping in `scope`."""
     scope["renamed_columns"] = command.rename_mapping
     for old_col, new_col in command.rename_mapping.items():
@@ -222,7 +222,7 @@ class ColumnOrientedMapping(Mapping):
         self,
         tables: MappingOfDataFrames,
         columns: Callable | Iterable[Column] = columns_of_first_table,
-    ):
+    ) -> None:
         """Initialize the instance; see the class docstring for the arguments."""
         self.tables = mapping_of_dataframes(tables)
         self._init_columns = columns
@@ -251,11 +251,11 @@ class ColumnOrientedMapping(Mapping):
         """Return a table with the given columns from all tables."""
         return self.df(k)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Return the number of keys."""
         return len(self.columns)
 
-    def __contains__(self, k):
+    def __contains__(self, k) -> bool:
         """Return whether ``k`` is a key."""
         return k in self.columns
 

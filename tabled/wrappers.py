@@ -15,7 +15,7 @@ import pandas as pd
 import json
 import pickle
 from posixpath import splitext
-from typing import Union, Dict, TypeVar, KT, VT, BinaryIO
+from typing import Union, Dict, TypeVar, KT, VT, BinaryIO, NoReturn
 from collections.abc import Mapping, Callable
 
 # Handle pandas_gbq import for BigQuery support
@@ -30,7 +30,7 @@ try:
     _gbq_to_method = _to_gbq_wrapper
 except ImportError:
     # If pandas_gbq is not available, create a function that raises a helpful error
-    def _to_gbq_unavailable(*args, **kwargs):
+    def _to_gbq_unavailable(*args, **kwargs) -> NoReturn:
         raise ImportError(
             "BigQuery functionality requires pandas-gbq. "
             "Install it with: pip install pandas-gbq"
@@ -161,7 +161,9 @@ def if_extension_present_remove_it(filepath, extension):
     return filepath
 
 
-def save_df_to_zipped_tsv(df: pd.DataFrame, name: str, sep="\t", index=False, **kwargs):
+def save_df_to_zipped_tsv(
+    df: pd.DataFrame, name: str, sep="\t", index=False, **kwargs
+) -> None:
     """Save a dataframe to a zipped tsv file."""
     name = if_extension_present_remove_it(name, ".zip")
     name = if_extension_present_remove_it(name, ".tsv")
@@ -411,7 +413,7 @@ def get_codec_mappings(
     )
 
 
-def print_current_mappings():
+def print_current_mappings() -> None:
     """Print the current extension-to-encoder and extension-to-decoder mappings."""
     from pprint import pprint
 
