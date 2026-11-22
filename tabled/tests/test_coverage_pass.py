@@ -124,13 +124,14 @@ def test_html_helpers():
         )
 
 
-@pytest.mark.xfail(
-    reason="dfs_to_html_pretty(list): df_store_to_html calls re.match on int keys",
-    raises=TypeError,
-    strict=True,
-)
 def test_dfs_to_html_pretty_list_of_frames():
-    dfs_to_html_pretty([pd.DataFrame({"a": [1]})])
+    page = dfs_to_html_pretty([pd.DataFrame({"a": [1]})])
+    assert "<table" in page and "<h2> 0 </h2>" in page
+
+
+def test_df_store_to_html_with_all_digit_string_keys():
+    html = df_store_to_html({"2024": pd.DataFrame({"a": [1]})})
+    assert "<h2> 2024 </h2>" in html
 
 
 def test_sqlite_export_missing_file(tmp_path):
