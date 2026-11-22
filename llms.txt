@@ -5,7 +5,7 @@
 
 ## Pages
 
-- [tabled](index.html.md): A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease
+- [tabled](index.html.md): A folder of table files (CSV, Parquet, Excel, JSON, Feather and a dozen more formats) as a dict of p...
 - [API reference](api.html.md): | &#96;tabled&#96;   | A data-object-layer package for accessing pandas DataFrames from various sources.   |
 - [tabled](_autosummary/tabled.html.md): A data-object-layer package for accessing pandas DataFrames from various sources.
 - [tabled.base](_autosummary/tabled.base.html.md): Based functionality for tabled
@@ -20,7 +20,7 @@
 - [tabled.tools](_autosummary/tabled.tools.html.md): Various high-level tools using tabled
 - [tabled.util](_autosummary/tabled.util.html.md): General-purpose utilities for working with DataFrames, dicts, and byte decoding.
 - [tabled.wrappers](_autosummary/tabled.wrappers.html.md): Wrapping tools
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 21:46 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 23:35 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
 
 ## Optional
 

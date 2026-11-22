@@ -1,4 +1,4 @@
-> built 2026-11-22 21:46 UTC from c37ce55 (master) · tabled 0.1.32. Details: build_info.json
+> built 2026-11-22 23:35 UTC from b66b8c7 (master) · tabled 0.1.32. Details: build_info.json
 
 # index.html.md
 
@@ -6,13 +6,37 @@
 
 # tabled
 
-A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease
-
-To install:
+A folder of table files (CSV, Parquet, Excel, JSON, Feather and a dozen more formats) as a dict of pandas DataFrames: read and write by file name, and the extension picks the format, instead of picking a `pd.read_*`/`to_*` call per file. Plus tools to diagnose, compare and reshape tables, and to read SQLite databases and HTML tables the same way.
 
 ```default
 pip install tabled
 ```
+
+Some formats need pandas’ own optional readers: `openpyxl` for `.xlsx`, `xlrd` for `.xls`, `pyreadstat` for `.sav`, `tables` for `.h5`.
+
+[Documentation](https://i2mint.github.io/tabled/)
+
+```python
+import tempfile
+import pandas as pd
+from tabled import DfFiles
+
+tables = DfFiles(tempfile.mkdtemp())  # any folder
+
+tables['sales.csv'] = pd.DataFrame({'item': ['a', 'b'], 'qty': [1, 2]})
+tables['sales.parquet'] = tables['sales.csv']  # read as CSV, write as Parquet
+assert sorted(tables) == ['sales.csv', 'sales.parquet']
+assert tables['sales.parquet'].shape == (2, 2)
+```
+
+What else is in it:
+
+- `DfFiles("my_database.db")` gives the same dict view over the tables of a SQLite database (below).
+- `dataframe_info`, `diagnose_table_collection`: a quick, extensible profile of one table or a folder of them (below).
+- `compare_tables`, `dataframe_diffs`: what changed between two versions of a table.
+- `collapse_rows` / `expand_rows`, `collapse_columns` / `expand_columns`: group rows into lists and back.
+- `upsert_data`: insert or update rows in a DataFrame.
+- `get_tables_from_url`: the HTML tables of a (static) web page, as DataFrames.
 
 <!-- epythet:agentic-readme:start -->
 
@@ -2712,16 +2736,18 @@ True
 
 # About this build
 
-This documentation was built on **2026-11-22 21:46 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/c37ce55c9b234cbbd63a7e0868583898b4df7c85"><code>c37ce55</code></a> on branch <code>master</code>, for **tabled 0.1.32** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 23:35 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/b66b8c7885fba9bc5f037c3e4de0cad2dd40f349"><code>b66b8c7</code></a> on branch <code>master</code>, for **tabled 0.1.32** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.32) is behind the latest release on PyPI (0.1.33): `pip install tabled` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/tabled/commit/c37ce55c9b234cbbd63a7e0868583898b4df7c85"><code>c37ce55c9b234cbbd63a7e0868583898b4df7c85</code></a> |
+| Commit              | <a href="https://github.com/i2mint/tabled/commit/b66b8c7885fba9bc5f037c3e4de0cad2dd40f349"><code>b66b8c7885fba9bc5f037c3e4de0cad2dd40f349</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -2732,9 +2758,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/tabled</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45073840677">45073840677</a>        |
+| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45083949371">45083949371</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>c37ce55c9b234cbbd63a7e0868583898b4df7c85</code> (in the history of the built commit) |
+| Event commit | <code>b66b8c7885fba9bc5f037c3e4de0cad2dd40f349</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2759,13 +2785,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/tabled/0.1.32/">0.1.32</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/tabled/0.1.33/">0.1.33</a>, newer than the documented version (0.1.32).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/tabled && cd tabled
-git checkout c37ce55c9b234cbbd63a7e0868583898b4df7c85
+git checkout b66b8c7885fba9bc5f037c3e4de0cad2dd40f349
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

@@ -2,13 +2,37 @@
 
 # tabled
 
-A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease
-
-To install:
+A folder of table files (CSV, Parquet, Excel, JSON, Feather and a dozen more formats) as a dict of pandas DataFrames: read and write by file name, and the extension picks the format, instead of picking a `pd.read_*`/`to_*` call per file. Plus tools to diagnose, compare and reshape tables, and to read SQLite databases and HTML tables the same way.
 
 ```default
 pip install tabled
 ```
+
+Some formats need pandas’ own optional readers: `openpyxl` for `.xlsx`, `xlrd` for `.xls`, `pyreadstat` for `.sav`, `tables` for `.h5`.
+
+[Documentation](https://i2mint.github.io/tabled/)
+
+```python
+import tempfile
+import pandas as pd
+from tabled import DfFiles
+
+tables = DfFiles(tempfile.mkdtemp())  # any folder
+
+tables['sales.csv'] = pd.DataFrame({'item': ['a', 'b'], 'qty': [1, 2]})
+tables['sales.parquet'] = tables['sales.csv']  # read as CSV, write as Parquet
+assert sorted(tables) == ['sales.csv', 'sales.parquet']
+assert tables['sales.parquet'].shape == (2, 2)
+```
+
+What else is in it:
+
+- `DfFiles("my_database.db")` gives the same dict view over the tables of a SQLite database (below).
+- `dataframe_info`, `diagnose_table_collection`: a quick, extensible profile of one table or a folder of them (below).
+- `compare_tables`, `dataframe_diffs`: what changed between two versions of a table.
+- `collapse_rows` / `expand_rows`, `collapse_columns` / `expand_columns`: group rows into lists and back.
+- `upsert_data`: insert or update rows in a DataFrame.
+- `get_tables_from_url`: the HTML tables of a (static) web page, as DataFrames.
 
 <!-- epythet:agentic-readme:start -->
 
