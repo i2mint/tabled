@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T14:11:39Z",
+  "built_at": "2026-11-22T18:27:46Z",
   "package": {
     "name": "tabled",
     "version": "0.1.31",
@@ -9,24 +9,24 @@
   },
   "git": {
     "available": true,
-    "commit": "d7774b5e709edea8f9e21463b7dc6a014ea8b85f",
-    "short_commit": "d7774b5",
+    "commit": "7177bb282b4048bf62777e5da11cb41f2edbe57f",
+    "short_commit": "7177bb2",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/tabled",
-    "commit_url": "https://github.com/i2mint/tabled/commit/d7774b5e709edea8f9e21463b7dc6a014ea8b85f",
+    "commit_url": "https://github.com/i2mint/tabled/commit/7177bb282b4048bf62777e5da11cb41f2edbe57f",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/tabled",
-    "sha": "d7774b5e709edea8f9e21463b7dc6a014ea8b85f",
+    "sha": "7177bb282b4048bf62777e5da11cb41f2edbe57f",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45031315051",
-    "run_url": "https://github.com/i2mint/tabled/actions/runs/45031315051",
+    "run_id": "45055042766",
+    "run_url": "https://github.com/i2mint/tabled/actions/runs/45055042766",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -60,14 +60,16 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.31",
-    "relation": "same",
+    "latest": "0.1.32",
+    "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/tabled && cd tabled\ngit checkout d7774b5e709edea8f9e21463b7dc6a014ea8b85f\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/tabled && cd tabled\ngit checkout 7177bb282b4048bf62777e5da11cb41f2edbe57f\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": true,
-    "notes": []
+    "aligned": false,
+    "notes": [
+      "The documented version (0.1.31) is behind the latest release on PyPI (0.1.32): `pip install tabled` gives newer code than these docs describe."
+    ]
   }
 }

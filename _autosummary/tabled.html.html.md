@@ -16,6 +16,8 @@ To work with html
 
 Render each dataframe in `df_store`, titled by its key’s leading non-digit prefix, joined by `sep`.
 
+A key that is not a string, or has no non-digit prefix (e.g. `0` or `"2024"`), is used whole as the title.
+
 ### tabled.html.df_to_html(df, title=None)
 
 Render `df` as an HTML table, with an optional `<h2>` title above it.

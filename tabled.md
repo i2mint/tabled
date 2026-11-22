@@ -1,4 +1,4 @@
-> built 2026-11-22 14:11 UTC from d7774b5 (master) · tabled 0.1.31. Details: build_info.json
+> built 2026-11-22 18:27 UTC from 7177bb2 (master) · tabled 0.1.31. Details: build_info.json
 
 # index.html.md
 
@@ -1236,6 +1236,8 @@ To work with html
 ### tabled.html.df_store_to_html(df_store, sep='\\n<br>\\n')
 
 Render each dataframe in `df_store`, titled by its key’s leading non-digit prefix, joined by `sep`.
+
+A key that is not a string, or has no non-digit prefix (e.g. `0` or `"2024"`), is used whole as the title.
 
 ### tabled.html.df_to_html(df, title=None)
 
@@ -2678,16 +2680,18 @@ True
 
 # About this build
 
-This documentation was built on **2026-11-22 14:11 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/d7774b5e709edea8f9e21463b7dc6a014ea8b85f"><code>d7774b5</code></a> on branch <code>master</code>, for **tabled 0.1.31** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 18:27 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/7177bb282b4048bf62777e5da11cb41f2edbe57f"><code>7177bb2</code></a> on branch <code>master</code>, for **tabled 0.1.31** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.31) is behind the latest release on PyPI (0.1.32): `pip install tabled` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/tabled/commit/d7774b5e709edea8f9e21463b7dc6a014ea8b85f"><code>d7774b5e709edea8f9e21463b7dc6a014ea8b85f</code></a> |
+| Commit              | <a href="https://github.com/i2mint/tabled/commit/7177bb282b4048bf62777e5da11cb41f2edbe57f"><code>7177bb282b4048bf62777e5da11cb41f2edbe57f</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -2698,9 +2702,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/tabled</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45031315051">45031315051</a>        |
+| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45055042766">45055042766</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>d7774b5e709edea8f9e21463b7dc6a014ea8b85f</code> (in the history of the built commit) |
+| Event commit | <code>7177bb282b4048bf62777e5da11cb41f2edbe57f</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2725,13 +2729,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/tabled/0.1.31/">0.1.31</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/tabled/0.1.32/">0.1.32</a>, newer than the documented version (0.1.31).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/tabled && cd tabled
-git checkout d7774b5e709edea8f9e21463b7dc6a014ea8b85f
+git checkout 7177bb282b4048bf62777e5da11cb41f2edbe57f
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

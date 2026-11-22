@@ -359,47 +359,51 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="df_store_to_html">
 <a class="viewcode-back" href="../../_autosummary/tabled.html.html#tabled.html.df_store_to_html">[docs]</a>
 </span><span data-line="224"><span class="k">def</span><span class="w"> </span><span class="nf">df_store_to_html</span><span class="p">(</span><span class="n">df_store</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\n</span><span class="s2">&lt;br&gt;</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
-</span><span data-line="225"><span class="w">    </span><span class="sd">"""Render each dataframe in `df_store`, titled by its key's leading non-digit prefix, joined by `sep`."""</span>
-</span><span data-line="226">    <span class="n">ht</span> <span class="o">=</span> <span class="s2">""</span>
-</span><span data-line="227">    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">df_store</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span data-line="228">        <span class="n">title</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\d]+"</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span data-line="229">        <span class="n">ht</span> <span class="o">+=</span> <span class="n">df_to_html</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
-</span><span data-line="230">        <span class="n">ht</span> <span class="o">+=</span> <span class="n">sep</span>
-</span><span data-line="231">    <span class="k">return</span> <span class="n">ht</span></div>
+</span><span data-line="225"><span class="w">    </span><span class="sd">"""Render each dataframe in `df_store`, titled by its key's leading non-digit prefix, joined by `sep`.</span>
+</span><span data-line="226">
+</span><span data-line="227"><span class="sd">    A key that is not a string, or has no non-digit prefix (e.g. ``0`` or ``"2024"``), is used whole as the title.</span>
+</span><span data-line="228"><span class="sd">    """</span>
+</span><span data-line="229">    <span class="n">ht</span> <span class="o">=</span> <span class="s2">""</span>
+</span><span data-line="230">    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">df_store</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span data-line="231">        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\d]+"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+</span><span data-line="232">        <span class="n">title</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">match</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span data-line="233">        <span class="n">ht</span> <span class="o">+=</span> <span class="n">df_to_html</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+</span><span data-line="234">        <span class="n">ht</span> <span class="o">+=</span> <span class="n">sep</span>
+</span><span data-line="235">    <span class="k">return</span> <span class="n">ht</span></div>
 
-</span><span data-line="232">
-</span><span data-line="233">
+</span><span data-line="236">
+</span><span data-line="237">
 <div class="viewcode-block" id="dfs_to_html_pretty">
 <a class="viewcode-back" href="../../_autosummary/tabled.html.html#tabled.html.dfs_to_html_pretty">[docs]</a>
-</span><span data-line="234"><span class="k">def</span><span class="w"> </span><span class="nf">dfs_to_html_pretty</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span data-line="235"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="236"><span class="sd">    Write an entire dataframe to an HTML file</span>
-</span><span data-line="237"><span class="sd">    with nice formatting.</span>
-</span><span data-line="238"><span class="sd">    Thanks to @stackoverflowuser2010 for the</span>
-</span><span data-line="239"><span class="sd">    pretty printer see https://stackoverflow.com/a/47723330/362951</span>
-</span><span data-line="240"><span class="sd">    """</span>
-</span><span data-line="241">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="242">        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_to_html</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
-</span><span data-line="243">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-</span><span data-line="244">        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_store_to_html</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span>
-</span><span data-line="245">    <span class="k">else</span><span class="p">:</span>
-</span><span data-line="246">        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_store_to_html</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">dfs</span><span class="p">)))</span>
-</span><span data-line="247">
-</span><span data-line="248">    <span class="k">return</span> <span class="n">HTML_TEMPLATE1</span> <span class="o">+</span> <span class="n">ht</span> <span class="o">+</span> <span class="n">HTML_TEMPLATE2</span></div>
+</span><span data-line="238"><span class="k">def</span><span class="w"> </span><span class="nf">dfs_to_html_pretty</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="239"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="240"><span class="sd">    Write an entire dataframe to an HTML file</span>
+</span><span data-line="241"><span class="sd">    with nice formatting.</span>
+</span><span data-line="242"><span class="sd">    Thanks to @stackoverflowuser2010 for the</span>
+</span><span data-line="243"><span class="sd">    pretty printer see https://stackoverflow.com/a/47723330/362951</span>
+</span><span data-line="244"><span class="sd">    """</span>
+</span><span data-line="245">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="246">        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_to_html</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</span><span data-line="247">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+</span><span data-line="248">        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_store_to_html</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span>
+</span><span data-line="249">    <span class="k">else</span><span class="p">:</span>
+</span><span data-line="250">        <span class="n">ht</span> <span class="o">=</span> <span class="n">df_store_to_html</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">dfs</span><span class="p">)))</span>
+</span><span data-line="251">
+</span><span data-line="252">    <span class="k">return</span> <span class="n">HTML_TEMPLATE1</span> <span class="o">+</span> <span class="n">ht</span> <span class="o">+</span> <span class="n">HTML_TEMPLATE2</span></div>
 
-</span><span data-line="249">
-</span><span data-line="250">
+</span><span data-line="253">
+</span><span data-line="254">
 <div class="viewcode-block" id="dfs_to_pdf_bytes">
 <a class="viewcode-back" href="../../_autosummary/tabled.html.html#tabled.html.dfs_to_pdf_bytes">[docs]</a>
-</span><span data-line="251"><span class="k">def</span><span class="w"> </span><span class="nf">dfs_to_pdf_bytes</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span data-line="252"><span class="w">    </span><span class="sd">"""Render `dfs` (a DataFrame, a mapping, or an iterable of DataFrames) to PDF bytes.</span>
-</span><span data-line="253">
-</span><span data-line="254"><span class="sd">    Requires the optional `weasyprint` dependency.</span>
-</span><span data-line="255"><span class="sd">    """</span>
-</span><span data-line="256">    <span class="kn">import</span><span class="w"> </span><span class="nn">weasyprint</span>
+</span><span data-line="255"><span class="k">def</span><span class="w"> </span><span class="nf">dfs_to_pdf_bytes</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="256"><span class="w">    </span><span class="sd">"""Render `dfs` (a DataFrame, a mapping, or an iterable of DataFrames) to PDF bytes.</span>
 </span><span data-line="257">
-</span><span data-line="258">    <span class="n">html</span> <span class="o">=</span> <span class="n">dfs_to_html_pretty</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
-</span><span data-line="259">    <span class="k">return</span> <span class="n">weasyprint</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">html</span><span class="p">)</span><span class="o">.</span><span class="n">write_pdf</span><span class="p">()</span></div>
+</span><span data-line="258"><span class="sd">    Requires the optional `weasyprint` dependency.</span>
+</span><span data-line="259"><span class="sd">    """</span>
+</span><span data-line="260">    <span class="kn">import</span><span class="w"> </span><span class="nn">weasyprint</span>
+</span><span data-line="261">
+</span><span data-line="262">    <span class="n">html</span> <span class="o">=</span> <span class="n">dfs_to_html_pretty</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+</span><span data-line="263">    <span class="k">return</span> <span class="n">weasyprint</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">html</span><span class="p">)</span><span class="o">.</span><span class="n">write_pdf</span><span class="p">()</span></div>
 
 </span></pre></div>
         </article><button class="back-to-top" type="button">
