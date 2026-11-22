@@ -87,22 +87,28 @@ class KeyFuncReader(KvReader):
     """
 
     def __init__(self, mapping: Mapping[KT, VT], key: KeyFunc = identity):
+        """Store the ``mapping`` and the ``key`` function applied to keys before lookup."""
         self.mapping = mapping
         self.key = key
 
     def __getitem__(self, k):
+        """Return ``mapping[key(k)]``."""
         return self.mapping[self.key(k)]
 
     def __contains__(self, k):
+        """Return whether ``key(k)`` is in ``mapping``."""
         return self.key(k) in self.mapping
 
     def __iter__(self):
+        """Iterate over the keys."""
         return iter(self.mapping)
 
     def __len__(self):
+        """Return the number of keys."""
         return len(self.mapping)
 
     def __repr__(self):
+        """Return a short representation."""
         return f"{type(self).__name__}({self.mapping}, key={self.key})"
 
 
@@ -226,6 +232,7 @@ class DfFiles(Files):
         sqlite_tables: Optional[Sequence[str]] = None,
         sqlite_verbose: bool = False,
     ):
+        """Set up the store; see the class docstring for the arguments."""
         # Check if rootdir is a SQLite file
         if isinstance(rootdir, (str, Path)) and _is_sqlite_file(rootdir):
             # Delegate to from_sqlite_file
@@ -328,6 +335,7 @@ class DfFiles(Files):
         return cls(temp_dir, **kwargs)
 
     def __getitem__(self, k):
+        """Read the bytes of ``k`` and decode them to a dataframe according to its extension."""
         ext = self.key_to_ext(k)
         # data = BytesIO(super().__getitem__(k))
         data = super().__getitem__(k)
@@ -338,6 +346,7 @@ class DfFiles(Files):
     # extension_base_wrap(Files)
     # But not this:
     def __setitem__(self, k, v):
+        """Encode ``v`` to bytes according to the extension of ``k`` (unless it already is bytes, and that is allowed) and write it."""
         if not isinstance(v, bytes):
             bytes_ = extension_based_encoding(
                 k, v, extension_to_encoder=self.extension_encoder_mapping
@@ -350,6 +359,7 @@ class DfFiles(Files):
         return super().__setitem__(k, bytes_)
 
     def __delitem__(self, k):
+        """Delete ``k``."""
         return super().__delitem__(k)
 
 
@@ -357,9 +367,11 @@ class DfReader(DfFiles):
     """A read-only `DfFiles`: writes and deletes raise `NotImplementedError`."""
 
     def __setitem__(self, k, v):
+        """Not supported: always raises ``NotImplementedError`` (read-only store)."""
         raise NotImplementedError("DfReader is a read-only store.")
 
     def __delitem__(self, k):
+        """Not supported: always raises ``NotImplementedError`` (read-only store)."""
         raise NotImplementedError("DfReader is a read-only store.")
 
 
@@ -445,6 +457,7 @@ class DataframeKvReader(Mapping):
     """
 
     def __init__(self, df, key_fields, value_columns=None):
+        """Validate the fields and index/sort ``df`` by the key fields."""
         if value_columns is None:
             value_columns = df.columns.tolist()
         validate_fields(df, key_fields, value_columns)
@@ -466,6 +479,7 @@ class DataframeKvReader(Mapping):
             self.df = df.sort_index()
 
     def __getitem__(self, key):
+        """Return the rows (as a dataframe, restricted to the value columns) matching ``key``; raise ``KeyError`` if there are none."""
         if not isinstance(key, tuple):
             key = (key,)
         try:
@@ -477,14 +491,18 @@ class DataframeKvReader(Mapping):
             raise KeyError(f"Key {key} not found")
 
     def __iter__(self):
+        """Iterate over the distinct keys."""
         keys = self.df.index.drop_duplicates().tolist()
         return iter(keys)
 
     def __len__(self):
+        """Return the number of distinct keys."""
         return self.df.index.nunique()
 
     def __contains__(self, key):
+        """Return whether ``key`` is in the index."""
         return key in self.df.index
 
     def __repr__(self):
+        """Return a short representation."""
         return f"{type(self).__name__}(df=<{len(self.df)} rows>, key_fields={self.key_fields}, value_columns={self.value_columns})"

@@ -61,15 +61,18 @@ class Join:
     """A join step: which table to join in next, and which of its fields to drop after."""
 
     def __init__(self, table_id: str, remove: list[str] = None):
+        """Store the ``table_id`` and the (optional) list of columns to ``remove``."""
         self.table_id = table_id
         self.remove = remove or []
 
     def __repr__(self):
+        """Return a short representation."""
         # note: sorting self.remove so doctests are consistent
         remove_str = f", remove={sorted(self.remove)}" if self.remove else ""
         return f"Join('{self.table_id}'{remove_str})"
 
     def __eq__(self, other):
+        """Two ``Join`` objects are equal if they have the same table id and the same set of removed columns."""
         if not isinstance(other, Join):
             return False
         return self.table_id == other.table_id and set(self.remove) == set(other.remove)
