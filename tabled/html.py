@@ -222,10 +222,14 @@ def df_to_html(df, title=None):
 
 
 def df_store_to_html(df_store, sep="\n<br>\n"):
-    """Render each dataframe in `df_store`, titled by its key's leading non-digit prefix, joined by `sep`."""
+    """Render each dataframe in `df_store`, titled by its key's leading non-digit prefix, joined by `sep`.
+
+    A key that is not a string, or has no non-digit prefix (e.g. ``0`` or ``"2024"``), is used whole as the title.
+    """
     ht = ""
     for k, df in df_store.items():
-        title = re.match(r"[^\d]+", k).group(0)
+        match = re.match(r"[^\d]+", str(k))
+        title = match.group(0) if match else str(k)
         ht += df_to_html(df, title)
         ht += sep
     return ht
