@@ -143,172 +143,173 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="15"><span class="w">    </span><span class="sd">"""A `{left_right, right_left}` dict, truthy if either value is truthy."""</span>
 </span><span data-line="16">
 </span><span data-line="17">    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="18">        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-</span><span data-line="19">
+</span><span data-line="18"><span class="w">        </span><span class="sd">"""Return ``True`` if any of the values is truthy (that is, if some difference was found)."""</span>
+</span><span data-line="19">        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</span><span data-line="20">
 <div class="viewcode-block" id="BinaryFuncResult.from_func">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.BinaryFuncResult.from_func">[docs]</a>
-</span><span data-line="20">    <span class="nd">@classmethod</span>
-</span><span data-line="21">    <span class="k">def</span><span class="w"> </span><span class="nf">from_func</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-</span><span data-line="22"><span class="w">        </span><span class="sd">"""Build a `BinaryFuncResult` from `func(x, y)` and `func(y, x)`."""</span>
-</span><span data-line="23">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-</span><span data-line="24">            <span class="n">left_right</span><span class="o">=</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
-</span><span data-line="25">            <span class="n">right_left</span><span class="o">=</span><span class="n">func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
-</span><span data-line="26">        <span class="p">)</span></div>
+</span><span data-line="21">    <span class="nd">@classmethod</span>
+</span><span data-line="22">    <span class="k">def</span><span class="w"> </span><span class="nf">from_func</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span><span data-line="23"><span class="w">        </span><span class="sd">"""Build a `BinaryFuncResult` from `func(x, y)` and `func(y, x)`."""</span>
+</span><span data-line="24">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+</span><span data-line="25">            <span class="n">left_right</span><span class="o">=</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+</span><span data-line="26">            <span class="n">right_left</span><span class="o">=</span><span class="n">func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+</span><span data-line="27">        <span class="p">)</span></div>
 </div>
 
-</span><span data-line="27">
 </span><span data-line="28">
+</span><span data-line="29">
 <div class="viewcode-block" id="columns_diff">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.columns_diff">[docs]</a>
-</span><span data-line="29"><span class="k">def</span><span class="w"> </span><span class="nf">columns_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="30"><span class="w">    </span><span class="sd">"""Return columns that are not common between df1 and df2."""</span>
-</span><span data-line="31">    <span class="k">return</span> <span class="n">BinaryFuncResult</span><span class="o">.</span><span class="n">from_func</span><span class="p">(</span>
-</span><span data-line="32">        <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-</span><span data-line="33">    <span class="p">)</span></div>
+</span><span data-line="30"><span class="k">def</span><span class="w"> </span><span class="nf">columns_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="31"><span class="w">    </span><span class="sd">"""Return columns that are not common between df1 and df2."""</span>
+</span><span data-line="32">    <span class="k">return</span> <span class="n">BinaryFuncResult</span><span class="o">.</span><span class="n">from_func</span><span class="p">(</span>
+</span><span data-line="33">        <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</span><span data-line="34">    <span class="p">)</span></div>
 
-</span><span data-line="34">
 </span><span data-line="35">
+</span><span data-line="36">
 <div class="viewcode-block" id="index_diff">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.index_diff">[docs]</a>
-</span><span data-line="36"><span class="k">def</span><span class="w"> </span><span class="nf">index_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="37"><span class="w">    </span><span class="sd">"""Return indices that are not common between df1 and df2."""</span>
-</span><span data-line="38">    <span class="k">return</span> <span class="n">BinaryFuncResult</span><span class="o">.</span><span class="n">from_func</span><span class="p">(</span>
-</span><span data-line="39">        <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-</span><span data-line="40">    <span class="p">)</span></div>
+</span><span data-line="37"><span class="k">def</span><span class="w"> </span><span class="nf">index_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="38"><span class="w">    </span><span class="sd">"""Return indices that are not common between df1 and df2."""</span>
+</span><span data-line="39">    <span class="k">return</span> <span class="n">BinaryFuncResult</span><span class="o">.</span><span class="n">from_func</span><span class="p">(</span>
+</span><span data-line="40">        <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</span><span data-line="41">    <span class="p">)</span></div>
 
-</span><span data-line="41">
 </span><span data-line="42">
+</span><span data-line="43">
 <div class="viewcode-block" id="shape_diff">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.shape_diff">[docs]</a>
-</span><span data-line="43"><span class="k">def</span><span class="w"> </span><span class="nf">shape_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="44"><span class="w">    </span><span class="sd">"""Return the shapes of df1 and df2 if they differ."""</span>
-</span><span data-line="45">    <span class="n">df1_shape</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">shape</span>
-</span><span data-line="46">    <span class="n">df2_shape</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">shape</span>
-</span><span data-line="47">    <span class="k">if</span> <span class="n">df1_shape</span> <span class="o">!=</span> <span class="n">df2_shape</span><span class="p">:</span>
-</span><span data-line="48">        <span class="k">return</span> <span class="n">df1_shape</span><span class="p">,</span> <span class="n">df2_shape</span></div>
+</span><span data-line="44"><span class="k">def</span><span class="w"> </span><span class="nf">shape_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="45"><span class="w">    </span><span class="sd">"""Return the shapes of df1 and df2 if they differ."""</span>
+</span><span data-line="46">    <span class="n">df1_shape</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">shape</span>
+</span><span data-line="47">    <span class="n">df2_shape</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">shape</span>
+</span><span data-line="48">    <span class="k">if</span> <span class="n">df1_shape</span> <span class="o">!=</span> <span class="n">df2_shape</span><span class="p">:</span>
+</span><span data-line="49">        <span class="k">return</span> <span class="n">df1_shape</span><span class="p">,</span> <span class="n">df2_shape</span></div>
 
-</span><span data-line="49">
 </span><span data-line="50">
+</span><span data-line="51">
 <div class="viewcode-block" id="columns_value_diff">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.columns_value_diff">[docs]</a>
-</span><span data-line="51"><span class="k">def</span><span class="w"> </span><span class="nf">columns_value_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="52"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="53"><span class="sd">    For each column present in both dataframes, compare the values row-wise.</span>
-</span><span data-line="54"><span class="sd">    Returns a dict with column names as keys and DataFrames of differences as values.</span>
-</span><span data-line="55"><span class="sd">    Only columns with differences are included.</span>
-</span><span data-line="56"><span class="sd">    """</span>
-</span><span data-line="57">    <span class="k">if</span> <span class="ow">not</span> <span class="n">df1</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">is_unique</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">is_unique</span><span class="p">:</span>
-</span><span data-line="58">        <span class="k">return</span> <span class="n">InvalidComparison</span><span class="p">(</span><span class="s2">"Indices are not unique."</span><span class="p">)</span>
-</span><span data-line="59">    <span class="n">common_index</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-</span><span data-line="60">    <span class="n">common_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-</span><span data-line="61">    <span class="n">diffs</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span data-line="62">    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">common_columns</span><span class="p">:</span>
-</span><span data-line="63">        <span class="n">s1</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common_index</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
-</span><span data-line="64">        <span class="n">s2</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common_index</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
-</span><span data-line="65">        <span class="n">diff_s</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">keep_shape</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_equal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span data-line="66">        <span class="k">if</span> <span class="ow">not</span> <span class="n">diff_s</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-</span><span data-line="67">            <span class="n">diff_s</span> <span class="o">=</span> <span class="n">diff_s</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"self"</span><span class="p">:</span> <span class="s2">"left"</span><span class="p">,</span> <span class="s2">"other"</span><span class="p">:</span> <span class="s2">"right"</span><span class="p">})</span>
-</span><span data-line="68">            <span class="n">diffs</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff_s</span>
-</span><span data-line="69">    <span class="k">return</span> <span class="n">diffs</span></div>
+</span><span data-line="52"><span class="k">def</span><span class="w"> </span><span class="nf">columns_value_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="53"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="54"><span class="sd">    For each column present in both dataframes, compare the values row-wise.</span>
+</span><span data-line="55"><span class="sd">    Returns a dict with column names as keys and DataFrames of differences as values.</span>
+</span><span data-line="56"><span class="sd">    Only columns with differences are included.</span>
+</span><span data-line="57"><span class="sd">    """</span>
+</span><span data-line="58">    <span class="k">if</span> <span class="ow">not</span> <span class="n">df1</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">is_unique</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">is_unique</span><span class="p">:</span>
+</span><span data-line="59">        <span class="k">return</span> <span class="n">InvalidComparison</span><span class="p">(</span><span class="s2">"Indices are not unique."</span><span class="p">)</span>
+</span><span data-line="60">    <span class="n">common_index</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</span><span data-line="61">    <span class="n">common_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</span><span data-line="62">    <span class="n">diffs</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span data-line="63">    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">common_columns</span><span class="p">:</span>
+</span><span data-line="64">        <span class="n">s1</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common_index</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+</span><span data-line="65">        <span class="n">s2</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common_index</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+</span><span data-line="66">        <span class="n">diff_s</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">keep_shape</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_equal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span data-line="67">        <span class="k">if</span> <span class="ow">not</span> <span class="n">diff_s</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+</span><span data-line="68">            <span class="n">diff_s</span> <span class="o">=</span> <span class="n">diff_s</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"self"</span><span class="p">:</span> <span class="s2">"left"</span><span class="p">,</span> <span class="s2">"other"</span><span class="p">:</span> <span class="s2">"right"</span><span class="p">})</span>
+</span><span data-line="69">            <span class="n">diffs</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff_s</span>
+</span><span data-line="70">    <span class="k">return</span> <span class="n">diffs</span></div>
 
-</span><span data-line="70">
 </span><span data-line="71">
+</span><span data-line="72">
 <div class="viewcode-block" id="dtypes_diff">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.dtypes_diff">[docs]</a>
-</span><span data-line="72"><span class="k">def</span><span class="w"> </span><span class="nf">dtypes_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="73"><span class="w">    </span><span class="sd">"""Return columns where the data types differ between df1 and df2."""</span>
-</span><span data-line="74">    <span class="n">common_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-</span><span data-line="75">    <span class="n">diffs</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span data-line="76">    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">common_columns</span><span class="p">:</span>
-</span><span data-line="77">        <span class="n">dtype1</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
-</span><span data-line="78">        <span class="n">dtype2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
-</span><span data-line="79">        <span class="k">if</span> <span class="n">dtype1</span> <span class="o">!=</span> <span class="n">dtype2</span><span class="p">:</span>
-</span><span data-line="80">            <span class="n">diffs</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtype1</span><span class="p">,</span> <span class="n">dtype2</span><span class="p">)</span>
-</span><span data-line="81">    <span class="k">return</span> <span class="n">diffs</span></div>
+</span><span data-line="73"><span class="k">def</span><span class="w"> </span><span class="nf">dtypes_diff</span><span class="p">(</span><span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="74"><span class="w">    </span><span class="sd">"""Return columns where the data types differ between df1 and df2."""</span>
+</span><span data-line="75">    <span class="n">common_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</span><span data-line="76">    <span class="n">diffs</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span data-line="77">    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">common_columns</span><span class="p">:</span>
+</span><span data-line="78">        <span class="n">dtype1</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+</span><span data-line="79">        <span class="n">dtype2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+</span><span data-line="80">        <span class="k">if</span> <span class="n">dtype1</span> <span class="o">!=</span> <span class="n">dtype2</span><span class="p">:</span>
+</span><span data-line="81">            <span class="n">diffs</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtype1</span><span class="p">,</span> <span class="n">dtype2</span><span class="p">)</span>
+</span><span data-line="82">    <span class="k">return</span> <span class="n">diffs</span></div>
 
-</span><span data-line="82">
 </span><span data-line="83">
+</span><span data-line="84">
 <div class="viewcode-block" id="InvalidComparison">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.InvalidComparison">[docs]</a>
-</span><span data-line="84"><span class="k">class</span><span class="w"> </span><span class="nc">InvalidComparison</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-</span><span data-line="85"><span class="w">    </span><span class="sd">"""Raised or returned when a comparison that was asked for is not applicable to the dataframes in question"""</span></div>
+</span><span data-line="85"><span class="k">class</span><span class="w"> </span><span class="nc">InvalidComparison</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+</span><span data-line="86"><span class="w">    </span><span class="sd">"""Raised or returned when a comparison that was asked for is not applicable to the dataframes in question"""</span></div>
 
-</span><span data-line="86">
 </span><span data-line="87">
-</span><span data-line="88"><span class="n">DFLT_COMPARISONS</span><span class="p">:</span> <span class="n">ComparisonsDict</span> <span class="o">=</span> <span class="p">{</span>
-</span><span data-line="89">    <span class="s2">"columns_diff"</span><span class="p">:</span> <span class="n">columns_diff</span><span class="p">,</span>
-</span><span data-line="90">    <span class="s2">"index_diff"</span><span class="p">:</span> <span class="n">index_diff</span><span class="p">,</span>
-</span><span data-line="91">    <span class="s2">"shape_diff"</span><span class="p">:</span> <span class="n">shape_diff</span><span class="p">,</span>
-</span><span data-line="92">    <span class="s2">"columns_value_diff"</span><span class="p">:</span> <span class="n">columns_value_diff</span><span class="p">,</span>
-</span><span data-line="93">    <span class="s2">"dtypes_diff"</span><span class="p">:</span> <span class="n">dtypes_diff</span><span class="p">,</span>
-</span><span data-line="94">    <span class="c1"># ... insert more here</span>
-</span><span data-line="95"><span class="p">}</span>
-</span><span data-line="96">
+</span><span data-line="88">
+</span><span data-line="89"><span class="n">DFLT_COMPARISONS</span><span class="p">:</span> <span class="n">ComparisonsDict</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="90">    <span class="s2">"columns_diff"</span><span class="p">:</span> <span class="n">columns_diff</span><span class="p">,</span>
+</span><span data-line="91">    <span class="s2">"index_diff"</span><span class="p">:</span> <span class="n">index_diff</span><span class="p">,</span>
+</span><span data-line="92">    <span class="s2">"shape_diff"</span><span class="p">:</span> <span class="n">shape_diff</span><span class="p">,</span>
+</span><span data-line="93">    <span class="s2">"columns_value_diff"</span><span class="p">:</span> <span class="n">columns_value_diff</span><span class="p">,</span>
+</span><span data-line="94">    <span class="s2">"dtypes_diff"</span><span class="p">:</span> <span class="n">dtypes_diff</span><span class="p">,</span>
+</span><span data-line="95">    <span class="c1"># ... insert more here</span>
+</span><span data-line="96"><span class="p">}</span>
 </span><span data-line="97">
+</span><span data-line="98">
 <div class="viewcode-block" id="ensure_comparisons_dict">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.ensure_comparisons_dict">[docs]</a>
-</span><span data-line="98"><span class="k">def</span><span class="w"> </span><span class="nf">ensure_comparisons_dict</span><span class="p">(</span><span class="n">comparisons</span><span class="p">:</span> <span class="n">Comparisons</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparisonsDict</span><span class="p">:</span>
-</span><span data-line="99"><span class="w">    </span><span class="sd">"""Ensure that the comparisons are in the form of a dictionary."""</span>
-</span><span data-line="100">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparisons</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-</span><span data-line="101">        <span class="k">return</span> <span class="n">comparisons</span>
-</span><span data-line="102">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparisons</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">)):</span>
-</span><span data-line="103">        <span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="n">comparisons</span><span class="p">]</span>
-</span><span data-line="104">
-</span><span data-line="105">    <span class="k">def</span><span class="w"> </span><span class="nf">comparison_name_and_func</span><span class="p">(</span><span class="n">comparisons</span><span class="p">):</span>
-</span><span data-line="106">        <span class="k">for</span> <span class="n">comparison</span> <span class="ow">in</span> <span class="n">comparisons</span><span class="p">:</span>
-</span><span data-line="107">            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-</span><span data-line="108">                <span class="k">yield</span> <span class="n">comparison</span><span class="p">,</span> <span class="n">DFLT_COMPARISONS</span><span class="p">[</span><span class="n">comparison</span><span class="p">]</span>
-</span><span data-line="109">            <span class="k">else</span><span class="p">:</span>
-</span><span data-line="110">                <span class="k">yield</span> <span class="n">comparison</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">comparison</span>
-</span><span data-line="111">
-</span><span data-line="112">    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">comparison_name_and_func</span><span class="p">(</span><span class="n">comparisons</span><span class="p">))</span></div>
+</span><span data-line="99"><span class="k">def</span><span class="w"> </span><span class="nf">ensure_comparisons_dict</span><span class="p">(</span><span class="n">comparisons</span><span class="p">:</span> <span class="n">Comparisons</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparisonsDict</span><span class="p">:</span>
+</span><span data-line="100"><span class="w">    </span><span class="sd">"""Ensure that the comparisons are in the form of a dictionary."""</span>
+</span><span data-line="101">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparisons</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span data-line="102">        <span class="k">return</span> <span class="n">comparisons</span>
+</span><span data-line="103">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparisons</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">)):</span>
+</span><span data-line="104">        <span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="n">comparisons</span><span class="p">]</span>
+</span><span data-line="105">
+</span><span data-line="106">    <span class="k">def</span><span class="w"> </span><span class="nf">comparison_name_and_func</span><span class="p">(</span><span class="n">comparisons</span><span class="p">):</span>
+</span><span data-line="107">        <span class="k">for</span> <span class="n">comparison</span> <span class="ow">in</span> <span class="n">comparisons</span><span class="p">:</span>
+</span><span data-line="108">            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+</span><span data-line="109">                <span class="k">yield</span> <span class="n">comparison</span><span class="p">,</span> <span class="n">DFLT_COMPARISONS</span><span class="p">[</span><span class="n">comparison</span><span class="p">]</span>
+</span><span data-line="110">            <span class="k">else</span><span class="p">:</span>
+</span><span data-line="111">                <span class="k">yield</span> <span class="n">comparison</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">comparison</span>
+</span><span data-line="112">
+</span><span data-line="113">    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">comparison_name_and_func</span><span class="p">(</span><span class="n">comparisons</span><span class="p">))</span></div>
 
-</span><span data-line="113">
 </span><span data-line="114">
+</span><span data-line="115">
 <div class="viewcode-block" id="dataframe_diffs">
 <a class="viewcode-back" href="../../_autosummary/tabled.compare_tables.html#tabled.compare_tables.dataframe_diffs">[docs]</a>
-</span><span data-line="115"><span class="k">def</span><span class="w"> </span><span class="nf">dataframe_diffs</span><span class="p">(</span>
-</span><span data-line="116">    <span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-</span><span data-line="117">    <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-</span><span data-line="118">    <span class="n">comparisons</span><span class="p">:</span> <span class="n">Comparisons</span> <span class="o">=</span> <span class="n">DFLT_COMPARISONS</span><span class="p">,</span>
-</span><span data-line="119">    <span class="o">*</span><span class="p">,</span>
-</span><span data-line="120">    <span class="n">diff_condition</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
-</span><span data-line="121"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span data-line="122"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="123"><span class="sd">    Compare the diff of dataframes using specified diff comparison functions.</span>
-</span><span data-line="124">
-</span><span data-line="125"><span class="sd">    Returns a dictionary with comparison names as keys and comparison results as values.</span>
-</span><span data-line="126">
-</span><span data-line="127"><span class="sd">    Parameters:</span>
-</span><span data-line="128"><span class="sd">        df1 (pd.DataFrame): The first dataframe to compare.</span>
-</span><span data-line="129"><span class="sd">        df2 (pd.DataFrame): The second dataframe to compare.</span>
-</span><span data-line="130"><span class="sd">        comparisons (Comparisons): A dictionary or list of comparison functions or names.</span>
-</span><span data-line="131"><span class="sd">            Defaults to DFLT_COMPARISONS.</span>
-</span><span data-line="132"><span class="sd">        diff_condition (callable): A function that determines whether to include a comparison result</span>
-</span><span data-line="133"><span class="sd">            in the output dictionary based on the comparison result.</span>
-</span><span data-line="134"><span class="sd">            Defaults to the built-in `bool` function.</span>
-</span><span data-line="135">
-</span><span data-line="136"><span class="sd">    Returns:</span>
-</span><span data-line="137"><span class="sd">        dict: A dictionary with comparison names as keys and comparison results as values.</span>
-</span><span data-line="138">
-</span><span data-line="139"><span class="sd">    Example:</span>
-</span><span data-line="140"><span class="sd">        &gt;&gt;&gt; import pandas as pd</span>
-</span><span data-line="141"><span class="sd">        &gt;&gt;&gt; df1 = pd.DataFrame({'A': [1, 2], 'B': [3, 4]}, index=[0, 1])</span>
-</span><span data-line="142"><span class="sd">        &gt;&gt;&gt; df2 = pd.DataFrame({'A': [1, 2], 'C': [5, 6]}, index=[1, 2])</span>
-</span><span data-line="143"><span class="sd">        &gt;&gt;&gt; diffs = dataframe_diffs(df1, df2)</span>
-</span><span data-line="144"><span class="sd">        &gt;&gt;&gt; diffs  # doctest: +NORMALIZE_WHITESPACE</span>
-</span><span data-line="145"><span class="sd">        {'columns_diff': {'left_right': {'B'}, 'right_left': {'C'}},</span>
-</span><span data-line="146"><span class="sd">         'index_diff': {'left_right': {0}, 'right_left': {2}},</span>
-</span><span data-line="147"><span class="sd">         'columns_value_diff': {'A':    left  right</span>
-</span><span data-line="148"><span class="sd">        1     2      1}}</span>
-</span><span data-line="149"><span class="sd">    """</span>
-</span><span data-line="150">    <span class="n">comparisons</span> <span class="o">=</span> <span class="n">ensure_comparisons_dict</span><span class="p">(</span><span class="n">comparisons</span><span class="p">)</span>
-</span><span data-line="151">    <span class="n">diffs</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span data-line="152">    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">comparison</span> <span class="ow">in</span> <span class="n">comparisons</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span data-line="153">        <span class="n">diff_value</span> <span class="o">=</span> <span class="n">comparison</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">)</span>
-</span><span data-line="154">        <span class="k">if</span> <span class="n">diff_condition</span><span class="p">(</span><span class="n">diff_value</span><span class="p">):</span>
-</span><span data-line="155">            <span class="n">diffs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff_value</span>
-</span><span data-line="156">    <span class="k">return</span> <span class="n">diffs</span></div>
+</span><span data-line="116"><span class="k">def</span><span class="w"> </span><span class="nf">dataframe_diffs</span><span class="p">(</span>
+</span><span data-line="117">    <span class="n">df1</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+</span><span data-line="118">    <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+</span><span data-line="119">    <span class="n">comparisons</span><span class="p">:</span> <span class="n">Comparisons</span> <span class="o">=</span> <span class="n">DFLT_COMPARISONS</span><span class="p">,</span>
+</span><span data-line="120">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="121">    <span class="n">diff_condition</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
+</span><span data-line="122"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="123"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="124"><span class="sd">    Compare the diff of dataframes using specified diff comparison functions.</span>
+</span><span data-line="125">
+</span><span data-line="126"><span class="sd">    Returns a dictionary with comparison names as keys and comparison results as values.</span>
+</span><span data-line="127">
+</span><span data-line="128"><span class="sd">    Parameters:</span>
+</span><span data-line="129"><span class="sd">        df1 (pd.DataFrame): The first dataframe to compare.</span>
+</span><span data-line="130"><span class="sd">        df2 (pd.DataFrame): The second dataframe to compare.</span>
+</span><span data-line="131"><span class="sd">        comparisons (Comparisons): A dictionary or list of comparison functions or names.</span>
+</span><span data-line="132"><span class="sd">            Defaults to DFLT_COMPARISONS.</span>
+</span><span data-line="133"><span class="sd">        diff_condition (callable): A function that determines whether to include a comparison result</span>
+</span><span data-line="134"><span class="sd">            in the output dictionary based on the comparison result.</span>
+</span><span data-line="135"><span class="sd">            Defaults to the built-in `bool` function.</span>
+</span><span data-line="136">
+</span><span data-line="137"><span class="sd">    Returns:</span>
+</span><span data-line="138"><span class="sd">        dict: A dictionary with comparison names as keys and comparison results as values.</span>
+</span><span data-line="139">
+</span><span data-line="140"><span class="sd">    Example:</span>
+</span><span data-line="141"><span class="sd">        &gt;&gt;&gt; import pandas as pd</span>
+</span><span data-line="142"><span class="sd">        &gt;&gt;&gt; df1 = pd.DataFrame({'A': [1, 2], 'B': [3, 4]}, index=[0, 1])</span>
+</span><span data-line="143"><span class="sd">        &gt;&gt;&gt; df2 = pd.DataFrame({'A': [1, 2], 'C': [5, 6]}, index=[1, 2])</span>
+</span><span data-line="144"><span class="sd">        &gt;&gt;&gt; diffs = dataframe_diffs(df1, df2)</span>
+</span><span data-line="145"><span class="sd">        &gt;&gt;&gt; diffs  # doctest: +NORMALIZE_WHITESPACE</span>
+</span><span data-line="146"><span class="sd">        {'columns_diff': {'left_right': {'B'}, 'right_left': {'C'}},</span>
+</span><span data-line="147"><span class="sd">         'index_diff': {'left_right': {0}, 'right_left': {2}},</span>
+</span><span data-line="148"><span class="sd">         'columns_value_diff': {'A':    left  right</span>
+</span><span data-line="149"><span class="sd">        1     2      1}}</span>
+</span><span data-line="150"><span class="sd">    """</span>
+</span><span data-line="151">    <span class="n">comparisons</span> <span class="o">=</span> <span class="n">ensure_comparisons_dict</span><span class="p">(</span><span class="n">comparisons</span><span class="p">)</span>
+</span><span data-line="152">    <span class="n">diffs</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span data-line="153">    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">comparison</span> <span class="ow">in</span> <span class="n">comparisons</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span data-line="154">        <span class="n">diff_value</span> <span class="o">=</span> <span class="n">comparison</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">)</span>
+</span><span data-line="155">        <span class="k">if</span> <span class="n">diff_condition</span><span class="p">(</span><span class="n">diff_value</span><span class="p">):</span>
+</span><span data-line="156">            <span class="n">diffs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff_value</span>
+</span><span data-line="157">    <span class="k">return</span> <span class="n">diffs</span></div>
 
 </span></pre></div>
         </article><button class="back-to-top" type="button">
@@ -337,7 +338,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=73657eb8"></script>
+      <script src="../../_static/documentation_options.js?v=d71dfaa1"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

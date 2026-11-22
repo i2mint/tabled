@@ -215,428 +215,446 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="87"><span class="sd">    """</span>
 </span><span data-line="88">
 </span><span data-line="89">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KeyFunc</span> <span class="o">=</span> <span class="n">identity</span><span class="p">):</span>
-</span><span data-line="90">        <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="n">mapping</span>
-</span><span data-line="91">        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
-</span><span data-line="92">
-</span><span data-line="93">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-</span><span data-line="94">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
-</span><span data-line="95">
-</span><span data-line="96">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-</span><span data-line="97">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span>
-</span><span data-line="98">
-</span><span data-line="99">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="100">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span>
+</span><span data-line="90"><span class="w">        </span><span class="sd">"""Store the ``mapping`` and the ``key`` function applied to keys before lookup."""</span>
+</span><span data-line="91">        <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="n">mapping</span>
+</span><span data-line="92">        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+</span><span data-line="93">
+</span><span data-line="94">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="95"><span class="w">        </span><span class="sd">"""Return ``mapping[key(k)]``."""</span>
+</span><span data-line="96">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+</span><span data-line="97">
+</span><span data-line="98">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="99"><span class="w">        </span><span class="sd">"""Return whether ``key(k)`` is in ``mapping``."""</span>
+</span><span data-line="100">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span>
 </span><span data-line="101">
-</span><span data-line="102">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="103">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span>
-</span><span data-line="104">
-</span><span data-line="105">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="106">        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="si">}</span><span class="s2">, key=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">)"</span></div>
+</span><span data-line="102">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="103"><span class="w">        </span><span class="sd">"""Iterate over the keys."""</span>
+</span><span data-line="104">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span>
+</span><span data-line="105">
+</span><span data-line="106">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="107"><span class="w">        </span><span class="sd">"""Return the number of keys."""</span>
+</span><span data-line="108">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span>
+</span><span data-line="109">
+</span><span data-line="110">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="111"><span class="w">        </span><span class="sd">"""Return a short representation."""</span>
+</span><span data-line="112">        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="si">}</span><span class="s2">, key=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">)"</span></div>
 
-</span><span data-line="107">
-</span><span data-line="108">
+</span><span data-line="113">
+</span><span data-line="114">
 <div class="viewcode-block" id="convert_collection_to_dataframe_if_possible">
 <a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.convert_collection_to_dataframe_if_possible">[docs]</a>
-</span><span data-line="109"><span class="k">def</span><span class="w"> </span><span class="nf">convert_collection_to_dataframe_if_possible</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-</span><span data-line="110"><span class="w">    </span><span class="sd">"""Return `x` as a DataFrame if it is a dict, list, tuple, Series or Index; else `x` unchanged."""</span>
-</span><span data-line="111">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="112">        <span class="k">return</span> <span class="n">x</span>
-</span><span data-line="113">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
-</span><span data-line="114">        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</span><span data-line="115">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">)):</span>
-</span><span data-line="116">        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-</span><span data-line="117">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">):</span>
-</span><span data-line="118">        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-</span><span data-line="119">    <span class="k">else</span><span class="p">:</span>
-</span><span data-line="120">        <span class="k">return</span> <span class="n">x</span></div>
+</span><span data-line="115"><span class="k">def</span><span class="w"> </span><span class="nf">convert_collection_to_dataframe_if_possible</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span data-line="116"><span class="w">    </span><span class="sd">"""Return `x` as a DataFrame if it is a dict, list, tuple, Series or Index; else `x` unchanged."""</span>
+</span><span data-line="117">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="118">        <span class="k">return</span> <span class="n">x</span>
+</span><span data-line="119">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+</span><span data-line="120">        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span data-line="121">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">)):</span>
+</span><span data-line="122">        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+</span><span data-line="123">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">):</span>
+</span><span data-line="124">        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+</span><span data-line="125">    <span class="k">else</span><span class="p">:</span>
+</span><span data-line="126">        <span class="k">return</span> <span class="n">x</span></div>
 
-</span><span data-line="121">
-</span><span data-line="122">
-</span><span data-line="123"><span class="c1"># TODO: Handle the zip case more cleanly, and generalize to other double-extensions</span>
+</span><span data-line="127">
+</span><span data-line="128">
+</span><span data-line="129"><span class="c1"># TODO: Handle the zip case more cleanly, and generalize to other double-extensions</span>
 <div class="viewcode-block" id="get_table">
 <a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.get_table">[docs]</a>
-</span><span data-line="124"><span class="k">def</span><span class="w"> </span><span class="nf">get_table</span><span class="p">(</span>
-</span><span data-line="125">    <span class="n">table_src</span><span class="p">:</span> <span class="n">TableSrc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span data-line="126">    <span class="o">*</span><span class="p">,</span>
-</span><span data-line="127">    <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span data-line="128">    <span class="n">ext_mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">,</span>
-</span><span data-line="129">    <span class="n">resolve_to_io</span><span class="o">=</span><span class="n">default_io_resolver</span><span class="p">,</span>
-</span><span data-line="130">    <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
-</span><span data-line="131"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-</span><span data-line="132"><span class="w">    </span><span class="sd">"""Get a table from a variety of sources."""</span>
-</span><span data-line="133">    <span class="c1"># If table_src is None, the user is trying to fix the parameters of the function</span>
-</span><span data-line="134">
-</span><span data-line="135">    <span class="k">if</span> <span class="n">table_src</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="136">        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span>
-</span><span data-line="137">            <span class="n">get_table</span><span class="p">,</span>
-</span><span data-line="138">            <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span>
-</span><span data-line="139">            <span class="n">ext_mapping</span><span class="o">=</span><span class="n">ext_mapping</span><span class="p">,</span>
-</span><span data-line="140">            <span class="n">resolve_to_io</span><span class="o">=</span><span class="n">resolve_to_io</span><span class="p">,</span>
-</span><span data-line="141">            <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
-</span><span data-line="142">        <span class="p">)</span>
-</span><span data-line="143">
-</span><span data-line="144">    <span class="n">table_src</span> <span class="o">=</span> <span class="n">convert_collection_to_dataframe_if_possible</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>
-</span><span data-line="145">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="146">        <span class="k">return</span> <span class="n">table_src</span>
-</span><span data-line="147">
-</span><span data-line="148">    <span class="k">if</span> <span class="n">ext</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="149">        <span class="n">ext</span> <span class="o">=</span> <span class="s2">""</span>
-</span><span data-line="150">
-</span><span data-line="151">    <span class="k">if</span> <span class="ow">not</span> <span class="n">ext</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-</span><span data-line="152">        <span class="n">key</span> <span class="o">=</span> <span class="n">table_src</span>
-</span><span data-line="153">        <span class="n">ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-</span><span data-line="154">        <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">"zip"</span><span class="p">:</span>
-</span><span data-line="155">            <span class="c1"># compute the next extension</span>
-</span><span data-line="156">            <span class="n">next_ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">key</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">)])</span>
-</span><span data-line="157">            <span class="k">if</span> <span class="n">next_ext</span><span class="p">:</span>
-</span><span data-line="158">                <span class="n">ext</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">next_ext</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">"</span>  <span class="c1"># e.g. 'csv.zip'</span>
-</span><span data-line="159">
-</span><span data-line="160">    <span class="c1"># TODO: Here's a great waste, since many of our table reading functions can</span>
-</span><span data-line="161">    <span class="c1">#       take file-like (paths, io objects) as input. Should make wrappers.py so that</span>
-</span><span data-line="162">    <span class="c1">#       one decoder can be given, and a input-type aware function can transform</span>
-</span><span data-line="163">    <span class="c1">#       the input to the right type for that particular decoder</span>
-</span><span data-line="164">    <span class="c1"># convert to bytes if not so already</span>
-</span><span data-line="165">    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
-</span><span data-line="166">        <span class="n">io_reader</span> <span class="o">=</span> <span class="n">resolve_to_io</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>
-</span><span data-line="167">        <span class="n">table_src</span> <span class="o">=</span> <span class="n">io_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span><span data-line="168">
-</span><span data-line="169">    <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">):</span>
-</span><span data-line="170">        <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">zip_decompress</span>
-</span><span data-line="171">
-</span><span data-line="172">        <span class="n">table_src</span> <span class="o">=</span> <span class="n">zip_decompress</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>  <span class="c1"># get decompressed bytes</span>
-</span><span data-line="173">        <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">)]</span>  <span class="c1"># remove the '.zip' from the extension</span>
+</span><span data-line="130"><span class="k">def</span><span class="w"> </span><span class="nf">get_table</span><span class="p">(</span>
+</span><span data-line="131">    <span class="n">table_src</span><span class="p">:</span> <span class="n">TableSrc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="132">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="133">    <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="134">    <span class="n">ext_mapping</span><span class="o">=</span><span class="n">dflt_ext_mapping</span><span class="p">,</span>
+</span><span data-line="135">    <span class="n">resolve_to_io</span><span class="o">=</span><span class="n">default_io_resolver</span><span class="p">,</span>
+</span><span data-line="136">    <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+</span><span data-line="137"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+</span><span data-line="138"><span class="w">    </span><span class="sd">"""Get a table from a variety of sources."""</span>
+</span><span data-line="139">    <span class="c1"># If table_src is None, the user is trying to fix the parameters of the function</span>
+</span><span data-line="140">
+</span><span data-line="141">    <span class="k">if</span> <span class="n">table_src</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="142">        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span>
+</span><span data-line="143">            <span class="n">get_table</span><span class="p">,</span>
+</span><span data-line="144">            <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span>
+</span><span data-line="145">            <span class="n">ext_mapping</span><span class="o">=</span><span class="n">ext_mapping</span><span class="p">,</span>
+</span><span data-line="146">            <span class="n">resolve_to_io</span><span class="o">=</span><span class="n">resolve_to_io</span><span class="p">,</span>
+</span><span data-line="147">            <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+</span><span data-line="148">        <span class="p">)</span>
+</span><span data-line="149">
+</span><span data-line="150">    <span class="n">table_src</span> <span class="o">=</span> <span class="n">convert_collection_to_dataframe_if_possible</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>
+</span><span data-line="151">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="152">        <span class="k">return</span> <span class="n">table_src</span>
+</span><span data-line="153">
+</span><span data-line="154">    <span class="k">if</span> <span class="n">ext</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="155">        <span class="n">ext</span> <span class="o">=</span> <span class="s2">""</span>
+</span><span data-line="156">
+</span><span data-line="157">    <span class="k">if</span> <span class="ow">not</span> <span class="n">ext</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+</span><span data-line="158">        <span class="n">key</span> <span class="o">=</span> <span class="n">table_src</span>
+</span><span data-line="159">        <span class="n">ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span data-line="160">        <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">"zip"</span><span class="p">:</span>
+</span><span data-line="161">            <span class="c1"># compute the next extension</span>
+</span><span data-line="162">            <span class="n">next_ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">key</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">)])</span>
+</span><span data-line="163">            <span class="k">if</span> <span class="n">next_ext</span><span class="p">:</span>
+</span><span data-line="164">                <span class="n">ext</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">next_ext</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">"</span>  <span class="c1"># e.g. 'csv.zip'</span>
+</span><span data-line="165">
+</span><span data-line="166">    <span class="c1"># TODO: Here's a great waste, since many of our table reading functions can</span>
+</span><span data-line="167">    <span class="c1">#       take file-like (paths, io objects) as input. Should make wrappers.py so that</span>
+</span><span data-line="168">    <span class="c1">#       one decoder can be given, and a input-type aware function can transform</span>
+</span><span data-line="169">    <span class="c1">#       the input to the right type for that particular decoder</span>
+</span><span data-line="170">    <span class="c1"># convert to bytes if not so already</span>
+</span><span data-line="171">    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_src</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+</span><span data-line="172">        <span class="n">io_reader</span> <span class="o">=</span> <span class="n">resolve_to_io</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>
+</span><span data-line="173">        <span class="n">table_src</span> <span class="o">=</span> <span class="n">io_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </span><span data-line="174">
-</span><span data-line="175">    <span class="k">return</span> <span class="n">resolve_to_dataframe</span><span class="p">(</span>
-</span><span data-line="176">        <span class="n">table_src</span><span class="p">,</span>
-</span><span data-line="177">        <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span>
-</span><span data-line="178">        <span class="n">ext_mapping</span><span class="o">=</span><span class="n">ext_mapping</span><span class="p">,</span>
-</span><span data-line="179">        <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
-</span><span data-line="180">    <span class="p">)</span></div>
+</span><span data-line="175">    <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">):</span>
+</span><span data-line="176">        <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">zip_decompress</span>
+</span><span data-line="177">
+</span><span data-line="178">        <span class="n">table_src</span> <span class="o">=</span> <span class="n">zip_decompress</span><span class="p">(</span><span class="n">table_src</span><span class="p">)</span>  <span class="c1"># get decompressed bytes</span>
+</span><span data-line="179">        <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">)]</span>  <span class="c1"># remove the '.zip' from the extension</span>
+</span><span data-line="180">
+</span><span data-line="181">    <span class="k">return</span> <span class="n">resolve_to_dataframe</span><span class="p">(</span>
+</span><span data-line="182">        <span class="n">table_src</span><span class="p">,</span>
+</span><span data-line="183">        <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span>
+</span><span data-line="184">        <span class="n">ext_mapping</span><span class="o">=</span><span class="n">ext_mapping</span><span class="p">,</span>
+</span><span data-line="185">        <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+</span><span data-line="186">    <span class="p">)</span></div>
 
-</span><span data-line="181">
-</span><span data-line="182">
-</span><span data-line="183"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span>
-</span><span data-line="184">
-</span><span data-line="185">
-</span><span data-line="186"><span class="c1"># TODO: Make the logic independent from local files assumption.</span>
-</span><span data-line="187"><span class="c1"># TODO: Add filtering functionality in init? (By function, regex, extension?)</span>
+</span><span data-line="187">
+</span><span data-line="188">
+</span><span data-line="189"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span>
+</span><span data-line="190">
+</span><span data-line="191">
+</span><span data-line="192"><span class="c1"># TODO: Make the logic independent from local files assumption.</span>
+</span><span data-line="193"><span class="c1"># TODO: Add filtering functionality in init? (By function, regex, extension?)</span>
 <div class="viewcode-block" id="DfFiles">
 <a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.DfFiles">[docs]</a>
-</span><span data-line="188"><span class="k">class</span><span class="w"> </span><span class="nc">DfFiles</span><span class="p">(</span><span class="n">Files</span><span class="p">):</span>
-</span><span data-line="189"><span class="w">    </span><span class="sd">"""A key-value store providing values as pandas.DataFrames.</span>
-</span><span data-line="190">
-</span><span data-line="191"><span class="sd">    Use Case: You have a bunch of files in a folder, all corresponding to some</span>
-</span><span data-line="192"><span class="sd">    dataframes that were saved in some way. You want to a key-value store whose values</span>
-</span><span data-line="193"><span class="sd">    are the (decoded) dataframes corresponding to the files in the folder.</span>
-</span><span data-line="194">
-</span><span data-line="195"><span class="sd">    Additionally, if you provide a SQLite database file instead of a directory,</span>
-</span><span data-line="196"><span class="sd">    it will automatically extract the tables as parquet files in a temporary directory</span>
-</span><span data-line="197"><span class="sd">    and provide access to them as DataFrames.</span>
-</span><span data-line="198">
-</span><span data-line="199"><span class="sd">    Args:</span>
-</span><span data-line="200"><span class="sd">        rootdir: A root directory or a SQLite database file.</span>
-</span><span data-line="201"><span class="sd">        extension_encoder_mapping: A mapping from file extensions to functions that</span>
-</span><span data-line="202"><span class="sd">            encode a DataFrame to bytes for writing.</span>
-</span><span data-line="203"><span class="sd">        extension_decoder_mapping: A mapping from file extensions to functions that can</span>
-</span><span data-line="204"><span class="sd">            read the dataframes</span>
-</span><span data-line="205"><span class="sd">        extra_encoder_kwargs: Extra arguments to pass to the encoder functions.</span>
-</span><span data-line="206"><span class="sd">        extra_decoder_kwargs: Extra arguments to pass to the decoder functions.</span>
-</span><span data-line="207"><span class="sd">        allow_writing_bytes: If True, values that are already `bytes` can be written</span>
-</span><span data-line="208"><span class="sd">            as-is; if False, writing raw bytes raises a `ValueError`.</span>
-</span><span data-line="209"><span class="sd">        sqlite_tables: When `rootdir` is a SQLite database file, the table names to</span>
-</span><span data-line="210"><span class="sd">            export (all tables, if None).</span>
-</span><span data-line="211"><span class="sd">        sqlite_verbose: When `rootdir` is a SQLite database file, whether to print</span>
-</span><span data-line="212"><span class="sd">            progress while exporting its tables.</span>
-</span><span data-line="213">
-</span><span data-line="214"><span class="sd">    """</span>
-</span><span data-line="215">
-</span><span data-line="216">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-</span><span data-line="217">        <span class="bp">self</span><span class="p">,</span>
-</span><span data-line="218">        <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span data-line="219">        <span class="o">*</span><span class="p">,</span>
-</span><span data-line="220">        <span class="n">extension_encoder_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_encoder</span><span class="p">,</span>
-</span><span data-line="221">        <span class="n">extension_decoder_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">dflt_ext_mapping</span><span class="p">,</span>
-</span><span data-line="222">        <span class="n">extra_encoder_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="p">(),</span>
-</span><span data-line="223">        <span class="n">extra_decoder_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="p">(),</span>
-</span><span data-line="224">        <span class="n">allow_writing_bytes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Note: can extend to validation callable</span>
-</span><span data-line="225">        <span class="c1"># SQLite-specific parameters</span>
-</span><span data-line="226">        <span class="n">sqlite_tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span data-line="227">        <span class="n">sqlite_verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span data-line="228">    <span class="p">):</span>
-</span><span data-line="229">        <span class="c1"># Check if rootdir is a SQLite file</span>
-</span><span data-line="230">        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rootdir</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_is_sqlite_file</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
-</span><span data-line="231">            <span class="c1"># Delegate to from_sqlite_file</span>
-</span><span data-line="232">            <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_sqlite_file</span><span class="p">(</span>
-</span><span data-line="233">                <span class="n">rootdir</span><span class="p">,</span>
-</span><span data-line="234">                <span class="n">tables</span><span class="o">=</span><span class="n">sqlite_tables</span><span class="p">,</span>
-</span><span data-line="235">                <span class="n">verbose</span><span class="o">=</span><span class="n">sqlite_verbose</span><span class="p">,</span>
-</span><span data-line="236">                <span class="n">extension_encoder_mapping</span><span class="o">=</span><span class="n">extension_encoder_mapping</span><span class="p">,</span>
-</span><span data-line="237">                <span class="n">extension_decoder_mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
-</span><span data-line="238">                <span class="n">extra_encoder_kwargs</span><span class="o">=</span><span class="n">extra_encoder_kwargs</span><span class="p">,</span>
-</span><span data-line="239">                <span class="n">extra_decoder_kwargs</span><span class="o">=</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
-</span><span data-line="240">                <span class="n">allow_writing_bytes</span><span class="o">=</span><span class="n">allow_writing_bytes</span><span class="p">,</span>
-</span><span data-line="241">            <span class="p">)</span>
-</span><span data-line="242">            <span class="c1"># Copy the instance's attributes to self</span>
-</span><span data-line="243">            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
-</span><span data-line="244">            <span class="k">return</span>
-</span><span data-line="245">
-</span><span data-line="246">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
-</span><span data-line="247">
-</span><span data-line="248">        <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span> <span class="o">=</span> <span class="n">file_extension</span>
-</span><span data-line="249">
-</span><span data-line="250">        <span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span> <span class="o">=</span> <span class="n">extension_encoder_mapping</span>
-</span><span data-line="251">        <span class="bp">self</span><span class="o">.</span><span class="n">extension_decoder_mapping</span> <span class="o">=</span> <span class="n">extension_decoder_mapping</span>
+</span><span data-line="194"><span class="k">class</span><span class="w"> </span><span class="nc">DfFiles</span><span class="p">(</span><span class="n">Files</span><span class="p">):</span>
+</span><span data-line="195"><span class="w">    </span><span class="sd">"""A key-value store providing values as pandas.DataFrames.</span>
+</span><span data-line="196">
+</span><span data-line="197"><span class="sd">    Use Case: You have a bunch of files in a folder, all corresponding to some</span>
+</span><span data-line="198"><span class="sd">    dataframes that were saved in some way. You want to a key-value store whose values</span>
+</span><span data-line="199"><span class="sd">    are the (decoded) dataframes corresponding to the files in the folder.</span>
+</span><span data-line="200">
+</span><span data-line="201"><span class="sd">    Additionally, if you provide a SQLite database file instead of a directory,</span>
+</span><span data-line="202"><span class="sd">    it will automatically extract the tables as parquet files in a temporary directory</span>
+</span><span data-line="203"><span class="sd">    and provide access to them as DataFrames.</span>
+</span><span data-line="204">
+</span><span data-line="205"><span class="sd">    Args:</span>
+</span><span data-line="206"><span class="sd">        rootdir: A root directory or a SQLite database file.</span>
+</span><span data-line="207"><span class="sd">        extension_encoder_mapping: A mapping from file extensions to functions that</span>
+</span><span data-line="208"><span class="sd">            encode a DataFrame to bytes for writing.</span>
+</span><span data-line="209"><span class="sd">        extension_decoder_mapping: A mapping from file extensions to functions that can</span>
+</span><span data-line="210"><span class="sd">            read the dataframes</span>
+</span><span data-line="211"><span class="sd">        extra_encoder_kwargs: Extra arguments to pass to the encoder functions.</span>
+</span><span data-line="212"><span class="sd">        extra_decoder_kwargs: Extra arguments to pass to the decoder functions.</span>
+</span><span data-line="213"><span class="sd">        allow_writing_bytes: If True, values that are already `bytes` can be written</span>
+</span><span data-line="214"><span class="sd">            as-is; if False, writing raw bytes raises a `ValueError`.</span>
+</span><span data-line="215"><span class="sd">        sqlite_tables: When `rootdir` is a SQLite database file, the table names to</span>
+</span><span data-line="216"><span class="sd">            export (all tables, if None).</span>
+</span><span data-line="217"><span class="sd">        sqlite_verbose: When `rootdir` is a SQLite database file, whether to print</span>
+</span><span data-line="218"><span class="sd">            progress while exporting its tables.</span>
+</span><span data-line="219">
+</span><span data-line="220"><span class="sd">    """</span>
+</span><span data-line="221">
+</span><span data-line="222">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+</span><span data-line="223">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="224">        <span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="225">        <span class="o">*</span><span class="p">,</span>
+</span><span data-line="226">        <span class="n">extension_encoder_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">extension_to_encoder</span><span class="p">,</span>
+</span><span data-line="227">        <span class="n">extension_decoder_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">dflt_ext_mapping</span><span class="p">,</span>
+</span><span data-line="228">        <span class="n">extra_encoder_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="p">(),</span>
+</span><span data-line="229">        <span class="n">extra_decoder_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="p">(),</span>
+</span><span data-line="230">        <span class="n">allow_writing_bytes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Note: can extend to validation callable</span>
+</span><span data-line="231">        <span class="c1"># SQLite-specific parameters</span>
+</span><span data-line="232">        <span class="n">sqlite_tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="233">        <span class="n">sqlite_verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="234">    <span class="p">):</span>
+</span><span data-line="235"><span class="w">        </span><span class="sd">"""Set up the store; see the class docstring for the arguments."""</span>
+</span><span data-line="236">        <span class="c1"># Check if rootdir is a SQLite file</span>
+</span><span data-line="237">        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rootdir</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_is_sqlite_file</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
+</span><span data-line="238">            <span class="c1"># Delegate to from_sqlite_file</span>
+</span><span data-line="239">            <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_sqlite_file</span><span class="p">(</span>
+</span><span data-line="240">                <span class="n">rootdir</span><span class="p">,</span>
+</span><span data-line="241">                <span class="n">tables</span><span class="o">=</span><span class="n">sqlite_tables</span><span class="p">,</span>
+</span><span data-line="242">                <span class="n">verbose</span><span class="o">=</span><span class="n">sqlite_verbose</span><span class="p">,</span>
+</span><span data-line="243">                <span class="n">extension_encoder_mapping</span><span class="o">=</span><span class="n">extension_encoder_mapping</span><span class="p">,</span>
+</span><span data-line="244">                <span class="n">extension_decoder_mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
+</span><span data-line="245">                <span class="n">extra_encoder_kwargs</span><span class="o">=</span><span class="n">extra_encoder_kwargs</span><span class="p">,</span>
+</span><span data-line="246">                <span class="n">extra_decoder_kwargs</span><span class="o">=</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+</span><span data-line="247">                <span class="n">allow_writing_bytes</span><span class="o">=</span><span class="n">allow_writing_bytes</span><span class="p">,</span>
+</span><span data-line="248">            <span class="p">)</span>
+</span><span data-line="249">            <span class="c1"># Copy the instance's attributes to self</span>
+</span><span data-line="250">            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+</span><span data-line="251">            <span class="k">return</span>
 </span><span data-line="252">
-</span><span data-line="253">        <span class="n">extra_encoder_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extra_encoder_kwargs</span><span class="p">)</span>
-</span><span data-line="254">        <span class="n">extra_decoder_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span>
-</span><span data-line="255">
-</span><span data-line="256">        <span class="bp">self</span><span class="o">.</span><span class="n">bytes_and_ext_to_df</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-</span><span data-line="257">            <span class="n">df_from_data_given_ext</span><span class="p">,</span>
-</span><span data-line="258">            <span class="n">ext_mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
-</span><span data-line="259">            <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
-</span><span data-line="260">        <span class="p">)</span>
-</span><span data-line="261">        <span class="bp">self</span><span class="o">.</span><span class="n">allow_writing_bytes</span> <span class="o">=</span> <span class="n">allow_writing_bytes</span>
+</span><span data-line="253">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
+</span><span data-line="254">
+</span><span data-line="255">        <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span> <span class="o">=</span> <span class="n">file_extension</span>
+</span><span data-line="256">
+</span><span data-line="257">        <span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span> <span class="o">=</span> <span class="n">extension_encoder_mapping</span>
+</span><span data-line="258">        <span class="bp">self</span><span class="o">.</span><span class="n">extension_decoder_mapping</span> <span class="o">=</span> <span class="n">extension_decoder_mapping</span>
+</span><span data-line="259">
+</span><span data-line="260">        <span class="n">extra_encoder_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extra_encoder_kwargs</span><span class="p">)</span>
+</span><span data-line="261">        <span class="n">extra_decoder_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span>
 </span><span data-line="262">
-</span><span data-line="263">        <span class="c1"># self.extension_based_encoder = partial(</span>
-</span><span data-line="264">        <span class="c1">#     extension_based_encoding, extension_encoder_mapping</span>
-</span><span data-line="265">        <span class="c1"># )</span>
-</span><span data-line="266">
+</span><span data-line="263">        <span class="bp">self</span><span class="o">.</span><span class="n">bytes_and_ext_to_df</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+</span><span data-line="264">            <span class="n">df_from_data_given_ext</span><span class="p">,</span>
+</span><span data-line="265">            <span class="n">ext_mapping</span><span class="o">=</span><span class="n">extension_decoder_mapping</span><span class="p">,</span>
+</span><span data-line="266">            <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+</span><span data-line="267">        <span class="p">)</span>
+</span><span data-line="268">        <span class="bp">self</span><span class="o">.</span><span class="n">allow_writing_bytes</span> <span class="o">=</span> <span class="n">allow_writing_bytes</span>
+</span><span data-line="269">
+</span><span data-line="270">        <span class="c1"># self.extension_based_encoder = partial(</span>
+</span><span data-line="271">        <span class="c1">#     extension_based_encoding, extension_encoder_mapping</span>
+</span><span data-line="272">        <span class="c1"># )</span>
+</span><span data-line="273">
 <div class="viewcode-block" id="DfFiles.from_sqlite_file">
 <a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.DfFiles.from_sqlite_file">[docs]</a>
-</span><span data-line="267">    <span class="nd">@classmethod</span>
-</span><span data-line="268">    <span class="k">def</span><span class="w"> </span><span class="nf">from_sqlite_file</span><span class="p">(</span>
-</span><span data-line="269">        <span class="bp">cls</span><span class="p">,</span>
-</span><span data-line="270">        <span class="n">sqlite_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
-</span><span data-line="271">        <span class="o">*</span><span class="p">,</span>
-</span><span data-line="272">        <span class="n">tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span data-line="273">        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span data-line="274">        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-</span><span data-line="275">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"DfFiles"</span><span class="p">:</span>
-</span><span data-line="276"><span class="w">        </span><span class="sd">"""Create a DfFiles instance from a SQLite database file.</span>
-</span><span data-line="277">
-</span><span data-line="278"><span class="sd">        This method exports all tables from the SQLite database to parquet files</span>
-</span><span data-line="279"><span class="sd">        in a temporary directory and returns a DfFiles instance that provides</span>
-</span><span data-line="280"><span class="sd">        access to these tables as DataFrames.</span>
-</span><span data-line="281">
-</span><span data-line="282"><span class="sd">        Args:</span>
-</span><span data-line="283"><span class="sd">            sqlite_file: Path to the SQLite database file</span>
-</span><span data-line="284"><span class="sd">            tables: Optional list of table names to export. If None, exports all tables.</span>
-</span><span data-line="285"><span class="sd">            verbose: Whether to print progress information</span>
-</span><span data-line="286"><span class="sd">            **kwargs: Additional arguments passed to the DfFiles constructor</span>
-</span><span data-line="287">
-</span><span data-line="288"><span class="sd">        Returns:</span>
-</span><span data-line="289"><span class="sd">            A DfFiles instance providing access to the SQLite tables as DataFrames</span>
-</span><span data-line="290">
-</span><span data-line="291"><span class="sd">        Raises:</span>
-</span><span data-line="292"><span class="sd">            FileNotFoundError: If `sqlite_file` does not exist.</span>
-</span><span data-line="293"><span class="sd">            ValueError: If `sqlite_file` does not look like a SQLite database.</span>
-</span><span data-line="294"><span class="sd">        """</span>
-</span><span data-line="295">        <span class="kn">from</span><span class="w"> </span><span class="nn">tabled.sqlite_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">export_sqlite_to_parquet</span>
-</span><span data-line="296">
-</span><span data-line="297">        <span class="n">sqlite_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sqlite_file</span><span class="p">)</span>
-</span><span data-line="298">        <span class="k">if</span> <span class="ow">not</span> <span class="n">sqlite_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-</span><span data-line="299">            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SQLite file not found: </span><span class="si">{</span><span class="n">sqlite_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span data-line="300">
-</span><span data-line="301">        <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_sqlite_file</span><span class="p">(</span><span class="n">sqlite_file</span><span class="p">):</span>
-</span><span data-line="302">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="303">                <span class="sa">f</span><span class="s2">"File does not appear to be a SQLite database: </span><span class="si">{</span><span class="n">sqlite_file</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="304">            <span class="p">)</span>
-</span><span data-line="305">
-</span><span data-line="306">        <span class="c1"># Create a temporary directory that will be cleaned up automatically</span>
-</span><span data-line="307">        <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">"dffiles_sqlite_"</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">"_parquet"</span><span class="p">)</span>
-</span><span data-line="308">
-</span><span data-line="309">        <span class="c1"># Export SQLite tables to parquet files</span>
-</span><span data-line="310">        <span class="n">export_sqlite_to_parquet</span><span class="p">(</span>
-</span><span data-line="311">            <span class="n">sqlite_file</span><span class="p">,</span>
-</span><span data-line="312">            <span class="n">temp_dir</span><span class="p">,</span>
-</span><span data-line="313">            <span class="n">tables</span><span class="o">=</span><span class="n">tables</span><span class="p">,</span>
-</span><span data-line="314">            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-</span><span data-line="315">        <span class="p">)</span>
-</span><span data-line="316">
-</span><span data-line="317">        <span class="c1"># Register cleanup function</span>
-</span><span data-line="318">        <span class="k">def</span><span class="w"> </span><span class="nf">cleanup_temp_dir</span><span class="p">():</span>
-</span><span data-line="319">            <span class="k">try</span><span class="p">:</span>
-</span><span data-line="320">                <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
-</span><span data-line="321">
-</span><span data-line="322">                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span data-line="323">            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-</span><span data-line="324">                <span class="k">pass</span>
-</span><span data-line="325">
-</span><span data-line="326">        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">cleanup_temp_dir</span><span class="p">)</span>
-</span><span data-line="327">
-</span><span data-line="328">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</span><span data-line="274">    <span class="nd">@classmethod</span>
+</span><span data-line="275">    <span class="k">def</span><span class="w"> </span><span class="nf">from_sqlite_file</span><span class="p">(</span>
+</span><span data-line="276">        <span class="bp">cls</span><span class="p">,</span>
+</span><span data-line="277">        <span class="n">sqlite_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+</span><span data-line="278">        <span class="o">*</span><span class="p">,</span>
+</span><span data-line="279">        <span class="n">tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="280">        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="281">        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+</span><span data-line="282">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"DfFiles"</span><span class="p">:</span>
+</span><span data-line="283"><span class="w">        </span><span class="sd">"""Create a DfFiles instance from a SQLite database file.</span>
+</span><span data-line="284">
+</span><span data-line="285"><span class="sd">        This method exports all tables from the SQLite database to parquet files</span>
+</span><span data-line="286"><span class="sd">        in a temporary directory and returns a DfFiles instance that provides</span>
+</span><span data-line="287"><span class="sd">        access to these tables as DataFrames.</span>
+</span><span data-line="288">
+</span><span data-line="289"><span class="sd">        Args:</span>
+</span><span data-line="290"><span class="sd">            sqlite_file: Path to the SQLite database file</span>
+</span><span data-line="291"><span class="sd">            tables: Optional list of table names to export. If None, exports all tables.</span>
+</span><span data-line="292"><span class="sd">            verbose: Whether to print progress information</span>
+</span><span data-line="293"><span class="sd">            **kwargs: Additional arguments passed to the DfFiles constructor</span>
+</span><span data-line="294">
+</span><span data-line="295"><span class="sd">        Returns:</span>
+</span><span data-line="296"><span class="sd">            A DfFiles instance providing access to the SQLite tables as DataFrames</span>
+</span><span data-line="297">
+</span><span data-line="298"><span class="sd">        Raises:</span>
+</span><span data-line="299"><span class="sd">            FileNotFoundError: If `sqlite_file` does not exist.</span>
+</span><span data-line="300"><span class="sd">            ValueError: If `sqlite_file` does not look like a SQLite database.</span>
+</span><span data-line="301"><span class="sd">        """</span>
+</span><span data-line="302">        <span class="kn">from</span><span class="w"> </span><span class="nn">tabled.sqlite_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">export_sqlite_to_parquet</span>
+</span><span data-line="303">
+</span><span data-line="304">        <span class="n">sqlite_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sqlite_file</span><span class="p">)</span>
+</span><span data-line="305">        <span class="k">if</span> <span class="ow">not</span> <span class="n">sqlite_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+</span><span data-line="306">            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SQLite file not found: </span><span class="si">{</span><span class="n">sqlite_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="307">
+</span><span data-line="308">        <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_sqlite_file</span><span class="p">(</span><span class="n">sqlite_file</span><span class="p">):</span>
+</span><span data-line="309">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="310">                <span class="sa">f</span><span class="s2">"File does not appear to be a SQLite database: </span><span class="si">{</span><span class="n">sqlite_file</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="311">            <span class="p">)</span>
+</span><span data-line="312">
+</span><span data-line="313">        <span class="c1"># Create a temporary directory that will be cleaned up automatically</span>
+</span><span data-line="314">        <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">"dffiles_sqlite_"</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">"_parquet"</span><span class="p">)</span>
+</span><span data-line="315">
+</span><span data-line="316">        <span class="c1"># Export SQLite tables to parquet files</span>
+</span><span data-line="317">        <span class="n">export_sqlite_to_parquet</span><span class="p">(</span>
+</span><span data-line="318">            <span class="n">sqlite_file</span><span class="p">,</span>
+</span><span data-line="319">            <span class="n">temp_dir</span><span class="p">,</span>
+</span><span data-line="320">            <span class="n">tables</span><span class="o">=</span><span class="n">tables</span><span class="p">,</span>
+</span><span data-line="321">            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+</span><span data-line="322">        <span class="p">)</span>
+</span><span data-line="323">
+</span><span data-line="324">        <span class="c1"># Register cleanup function</span>
+</span><span data-line="325">        <span class="k">def</span><span class="w"> </span><span class="nf">cleanup_temp_dir</span><span class="p">():</span>
+</span><span data-line="326">            <span class="k">try</span><span class="p">:</span>
+</span><span data-line="327">                <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+</span><span data-line="328">
+</span><span data-line="329">                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span data-line="330">            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span data-line="331">                <span class="k">pass</span>
+</span><span data-line="332">
+</span><span data-line="333">        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">cleanup_temp_dir</span><span class="p">)</span>
+</span><span data-line="334">
+</span><span data-line="335">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-</span><span data-line="329">
-</span><span data-line="330">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-</span><span data-line="331">        <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-</span><span data-line="332">        <span class="c1"># data = BytesIO(super().__getitem__(k))</span>
-</span><span data-line="333">        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-</span><span data-line="334">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes_and_ext_to_df</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
-</span><span data-line="335">
-</span><span data-line="336">    <span class="c1"># TODO: Implement this. This works:</span>
-</span><span data-line="337">    <span class="c1"># from tabled import extension_base_wrap</span>
-</span><span data-line="338">    <span class="c1"># extension_base_wrap(Files)</span>
-</span><span data-line="339">    <span class="c1"># But not this:</span>
-</span><span data-line="340">    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-</span><span data-line="341">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
-</span><span data-line="342">            <span class="n">bytes_</span> <span class="o">=</span> <span class="n">extension_based_encoding</span><span class="p">(</span>
-</span><span data-line="343">                <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span>
-</span><span data-line="344">            <span class="p">)</span>
-</span><span data-line="345">        <span class="k">else</span><span class="p">:</span>  <span class="c1"># if v is bytes already</span>
-</span><span data-line="346">            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_writing_bytes</span><span class="p">:</span>
-</span><span data-line="347">                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Cannot write bytes directly. Specify ."</span><span class="p">)</span>
-</span><span data-line="348">            <span class="n">bytes_</span> <span class="o">=</span> <span class="n">v</span>
-</span><span data-line="349">        <span class="c1"># bytes_ = self.extension_based_encoding(v, file_extension(k))</span>
-</span><span data-line="350">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">)</span>
-</span><span data-line="351">
-</span><span data-line="352">    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-</span><span data-line="353">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
-
-</span><span data-line="354">
-</span><span data-line="355">
-<div class="viewcode-block" id="DfReader">
-<a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.DfReader">[docs]</a>
-</span><span data-line="356"><span class="k">class</span><span class="w"> </span><span class="nc">DfReader</span><span class="p">(</span><span class="n">DfFiles</span><span class="p">):</span>
-</span><span data-line="357"><span class="w">    </span><span class="sd">"""A read-only `DfFiles`: writes and deletes raise `NotImplementedError`."""</span>
-</span><span data-line="358">
-</span><span data-line="359">    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-</span><span data-line="360">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"DfReader is a read-only store."</span><span class="p">)</span>
-</span><span data-line="361">
-</span><span data-line="362">    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-</span><span data-line="363">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"DfReader is a read-only store."</span><span class="p">)</span></div>
+</span><span data-line="336">
+</span><span data-line="337">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="338"><span class="w">        </span><span class="sd">"""Read the bytes of ``k`` and decode them to a dataframe according to its extension."""</span>
+</span><span data-line="339">        <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_to_ext</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span data-line="340">        <span class="c1"># data = BytesIO(super().__getitem__(k))</span>
+</span><span data-line="341">        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span data-line="342">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes_and_ext_to_df</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+</span><span data-line="343">
+</span><span data-line="344">    <span class="c1"># TODO: Implement this. This works:</span>
+</span><span data-line="345">    <span class="c1"># from tabled import extension_base_wrap</span>
+</span><span data-line="346">    <span class="c1"># extension_base_wrap(Files)</span>
+</span><span data-line="347">    <span class="c1"># But not this:</span>
+</span><span data-line="348">    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+</span><span data-line="349"><span class="w">        </span><span class="sd">"""Encode ``v`` to bytes according to the extension of ``k`` (unless it already is bytes, and that is allowed) and write it."""</span>
+</span><span data-line="350">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+</span><span data-line="351">            <span class="n">bytes_</span> <span class="o">=</span> <span class="n">extension_based_encoding</span><span class="p">(</span>
+</span><span data-line="352">                <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extension_encoder_mapping</span>
+</span><span data-line="353">            <span class="p">)</span>
+</span><span data-line="354">        <span class="k">else</span><span class="p">:</span>  <span class="c1"># if v is bytes already</span>
+</span><span data-line="355">            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_writing_bytes</span><span class="p">:</span>
+</span><span data-line="356">                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Cannot write bytes directly. Specify ."</span><span class="p">)</span>
+</span><span data-line="357">            <span class="n">bytes_</span> <span class="o">=</span> <span class="n">v</span>
+</span><span data-line="358">        <span class="c1"># bytes_ = self.extension_based_encoding(v, file_extension(k))</span>
+</span><span data-line="359">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">)</span>
+</span><span data-line="360">
+</span><span data-line="361">    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="362"><span class="w">        </span><span class="sd">"""Delete ``k``."""</span>
+</span><span data-line="363">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
 
 </span><span data-line="364">
 </span><span data-line="365">
-</span><span data-line="366"><span class="n">DfLocalFileReader</span> <span class="o">=</span> <span class="n">DfReader</span>  <span class="c1"># back-compatibility: TODO: Issue warning on use</span>
-</span><span data-line="367">
+<div class="viewcode-block" id="DfReader">
+<a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.DfReader">[docs]</a>
+</span><span data-line="366"><span class="k">class</span><span class="w"> </span><span class="nc">DfReader</span><span class="p">(</span><span class="n">DfFiles</span><span class="p">):</span>
+</span><span data-line="367"><span class="w">    </span><span class="sd">"""A read-only `DfFiles`: writes and deletes raise `NotImplementedError`."""</span>
 </span><span data-line="368">
-</span><span data-line="369"><span class="c1"># ------------------------------------------------------------------------------</span>
-</span><span data-line="370"><span class="c1"># Wrapping a DataFrame to provide a key-value interface</span>
-</span><span data-line="371">
-</span><span data-line="372"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-</span><span data-line="373"><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
-</span><span data-line="374">
-</span><span data-line="375">
+</span><span data-line="369">    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+</span><span data-line="370"><span class="w">        </span><span class="sd">"""Not supported: always raises ``NotImplementedError`` (read-only store)."""</span>
+</span><span data-line="371">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"DfReader is a read-only store."</span><span class="p">)</span>
+</span><span data-line="372">
+</span><span data-line="373">    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="374"><span class="w">        </span><span class="sd">"""Not supported: always raises ``NotImplementedError`` (read-only store)."""</span>
+</span><span data-line="375">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"DfReader is a read-only store."</span><span class="p">)</span></div>
+
+</span><span data-line="376">
+</span><span data-line="377">
+</span><span data-line="378"><span class="n">DfLocalFileReader</span> <span class="o">=</span> <span class="n">DfReader</span>  <span class="c1"># back-compatibility: TODO: Issue warning on use</span>
+</span><span data-line="379">
+</span><span data-line="380">
+</span><span data-line="381"><span class="c1"># ------------------------------------------------------------------------------</span>
+</span><span data-line="382"><span class="c1"># Wrapping a DataFrame to provide a key-value interface</span>
+</span><span data-line="383">
+</span><span data-line="384"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</span><span data-line="385"><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+</span><span data-line="386">
+</span><span data-line="387">
 <div class="viewcode-block" id="validate_fields">
 <a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.validate_fields">[docs]</a>
-</span><span data-line="376"><span class="k">def</span><span class="w"> </span><span class="nf">validate_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="p">):</span>
-</span><span data-line="377"><span class="w">    </span><span class="sd">"""Raise `ValueError` if any `key_fields` or `value_columns` are missing from `df`."""</span>
-</span><span data-line="378">    <span class="n">all_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-</span><span data-line="379">    <span class="n">all_index_levels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
-</span><span data-line="380">
-</span><span data-line="381">    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">key_fields</span><span class="p">:</span>
-</span><span data-line="382">        <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_columns</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_index_levels</span><span class="p">:</span>
-</span><span data-line="383">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="384">                <span class="sa">f</span><span class="s2">"Field </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> not found in the DataFrame columns or index levels."</span>
-</span><span data-line="385">            <span class="p">)</span>
-</span><span data-line="386">
-</span><span data-line="387">    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">value_columns</span><span class="p">:</span>
-</span><span data-line="388">        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_columns</span><span class="p">:</span>
-</span><span data-line="389">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> not found in the DataFrame."</span><span class="p">)</span></div>
+</span><span data-line="388"><span class="k">def</span><span class="w"> </span><span class="nf">validate_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="p">):</span>
+</span><span data-line="389"><span class="w">    </span><span class="sd">"""Raise `ValueError` if any `key_fields` or `value_columns` are missing from `df`."""</span>
+</span><span data-line="390">    <span class="n">all_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span data-line="391">    <span class="n">all_index_levels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+</span><span data-line="392">
+</span><span data-line="393">    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">key_fields</span><span class="p">:</span>
+</span><span data-line="394">        <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_columns</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_index_levels</span><span class="p">:</span>
+</span><span data-line="395">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="396">                <span class="sa">f</span><span class="s2">"Field </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> not found in the DataFrame columns or index levels."</span>
+</span><span data-line="397">            <span class="p">)</span>
+</span><span data-line="398">
+</span><span data-line="399">    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">value_columns</span><span class="p">:</span>
+</span><span data-line="400">        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_columns</span><span class="p">:</span>
+</span><span data-line="401">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> not found in the DataFrame."</span><span class="p">)</span></div>
 
-</span><span data-line="390">
-</span><span data-line="391">
-</span><span data-line="392"><span class="c1"># TODO: Does it accommodate the case where I want to define my key_fields to be the</span>
-</span><span data-line="393"><span class="c1"># UNNAMED index of the dataframe, plus a column.</span>
-</span><span data-line="394"><span class="c1"># For example, consider (and add to the test) the case where I have df.set_index('A'),</span>
-</span><span data-line="395"><span class="c1"># but remove the name "A" from the index. Now I can't say key_fields=['A', 'B'] anymore.</span>
+</span><span data-line="402">
+</span><span data-line="403">
+</span><span data-line="404"><span class="c1"># TODO: Does it accommodate the case where I want to define my key_fields to be the</span>
+</span><span data-line="405"><span class="c1"># UNNAMED index of the dataframe, plus a column.</span>
+</span><span data-line="406"><span class="c1"># For example, consider (and add to the test) the case where I have df.set_index('A'),</span>
+</span><span data-line="407"><span class="c1"># but remove the name "A" from the index. Now I can't say key_fields=['A', 'B'] anymore.</span>
 <div class="viewcode-block" id="DataframeKvReader">
 <a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.DataframeKvReader">[docs]</a>
-</span><span data-line="396"><span class="k">class</span><span class="w"> </span><span class="nc">DataframeKvReader</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
-</span><span data-line="397"><span class="w">    </span><span class="sd">"""A Mapping view of a DataFrame, keyed by combinations of columns or index levels.</span>
-</span><span data-line="398">
-</span><span data-line="399"><span class="sd">    Args:</span>
-</span><span data-line="400"><span class="sd">        df: The DataFrame to wrap.</span>
-</span><span data-line="401"><span class="sd">        key_fields: Field(s) (columns or index levels) to use as keys.</span>
-</span><span data-line="402"><span class="sd">        value_columns: Column(s) to use as values. Defaults to all columns.</span>
-</span><span data-line="403">
-</span><span data-line="404"><span class="sd">    Example usage:</span>
-</span><span data-line="405">
-</span><span data-line="406"><span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
-</span><span data-line="407"><span class="sd">    ...     'A': [1, 2, 1],</span>
-</span><span data-line="408"><span class="sd">    ...     'B': [4, 5, 4],</span>
-</span><span data-line="409"><span class="sd">    ...     'C': [7, 8, 9],</span>
-</span><span data-line="410"><span class="sd">    ...     'D': [10, 11, 12]</span>
-</span><span data-line="411"><span class="sd">    ... })</span>
-</span><span data-line="412"><span class="sd">    &gt;&gt;&gt; df</span>
-</span><span data-line="413"><span class="sd">       A  B  C   D</span>
-</span><span data-line="414"><span class="sd">    0  1  4  7  10</span>
-</span><span data-line="415"><span class="sd">    1  2  5  8  11</span>
-</span><span data-line="416"><span class="sd">    2  1  4  9  12</span>
-</span><span data-line="417"><span class="sd">    &gt;&gt;&gt; kv_reader = DataframeKvReader(df, ['A', 'B'], ['C', 'D'])</span>
-</span><span data-line="418"><span class="sd">    &gt;&gt;&gt; key = (1, 4)</span>
-</span><span data-line="419"><span class="sd">    &gt;&gt;&gt; kv_reader[key].reset_index(drop=True)  # doctest: +NORMALIZE_WHITESPACE</span>
-</span><span data-line="420"><span class="sd">       C   D</span>
-</span><span data-line="421"><span class="sd">    0  7  10</span>
-</span><span data-line="422"><span class="sd">    1  9  12</span>
-</span><span data-line="423"><span class="sd">    &gt;&gt;&gt; list(kv_reader) == [(1, 4), (2, 5)]</span>
-</span><span data-line="424"><span class="sd">    True</span>
-</span><span data-line="425">
-</span><span data-line="426"><span class="sd">    But what if one (or more) of the key fields is an index level?</span>
-</span><span data-line="427"><span class="sd">    The DataframeKvReader can handle that too:</span>
-</span><span data-line="428">
-</span><span data-line="429"><span class="sd">    &gt;&gt;&gt; df = df.set_index(['A'])</span>
-</span><span data-line="430"><span class="sd">    &gt;&gt;&gt; df  # doctest: +NORMALIZE_WHITESPACE</span>
-</span><span data-line="431"><span class="sd">       B  C   D</span>
-</span><span data-line="432"><span class="sd">    A</span>
-</span><span data-line="433"><span class="sd">    1  4  7  10</span>
-</span><span data-line="434"><span class="sd">    2  5  8  11</span>
-</span><span data-line="435"><span class="sd">    1  4  9  12</span>
-</span><span data-line="436"><span class="sd">    &gt;&gt;&gt; kv_reader = DataframeKvReader(df, ['A', 'B'], ['C', 'D'])</span>
-</span><span data-line="437"><span class="sd">    &gt;&gt;&gt; key = (1, 4)</span>
-</span><span data-line="438"><span class="sd">    &gt;&gt;&gt; kv_reader[key].reset_index(drop=True)  # doctest: +NORMALIZE_WHITESPACE</span>
-</span><span data-line="439"><span class="sd">       C   D</span>
-</span><span data-line="440"><span class="sd">    0  7  10</span>
-</span><span data-line="441"><span class="sd">    1  9  12</span>
-</span><span data-line="442"><span class="sd">    &gt;&gt;&gt; list(kv_reader) == [(1, 4), (2, 5)]</span>
-</span><span data-line="443"><span class="sd">    True</span>
-</span><span data-line="444">
-</span><span data-line="445"><span class="sd">    """</span>
-</span><span data-line="446">
-</span><span data-line="447">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span data-line="448">        <span class="k">if</span> <span class="n">value_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="449">            <span class="n">value_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-</span><span data-line="450">        <span class="n">validate_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="p">)</span>
-</span><span data-line="451">        <span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span> <span class="o">=</span> <span class="n">key_fields</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key_fields</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">key_fields</span><span class="p">]</span>
-</span><span data-line="452">        <span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="453">            <span class="n">value_columns</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">value_columns</span><span class="p">]</span>
-</span><span data-line="454">        <span class="p">)</span>
-</span><span data-line="455">
-</span><span data-line="456">        <span class="c1"># Check if key fields are all index levels</span>
-</span><span data-line="457">        <span class="bp">self</span><span class="o">.</span><span class="n">is_index_key</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="p">)</span>
+</span><span data-line="408"><span class="k">class</span><span class="w"> </span><span class="nc">DataframeKvReader</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+</span><span data-line="409"><span class="w">    </span><span class="sd">"""A Mapping view of a DataFrame, keyed by combinations of columns or index levels.</span>
+</span><span data-line="410">
+</span><span data-line="411"><span class="sd">    Args:</span>
+</span><span data-line="412"><span class="sd">        df: The DataFrame to wrap.</span>
+</span><span data-line="413"><span class="sd">        key_fields: Field(s) (columns or index levels) to use as keys.</span>
+</span><span data-line="414"><span class="sd">        value_columns: Column(s) to use as values. Defaults to all columns.</span>
+</span><span data-line="415">
+</span><span data-line="416"><span class="sd">    Example usage:</span>
+</span><span data-line="417">
+</span><span data-line="418"><span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+</span><span data-line="419"><span class="sd">    ...     'A': [1, 2, 1],</span>
+</span><span data-line="420"><span class="sd">    ...     'B': [4, 5, 4],</span>
+</span><span data-line="421"><span class="sd">    ...     'C': [7, 8, 9],</span>
+</span><span data-line="422"><span class="sd">    ...     'D': [10, 11, 12]</span>
+</span><span data-line="423"><span class="sd">    ... })</span>
+</span><span data-line="424"><span class="sd">    &gt;&gt;&gt; df</span>
+</span><span data-line="425"><span class="sd">       A  B  C   D</span>
+</span><span data-line="426"><span class="sd">    0  1  4  7  10</span>
+</span><span data-line="427"><span class="sd">    1  2  5  8  11</span>
+</span><span data-line="428"><span class="sd">    2  1  4  9  12</span>
+</span><span data-line="429"><span class="sd">    &gt;&gt;&gt; kv_reader = DataframeKvReader(df, ['A', 'B'], ['C', 'D'])</span>
+</span><span data-line="430"><span class="sd">    &gt;&gt;&gt; key = (1, 4)</span>
+</span><span data-line="431"><span class="sd">    &gt;&gt;&gt; kv_reader[key].reset_index(drop=True)  # doctest: +NORMALIZE_WHITESPACE</span>
+</span><span data-line="432"><span class="sd">       C   D</span>
+</span><span data-line="433"><span class="sd">    0  7  10</span>
+</span><span data-line="434"><span class="sd">    1  9  12</span>
+</span><span data-line="435"><span class="sd">    &gt;&gt;&gt; list(kv_reader) == [(1, 4), (2, 5)]</span>
+</span><span data-line="436"><span class="sd">    True</span>
+</span><span data-line="437">
+</span><span data-line="438"><span class="sd">    But what if one (or more) of the key fields is an index level?</span>
+</span><span data-line="439"><span class="sd">    The DataframeKvReader can handle that too:</span>
+</span><span data-line="440">
+</span><span data-line="441"><span class="sd">    &gt;&gt;&gt; df = df.set_index(['A'])</span>
+</span><span data-line="442"><span class="sd">    &gt;&gt;&gt; df  # doctest: +NORMALIZE_WHITESPACE</span>
+</span><span data-line="443"><span class="sd">       B  C   D</span>
+</span><span data-line="444"><span class="sd">    A</span>
+</span><span data-line="445"><span class="sd">    1  4  7  10</span>
+</span><span data-line="446"><span class="sd">    2  5  8  11</span>
+</span><span data-line="447"><span class="sd">    1  4  9  12</span>
+</span><span data-line="448"><span class="sd">    &gt;&gt;&gt; kv_reader = DataframeKvReader(df, ['A', 'B'], ['C', 'D'])</span>
+</span><span data-line="449"><span class="sd">    &gt;&gt;&gt; key = (1, 4)</span>
+</span><span data-line="450"><span class="sd">    &gt;&gt;&gt; kv_reader[key].reset_index(drop=True)  # doctest: +NORMALIZE_WHITESPACE</span>
+</span><span data-line="451"><span class="sd">       C   D</span>
+</span><span data-line="452"><span class="sd">    0  7  10</span>
+</span><span data-line="453"><span class="sd">    1  9  12</span>
+</span><span data-line="454"><span class="sd">    &gt;&gt;&gt; list(kv_reader) == [(1, 4), (2, 5)]</span>
+</span><span data-line="455"><span class="sd">    True</span>
+</span><span data-line="456">
+</span><span data-line="457"><span class="sd">    """</span>
 </span><span data-line="458">
-</span><span data-line="459">        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_index_key</span><span class="p">:</span>
-</span><span data-line="460">            <span class="c1"># If key fields are not all index levels, reset index and set new index</span>
-</span><span data-line="461">            <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="462">                <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
-</span><span data-line="463">            <span class="p">)</span>
-</span><span data-line="464">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="465">            <span class="c1"># If key fields are all index levels, ensure the DataFrame is sorted by those key fields</span>
-</span><span data-line="466">            <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
-</span><span data-line="467">
-</span><span data-line="468">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-</span><span data-line="469">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-</span><span data-line="470">            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,)</span>
-</span><span data-line="471">        <span class="k">try</span><span class="p">:</span>
-</span><span data-line="472">            <span class="n">sub_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span><span class="p">]</span>
-</span><span data-line="473">            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
-</span><span data-line="474">                <span class="n">sub_df</span> <span class="o">=</span> <span class="n">sub_df</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
-</span><span data-line="475">            <span class="k">return</span> <span class="n">sub_df</span>
-</span><span data-line="476">        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-</span><span data-line="477">            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> not found"</span><span class="p">)</span>
-</span><span data-line="478">
-</span><span data-line="479">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="480">        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-</span><span data-line="481">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
-</span><span data-line="482">
-</span><span data-line="483">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="484">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
-</span><span data-line="485">
-</span><span data-line="486">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-</span><span data-line="487">        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span>
-</span><span data-line="488">
-</span><span data-line="489">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="490">        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(df=&lt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows&gt;, key_fields=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="si">}</span><span class="s2">, value_columns=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span><span class="si">}</span><span class="s2">)"</span></div>
+</span><span data-line="459">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="460"><span class="w">        </span><span class="sd">"""Validate the fields and index/sort ``df`` by the key fields."""</span>
+</span><span data-line="461">        <span class="k">if</span> <span class="n">value_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="462">            <span class="n">value_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span data-line="463">        <span class="n">validate_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="p">)</span>
+</span><span data-line="464">        <span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span> <span class="o">=</span> <span class="n">key_fields</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key_fields</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">key_fields</span><span class="p">]</span>
+</span><span data-line="465">        <span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="466">            <span class="n">value_columns</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">value_columns</span><span class="p">]</span>
+</span><span data-line="467">        <span class="p">)</span>
+</span><span data-line="468">
+</span><span data-line="469">        <span class="c1"># Check if key fields are all index levels</span>
+</span><span data-line="470">        <span class="bp">self</span><span class="o">.</span><span class="n">is_index_key</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="p">)</span>
+</span><span data-line="471">
+</span><span data-line="472">        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_index_key</span><span class="p">:</span>
+</span><span data-line="473">            <span class="c1"># If key fields are not all index levels, reset index and set new index</span>
+</span><span data-line="474">            <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="475">                <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+</span><span data-line="476">            <span class="p">)</span>
+</span><span data-line="477">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="478">            <span class="c1"># If key fields are all index levels, ensure the DataFrame is sorted by those key fields</span>
+</span><span data-line="479">            <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+</span><span data-line="480">
+</span><span data-line="481">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span><span data-line="482"><span class="w">        </span><span class="sd">"""Return the rows (as a dataframe, restricted to the value columns) matching ``key``; raise ``KeyError`` if there are none."""</span>
+</span><span data-line="483">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+</span><span data-line="484">            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,)</span>
+</span><span data-line="485">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="486">            <span class="n">sub_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span><span class="p">]</span>
+</span><span data-line="487">            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+</span><span data-line="488">                <span class="n">sub_df</span> <span class="o">=</span> <span class="n">sub_df</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+</span><span data-line="489">            <span class="k">return</span> <span class="n">sub_df</span>
+</span><span data-line="490">        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+</span><span data-line="491">            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> not found"</span><span class="p">)</span>
+</span><span data-line="492">
+</span><span data-line="493">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="494"><span class="w">        </span><span class="sd">"""Iterate over the distinct keys."""</span>
+</span><span data-line="495">        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span data-line="496">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+</span><span data-line="497">
+</span><span data-line="498">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="499"><span class="w">        </span><span class="sd">"""Return the number of distinct keys."""</span>
+</span><span data-line="500">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+</span><span data-line="501">
+</span><span data-line="502">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span><span data-line="503"><span class="w">        </span><span class="sd">"""Return whether ``key`` is in the index."""</span>
+</span><span data-line="504">        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span>
+</span><span data-line="505">
+</span><span data-line="506">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="507"><span class="w">        </span><span class="sd">"""Return a short representation."""</span>
+</span><span data-line="508">        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(df=&lt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows&gt;, key_fields=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="si">}</span><span class="s2">, value_columns=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span><span class="si">}</span><span class="s2">)"</span></div>
 
 </span></pre></div>
         </article><button class="back-to-top" type="button">
@@ -665,7 +683,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=73657eb8"></script>
+      <script src="../../_static/documentation_options.js?v=d71dfaa1"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
