@@ -15,6 +15,7 @@ class BinaryFuncResult(dict):
     """A `{left_right, right_left}` dict, truthy if either value is truthy."""
 
     def __bool__(self):
+        """Return ``True`` if any of the values is truthy (that is, if some difference was found)."""
         return any(self.values())
 
     @classmethod

@@ -223,6 +223,7 @@ class ColumnOrientedMapping(Mapping):
         tables: MappingOfDataFrames,
         columns: Callable | Iterable[Column] = columns_of_first_table,
     ):
+        """Initialize the instance; see the class docstring for the arguments."""
         self.tables = mapping_of_dataframes(tables)
         self._init_columns = columns
 
@@ -243,6 +244,7 @@ class ColumnOrientedMapping(Mapping):
         return list(self.tables.keys())
 
     def __iter__(self) -> Iterable[Column]:
+        """Iterate over the keys."""
         return iter(self.columns)
 
     def __getitem__(self, k):
@@ -250,9 +252,11 @@ class ColumnOrientedMapping(Mapping):
         return self.df(k)
 
     def __len__(self):
+        """Return the number of keys."""
         return len(self.columns)
 
     def __contains__(self, k):
+        """Return whether ``k`` is a key."""
         return k in self.columns
 
     def df(self, columns=None):
