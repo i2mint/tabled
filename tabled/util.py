@@ -758,7 +758,7 @@ def collapse_columns(
     return result_df
 
 
-def column_sep_key_mapper(key, column_name, sep: str):
+def column_sep_key_mapper(key, column_name, sep: str) -> str:
     """Join `column_name` and `key` with `sep` (e.g. `"X"`, `"a"`, `"."` -> `"X.a"`)."""
     return f"{column_name}{sep}{key}"
 

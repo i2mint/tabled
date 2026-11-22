@@ -60,12 +60,12 @@ from tabled.util import (
 class Join:
     """A join step: which table to join in next, and which of its fields to drop after."""
 
-    def __init__(self, table_id: str, remove: list[str] = None):
+    def __init__(self, table_id: str, remove: list[str] = None) -> None:
         """Store the ``table_id`` and the (optional) list of columns to ``remove``."""
         self.table_id = table_id
         self.remove = remove or []
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return a short representation."""
         # note: sorting self.remove so doctests are consistent
         remove_str = f", remove={sorted(self.remove)}" if self.remove else ""
