@@ -255,6 +255,9 @@ column’s values (the ones that are not keys of the groupby) into lists.
 
 Join `column_name` and `key` with `sep` (e.g. `"X"`, `"a"`, `"."` -> `"X.a"`).
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### tabled.util.duplicate_groups(df, subset, , output='dataframe', keep_indices=True)
 
 Get a DataFrame containing rows that have duplicate values for subset of columns.

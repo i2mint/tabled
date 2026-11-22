@@ -214,7 +214,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="86"><span class="sd">    `__contains__` apply `key` to the given key first.</span>
 </span><span data-line="87"><span class="sd">    """</span>
 </span><span data-line="88">
-</span><span data-line="89">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KeyFunc</span> <span class="o">=</span> <span class="n">identity</span><span class="p">):</span>
+</span><span data-line="89">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KeyFunc</span> <span class="o">=</span> <span class="n">identity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="90"><span class="w">        </span><span class="sd">"""Store the ``mapping`` and the ``key`` function applied to keys before lookup."""</span>
 </span><span data-line="91">        <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="n">mapping</span>
 </span><span data-line="92">        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
@@ -223,7 +223,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="95"><span class="w">        </span><span class="sd">"""Return ``mapping[key(k)]``."""</span>
 </span><span data-line="96">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
 </span><span data-line="97">
-</span><span data-line="98">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="98">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span data-line="99"><span class="w">        </span><span class="sd">"""Return whether ``key(k)`` is in ``mapping``."""</span>
 </span><span data-line="100">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span>
 </span><span data-line="101">
@@ -231,11 +231,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="103"><span class="w">        </span><span class="sd">"""Iterate over the keys."""</span>
 </span><span data-line="104">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span>
 </span><span data-line="105">
-</span><span data-line="106">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="106">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span data-line="107"><span class="w">        </span><span class="sd">"""Return the number of keys."""</span>
 </span><span data-line="108">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span>
 </span><span data-line="109">
-</span><span data-line="110">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="110">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span data-line="111"><span class="w">        </span><span class="sd">"""Return a short representation."""</span>
 </span><span data-line="112">        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="si">}</span><span class="s2">, key=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">)"</span></div>
 
@@ -368,7 +368,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="231">        <span class="c1"># SQLite-specific parameters</span>
 </span><span data-line="232">        <span class="n">sqlite_tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="233">        <span class="n">sqlite_verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span data-line="234">    <span class="p">):</span>
+</span><span data-line="234">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="235"><span class="w">        </span><span class="sd">"""Set up the store; see the class docstring for the arguments."""</span>
 </span><span data-line="236">        <span class="c1"># Check if rootdir is a SQLite file</span>
 </span><span data-line="237">        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rootdir</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_is_sqlite_file</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
@@ -461,7 +461,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="322">        <span class="p">)</span>
 </span><span data-line="323">
 </span><span data-line="324">        <span class="c1"># Register cleanup function</span>
-</span><span data-line="325">        <span class="k">def</span><span class="w"> </span><span class="nf">cleanup_temp_dir</span><span class="p">():</span>
+</span><span data-line="325">        <span class="k">def</span><span class="w"> </span><span class="nf">cleanup_temp_dir</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="326">            <span class="k">try</span><span class="p">:</span>
 </span><span data-line="327">                <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 </span><span data-line="328">
@@ -485,7 +485,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="345">    <span class="c1"># from tabled import extension_base_wrap</span>
 </span><span data-line="346">    <span class="c1"># extension_base_wrap(Files)</span>
 </span><span data-line="347">    <span class="c1"># But not this:</span>
-</span><span data-line="348">    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+</span><span data-line="348">    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="349"><span class="w">        </span><span class="sd">"""Encode ``v`` to bytes according to the extension of ``k`` (unless it already is bytes, and that is allowed) and write it."""</span>
 </span><span data-line="350">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
 </span><span data-line="351">            <span class="n">bytes_</span> <span class="o">=</span> <span class="n">extension_based_encoding</span><span class="p">(</span>
@@ -498,7 +498,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="358">        <span class="c1"># bytes_ = self.extension_based_encoding(v, file_extension(k))</span>
 </span><span data-line="359">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">)</span>
 </span><span data-line="360">
-</span><span data-line="361">    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="361">    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="362"><span class="w">        </span><span class="sd">"""Delete ``k``."""</span>
 </span><span data-line="363">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
 
@@ -509,11 +509,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="366"><span class="k">class</span><span class="w"> </span><span class="nc">DfReader</span><span class="p">(</span><span class="n">DfFiles</span><span class="p">):</span>
 </span><span data-line="367"><span class="w">    </span><span class="sd">"""A read-only `DfFiles`: writes and deletes raise `NotImplementedError`."""</span>
 </span><span data-line="368">
-</span><span data-line="369">    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+</span><span data-line="369">    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="370"><span class="w">        </span><span class="sd">"""Not supported: always raises ``NotImplementedError`` (read-only store)."""</span>
 </span><span data-line="371">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"DfReader is a read-only store."</span><span class="p">)</span>
 </span><span data-line="372">
-</span><span data-line="373">    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="373">    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="374"><span class="w">        </span><span class="sd">"""Not supported: always raises ``NotImplementedError`` (read-only store)."""</span>
 </span><span data-line="375">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"DfReader is a read-only store."</span><span class="p">)</span></div>
 
@@ -531,7 +531,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="387">
 <div class="viewcode-block" id="validate_fields">
 <a class="viewcode-back" href="../../_autosummary/tabled.base.html#tabled.base.validate_fields">[docs]</a>
-</span><span data-line="388"><span class="k">def</span><span class="w"> </span><span class="nf">validate_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="p">):</span>
+</span><span data-line="388"><span class="k">def</span><span class="w"> </span><span class="nf">validate_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="389"><span class="w">    </span><span class="sd">"""Raise `ValueError` if any `key_fields` or `value_columns` are missing from `df`."""</span>
 </span><span data-line="390">    <span class="n">all_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 </span><span data-line="391">    <span class="n">all_index_levels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
@@ -605,7 +605,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="456">
 </span><span data-line="457"><span class="sd">    """</span>
 </span><span data-line="458">
-</span><span data-line="459">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="459">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">key_fields</span><span class="p">,</span> <span class="n">value_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="460"><span class="w">        </span><span class="sd">"""Validate the fields and index/sort ``df`` by the key fields."""</span>
 </span><span data-line="461">        <span class="k">if</span> <span class="n">value_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="462">            <span class="n">value_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
@@ -644,15 +644,15 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="495">        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 </span><span data-line="496">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
 </span><span data-line="497">
-</span><span data-line="498">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="498">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span data-line="499"><span class="w">        </span><span class="sd">"""Return the number of distinct keys."""</span>
 </span><span data-line="500">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
 </span><span data-line="501">
-</span><span data-line="502">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span><span data-line="502">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span data-line="503"><span class="w">        </span><span class="sd">"""Return whether ``key`` is in the index."""</span>
 </span><span data-line="504">        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span>
 </span><span data-line="505">
-</span><span data-line="506">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="506">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span data-line="507"><span class="w">        </span><span class="sd">"""Return a short representation."""</span>
 </span><span data-line="508">        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(df=&lt;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows&gt;, key_fields=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key_fields</span><span class="si">}</span><span class="s2">, value_columns=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_columns</span><span class="si">}</span><span class="s2">)"</span></div>
 
@@ -683,7 +683,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=d71dfaa1"></script>
+      <script src="../../_static/documentation_options.js?v=e0e570cb"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

@@ -142,7 +142,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="14"><span class="k">class</span><span class="w"> </span><span class="nc">BinaryFuncResult</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 </span><span data-line="15"><span class="w">    </span><span class="sd">"""A `{left_right, right_left}` dict, truthy if either value is truthy."""</span>
 </span><span data-line="16">
-</span><span data-line="17">    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="17">    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span data-line="18"><span class="w">        </span><span class="sd">"""Return ``True`` if any of the values is truthy (that is, if some difference was found)."""</span>
 </span><span data-line="19">        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 </span><span data-line="20">
@@ -338,7 +338,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=d71dfaa1"></script>
+      <script src="../../_static/documentation_options.js?v=e0e570cb"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

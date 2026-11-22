@@ -141,7 +141,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="15"><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 </span><span data-line="16"><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
 </span><span data-line="17"><span class="kn">from</span><span class="w"> </span><span class="nn">posixpath</span><span class="w"> </span><span class="kn">import</span> <span class="n">splitext</span>
-</span><span data-line="18"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">BinaryIO</span>
+</span><span data-line="18"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">NoReturn</span>
 </span><span data-line="19"><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Callable</span>
 </span><span data-line="20">
 </span><span data-line="21"><span class="c1"># Handle pandas_gbq import for BigQuery support</span>
@@ -156,7 +156,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="30">    <span class="n">_gbq_to_method</span> <span class="o">=</span> <span class="n">_to_gbq_wrapper</span>
 </span><span data-line="31"><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 </span><span data-line="32">    <span class="c1"># If pandas_gbq is not available, create a function that raises a helpful error</span>
-</span><span data-line="33">    <span class="k">def</span><span class="w"> </span><span class="nf">_to_gbq_unavailable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span data-line="33">    <span class="k">def</span><span class="w"> </span><span class="nf">_to_gbq_unavailable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
 </span><span data-line="34">        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
 </span><span data-line="35">            <span class="s2">"BigQuery functionality requires pandas-gbq. "</span>
 </span><span data-line="36">            <span class="s2">"Install it with: pip install pandas-gbq"</span>
@@ -307,486 +307,488 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="163">
 <div class="viewcode-block" id="save_df_to_zipped_tsv">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.save_df_to_zipped_tsv">[docs]</a>
-</span><span data-line="164"><span class="k">def</span><span class="w"> </span><span class="nf">save_df_to_zipped_tsv</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span data-line="165"><span class="w">    </span><span class="sd">"""Save a dataframe to a zipped tsv file."""</span>
-</span><span data-line="166">    <span class="n">name</span> <span class="o">=</span> <span class="n">if_extension_present_remove_it</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">".zip"</span><span class="p">)</span>
-</span><span data-line="167">    <span class="n">name</span> <span class="o">=</span> <span class="n">if_extension_present_remove_it</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">".tsv"</span><span class="p">)</span>
-</span><span data-line="168">    <span class="n">tsv_filepath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.tsv"</span>
-</span><span data-line="169">    <span class="n">zip_filepath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">tsv_filepath</span><span class="si">}</span><span class="s2">.zip"</span>
-</span><span data-line="170">    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">tsv_filepath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span data-line="171">
-</span><span data-line="172">    <span class="n">file_or_folder_to_zip_file</span><span class="p">(</span><span class="n">tsv_filepath</span><span class="p">,</span> <span class="n">zip_filepath</span><span class="p">)</span></div>
-
+</span><span data-line="164"><span class="k">def</span><span class="w"> </span><span class="nf">save_df_to_zipped_tsv</span><span class="p">(</span>
+</span><span data-line="165">    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+</span><span data-line="166"><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="167"><span class="w">    </span><span class="sd">"""Save a dataframe to a zipped tsv file."""</span>
+</span><span data-line="168">    <span class="n">name</span> <span class="o">=</span> <span class="n">if_extension_present_remove_it</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">".zip"</span><span class="p">)</span>
+</span><span data-line="169">    <span class="n">name</span> <span class="o">=</span> <span class="n">if_extension_present_remove_it</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">".tsv"</span><span class="p">)</span>
+</span><span data-line="170">    <span class="n">tsv_filepath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.tsv"</span>
+</span><span data-line="171">    <span class="n">zip_filepath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">tsv_filepath</span><span class="si">}</span><span class="s2">.zip"</span>
+</span><span data-line="172">    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">tsv_filepath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span data-line="173">
-</span><span data-line="174">
-</span><span data-line="175"><span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">LiteralVal</span>
-</span><span data-line="176"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_instance_of</span>
-</span><span data-line="177"><span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">methodcaller</span>
-</span><span data-line="178">
-</span><span data-line="179">
+</span><span data-line="174">    <span class="n">file_or_folder_to_zip_file</span><span class="p">(</span><span class="n">tsv_filepath</span><span class="p">,</span> <span class="n">zip_filepath</span><span class="p">)</span></div>
+
+</span><span data-line="175">
+</span><span data-line="176">
+</span><span data-line="177"><span class="kn">from</span><span class="w"> </span><span class="nn">i2</span><span class="w"> </span><span class="kn">import</span> <span class="n">LiteralVal</span>
+</span><span data-line="178"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_instance_of</span>
+</span><span data-line="179"><span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">methodcaller</span>
+</span><span data-line="180">
+</span><span data-line="181">
 <div class="viewcode-block" id="map_values">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.map_values">[docs]</a>
-</span><span data-line="180"><span class="k">def</span><span class="w"> </span><span class="nf">map_values</span><span class="p">(</span>
-</span><span data-line="181">    <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-</span><span data-line="182">    <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-</span><span data-line="183">    <span class="o">*</span><span class="p">,</span>
-</span><span data-line="184">    <span class="n">except_condition</span><span class="o">=</span><span class="n">is_instance_of</span><span class="p">(</span><span class="n">LiteralVal</span><span class="p">),</span>
-</span><span data-line="185">    <span class="n">except_handler</span><span class="o">=</span><span class="n">methodcaller</span><span class="p">(</span><span class="s2">"__call__"</span><span class="p">),</span>
-</span><span data-line="186"><span class="p">):</span>
-</span><span data-line="187"><span class="w">    </span><span class="sd">"""Map values of a dictionary, except for those that satisfy a condition.</span>
-</span><span data-line="188">
-</span><span data-line="189"><span class="sd">    The `except_condition` is a function that takes a value and returns a boolean.</span>
-</span><span data-line="190"><span class="sd">    If the condition is True, the value is not mapped.</span>
-</span><span data-line="191"><span class="sd">    Instead, the `except_handler` is called with the value, and the result is used as</span>
-</span><span data-line="192"><span class="sd">    the new value (often, the value is left unchanged).</span>
-</span><span data-line="193">
-</span><span data-line="194"><span class="sd">    The default `except_condition` is `is_instance_of(LiteralVal)`, which is a function</span>
-</span><span data-line="195"><span class="sd">    that returns True if the value is to be taken litterally.</span>
-</span><span data-line="196"><span class="sd">    The default `except_handler` is `methodcaller('__call__')`, which will extract</span>
-</span><span data-line="197"><span class="sd">    the litteral value from the `LiteralVal` object.</span>
-</span><span data-line="198">
-</span><span data-line="199"><span class="sd">    &gt;&gt;&gt; map_values(lambda x: x * 10, {'a': 1, 'b': LiteralVal(2), 'c': 3})</span>
-</span><span data-line="200"><span class="sd">    {'a': 10, 'b': 2, 'c': 30}</span>
-</span><span data-line="201">
-</span><span data-line="202"><span class="sd">    """</span>
-</span><span data-line="203">    <span class="k">return</span> <span class="p">{</span>
-</span><span data-line="204">        <span class="n">k</span><span class="p">:</span> <span class="n">except_handler</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="n">except_condition</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">else</span> <span class="n">func</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-</span><span data-line="205">    <span class="p">}</span></div>
+</span><span data-line="182"><span class="k">def</span><span class="w"> </span><span class="nf">map_values</span><span class="p">(</span>
+</span><span data-line="183">    <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+</span><span data-line="184">    <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+</span><span data-line="185">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="186">    <span class="n">except_condition</span><span class="o">=</span><span class="n">is_instance_of</span><span class="p">(</span><span class="n">LiteralVal</span><span class="p">),</span>
+</span><span data-line="187">    <span class="n">except_handler</span><span class="o">=</span><span class="n">methodcaller</span><span class="p">(</span><span class="s2">"__call__"</span><span class="p">),</span>
+</span><span data-line="188"><span class="p">):</span>
+</span><span data-line="189"><span class="w">    </span><span class="sd">"""Map values of a dictionary, except for those that satisfy a condition.</span>
+</span><span data-line="190">
+</span><span data-line="191"><span class="sd">    The `except_condition` is a function that takes a value and returns a boolean.</span>
+</span><span data-line="192"><span class="sd">    If the condition is True, the value is not mapped.</span>
+</span><span data-line="193"><span class="sd">    Instead, the `except_handler` is called with the value, and the result is used as</span>
+</span><span data-line="194"><span class="sd">    the new value (often, the value is left unchanged).</span>
+</span><span data-line="195">
+</span><span data-line="196"><span class="sd">    The default `except_condition` is `is_instance_of(LiteralVal)`, which is a function</span>
+</span><span data-line="197"><span class="sd">    that returns True if the value is to be taken litterally.</span>
+</span><span data-line="198"><span class="sd">    The default `except_handler` is `methodcaller('__call__')`, which will extract</span>
+</span><span data-line="199"><span class="sd">    the litteral value from the `LiteralVal` object.</span>
+</span><span data-line="200">
+</span><span data-line="201"><span class="sd">    &gt;&gt;&gt; map_values(lambda x: x * 10, {'a': 1, 'b': LiteralVal(2), 'c': 3})</span>
+</span><span data-line="202"><span class="sd">    {'a': 10, 'b': 2, 'c': 30}</span>
+</span><span data-line="203">
+</span><span data-line="204"><span class="sd">    """</span>
+</span><span data-line="205">    <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="206">        <span class="n">k</span><span class="p">:</span> <span class="n">except_handler</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="n">except_condition</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">else</span> <span class="n">func</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+</span><span data-line="207">    <span class="p">}</span></div>
 
-</span><span data-line="206">
-</span><span data-line="207">
-</span><span data-line="208"><span class="c1"># --------------------------------------------------------------------------------------</span>
-</span><span data-line="209"><span class="c1"># The codec mappings</span>
-</span><span data-line="210">
-</span><span data-line="211"><span class="c1"># TODO: Idea: set up the extension_codec plugin system, and use it to set up the default</span>
-</span><span data-line="212"><span class="c1">#   codec mappings, keeping encoder and decoder close.</span>
-</span><span data-line="213"><span class="c1">#   Then, we can have a INCLUDE_INDEX_BY_DEFAULT flat that can help us manage the</span>
-</span><span data-line="214"><span class="c1">#   fact that:</span>
-</span><span data-line="215"><span class="c1">#       if index=True in encoder,  decoder needs to include index_col=0</span>
-</span><span data-line="216"><span class="c1">#       if index=False in encoder, decoder needs to include index_col=None</span>
-</span><span data-line="217">
-</span><span data-line="218"><span class="n">USE_INDEX</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># default for most encoders</span>
-</span><span data-line="219"><span class="n">INDEX_COL</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">USE_INDEX</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># ... and this will be used for most decoders</span>
-</span><span data-line="220">
-</span><span data-line="221"><span class="c1"># CSV/TSV are often used to ingest "external" data where the first column is usually</span>
-</span><span data-line="222"><span class="c1"># data, not an index. Keep the historical round-trip defaults for most formats, but</span>
-</span><span data-line="223"><span class="c1"># make CSV/TSV default to not using an index.</span>
-</span><span data-line="224"><span class="n">CSV_USE_INDEX</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span data-line="225"><span class="n">CSV_INDEX_COL</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">CSV_USE_INDEX</span> <span class="k">else</span> <span class="kc">None</span>
-</span><span data-line="226">
-</span><span data-line="227"><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
-</span><span data-line="228"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-</span><span data-line="229">
-</span><span data-line="230"><span class="n">_DFLT_SINGLE_COLUMN_NAME</span> <span class="o">=</span> <span class="s2">"__single_column_values"</span>
+</span><span data-line="208">
+</span><span data-line="209">
+</span><span data-line="210"><span class="c1"># --------------------------------------------------------------------------------------</span>
+</span><span data-line="211"><span class="c1"># The codec mappings</span>
+</span><span data-line="212">
+</span><span data-line="213"><span class="c1"># TODO: Idea: set up the extension_codec plugin system, and use it to set up the default</span>
+</span><span data-line="214"><span class="c1">#   codec mappings, keeping encoder and decoder close.</span>
+</span><span data-line="215"><span class="c1">#   Then, we can have a INCLUDE_INDEX_BY_DEFAULT flat that can help us manage the</span>
+</span><span data-line="216"><span class="c1">#   fact that:</span>
+</span><span data-line="217"><span class="c1">#       if index=True in encoder,  decoder needs to include index_col=0</span>
+</span><span data-line="218"><span class="c1">#       if index=False in encoder, decoder needs to include index_col=None</span>
+</span><span data-line="219">
+</span><span data-line="220"><span class="n">USE_INDEX</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># default for most encoders</span>
+</span><span data-line="221"><span class="n">INDEX_COL</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">USE_INDEX</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># ... and this will be used for most decoders</span>
+</span><span data-line="222">
+</span><span data-line="223"><span class="c1"># CSV/TSV are often used to ingest "external" data where the first column is usually</span>
+</span><span data-line="224"><span class="c1"># data, not an index. Keep the historical round-trip defaults for most formats, but</span>
+</span><span data-line="225"><span class="c1"># make CSV/TSV default to not using an index.</span>
+</span><span data-line="226"><span class="n">CSV_USE_INDEX</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span data-line="227"><span class="n">CSV_INDEX_COL</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">CSV_USE_INDEX</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span data-line="228">
+</span><span data-line="229"><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+</span><span data-line="230"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 </span><span data-line="231">
-</span><span data-line="232">
+</span><span data-line="232"><span class="n">_DFLT_SINGLE_COLUMN_NAME</span> <span class="o">=</span> <span class="s2">"__single_column_values"</span>
+</span><span data-line="233">
+</span><span data-line="234">
 <div class="viewcode-block" id="cast_to_parquet">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.cast_to_parquet">[docs]</a>
-</span><span data-line="233"><span class="k">def</span><span class="w"> </span><span class="nf">cast_to_parquet</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">__name_of_column</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span data-line="234"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="235"><span class="sd">    Convert data to DataFrame if necessary, then save as parquet.</span>
-</span><span data-line="236">
-</span><span data-line="237"><span class="sd">    Handles:</span>
+</span><span data-line="235"><span class="k">def</span><span class="w"> </span><span class="nf">cast_to_parquet</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">__name_of_column</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span data-line="236"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="237"><span class="sd">    Convert data to DataFrame if necessary, then save as parquet.</span>
 </span><span data-line="238">
-</span><span data-line="239"><span class="sd">    - pandas.DataFrame: use as-is</span>
-</span><span data-line="240"><span class="sd">    - pandas.Series: convert to DataFrame using to_frame()</span>
-</span><span data-line="241"><span class="sd">    - list/other iterables: convert to Series then DataFrame</span>
-</span><span data-line="242"><span class="sd">    """</span>
-</span><span data-line="243">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-</span><span data-line="244">        <span class="n">df</span> <span class="o">=</span> <span class="n">data</span>
-</span><span data-line="245">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
-</span><span data-line="246">        <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">__name_of_column</span><span class="p">)</span>
-</span><span data-line="247">    <span class="k">else</span><span class="p">:</span>
-</span><span data-line="248">        <span class="c1"># Try to convert to Series first, then to DataFrame</span>
-</span><span data-line="249">        <span class="k">try</span><span class="p">:</span>
-</span><span data-line="250">            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">__name_of_column</span><span class="p">)</span>
-</span><span data-line="251">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span data-line="252">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="253">                <span class="sa">f</span><span class="s2">"Cannot convert data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> to DataFrame for parquet export: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="254">            <span class="p">)</span>
-</span><span data-line="255">
-</span><span data-line="256">    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
+</span><span data-line="239"><span class="sd">    Handles:</span>
+</span><span data-line="240">
+</span><span data-line="241"><span class="sd">    - pandas.DataFrame: use as-is</span>
+</span><span data-line="242"><span class="sd">    - pandas.Series: convert to DataFrame using to_frame()</span>
+</span><span data-line="243"><span class="sd">    - list/other iterables: convert to Series then DataFrame</span>
+</span><span data-line="244"><span class="sd">    """</span>
+</span><span data-line="245">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+</span><span data-line="246">        <span class="n">df</span> <span class="o">=</span> <span class="n">data</span>
+</span><span data-line="247">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+</span><span data-line="248">        <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">__name_of_column</span><span class="p">)</span>
+</span><span data-line="249">    <span class="k">else</span><span class="p">:</span>
+</span><span data-line="250">        <span class="c1"># Try to convert to Series first, then to DataFrame</span>
+</span><span data-line="251">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="252">            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">__name_of_column</span><span class="p">)</span>
+</span><span data-line="253">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="254">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="255">                <span class="sa">f</span><span class="s2">"Cannot convert data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> to DataFrame for parquet export: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="256">            <span class="p">)</span>
 </span><span data-line="257">
-</span><span data-line="258">
-</span><span data-line="259"><span class="c1"># Note: Note used anymore, but useful if we want two-way codec for sequences-&gt;parquet</span>
+</span><span data-line="258">    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+</span><span data-line="259">
+</span><span data-line="260">
+</span><span data-line="261"><span class="c1"># Note: Note used anymore, but useful if we want two-way codec for sequences-&gt;parquet</span>
 <div class="viewcode-block" id="single_column_parquet_encode">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.single_column_parquet_encode">[docs]</a>
-</span><span data-line="260"><span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_encode</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">):</span>
-</span><span data-line="261"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="262"><span class="sd">    Encode a list of sequences into a single-column parquet file.</span>
-</span><span data-line="263"><span class="sd">    See more general function: cast_to_parquet.</span>
-</span><span data-line="264">
-</span><span data-line="265"><span class="sd">    The raison d'etre of this function is to have a two-way codec for sequences-&gt;parquet</span>
+</span><span data-line="262"><span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_encode</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">):</span>
+</span><span data-line="263"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="264"><span class="sd">    Encode a list of sequences into a single-column parquet file.</span>
+</span><span data-line="265"><span class="sd">    See more general function: cast_to_parquet.</span>
 </span><span data-line="266">
-</span><span data-line="267"><span class="sd">    &gt;&gt;&gt; sequences_1 = [[1, 2], [3, 4, 5]]</span>
-</span><span data-line="268"><span class="sd">    &gt;&gt;&gt; encoded_1 = single_column_parquet_encode(sequences_1)</span>
-</span><span data-line="269"><span class="sd">    &gt;&gt;&gt; decoded_1 = single_column_parquet_decode(encoded_1)</span>
-</span><span data-line="270"><span class="sd">    &gt;&gt;&gt; all((x == y).all() for x, y in zip(decoded_1, sequences_1))</span>
-</span><span data-line="271"><span class="sd">    True</span>
-</span><span data-line="272">
-</span><span data-line="273"><span class="sd">    """</span>
-</span><span data-line="274">    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">sequences</span><span class="p">})</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">()</span></div>
+</span><span data-line="267"><span class="sd">    The raison d'etre of this function is to have a two-way codec for sequences-&gt;parquet</span>
+</span><span data-line="268">
+</span><span data-line="269"><span class="sd">    &gt;&gt;&gt; sequences_1 = [[1, 2], [3, 4, 5]]</span>
+</span><span data-line="270"><span class="sd">    &gt;&gt;&gt; encoded_1 = single_column_parquet_encode(sequences_1)</span>
+</span><span data-line="271"><span class="sd">    &gt;&gt;&gt; decoded_1 = single_column_parquet_decode(encoded_1)</span>
+</span><span data-line="272"><span class="sd">    &gt;&gt;&gt; all((x == y).all() for x, y in zip(decoded_1, sequences_1))</span>
+</span><span data-line="273"><span class="sd">    True</span>
+</span><span data-line="274">
+</span><span data-line="275"><span class="sd">    """</span>
+</span><span data-line="276">    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">sequences</span><span class="p">})</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">()</span></div>
 
-</span><span data-line="275">
-</span><span data-line="276">
+</span><span data-line="277">
+</span><span data-line="278">
 <div class="viewcode-block" id="single_column_parquet_decode">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.single_column_parquet_decode">[docs]</a>
-</span><span data-line="277"><span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_decode</span><span class="p">(</span><span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">):</span>
-</span><span data-line="278"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="279"><span class="sd">    Decode a single-column parquet file into a list of sequences.</span>
-</span><span data-line="280">
-</span><span data-line="281"><span class="sd">    See Also:</span>
-</span><span data-line="282"><span class="sd">        single_column_parquet_encode</span>
-</span><span data-line="283">
-</span><span data-line="284"><span class="sd">    &gt;&gt;&gt; sequences_2 = [['one', 'two'], ['three', 'four', 'five']]</span>
-</span><span data-line="285"><span class="sd">    &gt;&gt;&gt; encoded_2 = single_column_parquet_encode(sequences_2)</span>
-</span><span data-line="286"><span class="sd">    &gt;&gt;&gt; decoded_2 = single_column_parquet_decode(encoded_2)</span>
-</span><span data-line="287"><span class="sd">    &gt;&gt;&gt; all((x == y).all() for x, y in zip(decoded_2, sequences_2))</span>
-</span><span data-line="288"><span class="sd">    True</span>
-</span><span data-line="289">
-</span><span data-line="290"><span class="sd">    """</span>
-</span><span data-line="291">    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">b</span><span class="p">))[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span></div>
+</span><span data-line="279"><span class="k">def</span><span class="w"> </span><span class="nf">single_column_parquet_decode</span><span class="p">(</span><span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">_DFLT_SINGLE_COLUMN_NAME</span><span class="p">):</span>
+</span><span data-line="280"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="281"><span class="sd">    Decode a single-column parquet file into a list of sequences.</span>
+</span><span data-line="282">
+</span><span data-line="283"><span class="sd">    See Also:</span>
+</span><span data-line="284"><span class="sd">        single_column_parquet_encode</span>
+</span><span data-line="285">
+</span><span data-line="286"><span class="sd">    &gt;&gt;&gt; sequences_2 = [['one', 'two'], ['three', 'four', 'five']]</span>
+</span><span data-line="287"><span class="sd">    &gt;&gt;&gt; encoded_2 = single_column_parquet_encode(sequences_2)</span>
+</span><span data-line="288"><span class="sd">    &gt;&gt;&gt; decoded_2 = single_column_parquet_decode(encoded_2)</span>
+</span><span data-line="289"><span class="sd">    &gt;&gt;&gt; all((x == y).all() for x, y in zip(decoded_2, sequences_2))</span>
+</span><span data-line="290"><span class="sd">    True</span>
+</span><span data-line="291">
+</span><span data-line="292"><span class="sd">    """</span>
+</span><span data-line="293">    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">b</span><span class="p">))[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span></div>
 
-</span><span data-line="292">
-</span><span data-line="293">
-</span><span data-line="294"><span class="n">_extension_to_encoder</span> <span class="o">=</span> <span class="n">split_keys</span><span class="p">(</span>
-</span><span data-line="295">    <span class="p">{</span>
-</span><span data-line="296">        <span class="c1"># csv files</span>
-</span><span data-line="297">        <span class="c1"># note: if index=True, decoder needs to include index_col=0</span>
-</span><span data-line="298">        <span class="c1">#       if index=False, decoder needs to include index_col=None</span>
-</span><span data-line="299">        <span class="s2">"csv txt"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_csv</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">CSV_USE_INDEX</span><span class="p">),</span>
-</span><span data-line="300">        <span class="c1"># tab-separated files</span>
-</span><span data-line="301">        <span class="s2">"tsv"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span>
-</span><span data-line="302">            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_csv</span><span class="p">,</span>
-</span><span data-line="303">            <span class="n">index</span><span class="o">=</span><span class="n">CSV_USE_INDEX</span><span class="p">,</span>
-</span><span data-line="304">            <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">,</span>
-</span><span data-line="305">            <span class="n">escapechar</span><span class="o">=</span><span class="s2">"</span><span class="se">\\</span><span class="s2">"</span><span class="p">,</span>
-</span><span data-line="306">            <span class="n">quotechar</span><span class="o">=</span><span class="s1">'"'</span><span class="p">,</span>
-</span><span data-line="307">        <span class="p">),</span>
-</span><span data-line="308">        <span class="c1"># json files</span>
-</span><span data-line="309">        <span class="s2">"json"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_json</span><span class="p">,</span>
-</span><span data-line="310">        <span class="c1"># html tables</span>
-</span><span data-line="311">        <span class="s2">"html"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_html</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">USE_INDEX</span><span class="p">),</span>
-</span><span data-line="312">        <span class="c1"># pickle files</span>
-</span><span data-line="313">        <span class="s2">"p pickle pkl"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">,</span>
-</span><span data-line="314">        <span class="c1"># numpy arrays</span>
-</span><span data-line="315">        <span class="s2">"npy"</span><span class="p">:</span> <span class="n">LiteralVal</span><span class="p">(</span><span class="n">written_bytes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">,</span> <span class="n">obj_arg_position_in_writer</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
-</span><span data-line="316">        <span class="c1"># zip-compressed tsv (custom implementation)</span>
-</span><span data-line="317">        <span class="s2">"zip"</span><span class="p">:</span> <span class="n">LiteralVal</span><span class="p">(</span><span class="n">save_df_to_zipped_tsv</span><span class="p">),</span>
-</span><span data-line="318">        <span class="c1"># feather format</span>
-</span><span data-line="319">        <span class="s2">"h5 hdf5"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_hdf</span><span class="p">,</span>
-</span><span data-line="320">        <span class="c1"># stata files</span>
-</span><span data-line="321">        <span class="s2">"stata dta"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_stata</span><span class="p">,</span> <span class="n">write_index</span><span class="o">=</span><span class="n">USE_INDEX</span><span class="p">),</span>
-</span><span data-line="322">        <span class="c1"># sql queries</span>
-</span><span data-line="323">        <span class="s2">"sql sqlite"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_sql</span><span class="p">,</span>
-</span><span data-line="324">        <span class="c1"># Google BigQuery</span>
-</span><span data-line="325">        <span class="s2">"gbq"</span><span class="p">:</span> <span class="n">_gbq_to_method</span><span class="p">,</span>
-</span><span data-line="326">        <span class="c1"># ------------ extensions requiring extra dependencies ------------</span>
-</span><span data-line="327">        <span class="c1"># excel files</span>
-</span><span data-line="328">        <span class="s2">"xls xlsx"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span>
-</span><span data-line="329">            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_excel</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">USE_INDEX</span>
-</span><span data-line="330">        <span class="p">),</span>  <span class="c1"># Need: pip install openpyxl, xlrd</span>
-</span><span data-line="331">        <span class="c1"># xml files</span>
-</span><span data-line="332">        <span class="s2">"xml"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_xml</span><span class="p">,</span>  <span class="c1"># Need: pip install lxml</span>
-</span><span data-line="333">        <span class="c1"># parquet format</span>
-</span><span data-line="334">        <span class="s2">"parquet"</span><span class="p">:</span> <span class="n">cast_to_parquet</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow, fastparquet</span>
-</span><span data-line="335">        <span class="c1"># feather format</span>
-</span><span data-line="336">        <span class="s2">"feather"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_feather</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
-</span><span data-line="337">        <span class="c1"># orc format</span>
-</span><span data-line="338">        <span class="s2">"orc"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_orc</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
-</span><span data-line="339">        <span class="c1"># # sas files</span>
-</span><span data-line="340">        <span class="c1"># 'sas': written_bytes(pd.DataFrame.to_sas),  # Need: pip install sas7bdat</span>
-</span><span data-line="341">        <span class="c1"># # SPSS files</span>
-</span><span data-line="342">        <span class="c1"># 'sav': written_bytes(pd.DataFrame.to_spss),  # Need: pip install pyreadstat</span>
-</span><span data-line="343">    <span class="p">}</span>
-</span><span data-line="344"><span class="p">)</span>
-</span><span data-line="345">
-</span><span data-line="346"><span class="n">extension_to_encoder</span> <span class="o">=</span> <span class="n">map_values</span><span class="p">(</span><span class="n">written_bytes</span><span class="p">,</span> <span class="n">_extension_to_encoder</span><span class="p">)</span>
+</span><span data-line="294">
+</span><span data-line="295">
+</span><span data-line="296"><span class="n">_extension_to_encoder</span> <span class="o">=</span> <span class="n">split_keys</span><span class="p">(</span>
+</span><span data-line="297">    <span class="p">{</span>
+</span><span data-line="298">        <span class="c1"># csv files</span>
+</span><span data-line="299">        <span class="c1"># note: if index=True, decoder needs to include index_col=0</span>
+</span><span data-line="300">        <span class="c1">#       if index=False, decoder needs to include index_col=None</span>
+</span><span data-line="301">        <span class="s2">"csv txt"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_csv</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">CSV_USE_INDEX</span><span class="p">),</span>
+</span><span data-line="302">        <span class="c1"># tab-separated files</span>
+</span><span data-line="303">        <span class="s2">"tsv"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span>
+</span><span data-line="304">            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_csv</span><span class="p">,</span>
+</span><span data-line="305">            <span class="n">index</span><span class="o">=</span><span class="n">CSV_USE_INDEX</span><span class="p">,</span>
+</span><span data-line="306">            <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">,</span>
+</span><span data-line="307">            <span class="n">escapechar</span><span class="o">=</span><span class="s2">"</span><span class="se">\\</span><span class="s2">"</span><span class="p">,</span>
+</span><span data-line="308">            <span class="n">quotechar</span><span class="o">=</span><span class="s1">'"'</span><span class="p">,</span>
+</span><span data-line="309">        <span class="p">),</span>
+</span><span data-line="310">        <span class="c1"># json files</span>
+</span><span data-line="311">        <span class="s2">"json"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_json</span><span class="p">,</span>
+</span><span data-line="312">        <span class="c1"># html tables</span>
+</span><span data-line="313">        <span class="s2">"html"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_html</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">USE_INDEX</span><span class="p">),</span>
+</span><span data-line="314">        <span class="c1"># pickle files</span>
+</span><span data-line="315">        <span class="s2">"p pickle pkl"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">,</span>
+</span><span data-line="316">        <span class="c1"># numpy arrays</span>
+</span><span data-line="317">        <span class="s2">"npy"</span><span class="p">:</span> <span class="n">LiteralVal</span><span class="p">(</span><span class="n">written_bytes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">,</span> <span class="n">obj_arg_position_in_writer</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
+</span><span data-line="318">        <span class="c1"># zip-compressed tsv (custom implementation)</span>
+</span><span data-line="319">        <span class="s2">"zip"</span><span class="p">:</span> <span class="n">LiteralVal</span><span class="p">(</span><span class="n">save_df_to_zipped_tsv</span><span class="p">),</span>
+</span><span data-line="320">        <span class="c1"># feather format</span>
+</span><span data-line="321">        <span class="s2">"h5 hdf5"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_hdf</span><span class="p">,</span>
+</span><span data-line="322">        <span class="c1"># stata files</span>
+</span><span data-line="323">        <span class="s2">"stata dta"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_stata</span><span class="p">,</span> <span class="n">write_index</span><span class="o">=</span><span class="n">USE_INDEX</span><span class="p">),</span>
+</span><span data-line="324">        <span class="c1"># sql queries</span>
+</span><span data-line="325">        <span class="s2">"sql sqlite"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_sql</span><span class="p">,</span>
+</span><span data-line="326">        <span class="c1"># Google BigQuery</span>
+</span><span data-line="327">        <span class="s2">"gbq"</span><span class="p">:</span> <span class="n">_gbq_to_method</span><span class="p">,</span>
+</span><span data-line="328">        <span class="c1"># ------------ extensions requiring extra dependencies ------------</span>
+</span><span data-line="329">        <span class="c1"># excel files</span>
+</span><span data-line="330">        <span class="s2">"xls xlsx"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span>
+</span><span data-line="331">            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_excel</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">USE_INDEX</span>
+</span><span data-line="332">        <span class="p">),</span>  <span class="c1"># Need: pip install openpyxl, xlrd</span>
+</span><span data-line="333">        <span class="c1"># xml files</span>
+</span><span data-line="334">        <span class="s2">"xml"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_xml</span><span class="p">,</span>  <span class="c1"># Need: pip install lxml</span>
+</span><span data-line="335">        <span class="c1"># parquet format</span>
+</span><span data-line="336">        <span class="s2">"parquet"</span><span class="p">:</span> <span class="n">cast_to_parquet</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow, fastparquet</span>
+</span><span data-line="337">        <span class="c1"># feather format</span>
+</span><span data-line="338">        <span class="s2">"feather"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_feather</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
+</span><span data-line="339">        <span class="c1"># orc format</span>
+</span><span data-line="340">        <span class="s2">"orc"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">to_orc</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
+</span><span data-line="341">        <span class="c1"># # sas files</span>
+</span><span data-line="342">        <span class="c1"># 'sas': written_bytes(pd.DataFrame.to_sas),  # Need: pip install sas7bdat</span>
+</span><span data-line="343">        <span class="c1"># # SPSS files</span>
+</span><span data-line="344">        <span class="c1"># 'sav': written_bytes(pd.DataFrame.to_spss),  # Need: pip install pyreadstat</span>
+</span><span data-line="345">    <span class="p">}</span>
+</span><span data-line="346"><span class="p">)</span>
 </span><span data-line="347">
-</span><span data-line="348">
-</span><span data-line="349"><span class="kn">from</span><span class="w"> </span><span class="nn">dol.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_from_bytes</span>
+</span><span data-line="348"><span class="n">extension_to_encoder</span> <span class="o">=</span> <span class="n">map_values</span><span class="p">(</span><span class="n">written_bytes</span><span class="p">,</span> <span class="n">_extension_to_encoder</span><span class="p">)</span>
+</span><span data-line="349">
 </span><span data-line="350">
-</span><span data-line="351"><span class="n">_extension_to_decoder</span> <span class="o">=</span> <span class="n">split_keys</span><span class="p">(</span>
-</span><span data-line="352">    <span class="p">{</span>
-</span><span data-line="353">        <span class="c1"># csv and text</span>
-</span><span data-line="354">        <span class="s2">"csv txt"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">CSV_INDEX_COL</span><span class="p">),</span>
-</span><span data-line="355">        <span class="c1"># tab-separated files</span>
-</span><span data-line="356">        <span class="s2">"tsv"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">CSV_INDEX_COL</span><span class="p">),</span>
-</span><span data-line="357">        <span class="c1"># parquet format</span>
-</span><span data-line="358">        <span class="s2">"parquet"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">,</span>
-</span><span data-line="359">        <span class="c1"># json format</span>
-</span><span data-line="360">        <span class="s2">"json"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"records"</span><span class="p">),</span>
-</span><span data-line="361">        <span class="c1"># html tables</span>
-</span><span data-line="362">        <span class="s2">"html"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">INDEX_COL</span><span class="p">),</span>
-</span><span data-line="363">        <span class="c1"># pickle files</span>
-</span><span data-line="364">        <span class="s2">"p pickle pkl"</span><span class="p">:</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-</span><span data-line="365">        <span class="c1"># xml files</span>
-</span><span data-line="366">        <span class="s2">"xml"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_xml</span><span class="p">,</span>
-</span><span data-line="367">        <span class="c1"># sql queries</span>
-</span><span data-line="368">        <span class="s2">"sql sqlite"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">,</span>
-</span><span data-line="369">        <span class="c1"># feather format</span>
-</span><span data-line="370">        <span class="s2">"feather"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">,</span>
-</span><span data-line="371">        <span class="c1"># stata files</span>
-</span><span data-line="372">        <span class="s2">"stata dta"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">INDEX_COL</span><span class="p">),</span>
-</span><span data-line="373">        <span class="c1"># sas files</span>
-</span><span data-line="374">        <span class="s2">"sas"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sas</span><span class="p">,</span>
-</span><span data-line="375">        <span class="c1"># extensions requiring extra dependencies</span>
-</span><span data-line="376">        <span class="c1"># hdf5 format (Hierarchical Data Format)</span>
-</span><span data-line="377">        <span class="s2">"h5 hdf5"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">,</span>  <span class="c1"># Need: pip install tables</span>
-</span><span data-line="378">        <span class="c1"># excel files</span>
-</span><span data-line="379">        <span class="s2">"xls xlsx"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span>
-</span><span data-line="380">            <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">INDEX_COL</span>
-</span><span data-line="381">        <span class="p">),</span>  <span class="c1"># Need: pip install openpyxl, xlrd</span>
-</span><span data-line="382">        <span class="c1"># parquet format</span>
-</span><span data-line="383">        <span class="s2">"parquet"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow, fastparquet</span>
-</span><span data-line="384">        <span class="c1"># feather format</span>
-</span><span data-line="385">        <span class="s2">"feather"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
-</span><span data-line="386">        <span class="c1"># orc format</span>
-</span><span data-line="387">        <span class="s2">"orc"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_orc</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
-</span><span data-line="388">        <span class="c1"># SPSS files</span>
-</span><span data-line="389">        <span class="s2">"sav"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_spss</span><span class="p">,</span>  <span class="c1"># Need: pip install pyreadstat</span>
-</span><span data-line="390">    <span class="p">}</span>
-</span><span data-line="391"><span class="p">)</span>
-</span><span data-line="392">
-</span><span data-line="393"><span class="n">extension_to_decoder</span> <span class="o">=</span> <span class="n">map_values</span><span class="p">(</span><span class="n">read_from_bytes</span><span class="p">,</span> <span class="n">_extension_to_decoder</span><span class="p">)</span>
+</span><span data-line="351"><span class="kn">from</span><span class="w"> </span><span class="nn">dol.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_from_bytes</span>
+</span><span data-line="352">
+</span><span data-line="353"><span class="n">_extension_to_decoder</span> <span class="o">=</span> <span class="n">split_keys</span><span class="p">(</span>
+</span><span data-line="354">    <span class="p">{</span>
+</span><span data-line="355">        <span class="c1"># csv and text</span>
+</span><span data-line="356">        <span class="s2">"csv txt"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">CSV_INDEX_COL</span><span class="p">),</span>
+</span><span data-line="357">        <span class="c1"># tab-separated files</span>
+</span><span data-line="358">        <span class="s2">"tsv"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">CSV_INDEX_COL</span><span class="p">),</span>
+</span><span data-line="359">        <span class="c1"># parquet format</span>
+</span><span data-line="360">        <span class="s2">"parquet"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">,</span>
+</span><span data-line="361">        <span class="c1"># json format</span>
+</span><span data-line="362">        <span class="s2">"json"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"records"</span><span class="p">),</span>
+</span><span data-line="363">        <span class="c1"># html tables</span>
+</span><span data-line="364">        <span class="s2">"html"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">INDEX_COL</span><span class="p">),</span>
+</span><span data-line="365">        <span class="c1"># pickle files</span>
+</span><span data-line="366">        <span class="s2">"p pickle pkl"</span><span class="p">:</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
+</span><span data-line="367">        <span class="c1"># xml files</span>
+</span><span data-line="368">        <span class="s2">"xml"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_xml</span><span class="p">,</span>
+</span><span data-line="369">        <span class="c1"># sql queries</span>
+</span><span data-line="370">        <span class="s2">"sql sqlite"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">,</span>
+</span><span data-line="371">        <span class="c1"># feather format</span>
+</span><span data-line="372">        <span class="s2">"feather"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">,</span>
+</span><span data-line="373">        <span class="c1"># stata files</span>
+</span><span data-line="374">        <span class="s2">"stata dta"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">INDEX_COL</span><span class="p">),</span>
+</span><span data-line="375">        <span class="c1"># sas files</span>
+</span><span data-line="376">        <span class="s2">"sas"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sas</span><span class="p">,</span>
+</span><span data-line="377">        <span class="c1"># extensions requiring extra dependencies</span>
+</span><span data-line="378">        <span class="c1"># hdf5 format (Hierarchical Data Format)</span>
+</span><span data-line="379">        <span class="s2">"h5 hdf5"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">,</span>  <span class="c1"># Need: pip install tables</span>
+</span><span data-line="380">        <span class="c1"># excel files</span>
+</span><span data-line="381">        <span class="s2">"xls xlsx"</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span>
+</span><span data-line="382">            <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">INDEX_COL</span>
+</span><span data-line="383">        <span class="p">),</span>  <span class="c1"># Need: pip install openpyxl, xlrd</span>
+</span><span data-line="384">        <span class="c1"># parquet format</span>
+</span><span data-line="385">        <span class="s2">"parquet"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow, fastparquet</span>
+</span><span data-line="386">        <span class="c1"># feather format</span>
+</span><span data-line="387">        <span class="s2">"feather"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
+</span><span data-line="388">        <span class="c1"># orc format</span>
+</span><span data-line="389">        <span class="s2">"orc"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_orc</span><span class="p">,</span>  <span class="c1"># Need: pip install pyarrow</span>
+</span><span data-line="390">        <span class="c1"># SPSS files</span>
+</span><span data-line="391">        <span class="s2">"sav"</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_spss</span><span class="p">,</span>  <span class="c1"># Need: pip install pyreadstat</span>
+</span><span data-line="392">    <span class="p">}</span>
+</span><span data-line="393"><span class="p">)</span>
 </span><span data-line="394">
-</span><span data-line="395"><span class="n">dflt_ext_mapping</span> <span class="o">=</span> <span class="n">extension_to_decoder</span>  <span class="c1"># back-compatibility alias</span>
+</span><span data-line="395"><span class="n">extension_to_decoder</span> <span class="o">=</span> <span class="n">map_values</span><span class="p">(</span><span class="n">read_from_bytes</span><span class="p">,</span> <span class="n">_extension_to_decoder</span><span class="p">)</span>
 </span><span data-line="396">
-</span><span data-line="397">
-</span><span data-line="398"><span class="c1"># --------------------------------------------------------------------------------------</span>
-</span><span data-line="399"><span class="c1"># Operations on the codec mappings</span>
-</span><span data-line="400">
-</span><span data-line="401">
+</span><span data-line="397"><span class="n">dflt_ext_mapping</span> <span class="o">=</span> <span class="n">extension_to_decoder</span>  <span class="c1"># back-compatibility alias</span>
+</span><span data-line="398">
+</span><span data-line="399">
+</span><span data-line="400"><span class="c1"># --------------------------------------------------------------------------------------</span>
+</span><span data-line="401"><span class="c1"># Operations on the codec mappings</span>
+</span><span data-line="402">
+</span><span data-line="403">
 <div class="viewcode-block" id="get_codec_mappings">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.get_codec_mappings">[docs]</a>
-</span><span data-line="402"><span class="k">def</span><span class="w"> </span><span class="nf">get_codec_mappings</span><span class="p">(</span>
-</span><span data-line="403">    <span class="o">*</span><span class="p">,</span>
-</span><span data-line="404">    <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">,</span>
-</span><span data-line="405">    <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span>
-</span><span data-line="406"><span class="p">):</span>
-</span><span data-line="407"><span class="w">    </span><span class="sd">"""Return `{"encoders": extension_to_encoder, "decoders": extension_to_decoder}`."""</span>
-</span><span data-line="408">    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
-</span><span data-line="409">        <span class="n">encoders</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">,</span>
-</span><span data-line="410">        <span class="n">decoders</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span>
-</span><span data-line="411">    <span class="p">)</span></div>
+</span><span data-line="404"><span class="k">def</span><span class="w"> </span><span class="nf">get_codec_mappings</span><span class="p">(</span>
+</span><span data-line="405">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="406">    <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">,</span>
+</span><span data-line="407">    <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span>
+</span><span data-line="408"><span class="p">):</span>
+</span><span data-line="409"><span class="w">    </span><span class="sd">"""Return `{"encoders": extension_to_encoder, "decoders": extension_to_decoder}`."""</span>
+</span><span data-line="410">    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+</span><span data-line="411">        <span class="n">encoders</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">,</span>
+</span><span data-line="412">        <span class="n">decoders</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span>
+</span><span data-line="413">    <span class="p">)</span></div>
 
-</span><span data-line="412">
-</span><span data-line="413">
+</span><span data-line="414">
+</span><span data-line="415">
 <div class="viewcode-block" id="print_current_mappings">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.print_current_mappings">[docs]</a>
-</span><span data-line="414"><span class="k">def</span><span class="w"> </span><span class="nf">print_current_mappings</span><span class="p">():</span>
-</span><span data-line="415"><span class="w">    </span><span class="sd">"""Print the current extension-to-encoder and extension-to-decoder mappings."""</span>
-</span><span data-line="416">    <span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
-</span><span data-line="417">
-</span><span data-line="418">    <span class="n">pprint</span><span class="p">(</span><span class="s2">"Current encoder and decoder mappings:"</span><span class="p">)</span>
-</span><span data-line="419">    <span class="n">pprint</span><span class="p">(</span><span class="n">get_codec_mappings</span><span class="p">())</span></div>
+</span><span data-line="416"><span class="k">def</span><span class="w"> </span><span class="nf">print_current_mappings</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="417"><span class="w">    </span><span class="sd">"""Print the current extension-to-encoder and extension-to-decoder mappings."""</span>
+</span><span data-line="418">    <span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
+</span><span data-line="419">
+</span><span data-line="420">    <span class="n">pprint</span><span class="p">(</span><span class="s2">"Current encoder and decoder mappings:"</span><span class="p">)</span>
+</span><span data-line="421">    <span class="n">pprint</span><span class="p">(</span><span class="n">get_codec_mappings</span><span class="p">())</span></div>
 
-</span><span data-line="420">
-</span><span data-line="421">
+</span><span data-line="422">
+</span><span data-line="423">
 <div class="viewcode-block" id="add_extension_codec">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.add_extension_codec">[docs]</a>
-</span><span data-line="422"><span class="k">def</span><span class="w"> </span><span class="nf">add_extension_codec</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">encoder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">decoder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-</span><span data-line="423"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="424"><span class="sd">    Add an extension-based encoder and decoder to the extension-code mapping.</span>
-</span><span data-line="425">
-</span><span data-line="426"><span class="sd">    Sure, you could just edit the underlying dictionaries directly, but the design gods</span>
-</span><span data-line="427"><span class="sd">    would not be pleased.</span>
-</span><span data-line="428">
-</span><span data-line="429"><span class="sd">    If no arguments are passed, it will print the current mappings.</span>
+</span><span data-line="424"><span class="k">def</span><span class="w"> </span><span class="nf">add_extension_codec</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">encoder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">decoder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span data-line="425"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="426"><span class="sd">    Add an extension-based encoder and decoder to the extension-code mapping.</span>
+</span><span data-line="427">
+</span><span data-line="428"><span class="sd">    Sure, you could just edit the underlying dictionaries directly, but the design gods</span>
+</span><span data-line="429"><span class="sd">    would not be pleased.</span>
 </span><span data-line="430">
-</span><span data-line="431"><span class="sd">    Args:</span>
-</span><span data-line="432"><span class="sd">        extension: The file extension to add the codec for. If None, it will print the current mappings.</span>
-</span><span data-line="433"><span class="sd">        encoder: The encoder function to add. If None, it will print the current mappings.</span>
-</span><span data-line="434"><span class="sd">        decoder: The decoder function to add. If None, it will print the current mappings.</span>
-</span><span data-line="435"><span class="sd">        overwrite: If True, it will overwrite the existing encoder/decoder for the given extension.</span>
-</span><span data-line="436"><span class="sd">            If False, it will raise a ValueError if the extension already exists.</span>
-</span><span data-line="437">
-</span><span data-line="438"><span class="sd">    Returns:</span>
-</span><span data-line="439"><span class="sd">        None. It just adds to the in-memory mappings (or prints them).</span>
-</span><span data-line="440">
-</span><span data-line="441"><span class="sd">    """</span>
-</span><span data-line="442">    <span class="k">if</span> <span class="n">extension</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">encoder</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="443">        <span class="c1"># Print the current mappings</span>
-</span><span data-line="444">        <span class="c1"># (The design gods would hate this, for sure)</span>
-</span><span data-line="445">        <span class="k">return</span> <span class="n">print_current_mappings</span><span class="p">()</span>
-</span><span data-line="446">
-</span><span data-line="447">    <span class="k">if</span> <span class="n">encoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="448">        <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extension_to_encoder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
-</span><span data-line="449">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="450">                <span class="sa">f</span><span class="s2">"Encoder for extension '</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">' already exists. Use 'overwrite=True' to replace it."</span>
-</span><span data-line="451">            <span class="p">)</span>
-</span><span data-line="452">        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">encoder</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"Encoder must be a callable. Was: </span><span class="si">{</span><span class="n">encoder</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="453">        <span class="n">extension_to_encoder</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoder</span>
-</span><span data-line="454">    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="455">        <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extension_to_decoder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
-</span><span data-line="456">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="457">                <span class="sa">f</span><span class="s2">"Decoder for extension '</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">' already exists. Use 'overwrite=True' to replace it."</span>
-</span><span data-line="458">            <span class="p">)</span>
-</span><span data-line="459">        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">decoder</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"Decoder must be a callable. Was: </span><span class="si">{</span><span class="n">decoder</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="460">        <span class="n">extension_to_decoder</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="n">decoder</span></div>
+</span><span data-line="431"><span class="sd">    If no arguments are passed, it will print the current mappings.</span>
+</span><span data-line="432">
+</span><span data-line="433"><span class="sd">    Args:</span>
+</span><span data-line="434"><span class="sd">        extension: The file extension to add the codec for. If None, it will print the current mappings.</span>
+</span><span data-line="435"><span class="sd">        encoder: The encoder function to add. If None, it will print the current mappings.</span>
+</span><span data-line="436"><span class="sd">        decoder: The decoder function to add. If None, it will print the current mappings.</span>
+</span><span data-line="437"><span class="sd">        overwrite: If True, it will overwrite the existing encoder/decoder for the given extension.</span>
+</span><span data-line="438"><span class="sd">            If False, it will raise a ValueError if the extension already exists.</span>
+</span><span data-line="439">
+</span><span data-line="440"><span class="sd">    Returns:</span>
+</span><span data-line="441"><span class="sd">        None. It just adds to the in-memory mappings (or prints them).</span>
+</span><span data-line="442">
+</span><span data-line="443"><span class="sd">    """</span>
+</span><span data-line="444">    <span class="k">if</span> <span class="n">extension</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">encoder</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="445">        <span class="c1"># Print the current mappings</span>
+</span><span data-line="446">        <span class="c1"># (The design gods would hate this, for sure)</span>
+</span><span data-line="447">        <span class="k">return</span> <span class="n">print_current_mappings</span><span class="p">()</span>
+</span><span data-line="448">
+</span><span data-line="449">    <span class="k">if</span> <span class="n">encoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="450">        <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extension_to_encoder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+</span><span data-line="451">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="452">                <span class="sa">f</span><span class="s2">"Encoder for extension '</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">' already exists. Use 'overwrite=True' to replace it."</span>
+</span><span data-line="453">            <span class="p">)</span>
+</span><span data-line="454">        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">encoder</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"Encoder must be a callable. Was: </span><span class="si">{</span><span class="n">encoder</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="455">        <span class="n">extension_to_encoder</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoder</span>
+</span><span data-line="456">    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="457">        <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extension_to_decoder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+</span><span data-line="458">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="459">                <span class="sa">f</span><span class="s2">"Decoder for extension '</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">' already exists. Use 'overwrite=True' to replace it."</span>
+</span><span data-line="460">            <span class="p">)</span>
+</span><span data-line="461">        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">decoder</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"Decoder must be a callable. Was: </span><span class="si">{</span><span class="n">decoder</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="462">        <span class="n">extension_to_decoder</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="n">decoder</span></div>
 
-</span><span data-line="461">
-</span><span data-line="462">
-</span><span data-line="463"><span class="c1"># --------------------------------------------------------------------------------------</span>
-</span><span data-line="464"><span class="c1"># Main facades to the codec mappings</span>
-</span><span data-line="465">
-</span><span data-line="466">
+</span><span data-line="463">
+</span><span data-line="464">
+</span><span data-line="465"><span class="c1"># --------------------------------------------------------------------------------------</span>
+</span><span data-line="466"><span class="c1"># Main facades to the codec mappings</span>
+</span><span data-line="467">
+</span><span data-line="468">
 <div class="viewcode-block" id="extension_based_decoding">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.extension_based_decoding">[docs]</a>
-</span><span data-line="467"><span class="k">def</span><span class="w"> </span><span class="nf">extension_based_decoding</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">):</span>
-</span><span data-line="468"><span class="w">    </span><span class="sd">"""Decode a value based on the extension of the key."""</span>
-</span><span data-line="469">    <span class="n">ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-</span><span data-line="470">    <span class="n">decoder</span> <span class="o">=</span> <span class="n">extension_to_decoder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span data-line="471">    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="472">        <span class="n">suffix_msg</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="473">            <span class="sa">f</span><span class="s2">"This happened with key: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
-</span><span data-line="474">            <span class="s2">"Note that you can add your own extension-based decoder to resolve this."</span>
-</span><span data-line="475">        <span class="p">)</span>
-</span><span data-line="476">        <span class="k">if</span> <span class="n">ext</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
-</span><span data-line="477">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="478">                <span class="sa">f</span><span class="s2">"Your DECODER doesn't support this extension: </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">suffix_msg</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="479">            <span class="p">)</span>
-</span><span data-line="480">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="481">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="482">                <span class="sa">f</span><span class="s2">"Your DECODER doesn't support empty extensions.</span><span class="se">\n</span><span class="si">{</span><span class="n">suffix_msg</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="483">            <span class="p">)</span>
-</span><span data-line="484">    <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+</span><span data-line="469"><span class="k">def</span><span class="w"> </span><span class="nf">extension_based_decoding</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">):</span>
+</span><span data-line="470"><span class="w">    </span><span class="sd">"""Decode a value based on the extension of the key."""</span>
+</span><span data-line="471">    <span class="n">ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span data-line="472">    <span class="n">decoder</span> <span class="o">=</span> <span class="n">extension_to_decoder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="473">    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="474">        <span class="n">suffix_msg</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="475">            <span class="sa">f</span><span class="s2">"This happened with key: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+</span><span data-line="476">            <span class="s2">"Note that you can add your own extension-based decoder to resolve this."</span>
+</span><span data-line="477">        <span class="p">)</span>
+</span><span data-line="478">        <span class="k">if</span> <span class="n">ext</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
+</span><span data-line="479">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="480">                <span class="sa">f</span><span class="s2">"Your DECODER doesn't support this extension: </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">suffix_msg</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="481">            <span class="p">)</span>
+</span><span data-line="482">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="483">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="484">                <span class="sa">f</span><span class="s2">"Your DECODER doesn't support empty extensions.</span><span class="se">\n</span><span class="si">{</span><span class="n">suffix_msg</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="485">            <span class="p">)</span>
+</span><span data-line="486">    <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
 
-</span><span data-line="485">
-</span><span data-line="486">
+</span><span data-line="487">
+</span><span data-line="488">
 <div class="viewcode-block" id="extension_based_encoding">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.extension_based_encoding">[docs]</a>
-</span><span data-line="487"><span class="k">def</span><span class="w"> </span><span class="nf">extension_based_encoding</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">):</span>
-</span><span data-line="488"><span class="w">    </span><span class="sd">"""Encode a value based on the extension of the key."""</span>
-</span><span data-line="489">    <span class="n">ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-</span><span data-line="490">    <span class="n">encoder</span> <span class="o">=</span> <span class="n">extension_to_encoder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span data-line="491">    <span class="k">if</span> <span class="n">encoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="492">        <span class="n">suffix_msg</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="493">            <span class="sa">f</span><span class="s2">"This happened with key: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
-</span><span data-line="494">            <span class="s2">"Note that you can add your own extension-based encoder to resolve this."</span>
-</span><span data-line="495">        <span class="p">)</span>
-</span><span data-line="496">        <span class="k">if</span> <span class="n">ext</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
-</span><span data-line="497">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="498">                <span class="sa">f</span><span class="s2">"Your ENCODER doesn't support this extension: </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">suffix_msg</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="499">            <span class="p">)</span>
-</span><span data-line="500">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="501">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="502">                <span class="sa">f</span><span class="s2">"Your ENCODER doesn't support empty extensions.</span><span class="se">\n</span><span class="si">{</span><span class="n">suffix_msg</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="503">            <span class="p">)</span>
-</span><span data-line="504">    <span class="k">return</span> <span class="n">encoder</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+</span><span data-line="489"><span class="k">def</span><span class="w"> </span><span class="nf">extension_based_encoding</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">):</span>
+</span><span data-line="490"><span class="w">    </span><span class="sd">"""Encode a value based on the extension of the key."""</span>
+</span><span data-line="491">    <span class="n">ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span data-line="492">    <span class="n">encoder</span> <span class="o">=</span> <span class="n">extension_to_encoder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="493">    <span class="k">if</span> <span class="n">encoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="494">        <span class="n">suffix_msg</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="495">            <span class="sa">f</span><span class="s2">"This happened with key: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+</span><span data-line="496">            <span class="s2">"Note that you can add your own extension-based encoder to resolve this."</span>
+</span><span data-line="497">        <span class="p">)</span>
+</span><span data-line="498">        <span class="k">if</span> <span class="n">ext</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
+</span><span data-line="499">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="500">                <span class="sa">f</span><span class="s2">"Your ENCODER doesn't support this extension: </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">suffix_msg</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="501">            <span class="p">)</span>
+</span><span data-line="502">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="503">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="504">                <span class="sa">f</span><span class="s2">"Your ENCODER doesn't support empty extensions.</span><span class="se">\n</span><span class="si">{</span><span class="n">suffix_msg</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="505">            <span class="p">)</span>
+</span><span data-line="506">    <span class="k">return</span> <span class="n">encoder</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
 
-</span><span data-line="505">
-</span><span data-line="506">
+</span><span data-line="507">
+</span><span data-line="508">
 <div class="viewcode-block" id="extension_based_wrap">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.extension_based_wrap">[docs]</a>
-</span><span data-line="507"><span class="nd">@store_decorator</span>
-</span><span data-line="508"><span class="k">def</span><span class="w"> </span><span class="nf">extension_based_wrap</span><span class="p">(</span>
-</span><span data-line="509">    <span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span data-line="510">    <span class="o">*</span><span class="p">,</span>
-</span><span data-line="511">    <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span>
-</span><span data-line="512">    <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">,</span>
-</span><span data-line="513"><span class="p">):</span>
-</span><span data-line="514"><span class="w">    </span><span class="sd">"""Add extension-based encoding and decoding to a store."""</span>
-</span><span data-line="515">    <span class="k">return</span> <span class="n">wrap_kvs</span><span class="p">(</span>
-</span><span data-line="516">        <span class="n">store</span><span class="p">,</span>
-</span><span data-line="517">        <span class="n">postget</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
-</span><span data-line="518">            <span class="n">extension_based_decoding</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span>
-</span><span data-line="519">        <span class="p">),</span>
-</span><span data-line="520">        <span class="n">preset</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
-</span><span data-line="521">            <span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span>
-</span><span data-line="522">        <span class="p">),</span>
-</span><span data-line="523">    <span class="p">)</span></div>
+</span><span data-line="509"><span class="nd">@store_decorator</span>
+</span><span data-line="510"><span class="k">def</span><span class="w"> </span><span class="nf">extension_based_wrap</span><span class="p">(</span>
+</span><span data-line="511">    <span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="512">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="513">    <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span><span class="p">,</span>
+</span><span data-line="514">    <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span><span class="p">,</span>
+</span><span data-line="515"><span class="p">):</span>
+</span><span data-line="516"><span class="w">    </span><span class="sd">"""Add extension-based encoding and decoding to a store."""</span>
+</span><span data-line="517">    <span class="k">return</span> <span class="n">wrap_kvs</span><span class="p">(</span>
+</span><span data-line="518">        <span class="n">store</span><span class="p">,</span>
+</span><span data-line="519">        <span class="n">postget</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
+</span><span data-line="520">            <span class="n">extension_based_decoding</span><span class="p">,</span> <span class="n">extension_to_decoder</span><span class="o">=</span><span class="n">extension_to_decoder</span>
+</span><span data-line="521">        <span class="p">),</span>
+</span><span data-line="522">        <span class="n">preset</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
+</span><span data-line="523">            <span class="n">extension_based_encoding</span><span class="p">,</span> <span class="n">extension_to_encoder</span><span class="o">=</span><span class="n">extension_to_encoder</span>
+</span><span data-line="524">        <span class="p">),</span>
+</span><span data-line="525">    <span class="p">)</span></div>
 
-</span><span data-line="524">
-</span><span data-line="525">
-</span><span data-line="526"><span class="n">extension_based_wrap</span><span class="o">.</span><span class="n">dflt_extension_to_decoder</span> <span class="o">=</span> <span class="n">extension_to_decoder</span>
-</span><span data-line="527"><span class="n">extension_based_wrap</span><span class="o">.</span><span class="n">dflt_extension_to_encoder</span> <span class="o">=</span> <span class="n">extension_to_encoder</span>
-</span><span data-line="528">
-</span><span data-line="529">
+</span><span data-line="526">
+</span><span data-line="527">
+</span><span data-line="528"><span class="n">extension_based_wrap</span><span class="o">.</span><span class="n">dflt_extension_to_decoder</span> <span class="o">=</span> <span class="n">extension_to_decoder</span>
+</span><span data-line="529"><span class="n">extension_based_wrap</span><span class="o">.</span><span class="n">dflt_extension_to_encoder</span> <span class="o">=</span> <span class="n">extension_to_encoder</span>
+</span><span data-line="530">
+</span><span data-line="531">
 <div class="viewcode-block" id="resolve_to_dataframe">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.resolve_to_dataframe">[docs]</a>
-</span><span data-line="530"><span class="k">def</span><span class="w"> </span><span class="nf">resolve_to_dataframe</span><span class="p">(</span>
-</span><span data-line="531">    <span class="n">data</span><span class="p">,</span>
-</span><span data-line="532">    <span class="n">ext</span><span class="p">:</span> <span class="n">Extension</span><span class="p">,</span>
-</span><span data-line="533">    <span class="n">ext_mapping</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="n">extension_to_decoder</span><span class="p">,</span>
-</span><span data-line="534">    <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
-</span><span data-line="535"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-</span><span data-line="536"><span class="w">    </span><span class="sd">"""Get a dataframe from a (data, ext) pair"""</span>
-</span><span data-line="537">    <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"."</span><span class="p">):</span>
-</span><span data-line="538">        <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-</span><span data-line="539">    <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span>
-</span><span data-line="540">        <span class="n">ext</span><span class="p">,</span>
-</span><span data-line="541">        <span class="n">ext_mapping</span><span class="p">,</span>
-</span><span data-line="542">        <span class="n">key</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>
-</span><span data-line="543">        <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># TODO</span>
-</span><span data-line="544">    <span class="p">)</span>
-</span><span data-line="545">    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="546">        <span class="c1"># pluck out any key-value pairs of extra_decoder_kwargs whose names are</span>
-</span><span data-line="547">        <span class="c1"># arguments of decoder. (This is needed since extra_decoder_kwargs can be</span>
-</span><span data-line="548">        <span class="c1"># servicing multiple decoders, and we don't want to pass arguments to the</span>
-</span><span data-line="549">        <span class="c1"># wrong decoder.)</span>
-</span><span data-line="550">        <span class="n">extra_decoder_kwargs</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">decoder</span><span class="p">)</span><span class="o">.</span><span class="n">map_arguments</span><span class="p">(</span>
-</span><span data-line="551">            <span class="p">(),</span> <span class="n">extra_decoder_kwargs</span><span class="p">,</span> <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_excess</span><span class="o">=</span><span class="kc">True</span>
-</span><span data-line="552">        <span class="p">)</span>
-</span><span data-line="553">        <span class="c1"># decode the data</span>
-</span><span data-line="554">        <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span>
-</span><span data-line="555">    <span class="k">else</span><span class="p">:</span>
-</span><span data-line="556">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Don't know how to handle extension: </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+</span><span data-line="532"><span class="k">def</span><span class="w"> </span><span class="nf">resolve_to_dataframe</span><span class="p">(</span>
+</span><span data-line="533">    <span class="n">data</span><span class="p">,</span>
+</span><span data-line="534">    <span class="n">ext</span><span class="p">:</span> <span class="n">Extension</span><span class="p">,</span>
+</span><span data-line="535">    <span class="n">ext_mapping</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="n">extension_to_decoder</span><span class="p">,</span>
+</span><span data-line="536">    <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">,</span>
+</span><span data-line="537"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+</span><span data-line="538"><span class="w">    </span><span class="sd">"""Get a dataframe from a (data, ext) pair"""</span>
+</span><span data-line="539">    <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"."</span><span class="p">):</span>
+</span><span data-line="540">        <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</span><span data-line="541">    <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span>
+</span><span data-line="542">        <span class="n">ext</span><span class="p">,</span>
+</span><span data-line="543">        <span class="n">ext_mapping</span><span class="p">,</span>
+</span><span data-line="544">        <span class="n">key</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>
+</span><span data-line="545">        <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># TODO</span>
+</span><span data-line="546">    <span class="p">)</span>
+</span><span data-line="547">    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="548">        <span class="c1"># pluck out any key-value pairs of extra_decoder_kwargs whose names are</span>
+</span><span data-line="549">        <span class="c1"># arguments of decoder. (This is needed since extra_decoder_kwargs can be</span>
+</span><span data-line="550">        <span class="c1"># servicing multiple decoders, and we don't want to pass arguments to the</span>
+</span><span data-line="551">        <span class="c1"># wrong decoder.)</span>
+</span><span data-line="552">        <span class="n">extra_decoder_kwargs</span> <span class="o">=</span> <span class="n">Sig</span><span class="p">(</span><span class="n">decoder</span><span class="p">)</span><span class="o">.</span><span class="n">map_arguments</span><span class="p">(</span>
+</span><span data-line="553">            <span class="p">(),</span> <span class="n">extra_decoder_kwargs</span><span class="p">,</span> <span class="n">allow_partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_excess</span><span class="o">=</span><span class="kc">True</span>
+</span><span data-line="554">        <span class="p">)</span>
+</span><span data-line="555">        <span class="c1"># decode the data</span>
+</span><span data-line="556">        <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span>
+</span><span data-line="557">    <span class="k">else</span><span class="p">:</span>
+</span><span data-line="558">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Don't know how to handle extension: </span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
 
-</span><span data-line="557">
-</span><span data-line="558">
-</span><span data-line="559"><span class="n">df_from_data_given_ext</span> <span class="o">=</span> <span class="n">resolve_to_dataframe</span>  <span class="c1"># back-compatibility alias</span>
+</span><span data-line="559">
 </span><span data-line="560">
-</span><span data-line="561">
+</span><span data-line="561"><span class="n">df_from_data_given_ext</span> <span class="o">=</span> <span class="n">resolve_to_dataframe</span>  <span class="c1"># back-compatibility alias</span>
+</span><span data-line="562">
+</span><span data-line="563">
 <div class="viewcode-block" id="df_from_data_according_to_key">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.df_from_data_according_to_key">[docs]</a>
-</span><span data-line="562"><span class="k">def</span><span class="w"> </span><span class="nf">df_from_data_according_to_key</span><span class="p">(</span>
-</span><span data-line="563">    <span class="n">data</span><span class="p">:</span> <span class="n">Obj</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KT</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span>
-</span><span data-line="564"><span class="p">):</span>
-</span><span data-line="565"><span class="w">    </span><span class="sd">"""Get a dataframe from a (data, mapping, key) triple"""</span>
-</span><span data-line="566">    <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-</span><span data-line="567">    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="568">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Don't know how to handle key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span data-line="569">    <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span></div>
+</span><span data-line="564"><span class="k">def</span><span class="w"> </span><span class="nf">df_from_data_according_to_key</span><span class="p">(</span>
+</span><span data-line="565">    <span class="n">data</span><span class="p">:</span> <span class="n">Obj</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Extension</span><span class="p">,</span> <span class="n">DfDecoder</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="n">KT</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span>
+</span><span data-line="566"><span class="p">):</span>
+</span><span data-line="567"><span class="w">    </span><span class="sd">"""Get a dataframe from a (data, mapping, key) triple"""</span>
+</span><span data-line="568">    <span class="n">decoder</span> <span class="o">=</span> <span class="n">key_func_mapping</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">not_found_sentinel</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span><span data-line="569">    <span class="k">if</span> <span class="n">decoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="570">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Don't know how to handle key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="571">    <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_decoder_kwargs</span><span class="p">)</span></div>
 
-</span><span data-line="570">
-</span><span data-line="571">
-</span><span data-line="572"><span class="c1"># TODO: Implemented a plugin system (routing) for io resolution concern in disucssion #8</span>
-</span><span data-line="573"><span class="c1">#   See https://github.com/i2mint/tabled/discussions/8#discussion-7519188</span>
-</span><span data-line="574"><span class="c1">#   Just don't know if it's worth the complexity yet.</span>
-</span><span data-line="575"><span class="c1">#   If you find yourself editing default_io_resolver or specifying a lot of custom ones,</span>
-</span><span data-line="576"><span class="c1">#   it might be time to use the plugin system instead.</span>
-</span><span data-line="577">
-</span><span data-line="578"><span class="n">TableSrc</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">]</span>
-</span><span data-line="579"><span class="n">BinaryIOCaster</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TableSrc</span><span class="p">],</span> <span class="n">BinaryIO</span><span class="p">]</span>
-</span><span data-line="580">
-</span><span data-line="581">
-</span><span data-line="582"><span class="c1"># TODO: Routing pattern!</span>
+</span><span data-line="572">
+</span><span data-line="573">
+</span><span data-line="574"><span class="c1"># TODO: Implemented a plugin system (routing) for io resolution concern in disucssion #8</span>
+</span><span data-line="575"><span class="c1">#   See https://github.com/i2mint/tabled/discussions/8#discussion-7519188</span>
+</span><span data-line="576"><span class="c1">#   Just don't know if it's worth the complexity yet.</span>
+</span><span data-line="577"><span class="c1">#   If you find yourself editing default_io_resolver or specifying a lot of custom ones,</span>
+</span><span data-line="578"><span class="c1">#   it might be time to use the plugin system instead.</span>
+</span><span data-line="579">
+</span><span data-line="580"><span class="n">TableSrc</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">]</span>
+</span><span data-line="581"><span class="n">BinaryIOCaster</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TableSrc</span><span class="p">],</span> <span class="n">BinaryIO</span><span class="p">]</span>
+</span><span data-line="582">
+</span><span data-line="583">
+</span><span data-line="584"><span class="c1"># TODO: Routing pattern!</span>
 <div class="viewcode-block" id="default_io_resolver">
 <a class="viewcode-back" href="../../_autosummary/tabled.wrappers.html#tabled.wrappers.default_io_resolver">[docs]</a>
-</span><span data-line="583"><span class="k">def</span><span class="w"> </span><span class="nf">default_io_resolver</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">TableSrc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryIO</span><span class="p">:</span>
-</span><span data-line="584"><span class="w">    </span><span class="sd">"""Resolve `src` (a local path, an http(s)/graze URL, or bytes) to a binary file-like object."""</span>
-</span><span data-line="585">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-</span><span data-line="586">        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
-</span><span data-line="587">            <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
-</span><span data-line="588">        <span class="k">elif</span> <span class="n">get_protocol</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"http"</span><span class="p">,</span> <span class="s2">"https"</span><span class="p">}:</span>
-</span><span data-line="589">            <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-</span><span data-line="590">
-</span><span data-line="591">            <span class="k">return</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</span><span data-line="592">        <span class="k">elif</span> <span class="n">get_protocol</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"graze"</span><span class="p">:</span>
-</span><span data-line="593">            <span class="kn">from</span><span class="w"> </span><span class="nn">graze</span><span class="w"> </span><span class="kn">import</span> <span class="n">graze</span>  <span class="c1"># pip install graze</span>
-</span><span data-line="594">
-</span><span data-line="595">            <span class="n">_</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"://"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span data-line="596">            <span class="k">return</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">graze</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-</span><span data-line="597">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="598">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Can't handle source: </span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span data-line="599">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
-</span><span data-line="600">        <span class="k">return</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
-</span><span data-line="601">    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s2">"read"</span><span class="p">):</span>
-</span><span data-line="602">        <span class="k">return</span> <span class="n">src</span>
-</span><span data-line="603">    <span class="k">else</span><span class="p">:</span>
-</span><span data-line="604">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Can't handle source: </span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+</span><span data-line="585"><span class="k">def</span><span class="w"> </span><span class="nf">default_io_resolver</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">TableSrc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryIO</span><span class="p">:</span>
+</span><span data-line="586"><span class="w">    </span><span class="sd">"""Resolve `src` (a local path, an http(s)/graze URL, or bytes) to a binary file-like object."""</span>
+</span><span data-line="587">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+</span><span data-line="588">        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
+</span><span data-line="589">            <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
+</span><span data-line="590">        <span class="k">elif</span> <span class="n">get_protocol</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"http"</span><span class="p">,</span> <span class="s2">"https"</span><span class="p">}:</span>
+</span><span data-line="591">            <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+</span><span data-line="592">
+</span><span data-line="593">            <span class="k">return</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span><span data-line="594">        <span class="k">elif</span> <span class="n">get_protocol</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"graze"</span><span class="p">:</span>
+</span><span data-line="595">            <span class="kn">from</span><span class="w"> </span><span class="nn">graze</span><span class="w"> </span><span class="kn">import</span> <span class="n">graze</span>  <span class="c1"># pip install graze</span>
+</span><span data-line="596">
+</span><span data-line="597">            <span class="n">_</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"://"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span data-line="598">            <span class="k">return</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">graze</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+</span><span data-line="599">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="600">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Can't handle source: </span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="601">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+</span><span data-line="602">        <span class="k">return</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+</span><span data-line="603">    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s2">"read"</span><span class="p">):</span>
+</span><span data-line="604">        <span class="k">return</span> <span class="n">src</span>
+</span><span data-line="605">    <span class="k">else</span><span class="p">:</span>
+</span><span data-line="606">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Can't handle source: </span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
 
 </span></pre></div>
         </article><button class="back-to-top" type="button">
@@ -815,7 +817,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=d71dfaa1"></script>
+      <script src="../../_static/documentation_options.js?v=e0e570cb"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

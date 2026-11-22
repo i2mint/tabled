@@ -132,6 +132,9 @@ If `scope["renamed_columns"]` was set by a prior `Rename`, that column
 renaming is applied to the joined table first, so a later rename stays
 consistent across joins.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### tabled.multi.load_func(scope, command)
 
 Interpreter for `Load`: set `scope["cumul"]` to `scope[command.key]`.
@@ -147,10 +150,19 @@ Cast to a mapping of dataframes
 
 Interpreter for `Remove`: drop `command.fields` from `scope["cumul"]`.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### tabled.multi.rename_func(scope, command)
 
 Interpreter for `Rename`: rename `scope["cumul"]` columns and record the mapping in `scope`.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### tabled.multi.set_scope_value(scope, key, value)
 
 Set `scope[key] = value` (in place).
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)

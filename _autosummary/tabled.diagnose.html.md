@@ -104,6 +104,8 @@ Register a new info function in the default info functions dictionary.
   * **overwrite** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Whether to overwrite existing functions with the same name
 * **Raises:**
   [**ValueError**](https://docs.python.org/3/builtins/exceptions.html#ValueError) – If `name` is already registered and `overwrite` is `False`.
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### Example
 

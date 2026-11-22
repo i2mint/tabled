@@ -246,7 +246,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="99">
 <div class="viewcode-block" id="set_scope_value">
 <a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.set_scope_value">[docs]</a>
-</span><span data-line="100"><span class="k">def</span><span class="w"> </span><span class="nf">set_scope_value</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+</span><span data-line="100"><span class="k">def</span><span class="w"> </span><span class="nf">set_scope_value</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="101"><span class="w">    </span><span class="sd">"""Set `scope[key] = value` (in place)."""</span>
 </span><span data-line="102">    <span class="n">scope</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
@@ -262,7 +262,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="109">
 <div class="viewcode-block" id="join_func">
 <a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.join_func">[docs]</a>
-</span><span data-line="110"><span class="k">def</span><span class="w"> </span><span class="nf">join_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span data-line="110"><span class="k">def</span><span class="w"> </span><span class="nf">join_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="111"><span class="w">    </span><span class="sd">"""Interpreter for `Join`: inner-merge the table at `command.table_key` into `scope["cumul"]`.</span>
 </span><span data-line="112">
 </span><span data-line="113"><span class="sd">    If `scope["renamed_columns"]` was set by a prior `Rename`, that column</span>
@@ -281,7 +281,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="125">
 <div class="viewcode-block" id="remove_func">
 <a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.remove_func">[docs]</a>
-</span><span data-line="126"><span class="k">def</span><span class="w"> </span><span class="nf">remove_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span data-line="126"><span class="k">def</span><span class="w"> </span><span class="nf">remove_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="127"><span class="w">    </span><span class="sd">"""Interpreter for `Remove`: drop `command.fields` from `scope["cumul"]`."""</span>
 </span><span data-line="128">    <span class="n">scope</span><span class="p">[</span><span class="s2">"cumul"</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope</span><span class="p">[</span><span class="s2">"cumul"</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">command</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span></div>
 
@@ -289,7 +289,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="130">
 <div class="viewcode-block" id="rename_func">
 <a class="viewcode-back" href="../../_autosummary/tabled.multi.html#tabled.multi.rename_func">[docs]</a>
-</span><span data-line="131"><span class="k">def</span><span class="w"> </span><span class="nf">rename_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span data-line="131"><span class="k">def</span><span class="w"> </span><span class="nf">rename_func</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="132"><span class="w">    </span><span class="sd">"""Interpreter for `Rename`: rename `scope["cumul"]` columns and record the mapping in `scope`."""</span>
 </span><span data-line="133">    <span class="n">scope</span><span class="p">[</span><span class="s2">"renamed_columns"</span><span class="p">]</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span>
 </span><span data-line="134">    <span class="k">for</span> <span class="n">old_col</span><span class="p">,</span> <span class="n">new_col</span> <span class="ow">in</span> <span class="n">command</span><span class="o">.</span><span class="n">rename_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -395,7 +395,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="222">        <span class="bp">self</span><span class="p">,</span>
 </span><span data-line="223">        <span class="n">tables</span><span class="p">:</span> <span class="n">MappingOfDataFrames</span><span class="p">,</span>
 </span><span data-line="224">        <span class="n">columns</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]</span> <span class="o">=</span> <span class="n">columns_of_first_table</span><span class="p">,</span>
-</span><span data-line="225">    <span class="p">):</span>
+</span><span data-line="225">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="226"><span class="w">        </span><span class="sd">"""Initialize the instance; see the class docstring for the arguments."""</span>
 </span><span data-line="227">        <span class="bp">self</span><span class="o">.</span><span class="n">tables</span> <span class="o">=</span> <span class="n">mapping_of_dataframes</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
 </span><span data-line="228">        <span class="bp">self</span><span class="o">.</span><span class="n">_init_columns</span> <span class="o">=</span> <span class="n">columns</span>
@@ -424,11 +424,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="251"><span class="w">        </span><span class="sd">"""Return a table with the given columns from all tables."""</span>
 </span><span data-line="252">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 </span><span data-line="253">
-</span><span data-line="254">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="254">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span data-line="255"><span class="w">        </span><span class="sd">"""Return the number of keys."""</span>
 </span><span data-line="256">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 </span><span data-line="257">
-</span><span data-line="258">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="258">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span data-line="259"><span class="w">        </span><span class="sd">"""Return whether ``k`` is a key."""</span>
 </span><span data-line="260">        <span class="k">return</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
 </span><span data-line="261">
@@ -484,7 +484,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=d71dfaa1"></script>
+      <script src="../../_static/documentation_options.js?v=e0e570cb"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

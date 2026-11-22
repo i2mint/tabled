@@ -188,12 +188,12 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="60"><span class="k">class</span><span class="w"> </span><span class="nc">Join</span><span class="p">:</span>
 </span><span data-line="61"><span class="w">    </span><span class="sd">"""A join step: which table to join in next, and which of its fields to drop after."""</span>
 </span><span data-line="62">
-</span><span data-line="63">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">remove</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+</span><span data-line="63">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">remove</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="64"><span class="w">        </span><span class="sd">"""Store the ``table_id`` and the (optional) list of columns to ``remove``."""</span>
 </span><span data-line="65">        <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span> <span class="o">=</span> <span class="n">table_id</span>
 </span><span data-line="66">        <span class="bp">self</span><span class="o">.</span><span class="n">remove</span> <span class="o">=</span> <span class="n">remove</span> <span class="ow">or</span> <span class="p">[]</span>
 </span><span data-line="67">
-</span><span data-line="68">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="68">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span data-line="69"><span class="w">        </span><span class="sd">"""Return a short representation."""</span>
 </span><span data-line="70">        <span class="c1"># note: sorting self.remove so doctests are consistent</span>
 </span><span data-line="71">        <span class="n">remove_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">", remove=</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove</span> <span class="k">else</span> <span class="s2">""</span>
@@ -515,7 +515,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=d71dfaa1"></script>
+      <script src="../../_static/documentation_options.js?v=e0e570cb"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

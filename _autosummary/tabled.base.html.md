@@ -157,3 +157,6 @@ Get a table from a variety of sources.
 ### tabled.base.validate_fields(df, key_fields, value_columns)
 
 Raise `ValueError` if any `key_fields` or `value_columns` are missing from `df`.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)

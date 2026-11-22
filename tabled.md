@@ -1,4 +1,4 @@
-> built 2026-11-22 18:27 UTC from 7177bb2 (master) · tabled 0.1.31. Details: build_info.json
+> built 2026-11-22 19:12 UTC from d45e816 (master) · tabled 0.1.32. Details: build_info.json
 
 # index.html.md
 
@@ -646,6 +646,9 @@ Get a table from a variety of sources.
 
 Raise `ValueError` if any `key_fields` or `value_columns` are missing from `df`.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 
 # _autosummary/tabled.coerce.html.md
 
@@ -1182,6 +1185,8 @@ Register a new info function in the default info functions dictionary.
   * **overwrite** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Whether to overwrite existing functions with the same name
 * **Raises:**
   [**ValueError**](https://docs.python.org/3/builtins/exceptions.html#ValueError) – If `name` is already registered and `overwrite` is `False`.
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### Example
 
@@ -1634,6 +1639,9 @@ If `scope["renamed_columns"]` was set by a prior `Rename`, that column
 renaming is applied to the joined table first, so a later rename stays
 consistent across joins.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### tabled.multi.load_func(scope, command)
 
 Interpreter for `Load`: set `scope["cumul"]` to `scope[command.key]`.
@@ -1649,13 +1657,22 @@ Cast to a mapping of dataframes
 
 Interpreter for `Remove`: drop `command.fields` from `scope["cumul"]`.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### tabled.multi.rename_func(scope, command)
 
 Interpreter for `Rename`: rename `scope["cumul"]` columns and record the mapping in `scope`.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### tabled.multi.set_scope_value(scope, key, value)
 
 Set `scope[key] = value` (in place).
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
 # _autosummary/tabled.sqlite_tools.html.md
@@ -2085,6 +2102,9 @@ column’s values (the ones that are not keys of the groupby) into lists.
 ### tabled.util.column_sep_key_mapper(key, column_name, sep)
 
 Join `column_name` and `key` with `sep` (e.g. `"X"`, `"a"`, `"."` -> `"X.a"`).
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### tabled.util.duplicate_groups(df, subset, , output='dataframe', keep_indices=True)
 
@@ -2632,6 +2652,9 @@ the litteral value from the `LiteralVal` object.
 
 Print the current extension-to-encoder and extension-to-decoder mappings.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### tabled.wrappers.resolve_to_dataframe(data, ext, ext_mapping={'arrow': functools.partial(<function read_from_bytes>, <function arrow_bytes_to_dataframe>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'csv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'dta': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'feather': functools.partial(<function read_from_bytes>, <function read_feather>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'h5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'hdf5': functools.partial(<function read_from_bytes>, <function read_hdf>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'html': functools.partial(<function read_from_bytes>, functools.partial(<function read_html>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'json': functools.partial(<function read_from_bytes>, functools.partial(<function read_json>, orient='records'), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'orc': functools.partial(<function read_from_bytes>, <function read_orc>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'p': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'parquet': functools.partial(<function read_from_bytes>, <function read_parquet>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pickle': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'pkl': functools.partial(<function read_from_bytes>, <built-in function load>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sas': functools.partial(<function read_from_bytes>, <function read_sas>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sav': functools.partial(<function read_from_bytes>, <function read_spss>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sql': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'sqlite': functools.partial(<function read_from_bytes>, <function read_sql>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'stata': functools.partial(<function read_from_bytes>, functools.partial(<function read_stata>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'tsv': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, sep='\\t', index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'txt': functools.partial(<function read_from_bytes>, functools.partial(<function read_csv>, index_col=None), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xls': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xlsx': functools.partial(<function read_from_bytes>, functools.partial(<function read_excel>, index_col=0), buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>), 'xml': functools.partial(<function read_from_bytes>, <function read_xml>, buffer_arg_position=0, buffer_arg_name=None, io_buffer_cls=<class '_io.BytesIO'>)}, \*\*extra_decoder_kwargs)
 
 Get a dataframe from a (data, ext) pair
@@ -2642,6 +2665,9 @@ Get a dataframe from a (data, ext) pair
 ### tabled.wrappers.save_df_to_zipped_tsv(df, name, sep='\\t', index=False, \*\*kwargs)
 
 Save a dataframe to a zipped tsv file.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### tabled.wrappers.single_column_parquet_decode(b, col='_\_single_column_values')
 
@@ -2680,18 +2706,16 @@ True
 
 # About this build
 
-This documentation was built on **2026-11-22 18:27 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/7177bb282b4048bf62777e5da11cb41f2edbe57f"><code>7177bb2</code></a> on branch <code>master</code>, for **tabled 0.1.31** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 19:12 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/d45e81600f5d280d440e5ee20837f66bba1e925e"><code>d45e816</code></a> on branch <code>master</code>, for **tabled 0.1.32** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (0.1.31) is behind the latest release on PyPI (0.1.32): `pip install tabled` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/tabled/commit/7177bb282b4048bf62777e5da11cb41f2edbe57f"><code>7177bb282b4048bf62777e5da11cb41f2edbe57f</code></a> |
+| Commit              | <a href="https://github.com/i2mint/tabled/commit/d45e81600f5d280d440e5ee20837f66bba1e925e"><code>d45e81600f5d280d440e5ee20837f66bba1e925e</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -2702,9 +2726,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/tabled</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45055042766">45055042766</a>        |
+| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45059253524">45059253524</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>7177bb282b4048bf62777e5da11cb41f2edbe57f</code> (in the history of the built commit) |
+| Event commit | <code>d45e81600f5d280d440e5ee20837f66bba1e925e</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2729,13 +2753,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/tabled/0.1.32/">0.1.32</a>, newer than the documented version (0.1.31).
+Latest release: <a href="https://pypi.org/project/tabled/0.1.32/">0.1.32</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/tabled && cd tabled
-git checkout 7177bb282b4048bf62777e5da11cb41f2edbe57f
+git checkout d45e81600f5d280d440e5ee20837f66bba1e925e
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
