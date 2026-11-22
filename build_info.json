@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T19:12:05Z",
+  "built_at": "2026-11-22T21:46:47Z",
   "package": {
     "name": "tabled",
     "version": "0.1.32",
@@ -9,24 +9,24 @@
   },
   "git": {
     "available": true,
-    "commit": "d45e81600f5d280d440e5ee20837f66bba1e925e",
-    "short_commit": "d45e816",
+    "commit": "c37ce55c9b234cbbd63a7e0868583898b4df7c85",
+    "short_commit": "c37ce55",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/tabled",
-    "commit_url": "https://github.com/i2mint/tabled/commit/d45e81600f5d280d440e5ee20837f66bba1e925e",
+    "commit_url": "https://github.com/i2mint/tabled/commit/c37ce55c9b234cbbd63a7e0868583898b4df7c85",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/tabled",
-    "sha": "d45e81600f5d280d440e5ee20837f66bba1e925e",
+    "sha": "c37ce55c9b234cbbd63a7e0868583898b4df7c85",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45059253524",
-    "run_url": "https://github.com/i2mint/tabled/actions/runs/45059253524",
+    "run_id": "45073840677",
+    "run_url": "https://github.com/i2mint/tabled/actions/runs/45073840677",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -64,7 +64,7 @@
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/tabled && cd tabled\ngit checkout d45e81600f5d280d440e5ee20837f66bba1e925e\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/tabled && cd tabled\ngit checkout c37ce55c9b234cbbd63a7e0868583898b4df7c85\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

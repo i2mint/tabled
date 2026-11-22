@@ -1,4 +1,4 @@
-> built 2026-11-22 19:12 UTC from d45e816 (master) · tabled 0.1.32. Details: build_info.json
+> built 2026-11-22 21:46 UTC from c37ce55 (master) · tabled 0.1.32. Details: build_info.json
 
 # index.html.md
 
@@ -8,7 +8,11 @@
 
 A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease
 
-To install:	`pip install tabled`
+To install:
+
+```default
+pip install tabled
+```
 
 <!-- epythet:agentic-readme:start -->
 
@@ -26,6 +30,7 @@ If you still read documentation with your own eyes, the rest of this README is w
 
 Tabled provides seamless integration with SQLite databases through `DfFiles`:
 
+<!-- wads-docs: skip placeholder database file my_database.db -->
 ```python
 from tabled import DfFiles
 
@@ -49,6 +54,7 @@ Under the hood, SQLite tables are exported to temporary Parquet files for effici
 
 For more control over SQLite data extraction, use the `sqlite_tools` module:
 
+<!-- wads-docs: skip placeholder database file database.db -->
 ```python
 from tabled.sqlite_tools import export_sqlite_to_dataframes, export_sqlite_to_parquet
 
@@ -171,9 +177,9 @@ fantasy_tavern_menu_df = pd.DataFrame(misc_small_dicts["fantasy_tavern_menu"])
 alien_abduction_log_df = pd.DataFrame(misc_small_dicts["alien_abduction_log"])
 
 print("Fantasy Tavern Menu:")
-display(fantasy_tavern_menu_df)
+print(fantasy_tavern_menu_df)
 print("\nAlien Abduction Log:")
-display(alien_abduction_log_df)
+print(alien_abduction_log_df)
 ```
 
 ```none
@@ -2706,7 +2712,7 @@ True
 
 # About this build
 
-This documentation was built on **2026-11-22 19:12 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/d45e81600f5d280d440e5ee20837f66bba1e925e"><code>d45e816</code></a> on branch <code>master</code>, for **tabled 0.1.32** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 21:46 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/c37ce55c9b234cbbd63a7e0868583898b4df7c85"><code>c37ce55</code></a> on branch <code>master</code>, for **tabled 0.1.32** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -2715,7 +2721,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/tabled/commit/d45e81600f5d280d440e5ee20837f66bba1e925e"><code>d45e81600f5d280d440e5ee20837f66bba1e925e</code></a> |
+| Commit              | <a href="https://github.com/i2mint/tabled/commit/c37ce55c9b234cbbd63a7e0868583898b4df7c85"><code>c37ce55c9b234cbbd63a7e0868583898b4df7c85</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -2726,9 +2732,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/tabled</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45059253524">45059253524</a>        |
+| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45073840677">45073840677</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>d45e81600f5d280d440e5ee20837f66bba1e925e</code> (in the history of the built commit) |
+| Event commit | <code>c37ce55c9b234cbbd63a7e0868583898b4df7c85</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2759,7 +2765,7 @@ Latest release: <a href="https://pypi.org/project/tabled/0.1.32/">0.1.32</a>, th
 
 ```bash
 git clone https://github.com/i2mint/tabled && cd tabled
-git checkout d45e81600f5d280d440e5ee20837f66bba1e925e
+git checkout c37ce55c9b234cbbd63a7e0868583898b4df7c85
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

@@ -144,7 +144,10 @@ data-aria-dark="Switch to auto color mode">
 <section id="tabled">
 <h1>tabled<a class="headerlink" href="#tabled" title="Link to this heading">#</a></h1>
 <p>A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease</p>
-<p>To install:	<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tabled</span></code></p>
+<p>To install:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">pip</span> <span class="n">install</span> <span class="n">tabled</span>
+</span></pre></div>
+</div>
 <!-- epythet:agentic-readme:start -->
 <section id="for-ai-agents">
 <h2>For AI agents<a class="headerlink" href="#for-ai-agents" title="Link to this heading">#</a></h2>
@@ -156,6 +159,7 @@ data-aria-dark="Switch to auto color mode">
 <section id="sqlite-database-support">
 <h2>SQLite Database Support<a class="headerlink" href="#sqlite-database-support" title="Link to this heading">#</a></h2>
 <p>Tabled provides seamless integration with SQLite databases through <code class="docutils literal notranslate"><span class="pre">DfFiles</span></code>:</p>
+<!-- wads-docs: skip placeholder database file my_database.db -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled</span><span class="w"> </span><span class="kn">import</span> <span class="n">DfFiles</span>
 </span><span data-line="2">
 </span><span data-line="3"><span class="c1"># Automatic SQLite detection - just pass the database file path</span>
@@ -176,6 +180,7 @@ data-aria-dark="Switch to auto color mode">
 <section id="sqlite-export-tools">
 <h3>SQLite Export Tools<a class="headerlink" href="#sqlite-export-tools" title="Link to this heading">#</a></h3>
 <p>For more control over SQLite data extraction, use the <code class="docutils literal notranslate"><span class="pre">sqlite_tools</span></code> module:</p>
+<!-- wads-docs: skip placeholder database file database.db -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">tabled.sqlite_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">export_sqlite_to_dataframes</span><span class="p">,</span> <span class="n">export_sqlite_to_parquet</span>
 </span><span data-line="2">
 </span><span data-line="3"><span class="c1"># Export to DataFrames</span>
@@ -288,9 +293,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="2"><span class="n">alien_abduction_log_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">misc_small_dicts</span><span class="p">[</span><span class="s2">"alien_abduction_log"</span><span class="p">])</span>
 </span><span data-line="3">
 </span><span data-line="4"><span class="nb">print</span><span class="p">(</span><span class="s2">"Fantasy Tavern Menu:"</span><span class="p">)</span>
-</span><span data-line="5"><span class="n">display</span><span class="p">(</span><span class="n">fantasy_tavern_menu_df</span><span class="p">)</span>
+</span><span data-line="5"><span class="nb">print</span><span class="p">(</span><span class="n">fantasy_tavern_menu_df</span><span class="p">)</span>
 </span><span data-line="6"><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Alien Abduction Log:"</span><span class="p">)</span>
-</span><span data-line="7"><span class="n">display</span><span class="p">(</span><span class="n">alien_abduction_log_df</span><span class="p">)</span>
+</span><span data-line="7"><span class="nb">print</span><span class="p">(</span><span class="n">alien_abduction_log_df</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">Fantasy Tavern Menu:
@@ -578,7 +583,7 @@ data-aria-dark="Switch to auto color mode">
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 19:12 UTC from <a href="https://github.com/i2mint/tabled/commit/d45e81600f5d280d440e5ee20837f66bba1e925e">d45e816</a> (master) · tabled 0.1.32 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 21:46 UTC from <a href="https://github.com/i2mint/tabled/commit/c37ce55c9b234cbbd63a7e0868583898b4df7c85">c37ce55</a> (master) · tabled 0.1.32 · <a href="about-this-build.html">about this build</a></p>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>

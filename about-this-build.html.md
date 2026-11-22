@@ -2,7 +2,7 @@
 
 # About this build
 
-This documentation was built on **2026-11-22 19:12 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/d45e81600f5d280d440e5ee20837f66bba1e925e"><code>d45e816</code></a> on branch <code>master</code>, for **tabled 0.1.32** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 21:46 UTC** from commit <a href="https://github.com/i2mint/tabled/commit/c37ce55c9b234cbbd63a7e0868583898b4df7c85"><code>c37ce55</code></a> on branch <code>master</code>, for **tabled 0.1.32** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -11,7 +11,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/tabled/commit/d45e81600f5d280d440e5ee20837f66bba1e925e"><code>d45e81600f5d280d440e5ee20837f66bba1e925e</code></a> |
+| Commit              | <a href="https://github.com/i2mint/tabled/commit/c37ce55c9b234cbbd63a7e0868583898b4df7c85"><code>c37ce55c9b234cbbd63a7e0868583898b4df7c85</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                                 |
 | Working tree        | clean                                                                                                                                                |
@@ -22,9 +22,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/tabled</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45059253524">45059253524</a>        |
+| Run          | <a href="https://github.com/i2mint/tabled/actions/runs/45073840677">45073840677</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>d45e81600f5d280d440e5ee20837f66bba1e925e</code> (in the history of the built commit) |
+| Event commit | <code>c37ce55c9b234cbbd63a7e0868583898b4df7c85</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -55,7 +55,7 @@ Latest release: <a href="https://pypi.org/project/tabled/0.1.32/">0.1.32</a>, th
 
 ```bash
 git clone https://github.com/i2mint/tabled && cd tabled
-git checkout d45e81600f5d280d440e5ee20837f66bba1e925e
+git checkout c37ce55c9b234cbbd63a7e0868583898b4df7c85
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

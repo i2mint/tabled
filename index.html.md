@@ -4,7 +4,11 @@
 
 A (key-value) data-object-layer to get (pandas) tables from a variety of sources with ease
 
-To install:	`pip install tabled`
+To install:
+
+```default
+pip install tabled
+```
 
 <!-- epythet:agentic-readme:start -->
 
@@ -22,6 +26,7 @@ If you still read documentation with your own eyes, the rest of this README is w
 
 Tabled provides seamless integration with SQLite databases through `DfFiles`:
 
+<!-- wads-docs: skip placeholder database file my_database.db -->
 ```python
 from tabled import DfFiles
 
@@ -45,6 +50,7 @@ Under the hood, SQLite tables are exported to temporary Parquet files for effici
 
 For more control over SQLite data extraction, use the `sqlite_tools` module:
 
+<!-- wads-docs: skip placeholder database file database.db -->
 ```python
 from tabled.sqlite_tools import export_sqlite_to_dataframes, export_sqlite_to_parquet
 
@@ -167,9 +173,9 @@ fantasy_tavern_menu_df = pd.DataFrame(misc_small_dicts["fantasy_tavern_menu"])
 alien_abduction_log_df = pd.DataFrame(misc_small_dicts["alien_abduction_log"])
 
 print("Fantasy Tavern Menu:")
-display(fantasy_tavern_menu_df)
+print(fantasy_tavern_menu_df)
 print("\nAlien Abduction Log:")
-display(alien_abduction_log_df)
+print(alien_abduction_log_df)
 ```
 
 ```none
