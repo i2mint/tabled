@@ -1,10 +1,12 @@
 # tabled
 
-A folder of table files (CSV, Parquet, Excel, JSON, Feather and about 20 more formats) as a dict of pandas DataFrames: read and write by file name, and the extension picks the format. Plus tools to diagnose, compare and reshape tables, and to read SQLite databases and HTML tables the same way.
+A folder of table files (CSV, Parquet, Excel, JSON, Feather and a dozen more formats) as a dict of pandas DataFrames: read and write by file name, and the extension picks the format, instead of picking a `pd.read_*`/`to_*` call per file. Plus tools to diagnose, compare and reshape tables, and to read SQLite databases and HTML tables the same way.
 
 ```
 pip install tabled
 ```
+
+Some formats need pandas' own optional readers: `openpyxl` for `.xlsx`, `xlrd` for `.xls`, `pyreadstat` for `.sav`, `tables` for `.h5`.
 
 [Documentation](https://i2mint.github.io/tabled/)
 
