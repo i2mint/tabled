@@ -174,15 +174,14 @@ list(df_files)
 Let's create DataFrames from our test data:
 
 
-<!-- wads-docs: skip uses the notebook-only display() -->
 ```python
 fantasy_tavern_menu_df = pd.DataFrame(misc_small_dicts["fantasy_tavern_menu"])
 alien_abduction_log_df = pd.DataFrame(misc_small_dicts["alien_abduction_log"])
 
 print("Fantasy Tavern Menu:")
-display(fantasy_tavern_menu_df)
+print(fantasy_tavern_menu_df)
 print("\nAlien Abduction Log:")
-display(alien_abduction_log_df)
+print(alien_abduction_log_df)
 ```
 
     Fantasy Tavern Menu:
