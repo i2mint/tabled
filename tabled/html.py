@@ -228,7 +228,7 @@ def df_store_to_html(df_store, sep="\n<br>\n"):
     """
     ht = ""
     for k, df in df_store.items():
-        match = re.match(r"[^\d]+", str(k))
+        match = re.match(r"[^\d]+", k) if isinstance(k, str) else None
         title = match.group(0) if match else str(k)
         ht += df_to_html(df, title)
         ht += sep

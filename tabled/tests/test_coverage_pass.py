@@ -140,3 +140,12 @@ def test_sqlite_export_missing_file(tmp_path):
 
     with pytest.raises(FileNotFoundError):
         export_sqlite_to_dataframes(tmp_path / "nope.db")
+
+
+def test_df_store_to_html_titles_a_non_string_key_whole():
+    """As documented: the prefix rule applies to string keys only (tabled#18)."""
+    df = pd.DataFrame({"a": [1]})
+    html = df_store_to_html({("sales", 2024): df, -1: df, "q1": df})
+    assert "<h2> ('sales', 2024) </h2>" in html
+    assert "<h2> -1 </h2>" in html
+    assert "<h2> q </h2>" in html
