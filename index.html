@@ -155,10 +155,10 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="4">
 </span><span data-line="5"><span class="n">tables</span> <span class="o">=</span> <span class="n">DfFiles</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">())</span>  <span class="c1"># any folder</span>
 </span><span data-line="6">
-</span><span data-line="7"><span class="n">tables</span><span class="p">[</span><span class="s1">'sales.csv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'item'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">],</span> <span class="s1">'qty'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
-</span><span data-line="8"><span class="n">tables</span><span class="p">[</span><span class="s1">'sales.parquet'</span><span class="p">]</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="s1">'sales.csv'</span><span class="p">]</span>  <span class="c1"># read as CSV, write as Parquet</span>
-</span><span data-line="9"><span class="k">assert</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s1">'sales.csv'</span><span class="p">,</span> <span class="s1">'sales.parquet'</span><span class="p">]</span>
-</span><span data-line="10"><span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="s1">'sales.parquet'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span data-line="7"><span class="n">tables</span><span class="p">[</span><span class="s2">"sales.csv"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"item"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">],</span> <span class="s2">"qty"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+</span><span data-line="8"><span class="n">tables</span><span class="p">[</span><span class="s2">"sales.parquet"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="s2">"sales.csv"</span><span class="p">]</span>  <span class="c1"># read as CSV, write as Parquet</span>
+</span><span data-line="9"><span class="k">assert</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"sales.csv"</span><span class="p">,</span> <span class="s2">"sales.parquet"</span><span class="p">]</span>
+</span><span data-line="10"><span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="s2">"sales.parquet"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <p>What else is in it:</p>
@@ -605,7 +605,7 @@ data-aria-dark="Switch to auto color mode">
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 23:35 UTC from <a href="https://github.com/i2mint/tabled/commit/b66b8c7885fba9bc5f037c3e4de0cad2dd40f349">b66b8c7</a> (master) · tabled 0.1.32 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-23 11:05 UTC from <a href="https://github.com/i2mint/tabled/commit/19341a13ed6ed7358d2285d04ef9b13fb35654c2">19341a1</a> (master) · tabled 0.1.33 · <a href="about-this-build.html">about this build</a></p>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
@@ -640,7 +640,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="_static/documentation_options.js?v=e0e570cb"></script>
+      <script src="_static/documentation_options.js?v=449df4d2"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>

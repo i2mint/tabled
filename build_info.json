@@ -1,36 +1,36 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T23:35:32Z",
+  "built_at": "2026-11-23T11:05:17Z",
   "package": {
     "name": "tabled",
-    "version": "0.1.32",
+    "version": "0.1.33",
     "display_name": "tabled",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "b66b8c7885fba9bc5f037c3e4de0cad2dd40f349",
-    "short_commit": "b66b8c7",
+    "commit": "19341a13ed6ed7358d2285d04ef9b13fb35654c2",
+    "short_commit": "19341a1",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/tabled",
-    "commit_url": "https://github.com/i2mint/tabled/commit/b66b8c7885fba9bc5f037c3e4de0cad2dd40f349",
+    "commit_url": "https://github.com/i2mint/tabled/commit/19341a13ed6ed7358d2285d04ef9b13fb35654c2",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/tabled",
-    "sha": "b66b8c7885fba9bc5f037c3e4de0cad2dd40f349",
+    "sha": "19341a13ed6ed7358d2285d04ef9b13fb35654c2",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45083949371",
-    "run_url": "https://github.com/i2mint/tabled/actions/runs/45083949371",
+    "run_id": "45161648922",
+    "run_url": "https://github.com/i2mint/tabled/actions/runs/45161648922",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.23",
+    "epythet": "0.2.25",
     "sphinx": "9.1.1",
     "docutils": "0.22.4",
     "python": "3.12.16"
@@ -61,15 +61,13 @@
   "pypi": {
     "checked": true,
     "latest": "0.1.33",
-    "relation": "behind",
+    "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/tabled && cd tabled\ngit checkout b66b8c7885fba9bc5f037c3e4de0cad2dd40f349\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/tabled && cd tabled\ngit checkout 19341a13ed6ed7358d2285d04ef9b13fb35654c2\npip install \"epythet==0.2.25\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": false,
-    "notes": [
-      "The documented version (0.1.32) is behind the latest release on PyPI (0.1.33): `pip install tabled` gives newer code than these docs describe."
-    ]
+    "aligned": true,
+    "notes": []
   }
 }

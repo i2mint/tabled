@@ -365,7 +365,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="228"><span class="sd">    """</span>
 </span><span data-line="229">    <span class="n">ht</span> <span class="o">=</span> <span class="s2">""</span>
 </span><span data-line="230">    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">df_store</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span data-line="231">        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\d]+"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+</span><span data-line="231">        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\d]+"</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 </span><span data-line="232">        <span class="n">title</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">match</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 </span><span data-line="233">        <span class="n">ht</span> <span class="o">+=</span> <span class="n">df_to_html</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
 </span><span data-line="234">        <span class="n">ht</span> <span class="o">+=</span> <span class="n">sep</span>
@@ -432,7 +432,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=e0e570cb"></script>
+      <script src="../../_static/documentation_options.js?v=449df4d2"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

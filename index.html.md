@@ -19,10 +19,10 @@ from tabled import DfFiles
 
 tables = DfFiles(tempfile.mkdtemp())  # any folder
 
-tables['sales.csv'] = pd.DataFrame({'item': ['a', 'b'], 'qty': [1, 2]})
-tables['sales.parquet'] = tables['sales.csv']  # read as CSV, write as Parquet
-assert sorted(tables) == ['sales.csv', 'sales.parquet']
-assert tables['sales.parquet'].shape == (2, 2)
+tables["sales.csv"] = pd.DataFrame({"item": ["a", "b"], "qty": [1, 2]})
+tables["sales.parquet"] = tables["sales.csv"]  # read as CSV, write as Parquet
+assert sorted(tables) == ["sales.csv", "sales.parquet"]
+assert tables["sales.parquet"].shape == (2, 2)
 ```
 
 What else is in it:
